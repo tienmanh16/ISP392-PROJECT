@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class helloController {
     
     
-    @GetMapping("/table")
+    @GetMapping("/listinvoid")
     public String table(){      
-        return "table.html"; 
+        return "listInvoid.html"; 
     }  
     
     @GetMapping("/invoid")
