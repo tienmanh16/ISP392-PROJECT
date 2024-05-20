@@ -1,0 +1,29 @@
+<header class="main_header" th::fragment="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand logo_h" th:href="@{/index.html}"><img th:src="@{home/image/Logo.png}"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="nav navbar-nav menu_nav ml-auto">
+                    <li class="nav-item active"><a class="nav-link" th:href="@{/index.html}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/accommodation.html}">Accommodation</a></li>
+                    <li class="nav-item submenu">
+                        <a th:href="@{/}" class="nav-link" data-toggle="dropdown" role="button">Blog     <span class="fa fa-angle-down"></span> </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-item"><a class="nav-link" th:href="@{/blog.html}">Blog</a></li>
+                            <li class="nav-item"><a class="nav-link" th:href="@{/blog-single.html}">Blog Details</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/elements.html}">Elements</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/contact.html}">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+
+
+    </div>
+</header>
