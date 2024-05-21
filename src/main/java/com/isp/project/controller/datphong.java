@@ -11,9 +11,9 @@ public class datphong {
         return "datphong";
     }
 
-    @GetMapping("Invoice")
+    @GetMapping("detaildatphong")
     public String themPhong() {
-        return "Invoice";
+        return "detaildatphong";
     }
 
 }
