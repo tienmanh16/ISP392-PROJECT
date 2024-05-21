@@ -6,14 +6,14 @@
 <meta charset="utf-8">
 <title>Room Detail</title>
 <!-- Stylesheets -->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="css/slick-theme.css">
-<link rel="stylesheet" type="text/css" href="css/slick.css">
-<link href="css/mmenu.css" rel="stylesheet">
-<link href="css/style.css" rel="stylesheet">
+<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+<link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+<link th:href="@{/css/mmenu.css}" rel="stylesheet">
+<link th:href="@{/css/style.css}" rel="stylesheet">
 
-<link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
-<link rel="icon" href="images/favicon.png" type="image/x-icon">
+<link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+<link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
 <!-- Responsive -->
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -80,7 +80,7 @@
                                             </div>
                                         </a></li>
                                     </ul> -->
-                                    <a href="inventory-page-single.html" class="btn-view-search">
+                                    <!-- <a th:href="@{inventory-page-single.html}" class="btn-view-search">
                                         View Details  
                                         <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <g clip-path="url(#clip0_3114_6864)">
@@ -92,7 +92,7 @@
                                             </clipPath>
                                             </defs>
                                         </svg>
-                                    </a>
+                                    </a> -->
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                             <nav class="nav main-menu">
                                 <ul class="navigation" id="navbar">
                                     <li class="current-dropdown current"><span>Home <i class="fa-solid fa-angle-down"></i></span>
-                                        <ul class="dropdown">
+                                        <!-- <ul class="dropdown">
                                             <li><a href="index.html">Home 01</a></li>
                                             <li><a href="index-2.html">Home 02</a></li>
                                             <li><a href="index-3.html">Home 03</a></li>
@@ -113,13 +113,13 @@
                                             <li><a href="index-8.html">Home 08</a></li>
                                             <li><a href="index-9.html">Home 09</a></li>
                                             <li><a href="index-10.html">Home 10</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li class="current-dropdown"><span>Inventory <i class="fa-solid fa-angle-down"></i></span>
                                         <div class="mega-menu">
                                             <div class="mega-column">
                                                 <h3>Inventory List</h3>
-                                                <ul>
+                                                <!-- <ul>
                                                     <li><a href="inventory-list-01.html" title="">Inventory List v1</a></li>
                                                     <li><a href="inventory-list-02.html" title="">Inventory List v2</a></li>
                                                     <li><a href="inventory-map-cards.html" title="">Map - Cards</a></li>
@@ -127,61 +127,61 @@
                                                     <li><a href="inventory-sidebar-rows.html" title="">Sidebar - Rows</a></li>
                                                     <li><a href="inventory-sidebar-cards.html" title="">Sidebar - Cards</a></li>
                                                     
-                                                </ul>
+                                                </ul> -->
                                             </div>
                                             <div class="mega-column">
                                                 <h3>Inventory Single</h3>
-                                                <ul>
+                                                <!-- <ul>
                                                     <li><a href="inventory-page-single.html" title="">Inventory Single v1</a></li>
                                                     <li><a href="inventory-page-single-v2.html" title="">Inventory Single v2</a></li>
                                                     <li><a href="inventory-page-single-v3.html" title="">Inventory Single v3</a></li>
                                                     <li><a href="inventory-page-single-v4.html" title="">Inventory Single v4</a></li>
                                                     <li><a href="inventory-page-single-v5.html" title="">Inventory Single v5</a></li>
-                                                </ul>
+                                                </ul> -->
                                             </div>
                                             <div class="mega-column">
                                                 <h3>Popular Makes</h3>
-                                                <ul>
+                                                <!-- <ul>
                                                     <li><a href="inventory-page-single.html" title="">Audi</a></li>
                                                     <li><a href="inventory-page-single.html" title="">BMW</a></li>
                                                     <li><a href="inventory-page-single.html" title="">Ford</a></li>
                                                     <li><a href="inventory-page-single.html" title="">Honda</a></li>
                                                     <li><a href="inventory-page-single.html" title="">Land Rover</a></li>
                                                     <li><a href="inventory-page-single.html" title="">Mercedes-Benz</a></li>
-                                                </ul>
+                                                </ul> -->
                                             </div>
                                             <div class="mega-column">
                                                 <h3>Type</h3>
-                                                <ul>
+                                                <!-- <ul>
                                                     <li><a href="inventory-page-single.html" title="">Sedan</a></li>
                                                     <li><a href="inventory-page-single.html" title="">SUVs</a></li>
                                                     <li><a href="inventory-page-single.html" title="">Sport Coupe</a></li>
                                                     <li><a href="inventory-page-single.html" title="">Convertible</a></li>
                                                     <li><a href="inventory-page-single.html" title="">Wagon</a></li>
-                                                </ul>
+                                                </ul> -->
                                             </div>
                                         </div>
                                     </li>
                                     <li class="current-dropdown"><span>Blog <i class="fa-solid fa-angle-down"></i></span>
-                                        <ul class="dropdown">
+                                        <!-- <ul class="dropdown">
                                             <li><a href="blog-list-01.html">Blog List 01</a></li>
                                             <li><a href="blog-list-02.html">Blog List 02</a></li>
                                             <li><a href="blog-list-03.html">Blog List 03</a></li>
                                             <li><a href="blog-single.html">Blog Single</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li class="current-dropdown"><span>Shop <i class="fa-solid fa-angle-down"></i></span>
-                                        <ul class="dropdown">
+                                        <!-- <ul class="dropdown">
                                             <li><a href="shop-list.html">Shop List</a></li>
                                             <li><a href="shop-single.html">Shop Single</a></li>
                                             <li><a href="cart.html">Cart</a></li>
                                             <li><a href="checkout.html">Checkout</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li class="current-dropdown right-one"><span>Pages <i class="fa-solid fa-angle-down"></i></span>
                                         <ul class="dropdown">
                                             <li class="nav-sub"><a>Dashboard <i class="fa fa-angle-right"></i></a>
-                                                <ul class="dropdown deep subnav-menu">
+                                                <!-- <ul class="dropdown deep subnav-menu">
                                                     <li><a href="dashboard.html" title="">Dashboard</a></li>
                                                     <li><a href="my-listings.html" title="">My Listings</a></li>
                                                     <li><a href="add-listings.html" title="">Add Listings</a></li>
@@ -189,9 +189,9 @@
                                                     <li><a href="saved.html" title="">Saved Search</a></li>
                                                     <li><a href="messages.html" title="">Messages</a></li>
                                                     <li><a href="profile.html" title="">Profile</a></li>
-                                                </ul>
+                                                </ul> -->
                                             </li>
-                                            <li><a href="about.html">About</a></li>
+                                            <!-- <li><a href="about.html">About</a></li>
                                             <li><a href="contact.html">Services</a></li>
                                             <li><a href="login.html">Login</a></li>
                                             <li><a href="faq.html">FAQs</a></li>
@@ -205,11 +205,11 @@
                                             <li><a href="compare.html">Compare</a></li>
                                             <li><a href="404.html">404</a></li>
                                             <li><a href="invoice.html">Invoice</a></li>
-                                            <li><a href="ui-elements.html">UI Elements</a></li>
+                                            <li><a href="ui-elements.html">UI Elements</a></li> -->
                                         </ul>
                                     </li>
-                                    <li><a href="contact.html">Contact</a>
-                                    </li>
+                                    <!-- <li><a href="contact.html">Contact</a>
+                                    </li> -->
                                 </ul>
                             </nav> 
                             <!-- Main Menu End-->
@@ -316,7 +316,7 @@
                         <div class="inner-column">
                             <h2>P01</h2>
                             Per hour:<span class="price">$399<del>$699</del></span>
-                            <small><i class="fa-solid fa-check"></i>Phong trong</small>
+                            <!-- <small><i class="fa-solid fa-check"></i>Phong trong</small> -->
                             <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                                 Tempus nulla faucibus viverra nisl non senectus tortor. 
                             </div>
@@ -367,7 +367,7 @@
                                         </div>
                                         <!-- features-sec -->
                                     </div>
-                                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                    <!-- <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                                         <div class="reviews">
                                             <h4 class="title">Customer Reviews</h4>
                                             <div class="content-box">
@@ -548,10 +548,10 @@
                                                         </defs>
                                                         </svg>
                                                     </button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
+                                                </div> -->
+                                            <!-- </div> -->
+                                        <!-- </form>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -561,7 +561,7 @@
             </div>
         </div>
         <!-- cars-section-fourteen -->
-        <div class="cars-section-fourteen v1">
+        <!-- <div class="cars-section-fourteen v1">
             <div class="boxcar-container">
                 <div class="boxcar-title wow fadeInUp">
                     <h2>Related Room</h2>
@@ -577,9 +577,9 @@
                         </svg>
                     </a>
                 </div>
-                <div class="row car-slider-three" data-preview="4">
+                <div class="row car-slider-three" data-preview="4"> -->
                     <!-- car-block-fourteen -->
-                    <div class="car-block-fourteen col-lg-3 col-md-12 col-sm-12">
+                    <!-- <div class="car-block-fourteen col-lg-3 col-md-12 col-sm-12">
                         <div class="inner-box">
                             <div class="image-box">
                                 <figure class="image"><a href="#"><img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt=""></a></figure>
@@ -592,12 +592,12 @@
                                     <li><i class="fa fa-star"></i></li>
                                     <li><i class="fa fa-star"></i></li>
                                 </ul>
-                                <div class="text"><a href="detail.html" title="">P02</a></div>
+                                <div class="text"><a th:href="@{/detail}" title="">P02</a></div>
                                 <h6 class="title"><del>$789</del>$399</h6>
                                 <a href="#" class="shoping-btn">Xem thong tin phong</a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- car-block-fourteen -->
                     <!-- <div class="car-block-fourteen col-lg-3 col-md-12 col-sm-12">
                         <div class="inner-box">
@@ -752,19 +752,18 @@
 
 <!-- Scroll To Top -->
 <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
-
-<script src="js/jquery.js"></script> 
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/slick.min.js"></script>
-<script src="js/slick-animation.min.js"></script>
-<script src="js/jquery.fancybox.js"></script>
-<script src="js/wow.js"></script>
-<script src="js/appear.js"></script>
-<script src="js/mixitup.js"></script>
-<script src="js/knob.js"></script>
-<script src="js/mmenu.js"></script>
-<script src="js/main.js"></script>
+<script th:src="@{/js/jquery.js}"></script> 
+<script th:src="@{/js/popper.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/slick.min.js}"></script>
+<script th:src="@{/js/slick-animation.min.js}"></script>
+<script th:src="@{/js/jquery.fancybox.js}"></script>
+<script th:src="@{/js/wow.js}"></script>
+<script th:src="@{/js/appear.js}"></script>
+<script th:src="@{/js/mixitup.js}"></script>
+<script th:src="@{/js/knob.js}"></script>
+<script th:src="@{/js/mmenu.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 </body>
 
 <!-- Mirrored from creativelayers.net/themes/boxcar-html/shop-single.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 May 2024 03:27:39 GMT -->
