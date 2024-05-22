@@ -16,4 +16,9 @@ public class BookingController {
         return "detaildatphong";
     }
 
+    @GetMapping("managerbooking")
+    public String ManagerBooking() {
+        return "ManagerBooking";
+    }
+    
 }
