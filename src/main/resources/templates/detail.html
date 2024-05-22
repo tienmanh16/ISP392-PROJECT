@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- Mirrored from creativelayers.net/themes/boxcar-html/shop-single.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 May 2024 03:27:35 GMT -->
 <head>
-<meta charset="utf-8">
-<title>Room Detail</title>
-<!-- Stylesheets -->
-<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-<link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
-<link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
-<link th:href="@{/css/mmenu.css}" rel="stylesheet">
-<link th:href="@{/css/style.css}" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Room Detail</title>
+    <!-- Stylesheets -->
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+    <link th:href="@{/css/mmenu.css}" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 
-<link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
-<link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
-<!-- Responsive -->
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
-<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+    <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+    <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
 </head>
 
 <body>
-<div th:replace="~{fragments/header :: header}"></div>
-    <div class="boxcar-wrapper">
+
+<div class="boxcar-wrapper">
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- Main Header-->
+    <!-- End header-section -->
+
+    <!-- cars-section-fifteen -->
     <section class="cars-section-fifteen layout-radius">
-        <div class="shop-c-box"> 
+        <div class="shop-c-box">
             <div class="boxcar-container">
                 <div class="boxcar-title-three">
                     <ul class="breadcrumb">
@@ -71,8 +78,8 @@
                             <h2>P01</h2>
                             Per hour:<span class="price">$399<del>$699</del></span>
                             <!-- <small><i class="fa-solid fa-check"></i>Phong trong</small> -->
-                            <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                                Tempus nulla faucibus viverra nisl non senectus tortor. 
+                            <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Tempus nulla faucibus viverra nisl non senectus tortor.
                             </div>
                             <div class="btn-box">
                                 <div class="number">
@@ -103,7 +110,7 @@
                                         <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Description</button>
                                         <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Review</button>
                                     </div>
-                                </nav>        
+                                </nav>
                             </div>
                         </div>
                         <div class="content-column col-lg-8 col-md-8 col-sm-12">
@@ -115,19 +122,203 @@
                                             <h4 class="title">Details</h4>
                                             <div class="text two"> This is..............
                                             </div>
-                                            <div class="text">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis 
+                                            <div class="text">Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis
                                                 suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
                                             </div>
                                         </div>
                                         <!-- features-sec -->
                                     </div>
-                            
+                                    <!-- <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                        <div class="reviews">
+                                            <h4 class="title">Customer Reviews</h4>
+                                            <div class="content-box">
+                                                <div class="auther-name">
+                                                    <span>A.T</span>
+                                                    <h6 class="name">Ali Tufan</h6>
+                                                    <small>April 2023</small>
+                                                </div>
+                                                <div class="rating-list">
+                                                    <ul class="list">
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                    </ul>
+                                                    <span>Take this tour!--its fantastic!</span>
+                                                </div>
+                                                <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                                                    enim ad minim veniam.
+                                                </div>
+                                                <div class="image-box">
+                                                    <img src="images/resource/blog5-4.jpg">
+                                                    <img src="images/resource/blog5-5.jpg">
+                                                    <img src="images/resource/blog5-6.jpg">
+                                                </div>
+                                                <div class="btn-box">
+                                                    <a href="#" class="like-btn"><i class="fa-solid fa-thumbs-up"></i>Helpful</a>
+                                                    <a href="#" class="like-btn"><i class="fa-solid fa-thumbs-down"></i>Not helpful</a>
+                                                </div>
+                                            </div>
+                                            <div class="content-box two">
+                                                <div class="auther-name">
+                                                    <span>A.T</span>
+                                                    <h6 class="name">Ali Tufan</h6>
+                                                    <small>April 2023</small>
+                                                </div>
+                                                <div class="rating-list">
+                                                    <ul class="list">
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                        <li><i class="fa fa-star"></i></li>
+                                                    </ul>
+                                                    <span>Take this tour!--its fantastic!</span>
+                                                </div>
+                                                <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                                                    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+                                                    enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                                                    aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
+                                                    in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+                                                    sint occaecat cupidatat non proident.
+                                                </div>
+                                                <div class="btn-box">
+                                                    <a href="#" class="like-btn"><i class="fa-solid fa-thumbs-up"></i>Helpful</a>
+                                                    <a href="#" class="like-btn"><i class="fa-solid fa-thumbs-down"></i>Not helpful</a>
+                                                </div>
+                                                <a href="#" class="review">See more reviews<svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" viewBox="0 0 15 14" fill="none">
+                                                    <g clip-path="url(#clip0_881_13248)">
+                                                      <path d="M14.1106 0H5.55509C5.34013 0 5.16619 0.173943 5.16619 0.388901C5.16619 0.603859 5.34013 0.777802 5.55509 0.777802H13.1719L0.613453 13.3362C0.461531 13.4881 0.461531 13.7342 0.613453 13.8861C0.689396 13.962 0.788927 14 0.888422 14C0.987917 14 1.08741 13.962 1.16339 13.8861L13.7218 1.3277V8.94447C13.7218 9.15943 13.8957 9.33337 14.1107 9.33337C14.3256 9.33337 14.4996 9.15943 14.4996 8.94447V0.388901C14.4995 0.173943 14.3256 0 14.1106 0Z" fill="#405FF2"/>
+                                                    </g>
+                                                    <defs>
+                                                      <clipPath id="clip0_881_13248">
+                                                        <rect width="14" height="14" fill="white" transform="translate(0.5)"/>
+                                                      </clipPath>
+                                                    </defs>
+                                                  </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="Reply-sec">
+                                            <h6 class="title">Leave a Reply</h6>
+                                            <div class="text">Your email address will not be published. Required fields are marked *</div>
+                                            <div class="right-box">
+                                                <div class="rating-list two">
+                                                    <div class="list-box">
+                                                        <span>Comfort</span>
+                                                        <ul class="list">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="list-box">
+                                                        <span>Exterior Styling</span>
+                                                        <ul class="list">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="list-box">
+                                                        <span>Performance</span>
+                                                        <ul class="list">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="rating-list">
+                                                    <div class="list-box">
+                                                        <span>Interior Design</span>
+                                                        <ul class="list">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="list-box">
+                                                        <span>Value For The Money</span>
+                                                        <ul class="list">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="list-box">
+                                                        <span>Reliability</span>
+                                                        <ul class="list">
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                            <li><i class="fa fa-star"></i></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <form class="row">
+                                            <div class="col-lg-6">
+                                                <div class="form_boxes">
+                                                    <label>Name</label>
+                                                    <input type="text" name="name" placeholder="Ali Tufan" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <div class="form_boxes">
+                                                    <label>Email</label>
+                                                    <input type="email" name="email" placeholder="Creativelayers088@Gmail.Com" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form_boxes">
+                                                    <label>Title</label>
+                                                    <input type="text" name="title" placeholder="Good Cars" />
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form_boxes v2">
+                                                    <label>Comment</label>
+                                                    <textarea name="message" placeholder="Lorem Ipsum Dolar Sit Amet" required=""></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-12">
+                                                <div class="form-submit">
+                                                    <button type="submit" class="theme-btn">Post Comment <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                                        <g clip-path="url(#clip0_711_3214)">
+                                                        <path d="M13.6106 0H5.05509C4.84013 0 4.66619 0.173943 4.66619 0.388901C4.66619 0.603859 4.84013 0.777802 5.05509 0.777802H12.6719L0.113453 13.3362C-0.0384687 13.4881 -0.0384687 13.7342 0.113453 13.8861C0.189396 13.962 0.288927 14 0.388422 14C0.487917 14 0.587411 13.962 0.663391 13.8861L13.2218 1.3277V8.94447C13.2218 9.15943 13.3957 9.33337 13.6107 9.33337C13.8256 9.33337 13.9996 9.15943 13.9996 8.94447V0.388901C13.9995 0.173943 13.8256 0 13.6106 0Z" fill="white"/>
+                                                        </g>
+                                                        <defs>
+                                                        <clipPath id="clip0_711_3214">
+                                                        <rect width="14" height="14" fill="white"/>
+                                                        </clipPath>
+                                                        </defs>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div> -->
+                                    <!-- </form>
+                                </div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </div>
         <!-- cars-section-fourteen -->
@@ -137,14 +328,14 @@
                     <h2>Related Room</h2>
                     <a href="#" class="btn-title">View All<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
                         <g clip-path="url(#clip0_601_243)">
-                        <path d="M13.6109 0H5.05533C4.84037 0 4.66643 0.173943 4.66643 0.388901C4.66643 0.603859 4.84037 0.777802 5.05533 0.777802H12.6721L0.113697 13.3362C-0.0382246 13.4881 -0.0382246 13.7342 0.113697 13.8861C0.18964 13.962 0.289171 14 0.388666 14C0.488161 14 0.587656 13.962 0.663635 13.8861L13.222 1.3277V8.94447C13.222 9.15943 13.3959 9.33337 13.6109 9.33337C13.8259 9.33337 13.9998 9.15943 13.9998 8.94447V0.388901C13.9998 0.173943 13.8258 0 13.6109 0Z" fill="#050B20"/>
+                            <path d="M13.6109 0H5.05533C4.84037 0 4.66643 0.173943 4.66643 0.388901C4.66643 0.603859 4.84037 0.777802 5.05533 0.777802H12.6721L0.113697 13.3362C-0.0382246 13.4881 -0.0382246 13.7342 0.113697 13.8861C0.18964 13.962 0.289171 14 0.388666 14C0.488161 14 0.587656 13.962 0.663635 13.8861L13.222 1.3277V8.94447C13.222 9.15943 13.3959 9.33337 13.6109 9.33337C13.8259 9.33337 13.9998 9.15943 13.9998 8.94447V0.388901C13.9998 0.173943 13.8258 0 13.6109 0Z" fill="#050B20"/>
                         </g>
                         <defs>
-                        <clipPath id="clip0_601_243">
-                        <rect width="14" height="14" fill="white"/>
-                        </clipPath>
+                            <clipPath id="clip0_601_243">
+                                <rect width="14" height="14" fill="white"/>
+                            </clipPath>
                         </defs>
-                        </svg>
+                    </svg>
                     </a>
                 </div>
                 <div class="row car-slider-three" data-preview="4">
@@ -247,7 +438,7 @@
                                 <a href="#" class="shoping-btn"><i class="fa-solid fa-cart-shopping"></i>Add To Cart</a>
                             </div>
                         </div>
-                    </div> --> 
+                    </div> -->
                     <!-- car-block-fourteen -->
                     <!-- <div class="car-block-fourteen col-lg-3 col-md-12 col-sm-12">
                         <div class="inner-box">
@@ -312,11 +503,17 @@
             </div>
         </div>
         <!-- End cars-section-fourteen -->
-    </section> </div>
+    </section>
+    <!-- End cars-section-fifteen -->
+
+
+
+
+</div><!-- End Page Wrapper -->
 
 <!-- Scroll To Top -->
 <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
-<script th:src="@{/js/jquery.js}"></script> 
+<script th:src="@{/js/jquery.js}"></script>
 <script th:src="@{/js/popper.min.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
 <script th:src="@{/js/slick.min.js}"></script>
