@@ -6,20 +6,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("loc")
-public class list {
+public class HomeController {
 
     @GetMapping("/room")
     public String listRoom() {
-        return "room.html";
+        return "room";
     }
 
     @GetMapping("/detail")
     public String detailR() {
-        return "detail.html";
+        return "detail";
     }
 
-@GetMapping("test")
+@GetMapping("/home")
     public String room(){
-        return "test";
+        return "home";
     }
 }
