@@ -18,8 +18,13 @@ public class HomeController {
         return "detail";
     }
 
-@GetMapping("/home")
-    public String room(){
+    @GetMapping("/home")
+    public String room() {
         return "home";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
     }
 }
