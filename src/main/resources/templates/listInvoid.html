@@ -61,88 +61,22 @@
 						      <th>Invoce</th>
 						      <th>Customer</th>
 						      <th>Invoice Date</th>
-						      <th>Employee</th>
+						      
 						      <th>Details</th>
 						      <th>Delete</th>
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a th:href="@{/invoid}" class="ti-menu"></a></td>
+						    <tr th:each="list : ${listInvoice}">
+						      <th scope="row" th:text="${list.InvoiceID}"></th>
+						      <td th:text="${list.CustomerName}"></td>
+						      <td th:text="${list.InvoiceDate}"></td>
+						      
+						      <td ><a th:href="@{/invoid}" class="ti-menu"></a></td>
 						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
 						    </tr>
 
-						    <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a href="#" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
-
-						    <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a href="#" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
-
-						    <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a href="#" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
-
-						     <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a href="#" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
-							<tr>
-								<th scope="row">1001</th>
-								<td>Mark Otto</td>
-								<td>10/03/2023</td>
-								<td>A</td>
-								<td><a href="#" class="ti-menu"></a></td>
-								<td><a href="#" class="btn btn-danger ti-close"></a></td>
-							  </tr>
-							  <tr>
-								<th scope="row">1001</th>
-								<td>Mark Otto</td>
-								<td>10/03/2023</td>
-								<td>A</td>
-								<td><a href="#" class="ti-menu"></a></td>
-								<td><a href="#" class="btn btn-danger ti-close"></a></td>
-							  </tr>
-							  <tr>
-								<th scope="row">1001</th>
-								<td>Mark Otto</td>
-								<td>10/03/2023</td>
-								<td>A</td>
-								<td><a href="#" class="ti-menu"></a></td>
-								<td><a href="#" class="btn btn-danger ti-close"></a></td>
-							  </tr>
-							  <tr>
-								<th scope="row">1001</th>
-								<td>Mark Otto</td>
-								<td>10/03/2023</td>
-								<td>A</td>
-								<td><a href="#" class="ti-menu"></a></td>
-								<td><a href="#" class="btn btn-danger ti-close"></a></td>
-							  </tr>
+						    
 
 						    
 						  </tbody>
