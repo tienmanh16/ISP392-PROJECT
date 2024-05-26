@@ -123,24 +123,24 @@
                         </div>
                         <div class="row">
                             <!-- car-block-fourteen -->
-                            <div class="car-block-fourteen col-lg-4 col-md-6 col-sm-6">
+                            <div class="car-block-fourteen col-lg-4 col-md-6 col-sm-6" th:each="room : ${rooms}">
                                 <div class="inner-box">
-                                    <div class="image-box">
+                                    <!-- <div class="image-box">
                                         <figure class="image"><a href="#"><img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt=""></a></figure>
-                                    </div>
+                                    </div> -->
                                     <div class="content-box">
-                                        <h5 class="title">P01</h5>
-                                        <ul class="rating">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                        <div class="text">Phong giuong doi chill chill</div>
-                                        <h6 class="title"><del>$50</del>$25</h6>
-                                        <a th:href="@{/detail}" class="shoping-btn">Xem Thong Tin Phong</a>
-                                        <button class="btn js-buy-ticket">Sửa Thông Tin</button>
+                                        <h5 class="title" th:text="${room.roomNum}"></h5> 
+                                        <ul class="rating"> 
+                                            <li><i class="fa fa-star"></i></li> 
+                                            <li><i class="fa fa-star"></i></li> 
+                                            <li><i class="fa fa-star"></i></li> 
+                                            <li><i class="fa fa-star"></i></li> 
+                                            <li><i class="fa fa-star"></i></li> 
+                                        </ul> 
+                                        <p><h10 th:text="${room.status}"></h10></p>
+                                        <h10 th:text="${room.roomTypeName}"></h10> 
+                                        <!-- <p><span class="price" th:text="${room.priceHour}"></span></p> <p><span class="price" -->
+                                        <div><button class="btn js-buy-ticket">Sửa Thông Tin</button></div>
                                     </div>
                                 </div>
                             </div>
