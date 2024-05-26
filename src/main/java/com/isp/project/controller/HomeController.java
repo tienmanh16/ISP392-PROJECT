@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.isp.project.model.User;
 import com.isp.project.model.UserDTO;
-import com.isp.project.model.UserRepository;
-import com.isp.project.model.UserService;
+import com.isp.project.repositories.UserRepository;
+import com.isp.project.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 

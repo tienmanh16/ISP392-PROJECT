@@ -1,8 +1,8 @@
-package com.isp.project.model;
-
-import java.util.Optional;
+package com.isp.project.service;
 
 import org.springframework.data.jpa.repository.Query;
+
+import com.isp.project.model.User;
 
 public interface UserService {
     //controller goi den service, ko goi den repo
