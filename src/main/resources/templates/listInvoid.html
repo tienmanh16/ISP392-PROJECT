@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+  <head>
+  	<title>Table 09</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+	<link rel="stylesheet" href="@https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	
+	<link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
+	<link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all" href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
+	
+	<!-- thư viện để add header và footer  -->
+
+	<link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+    <link th:href="@{/css/mmenu.css}" rel="stylesheet">
+    <link th:href="@{/css/style.copy.css}" rel="stylesheet">
+
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+    <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+	
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	
+	</head>
+	<body>
+		<div class="boxcar-wrapper">
+		<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+			<div th:replace="~{fragments/header :: header}"></div>
+		</header>
+	
+		<!-- thêm class layout-radius để fix header  -->
+	<section class="ftco-section layout-radius">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-6 text-center mb-5">
+					<h2 class="heading-section">Envoice management</h2>
+				</div>
+			</div>
+
+			<div class="InputContainer" style="margin-bottom: 20px;">
+				<input placeholder="Search.." id="input" class="input" name="text" type="text">
+				
+			  </div>
+
+			  <div class="InputContainer" style="position: absolute; top: 190px; right: 150px;">
+				<input id="input" class="input" name="text" type="date">
+				
+			  </div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="table-wrap">
+						<table class="table table-striped">
+						  <thead>
+						    <tr>
+						      <th>Invoce</th>
+							  <th>Invoice Date</th>
+						      <th>Customer</th>
+						      <th>Total Amount</th>
+						      
+						      <th>Details</th>
+						      
+						    </tr>
+						  </thead>
+						  <tbody>
+						    <tr th:each="list : ${listInvoice}">
+						      <th scope="row" th:text="${list.InvoiceID}"></th>
+							  <td th:text="${list.InvoiceDate}"></td>
+						      <td th:text="${list.CustomerName}"></td>
+						      <td th:text="${list.TotalAmount}"></td>
+						      
+						      
+						      <td ><a th:href="@{/invoid}" class="ti-menu"></a></td>
+						      
+						    </tr>
+
+						    
+
+						    
+						  </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+	<!-- thư viện để add header và footer  -->
+
+  <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+    <script th:src="@{/js/slick.min.js}"></script>
+    <script th:src="@{/js/slick-animation.min.js}"></script>
+    <script th:src="@{/js/jquery.fancybox.js}"></script>
+    <script th:src="@{/js/wow.js}"></script>
+    <script th:src="@{/js/appear.js}"></script>
+    <script th:src="@{/js/mixitup.js}"></script>
+    <script th:src="@{/js/knob.js}"></script>
+    <script th:src="@{/js/mmenu.js}"></script>
+    <script th:src="@{/js/main.copy1.js}"></script>
+
+
+
+	<script th:src="@{/src/main/resources/static/js/jquery.min.js}"></script>
+	<script th:src="@{/src/main/resources/static/js/popper.js}"></script>
+	<script th:src="@{/src/main/resources/static/js/bootstrap.min.js}"></script>
+	<script th:src="@{/src/main/resources/static/js/main.js}"></script>
+	</body>
+</html>
+
