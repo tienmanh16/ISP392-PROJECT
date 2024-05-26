@@ -7,9 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByUserName(String userName);
+    User findByEmail(String email);
 
-    @Query("SELECT email FROM User WHERE LOWER(email) = LOWER(?1)")
-    String findEmailByEmailIgnoreCase(String email);
-
-    Optional<User> findByEmailIgnoreCase(String username);
 }
