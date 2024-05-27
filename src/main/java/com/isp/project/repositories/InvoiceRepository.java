@@ -1,5 +1,6 @@
 package com.isp.project.repositories;
 
+import java.sql.Date;
 import java.util.List;
 
 
@@ -10,5 +11,8 @@ import com.isp.project.model.Invoice;
 
 public interface InvoiceRepository extends JpaRepository<Invoice, Integer>{
     @Query("Select c FROM Invoice c WHERE c.CustomerName LIKE %?1%")
-    List<Invoice> searchCategory(String key);
+    List<Invoice> searchInvoice(String key);
+
+    @Query("Select c FROM Invoice c WHERE c.InvoiceDate = ?1")
+    List<Invoice> searchInvoice(Date keyDate);
 }

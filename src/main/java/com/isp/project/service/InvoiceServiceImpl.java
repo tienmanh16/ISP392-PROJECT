@@ -1,5 +1,6 @@
 package com.isp.project.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class InvoiceServiceImpl implements InvoiceService{
     }
     @Override
     public List<Invoice> searchInvoice(String key) {
-     return this.invoiceRepository.searchCategory(key);
+     return this.invoiceRepository.searchInvoice(key);
+    }
+    @Override
+    public List<Invoice> searchInvoice(Date keyDate) {
+        return this.invoiceRepository.searchInvoice(keyDate);
     }
 }

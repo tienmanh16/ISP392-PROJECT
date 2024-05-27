@@ -1,5 +1,7 @@
 package com.isp.project.controller;
 
+import java.sql.Date;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +20,23 @@ public class InvoidController {
     @Autowired
     private InvoiceRepository invoiceRepository;
     
-    @GetMapping("/listinvoid")
-    public String listInvoice(Model model, @Param("key")String key){
+    @GetMapping("/listinvoice")
+    public String listInvoice(Model model, @Param("key")String key, @Param("keyDate") Date keyDate){
           
-        List<Invoice> invoice = this.invoiceRepository.findAll();
-        if(key != null){
-            invoice = this.invoiceRepository.searchCategory(key);
+        List<Invoice> invoice;
+
+        if (key != null) {
+            invoice = this.invoiceRepository.searchInvoice(key);
+        } else if (keyDate != null) {
+            invoice = this.invoiceRepository.searchInvoice(keyDate);
+        } else {
+            // Nếu không có key hoặc keyDate, hiển thị tất cả hóa đơn
+            invoice = this.invoiceRepository.findAll();
         }
+
+
         model.addAttribute("listInvoice", invoice);
-        return "listInvoid.html"; 
+        return "listInvoice.html"; 
     }  
     
     @GetMapping("/invoid")
