@@ -39,7 +39,7 @@ public class InvoidController {
         return "listInvoice.html"; 
     }  
     
-    @GetMapping("/invoid")
+    @GetMapping("/invoice")
     public String invoice(){      
         return "invoice.html"; 
     }  
