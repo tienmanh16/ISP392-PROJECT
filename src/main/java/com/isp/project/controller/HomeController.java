@@ -1,17 +1,14 @@
 package com.isp.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.isp.project.model.User;
-import com.isp.project.model.UserDTO;
 import com.isp.project.repositories.UserRepository;
 import com.isp.project.service.UserService;
 
@@ -72,17 +69,6 @@ public class HomeController {
         return "login";
     }
 
-    @PostMapping("/forgotpass")
-	public String forgotPassordProcess(@ModelAttribute UserDTO userDTO) {
-		String output = "";
-		User user = userRepository.findByEmail(userDTO.getEmail());
-		if (user != null) {
-			output = UserDetailsServiceAutoConfiguration.sendEmail(user);
-		}
-		if (output.equals("success")) {
-			return "redirect:/forgotPassword?success";
-		}
-		return "redirect:/login?error";
-	}
+
     
 }

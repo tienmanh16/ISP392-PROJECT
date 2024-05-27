@@ -1,10 +1,10 @@
-package com.isp.project.model;
+package com.isp.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.isp.project.model.User;
 import com.isp.project.repositories.UserRepository;
-import com.isp.project.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -31,19 +31,7 @@ private UserRepository userRepository;
         }
     }
 
-    @Override
-    public Boolean forgotPassword(String email) {
-        if (email == null || email.isEmpty()) {
-            return false;
-        }
-        try {
-            emailUtil.sendSetPasswordEmail(email);
-        } catch (Exception e) {
-            System.out.println("Unable to send otp please try again");
-            return false;
-        }
-        return true;
-    }
+
 
    
     
