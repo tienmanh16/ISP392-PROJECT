@@ -1,4 +1,4 @@
-package com.isp.project.model;
+package com.isp.project.dto;
 
 public class UserDTO {
     private String name;

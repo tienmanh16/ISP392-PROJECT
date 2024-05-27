@@ -14,7 +14,6 @@ private UserRepository userRepository;
 
     @Override
     public User findByUserName(String userName) {
-        // TODO Auto-generated method stub
         return userRepository.findByUserName(userName);
     }
 
