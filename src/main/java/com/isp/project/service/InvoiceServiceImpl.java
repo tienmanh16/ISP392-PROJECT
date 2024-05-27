@@ -14,5 +14,8 @@ public class InvoiceServiceImpl implements InvoiceService{
     public List<Invoice> getAllInvoice() {
      return this.invoiceRepository.findAll();
     }
-    
+    @Override
+    public List<Invoice> searchInvoice(String key) {
+     return this.invoiceRepository.searchCategory(key);
+    }
 }
