@@ -21,9 +21,7 @@ public class User {
 	@Column(name = "username")
 	private String userName;
 	@Column(name = "password")
-	private String passWord;
-	@Column(name = "enabled")
-	private Boolean enabled;
+    private String passWord;
 	@Column(name = "fullname")
 	private String fullName;
 	@Column(name = "gender")
@@ -41,12 +39,11 @@ public class User {
 
      }
 
-    public User(Long id, String userName, String passWord, Boolean enabled, String fullName, Boolean gender,
-            String address, String email, String telephone, Set<UserRole> userRoles) {
+     public User(Long id, String userName, String passWord, String fullName, Boolean gender, String address,
+             String email, String telephone, Set<UserRole> userRoles) {
         this.id = id;
         this.userName = userName;
         this.passWord = passWord;
-        this.enabled = enabled;
         this.fullName = fullName;
         this.gender = gender;
         this.address = address;
@@ -77,14 +74,6 @@ public class User {
 
     public void setPassWord(String passWord) {
         this.passWord = passWord;
-    }
-
-    public Boolean getEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
     }
 
     public String getFullName() {
