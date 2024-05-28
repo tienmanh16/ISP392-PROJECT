@@ -17,6 +17,9 @@ public class RoomType {
     @Column(name = "Description")
     private String Description;
 
+    @ManyToOne
+    @JoinColumn(name="ImageID")
+    private ImageDetail imageDetail;
     
 
     @Column(name = "PricePerHour")
@@ -25,9 +28,6 @@ public class RoomType {
     @Column(name = "PricePerDay")
     private int PricePerDay;
     
-    @ManyToOne
-    @JoinColumn(name="ImageID")
-    private ImageDetail imageDetail;
     
     public RoomType() {
     }
@@ -40,5 +40,45 @@ public class RoomType {
         this.imageDetail = imageDetail;
     }
 
+    public int getRoomTypeID() {
+        return RoomTypeID;
+    }
+
+    public void setRoomTypeID(int roomTypeID) {
+        RoomTypeID = roomTypeID;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public ImageDetail getImageDetail() {
+        return imageDetail;
+    }
+
+    public void setImageDetail(ImageDetail imageDetail) {
+        this.imageDetail = imageDetail;
+    }
+
+    public int getPricePerHour() {
+        return PricePerHour;
+    }
+
+    public void setPricePerHour(int pricePerHour) {
+        PricePerHour = pricePerHour;
+    }
+
+    public int getPricePerDay() {
+        return PricePerDay;
+    }
+
+    public void setPricePerDay(int pricePerDay) {
+        PricePerDay = pricePerDay;
+    }
+    
    
 }
