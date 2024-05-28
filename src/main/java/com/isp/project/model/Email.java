@@ -18,12 +18,7 @@ public class Email {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public void sendEmail(String to) throws MessagingException {
-        // String code = "";
-        // for (int i = 0; i < 6; i++) {
-        //     code += (int) (Math.random() * 10);
-        // }
-        // session.setAttribute("otp", code);
+    public void sendEmail(String to, String password) throws MessagingException {
         session.setMaxInactiveInterval(5 * 60);
 
         MimeMessage message = mailSender.createMimeMessage();
@@ -31,12 +26,8 @@ public class Email {
 
         helper.setTo(to);
         helper.setSubject("Mật khẩu tài khoản của bạn từ Sarine");
-
-        // Prepare the Thymeleaf context and template
         Context context = new Context();
-        // context.setVariable("code", code);
-
-        // Correctly reference the template with subdirectory
+        context.setVariable("password", password);
         String htmlMsg = templateEngine.process("sendEmail", context);
         helper.setText(htmlMsg, true);
 

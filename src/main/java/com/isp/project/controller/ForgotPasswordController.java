@@ -44,7 +44,7 @@ public class ForgotPasswordController {
         Employee checkEmail = userService.findByEmail(userDTO.getEmail());
         if (checkEmail != null) {
             try {
-                emailService.sendEmail(checkEmail.getEmail());
+                emailService.sendEmail(checkEmail.getEmail(),checkEmail.getPassword());
                 model.addAttribute("message", "Password of your account has been sent to Gmail");
                 return "forgotpass"; // Redirect to success page
             } catch (MessagingException e) {
