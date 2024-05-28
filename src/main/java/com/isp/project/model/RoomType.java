@@ -26,6 +26,12 @@ public class RoomType {
     @Column(name = "Description", nullable = false)
     private String des;
 
+    @Column(name = "PricePerHour", nullable = false)
+    private String priceHour;
+
+    @Column(name = "PricePerDay", nullable = false)
+    private String priceDay;
+
     @ManyToOne
     @JoinColumn(name = "ImageID")
     private ImageDetail imageDetail;
