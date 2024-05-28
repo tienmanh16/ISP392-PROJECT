@@ -35,9 +35,10 @@ public class ForgotPasswordController {
         if (user != null) {
             return "redirect:/home";
         } else {
-            return "login";
+            return "forgotpass";
         }
     }
+
 
     @PostMapping("/forgotPassword")
     public String forgotPasswordProcess(@ModelAttribute UserDTO userDTO, Model model) {
@@ -46,15 +47,16 @@ public class ForgotPasswordController {
         if (checkEmail != null) {
             try {
                 emailService.sendEmail(checkEmail.getEmail());
-                return "redirect:/forgotPassword?success"; // Redirect to success page
+                model.addAttribute("message", "Password of your account has been sent to Gmail");
+        return "login"; // Redirect to success page
             } catch (MessagingException e) {
                 // Handle email sending failure
                 model.addAttribute("error", "Failed to send email. Please try again later.");
-                return "redirect:/forgotPassword?error";
+                return "forgotpass";
             }
         }
-
+        model.addAttribute("error", "Email not found. Please try again later.");
         // If no user found with the provided email, return error
-        return "redirect:/forgotPassword?error"; // No user found
+        return "forgotpass"; // No user found
     }
 }

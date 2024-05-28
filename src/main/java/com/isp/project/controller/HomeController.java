@@ -54,7 +54,8 @@ public class HomeController {
             return "home";
         } else {
             // Authentication failed, add an error message to the redirect attributes
-            model.addAttribute("errorMessage", "Invalid username or password");
+            model.addAttribute("loginError", "Invalid username or password");
+            model.addAttribute("activeTab", "login");
             return "login";
         }
     }
