@@ -27,12 +27,6 @@ public class Room {
     @JoinColumn(name = "RoomTypeID")
     private RoomType roomType;
 
-    @Column(name = "PricePerHour", nullable = false)
-    private int priceHour;
-
-    @Column(name = "PricePerDay", nullable = false)
-    private int priceDay;
-
     @Column(name = "RoomStatus", nullable = false)
     private String status;
 
