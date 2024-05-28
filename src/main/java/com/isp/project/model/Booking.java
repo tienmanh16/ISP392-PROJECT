@@ -1,71 +1,82 @@
 package com.isp.project.model;
 
 import java.sql.Date;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="Booking")
+@Table(name = "Booking")
 public class Booking {
     @Id
     @Column(name = "BookingID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int BookingID;
+    private int bookingID;
 
-    @Column(name = "CustomerID")
-    private int CustomerID;
+    @ManyToOne
+    @JoinColumn(name = "CustomerID")
+    private Customer customerID;
 
     @Column(name = "BookingDate")
-    private Date BookingDate;
+    private Date bookingDate;
 
     @Column(name = "CustomerQuantity")
-    private int CustomerQuantity;
+    private int customerQuantity;
+
+    @OneToMany(mappedBy = "bookingID")
+    private Set<Register> register;
 
     public int getBookingID() {
-        return BookingID;
+        return bookingID;
     }
 
     public void setBookingID(int bookingID) {
-        BookingID = bookingID;
+        this.bookingID = bookingID;
     }
 
-    public int getCustomerID() {
-        return CustomerID;
+    
+    public Customer getCustomerID() {
+        return customerID;
     }
 
-    public void setCustomerID(int customerID) {
-        CustomerID = customerID;
+    
+
+    public void setCustomerID(Customer customerID) {
+        this.customerID = customerID;
     }
 
     public Date getBookingDate() {
-        return BookingDate;
+        return bookingDate;
     }
 
     public void setBookingDate(Date bookingDate) {
-        BookingDate = bookingDate;
+        this.bookingDate = bookingDate;
     }
 
     public int getCustomerQuantity() {
-        return CustomerQuantity;
+        return customerQuantity;
     }
 
     public void setCustomerQuantity(int customerQuantity) {
-        CustomerQuantity = customerQuantity;
+        this.customerQuantity = customerQuantity;
     }
 
     public Booking() {
     }
 
-    public Booking(int bookingID, int customerID, Date bookingDate, int customerQuantity) {
-        BookingID = bookingID;
-        CustomerID = customerID;
-        BookingDate = bookingDate;
-        CustomerQuantity = customerQuantity;
+    public Booking(int bookingID, Customer customerID, Date bookingDate, int customerQuantity) {
+        this.bookingID = bookingID;
+        this.customerID = customerID;
+        this.bookingDate = bookingDate;
+        this.customerQuantity = customerQuantity;
     }
 
     

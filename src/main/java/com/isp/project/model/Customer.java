@@ -1,110 +1,116 @@
 package com.isp.project.model;
 
 import java.sql.Date;
+import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="Customer")
 
 public class Customer {
+
     @Id
     @Column(name = "CustomerID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int CustomerID;
+    private int customerID;
 
     @Column(name = "CustomerName")
-    private String CustomerName;
+    private String customerName;
 
     @Column(name="CustomerAddress")
- private String CustomerAddress;
+ private String customerAddress;
 
  @Column(name = "CustomerPhone")
- private String CustomerPhone;
+ private String customerPhone;
 
  @Column(name = "CustomerEmail")
- private String CustomerEmail;
+ private String customerEmail;
 
  @Column(name = "CustomerIdentificationID")
- private String CustomerIdentificationID;
+ private String customerIdentificationID;
 
  @Column(name = "CustomerDob")
- private Date CustomerDob;
+ private Date customerDob;
 
- 
+  @OneToMany(mappedBy = "customerID")
+  private List<Booking> booking;
+
 public Customer() {
 }
 
 public Customer(int customerID, String customerName, String customerAddress, String customerPhone, String customerEmail,
         String customerIdentificationID, Date customerDob) {
-    CustomerID = customerID;
-    CustomerName = customerName;
-    CustomerAddress = customerAddress;
-    CustomerPhone = customerPhone;
-    CustomerEmail = customerEmail;
-    CustomerIdentificationID = customerIdentificationID;
-    CustomerDob = customerDob;
+    this.customerID = customerID;
+    this.customerName = customerName;
+    this.customerAddress = customerAddress;
+    this.customerPhone = customerPhone;
+    this.customerEmail = customerEmail;
+    this.customerIdentificationID =customerIdentificationID;
+    this.customerDob = customerDob;
 }
 
 public int getCustomerID() {
-    return CustomerID;
+    return customerID;
 }
 
 public void setCustomerID(int customerID) {
-    CustomerID = customerID;
+    this.customerID = customerID;
 }
 
 public String getCustomerName() {
-    return CustomerName;
+    return customerName;
 }
 
 public void setCustomerName(String customerName) {
-    CustomerName = customerName;
+    this.customerName = customerName;
 }
 
 public String getCustomerAddress() {
-    return CustomerAddress;
+    return customerAddress;
 }
 
 public void setCustomerAddress(String customerAddress) {
-    CustomerAddress = customerAddress;
+    this.customerAddress = customerAddress;
 }
 
 public String getCustomerPhone() {
-    return CustomerPhone;
+    return customerPhone;
 }
 
 public void setCustomerPhone(String customerPhone) {
-    CustomerPhone = customerPhone;
+    this.customerPhone = customerPhone;
 }
 
 public String getCustomerEmail() {
-    return CustomerEmail;
+    return customerEmail;
 }
 
 public void setCustomerEmail(String customerEmail) {
-    CustomerEmail = customerEmail;
+    this.customerEmail = customerEmail;
 }
 
 public String getCustomerIdentificationID() {
-    return CustomerIdentificationID;
+    return customerIdentificationID;
 }
 
 public void setCustomerIdentificationID(String customerIdentificationID) {
-    CustomerIdentificationID = customerIdentificationID;
+    this.customerIdentificationID = customerIdentificationID;
 }
 
 public Date getCustomerDob() {
-    return CustomerDob;
+    return customerDob;
 }
 
 public void setCustomerDob(Date customerDob) {
-    CustomerDob = customerDob;
+    this.customerDob = customerDob;
 }
  
 

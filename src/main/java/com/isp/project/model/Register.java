@@ -3,42 +3,24 @@ package com.isp.project.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name="Register")
 public class Register {
     @Id
-    @Column(name = "BookingID")
-    private int BookingID;
+    @ManyToOne
+    @JoinColumn(name = "BookingID")
+    private Booking bookingID;
 
     @Id
-    @Column(name = "EmployeeID")
-    private int EmployeeID;
+    @ManyToOne
+    @JoinColumn(name = "EmployeeID")
+    private Employee employeeID;
 
-    public int getBookingID() {
-        return BookingID;
-    }
-
-    public void setBookingID(int bookingID) {
-        BookingID = bookingID;
-    }
-
-    public int getEmployeeID() {
-        return EmployeeID;
-    }
-
-    public void setEmployeeID(int employeeID) {
-        EmployeeID = employeeID;
-    }
-
-    public Register() {
-    }
-
-    public Register(int bookingID, int employeeID) {
-        BookingID = bookingID;
-        EmployeeID = employeeID;
-    }
-
+    
     
 }

@@ -1,12 +1,16 @@
 package com.isp.project.model;
 
 import java.sql.Date;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,134 +20,139 @@ public class Employee {
     @Id
     @Column(name = "EmployeeID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int EmployeeID;
+    private int employeeID;
 
     @Column(name = "Name")
-    private String Name;
+    private String name;
 
     @Column(name = "Email")
-    private String Email;
+    private String email;
 
     @Column(name = "Phone")
-    private String Phone;
+    private String phone;
 
     @Column(name = "Address")
-    private String Address;
+    private String address;
 
     @Column(name = "IdentificationID")
-    private String IdentificationID;
+    private String identificationID;
 
     @Column(name = "Dob")
-    private Date Dob;
+    private Date dob;
 
     @Column(name = "Username")
-    private String Username;
+    private String username;
 
     @Column(name = "Password")
-    private String Password;
+    private String password;
 
-    @Column(name = "RoleID")
-    private int RoleID;
+    @ManyToOne
+    @JoinColumn(name = "RoleID")
+    private Role roleID;
+
+    @OneToMany(mappedBy = "employeeID")
+    private Set<Register> register;
+
+   
 
     
 
     public Employee(int employeeID, String name, String email, String phone, String address, String identificationID,
-            Date dob, String username, String password, int roleID) {
-        EmployeeID = employeeID;
-        Name = name;
-        Email = email;
-        Phone = phone;
-        Address = address;
-        IdentificationID = identificationID;
-        Dob = dob;
-        Username = username;
-        Password = password;
-        RoleID = roleID;
+            Date dob, String username, String password, Role roleID) {
+        this.employeeID = employeeID;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.identificationID = identificationID;
+        this.dob = dob;
+        this.username = username;
+        this.password = password;
+        this.roleID = roleID;
     }
 
     public Employee() {
     }
 
     public int getEmployeeID() {
-        return EmployeeID;
+        return employeeID;
     }
 
     public void setEmployeeID(int employeeID) {
-        EmployeeID = employeeID;
+        this.employeeID = employeeID;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPhone() {
-        return Phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-        Phone = phone;
+        this.phone = phone;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
 
     public String getIdentificationID() {
-        return IdentificationID;
+        return identificationID;
     }
 
     public void setIdentificationID(String identificationID) {
-        IdentificationID = identificationID;
+        this.identificationID = identificationID;
     }
 
     public Date getDob() {
-        return Dob;
+        return dob;
     }
 
     public void setDob(Date dob) {
-        Dob = dob;
+        this.dob = dob;
     }
 
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        Username = username;
+        this.username = username;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
-    public int getRoleID() {
-        return RoleID;
+    public Role getRoleID() {
+        return roleID;
     }
 
-    public void setRoleID(int roleID) {
-        RoleID = roleID;
+    public void setRoleID(Role roleID) {
+        this.roleID = roleID;
     }
 
     
-
 }
