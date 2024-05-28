@@ -5,21 +5,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.isp.project.model.RoomType;
 import com.isp.project.repositories.RoomTypeRepository;
 import com.isp.project.service.RoomTypeService;
 
-
-
 @Controller
 public class RoomController {
 
-@Autowired
-private RoomTypeService roomTypeService;
+    @Autowired
+    private RoomTypeService roomTypeService;
 
     @GetMapping("managerbooking")
     public String ManagerBooking() {
@@ -30,30 +31,55 @@ private RoomTypeService roomTypeService;
     public String RoomCategory(Model model) {
         List<RoomType> roomType = this.roomTypeService.getAllRoomType();
         model.addAttribute("listRoomType", roomType);
-        if(roomType==null){
+        if (roomType == null) {
             return "Invoice";
         }
         return "RoomCategory";
     }
 
     @GetMapping("/add-cate")
-    public String add1(Model model){
+    public String add1(Model model) {
         RoomType roomType = new RoomType();
         model.addAttribute("roomType", roomType);
         return "addRoomType";
     }
-    
-    @PostMapping("/addRoomType")
-    public String save(@ModelAttribute("roomType") RoomType roomType){
+
+    @PostMapping("/add-cate")
+    public String save(@ModelAttribute("roomType") RoomType roomType) {
         if (this.roomTypeService.create(roomType)) {
             return "redirect:/roomcategory";
         } else {
-            return "redirect:/addRoomType";
+            return "redirect:/add-cate";
         }
     }
 
-    
+    @GetMapping("/list/{RoomTypeID}/edit")
+    public String update(@PathVariable("RoomTypeID") Integer id, Model model) {
+        model.addAttribute("roomType", roomTypeService.findByID(id));
+        return "updateRoomType";
+    }
 
-    
-     
+    @PostMapping("/saveRoomType")
+    public String updated(@ModelAttribute("roomType") RoomType roomType) {
+        // if(result.hasErrors()){
+        //     return "updateRoomType";
+        // }
+        
+        roomTypeService.update(roomType);
+        // model.addAttribute("listRoomType", roomTypeService.getAllRoomType());
+        
+        return "redirect:/roomcategory";
+        // if (this.roomTypeService.create(roomType)) {
+        //     return "redirect:/roomcategory";
+        // } else {
+        //     return "redirect:/add-cate";
+        // }
+    }
+
+    @GetMapping("/list/{RoomTypeID}/delete")
+    public String delete(@PathVariable("RoomTypeID") Integer id, Model model) {
+        roomTypeService.delete(id);
+        return "redirect:/roomcategory";
+    }
+
 }

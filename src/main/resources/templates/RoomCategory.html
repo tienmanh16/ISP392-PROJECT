@@ -67,7 +67,7 @@
 							  <th>Description</th>
 						      <th>Price Per Hour</th>
 						      <th>Price Per Day</th>
-						      <th>Edit</th>
+						      <th>Update</th>
 						      <th>Delete</th>
 						    </tr>
 						  </thead>
@@ -78,8 +78,8 @@
 						      <td th:text="${list.Description}"></td>
 						      <td th:text="${list.PricePerHour}"></td>
 						      <td th:text="${list.PricePerDay}"></td>
-						      <td><a th:href="@{/invoice}" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
+						      <td><a th:href="@{/list/{RoomTypeID}/edit(RoomTypeID=${list.RoomTypeID})}" class="ti-menu"></a></td>
+						      <td><a th:href="@{/list/{RoomTypeID}/delete(RoomTypeID=${list.RoomTypeID})}" class="btn btn-danger ti-close"></a></td>
 						    </tr>
 
 						    
