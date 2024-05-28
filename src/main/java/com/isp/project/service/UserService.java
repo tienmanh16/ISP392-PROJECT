@@ -1,12 +1,13 @@
 package com.isp.project.service;
 
-import com.isp.project.model.User;
+import com.isp.project.model.Employee;
 
 public interface UserService {
     //controller goi den service, ko goi den repo
     
     
-    User findByUserName(String userName);
-    User authenticateUser(String username, String password);
+    Employee findByUserName(String username);
+
+    Employee authenticateUser(String username, String password);
  
 }

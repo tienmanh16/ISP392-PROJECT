@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.isp.project.model.User;
-import com.isp.project.repositories.UserRepository;
+import com.isp.project.model.Employee;
 import com.isp.project.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,8 +21,6 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
 
     @GetMapping("/room")
     public String listRoom() {
@@ -50,7 +47,7 @@ public class HomeController {
             @RequestParam("password") String password,
             Model model,
             HttpSession session) {
-        User authenticatedUser = userService.authenticateUser(username, password);
+        Employee authenticatedUser = userService.authenticateUser(username, password);
         if (authenticatedUser != null) {
             // Authentication successful, store the user in the session
             session.setAttribute("loggedInUser", authenticatedUser);

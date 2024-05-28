@@ -3,7 +3,7 @@ package com.isp.project.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isp.project.model.User;
+import com.isp.project.model.Employee;
 import com.isp.project.repositories.UserRepository;
 
 @Service
@@ -13,13 +13,13 @@ public class UserServiceImpl implements UserService{
 private UserRepository userRepository;
 
     @Override
-    public User findByUserName(String userName) {
-        return userRepository.findByUserName(userName);
+    public Employee findByUserName(String username) {
+        return userRepository.findByUserName(username);
     }
 
     @Override
-    public User authenticateUser(String username, String password) {
-        User user = userRepository.findByUserName(username);
+    public Employee authenticateUser(String username, String password) {
+        Employee user = userRepository.findByUserName(username);
         if (username == null || username.trim().isEmpty()) {
             return null;
         }

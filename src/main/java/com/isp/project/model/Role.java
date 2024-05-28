@@ -1,13 +1,10 @@
 package com.isp.project.model;
 
-import java.util.Set;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,18 +18,19 @@ public class Role {
     private String name;
 
 
-    @OneToMany(mappedBy = "role")
-	private Set<UserRole> roleUsers;
+    // @OneToMany(mappedBy = "role")
+	// private Set<UserRole> roleUsers;
 
     public Role(){
 
     }
 
-    public Role(Long id, String name, Set<UserRole> roleUsers) {
+    public Role(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.roleUsers = roleUsers;
     }
+
+
 
     public Long getId() {
         return id;
@@ -49,15 +47,6 @@ public class Role {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Set<UserRole> getRoleUsers() {
-        return roleUsers;
-    }
-
-    public void setRoleUsers(Set<UserRole> roleUsers) {
-        this.roleUsers = roleUsers;
-    }
-    
     
 }
 
