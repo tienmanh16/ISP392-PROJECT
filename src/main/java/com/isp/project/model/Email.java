@@ -30,7 +30,7 @@ public class Email {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(to);
-        helper.setSubject("Mật khẩu tài khoản của bạn từ Sarena");
+        helper.setSubject("Mật khẩu tài khoản của bạn từ Sarine");
 
         // Prepare the Thymeleaf context and template
         Context context = new Context();
