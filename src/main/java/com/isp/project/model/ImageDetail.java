@@ -21,10 +21,30 @@ public class ImageDetail {
     public ImageDetail() {
     }
 
-    public ImageDetail(int imageID, String image1, String image2) {
+    public int getImageID() {
+        return ImageID;
+    }
+
+    public void setImageID(int imageID) {
         ImageID = imageID;
+    }
+
+    public String getImage1() {
+        return Image1;
+    }
+
+    public void setImage1(String image1) {
         Image1 = image1;
+    }
+
+    public String getImage2() {
+        return Image2;
+    }
+
+    public void setImage2(String image2) {
         Image2 = image2;
     }
+
+   
 
 }

@@ -32,53 +32,59 @@ public class RoomType {
     public RoomType() {
     }
 
-    public RoomType(int roomTypeID, String description, int pricePerHour, int pricePerDay, ImageDetail imageDetail) {
-        RoomTypeID = roomTypeID;
-        Description = description;
-        PricePerHour = pricePerHour;
-        PricePerDay = pricePerDay;
-        this.imageDetail = imageDetail;
-    }
 
     public int getRoomTypeID() {
         return RoomTypeID;
     }
 
+
     public void setRoomTypeID(int roomTypeID) {
         RoomTypeID = roomTypeID;
     }
+
 
     public String getDescription() {
         return Description;
     }
 
+
     public void setDescription(String description) {
         Description = description;
     }
+
 
     public ImageDetail getImageDetail() {
         return imageDetail;
     }
 
+
     public void setImageDetail(ImageDetail imageDetail) {
         this.imageDetail = imageDetail;
     }
+
 
     public int getPricePerHour() {
         return PricePerHour;
     }
 
+
     public void setPricePerHour(int pricePerHour) {
         PricePerHour = pricePerHour;
     }
+
 
     public int getPricePerDay() {
         return PricePerDay;
     }
 
+
     public void setPricePerDay(int pricePerDay) {
         PricePerDay = pricePerDay;
     }
+
+   
+
+    
     
    
 }
