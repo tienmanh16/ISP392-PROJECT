@@ -81,7 +81,7 @@
 						      <td th:text="${list.TotalAmount}"></td>
 						      
 						      
-						      <td ><a th:href="@{/invoid}" class="ti-menu"></a></td>
+						      <td ><a th:href="@{/invoiceDetail/{invoiceID}(invoiceID=${list.InvoiceID})}" class="ti-menu"></a></td>
 						      
 						    </tr>
 
