@@ -4,7 +4,7 @@ import com.isp.project.model.Employee;
 
 public interface UserService {
     //controller goi den service, ko goi den repo
-    
+    Employee findByEmail(String email);
     
     Employee findByUserName(String username);
 

@@ -1,6 +1,10 @@
 package com.isp.project.dto;
+import jakarta.validation.constraints.NotEmpty;
+import lombok.Data;
 
+@Data
 public class UserDTO {
+	@NotEmpty(message = "Email is required")
     private String name;
 	private String email;
 	private String password;

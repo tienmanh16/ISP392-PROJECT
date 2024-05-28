@@ -30,6 +30,11 @@ private UserRepository userRepository;
         }
     }
 
+    @Override
+    public Employee findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
 
 
    

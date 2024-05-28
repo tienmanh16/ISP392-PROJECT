@@ -60,6 +60,7 @@
                                             <label>Password</label>
                                             <input type="password" name="password" placeholder="********" />
                                         </div>
+                                    
                                         <div class="btn-box">
                                             <label class="contain">Remember me
                                                 <input type="checkbox" checked="checked">
@@ -76,7 +77,7 @@
                             <div class="tab-pane fade" id="nav-profile" role="tabpanel"
                                 aria-labelledby="nav-profile-tab">
                                 <div class="form-box two">
-                                    <form th:action="@{/forgotpass}" method="post">
+                                    <form th:action="@{/forgotPassword}" method="post">
                                         <div class="form_boxes">
                                             <label>Email</label>
                                             <input type="email" name="email" placeholder="123@gmail.com" />
