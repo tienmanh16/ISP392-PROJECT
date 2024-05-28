@@ -64,6 +64,7 @@
 						    <tr>
 						      <th>Category ID</th>
 						      <th>Name</th>
+							  <th>Description</th>
 						      <th>Price Per Hour</th>
 						      <th>Price Per Day</th>
 						      <th>Edit</th>
@@ -73,6 +74,7 @@
 						  <tbody>
 						    <tr th:each="list : ${listRoomType}">
 						      <th scope="row" th:text="${list.RoomTypeID}"></th>
+							  <td th:text="${list.RoomTypeName}"></td>
 						      <td th:text="${list.Description}"></td>
 						      <td th:text="${list.PricePerHour}"></td>
 						      <td th:text="${list.PricePerDay}"></td>

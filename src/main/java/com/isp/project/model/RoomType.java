@@ -14,6 +14,9 @@ public class RoomType {
     @Column(name = "RoomTypeID")
     private int RoomTypeID;
 
+    @Column(name = "RoomTypeName")
+    private String RoomTypeName;
+
     @Column(name = "Description")
     private String Description;
 
@@ -23,10 +26,10 @@ public class RoomType {
     
 
     @Column(name = "PricePerHour")
-    private int PricePerHour;
+    private String PricePerHour;
 
     @Column(name = "PricePerDay")
-    private int PricePerDay;
+    private String PricePerDay;
     
     
     public RoomType() {
@@ -40,6 +43,16 @@ public class RoomType {
 
     public void setRoomTypeID(int roomTypeID) {
         RoomTypeID = roomTypeID;
+    }
+
+
+    public String getRoomTypeName() {
+        return RoomTypeName;
+    }
+
+
+    public void setRoomTypeName(String roomTypeName) {
+        RoomTypeName = roomTypeName;
     }
 
 
@@ -63,28 +76,25 @@ public class RoomType {
     }
 
 
-    public int getPricePerHour() {
+    public String getPricePerHour() {
         return PricePerHour;
     }
 
 
-    public void setPricePerHour(int pricePerHour) {
+    public void setPricePerHour(String pricePerHour) {
         PricePerHour = pricePerHour;
     }
 
 
-    public int getPricePerDay() {
+    public String getPricePerDay() {
         return PricePerDay;
     }
 
 
-    public void setPricePerDay(int pricePerDay) {
+    public void setPricePerDay(String pricePerDay) {
         PricePerDay = pricePerDay;
     }
 
-   
-
-    
     
    
 }

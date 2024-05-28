@@ -53,6 +53,10 @@ background-color: #45a049;
         <input type="number" th:field="*{RoomTypeID}" required/>
     </div>
     <div class="form-group">
+        <label for="RoomTypeName">RoomTypeName:</label>
+        <input type="text" th:field="*{RoomTypeName}" required/>
+    </div>
+    <div class="form-group">
         <label for="Description">Description:</label>
         <input type="text" th:field="*{Description}" required/>
     </div>
@@ -62,11 +66,11 @@ background-color: #45a049;
     </div> -->
     <div class="form-group">
         <label for="PricePerHour">PricePerHour:</label>
-        <input type="number" th:field="*{PricePerHour}" required/>
+        <input type="text" th:field="*{PricePerHour}" required/>
     </div>
     <div class="form-group">
         <label for="PricePerDay">PricePerDay:</label>
-        <input type="number" th:field="*{PricePerDay}" required/>
+        <input type="text" th:field="*{PricePerDay}" required/>
     </div>
     <input type="submit" value="Add"/>
 </form>
