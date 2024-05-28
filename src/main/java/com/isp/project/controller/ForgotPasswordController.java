@@ -27,8 +27,7 @@ public class ForgotPasswordController {
     @Autowired
     Email emailService;
 
-
-    @GetMapping("/forgotPassword")
+    @GetMapping("/forgotpass")
     public String forgotPassword() {
         // Check if the user is logged in or not
         UserDTO user = (UserDTO) session.getAttribute("user_sess");
@@ -39,7 +38,6 @@ public class ForgotPasswordController {
         }
     }
 
-
     @PostMapping("/forgotPassword")
     public String forgotPasswordProcess(@ModelAttribute UserDTO userDTO, Model model) {
         // Check for primary email
@@ -48,7 +46,7 @@ public class ForgotPasswordController {
             try {
                 emailService.sendEmail(checkEmail.getEmail());
                 model.addAttribute("message", "Password of your account has been sent to Gmail");
-        return "login"; // Redirect to success page
+                return "forgotpass"; // Redirect to success page
             } catch (MessagingException e) {
                 // Handle email sending failure
                 model.addAttribute("error", "Failed to send email. Please try again later.");

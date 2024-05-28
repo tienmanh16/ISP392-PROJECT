@@ -37,21 +37,23 @@
             <div class="inner-container">
                 <div class="right-box">
                     <div class="form-sec">
-                        <div class="title"> Quên mật khẩu</div>
-
+                        <div class="title">
+                            <h3>Forgot Password?</h3>
+                        </div>
 
                         <div class="form-box two">
                         <div class="">
                             <form th:action="@{/forgotPassword}" method="post">
-                                <div th:if="${error}" class="form_boxes">
-                                    <p style="color: red;" th:text="${error}"></p>
+                                <div th:if="${error}" class="alert alert-danger" role="alert">
+                                    <p th:text="${error}"></p>
                                 </div>
-                                <div th:if="${message}" class="form_boxes">
-                                    <p style="color: green;" th:text="${message}"></p>
+                                <div th:if="${message}" class="alert alert-success" role="alert">
+                                    <p th:text="${message}"></p>
                                 </div>
+
                                 <div class="form_boxes">
                                     <label>Email</label>
-                                    <input type="email" name="email" placeholder="123@gmail.com" />
+                                    <input type="email" name="email" placeholder="123@gmail.com" required/>
                                 </div>
 
                                 <div class="form-submit">
