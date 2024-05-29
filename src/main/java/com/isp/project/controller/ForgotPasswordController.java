@@ -58,7 +58,7 @@ public class ForgotPasswordController {
         return "forgotpass"; // No user found
     }
 
-    @GetMapping("/forgotPassword/resetpassword")
+    @GetMapping("/resetpassword")
     public String reset() {
         // Check if the user is logged in or not
         UserDTO user = (UserDTO) session.getAttribute("user_sess");
