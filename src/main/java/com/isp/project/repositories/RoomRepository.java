@@ -49,4 +49,23 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "WHERE rt.id = :roomTypeId")
     List<RoomDetailDTO> findAllRoomsWithDetailsByRoomTypeId(@Param("roomTypeId") Integer roomTypeId);
 
+    @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
+       + "r.id, "
+       + "r.roomNum, "
+       + "rt.id, "
+       + "rt.name, "
+       + "rt.des, "
+       + "rt.priceHour, "
+       + "rt.priceDay, "
+       + "r.status, "
+       + "i.id, "
+       + "i.image1, "
+       + "i.image2 "
+       + ") "
+       + "FROM Room r "
+       + "JOIN r.roomType rt "
+       + "JOIN rt.imageDetail i "
+       + "WHERE r.status = :status")
+    List<RoomDetailDTO> findAllRoomsByStatus(@Param("status") String status);
+
 }

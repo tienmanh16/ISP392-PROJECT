@@ -35,6 +35,13 @@ public class HomeController {
         return "room";
     }
 
+    @PostMapping("/filter-status")
+    public String filterStatus(@RequestParam("statusFilter") String status, Model model){
+        model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
+        model.addAttribute("rooms", roomService.getAllRoomsByStatus(status));
+        return "room";
+    }
+
     @GetMapping("/detail")
     public String detailR(@RequestParam("roomTypeId") Integer roomTypeId, Model model) {
         model.addAttribute("roomType", roomTypeService.getRoomTypeDetailById(roomTypeId));

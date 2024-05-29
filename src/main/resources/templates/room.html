@@ -51,7 +51,7 @@
                             <label for="time">Giờ:</label>
                             <input type="time" id="time">
                         </div>
-                        <div class="categories-box">
+                        <!-- <div class="categories-box">
                             <h6 class="title">Stattus</h6>
                             <div class="cheak-box">
                                 <label class="contain">Phong trong
@@ -71,7 +71,30 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                        </div>
+                        </div> -->
+                        <form th:action="@{/filter-status}" method="post">
+                            <div class="categories-box">
+                                <h6 class="title">Status</h6>
+                                <div class="cheak-box">
+                                    <label class="contain">
+                                        Phong trong
+                                        <input type="radio" name="statusFilter" value="Phong trong">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="contain">
+                                        Phong dang thue
+                                        <input type="radio" name="statusFilter" value="Phong dang thue">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="contain">
+                                        Phong da dat
+                                        <input type="radio" name="statusFilter" value="Phong da dat">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="submit">Submit</button>
+                            </div>
+                        </form>
                         <form th:action="@{/filterRoomType}" method="post">
                             <div class="categories-box">
                                 <h6 class="title">Loại Phòng</h6>

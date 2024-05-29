@@ -24,4 +24,9 @@ public class RoomService {
 
     }
 
+    public List<RoomDetailDTO> getAllRoomsByStatus(String status){
+        return roomRepository.findAllRoomsByStatus(status);
+
+    }
+
 }
