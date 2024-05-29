@@ -124,15 +124,67 @@
                         <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
                             <div class="row car-slider-three wow fadeInUp" data-wow-delay="200ms" data-preview="4">
                                 <!-- car-block-ten -->
-                                <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12">
+                                <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12" th:each="roomType : ${roomTypes}">
                                     <div class="inner-box">
                                         <div class="image-box">
                                             <div class="slider-thumb">
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-1.jpg" alt=""></a></div>
+                                                <div class="image"><a href="#"><img th:src="@{${roomType.image1}}" alt=""></a></div>
+                                                <div class="image"><a href="#"><img th:src="@{${roomType.image2}}" alt=""></a></div>
+                                            </div>
+                                            <span>Ảnh Phòng</span>
+                                        </div>
+                                        <div class="content-box">
+                                            <h6 class="title" th:text="${roomType.roomTypeName}"><a href="#"></a></h6>
+                                            <ul>
+                                                <li>Beautiful</li>
+                                                <li>Luxurious</li>
+                                                <li>Aristocratic</li>
+                                            </ul>
+                                            <!-- <div class="btn-box">
+                                                <a href="detail" class="details">View Details
+                                                </a>
+                                            </div> -->
+                                            <div class="btn-box">
+                                                <a th:href="@{/detail(roomTypeId=${roomType.roomTypeId})}" class="details">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- car-block-ten -->
+                                <!-- <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="slider-thumb">
                                                 <div class="image"><a href="#"><img src="images/resource/shop3-5.jpg" alt=""></a></div>
+                                                <div class="image"><a href="#"><img src="images/resource/shop3-2.jpg" alt=""></a></div>
                                                 <div class="image"><a href="#"><img src="images/resource/shop3-7.jpg" alt=""></a></div>
                                             </div>
                                             <span>Low Mileage</span>
+                                    </div>
+                                    <div class="content-box">
+                                            <h6 class="title"><a href="#">Mercedes-Benz, C Class</a></h6>
+                                            <ul>
+                                                <li>26,786 kms</li>
+                                                <li>Petrol</li>
+                                                <li>Automatic</li>
+                                            </ul>
+                                            <div class="btn-box">
+                                                <small>$399</small>
+                                                <a href="#" class="details">View Details
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div> -->
+                                <!-- car-block-ten -->
+                                <!-- <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="slider-thumb">
+                                                <div class="image"><a href="#"><img src="images/resource/shop3-2.jpg" alt=""></a></div>
+                                                <div class="image"><a href="#"><img src="images/resource/shop3-5.jpg" alt=""></a></div>
+                                                <div class="image"><a href="#"><img src="images/resource/shop3-7.jpg" alt=""></a></div>
+                                            </div>
                                         </div>
                                         <div class="content-box">
                                             <h6 class="title"><a href="#">Mercedes-Benz, C Class</a></h6>
@@ -147,59 +199,8 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        </div>
-                                </div>
-                                <!-- car-block-ten -->
-                                <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12">
-                                    <div class="inner-box">
-                                        <div class="image-box">
-                                            <div class="slider-thumb">
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-5.jpg" alt=""></a></div>
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-2.jpg" alt=""></a></div>
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-7.jpg" alt=""></a></div>
-                                            </div>
-                                            <span>Low Mileage</span>
-</div>
-<div class="content-box">
-                                            <h6 class="title"><a href="#">Mercedes-Benz, C Class</a></h6>
-                                            <ul>
-                                                <li>26,786 kms</li>
-                                                <li>Petrol</li>
-                                                <li>Automatic</li>
-                                            </ul>
-                                            <div class="btn-box">
-                                                <small>$399</small>
-                                                <a href="#" class="details">View Details
-                                                </a>
-                                            </div>
-                                        </div>
                                     </div>
-                                    </div>
-                                <!-- car-block-ten -->
-                                <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12">
-                                    <div class="inner-box">
-                                        <div class="image-box">
-                                            <div class="slider-thumb">
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-2.jpg" alt=""></a></div>
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-5.jpg" alt=""></a></div>
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-7.jpg" alt=""></a></div>
-                                            </div>
-                                        </div>
-                                        <div class="content-box">
-                                            <h6 class="title"><a href="#">Mercedes-Benz, C Class</a></h6>
-                                            <ul>
-                                                <li>26,786 kms</li>
-                                                <li>Petrol</li>
-                                                <li>Automatic</li>
-                                            </ul>
-                                            <div class="btn-box">
-                                                <small>$399</small>
-                                                <a href="#" class="details">View Details
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

@@ -1,7 +1,5 @@
 package com.isp.project.model;
 
-import java.sql.Date;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,30 +9,37 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
-@Data
-@Entity 
-@Table(name="Invoice")
-public class Invoice {
-    @Id
-    @Column(name = "InvoiceID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int InvoiceID;
-    
-    @Column(name="TotalAmount")
-    private double TotalAmount;
 
-    @Column(name = "CustomerName")
-    private String CustomerName;
+@Data
+@Entity
+@Table(name = "InvoiceLine")
+public class InvoiceLine {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "InvoidLineID")
+    private int InvoiceLineID;
+
+    @Column(name = "TotalAmount")
+    private double InvoiceTotalAmount;
+
+ 
 
     @ManyToOne
-    @JoinColumn(name = "BookingID")
-    private Booking booking;
+    @JoinColumn(name = "SeID")
+    private Service service;
 
-    @Column(name = "InvoiceDate")
-    private Date InvoiceDate;
+    @Column(name = "Quantity")
+    private int Quantity;
 
+
+    @ManyToOne
+    @JoinColumn(name = "InvoiceID")
+    private Invoice invoice;
     
 
-    
+
+
+
+
 
 }
