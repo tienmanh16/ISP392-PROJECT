@@ -12,6 +12,7 @@ public class UserServiceImpl implements UserService{
 @Autowired
 private UserRepository userRepository;
 
+
     @Override
     public Employee findByUserName(String username) {
         return userRepository.findByUserName(username);
@@ -33,6 +34,26 @@ private UserRepository userRepository;
     @Override
     public Employee findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Object changePassword(int id, String newPassword) {
+            // Kiểm tra xem người dùng có tồn tại không
+            Employee user = findById(id);
+            if (user == null) {
+                return null; // Người dùng không tồn tại
+            } else {
+                // Cập nhật mật khẩu mới cho người dùng, có thể mã hóa security.encode(newPassword)
+                user.setPassword(newPassword);
+                userRepository.save(user);
+            }
+    
+            return user;
+    }
+
+    @Override
+    public Employee findById(int id) {
+        return userRepository.findById(id);
     }
 
 

@@ -10,4 +10,8 @@ public interface UserService {
 
     Employee authenticateUser(String username, String password);
  
+    Object changePassword(int id, String newPassword);
+
+    Employee findById(int id);
+
 }
