@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.isp.project.dto.BookingRoomDTO;
-// import com.isp.project.service.BookingService;
 import com.isp.project.service.BookingServiceImpl;
 
 @Controller
@@ -17,14 +16,15 @@ public class BookingController {
     @Autowired
     private BookingServiceImpl bookingServiceImpl;
 
-    @GetMapping("booking")
+
+    @GetMapping("/booking")
     public String BookingRoom(Model model) {
         List<BookingRoomDTO> listBooking = bookingServiceImpl.getAllBooking();
         model.addAttribute("listBooking", listBooking);
-        return "booking.html";
+        return "booking";
     }
 
-    @GetMapping("bookingdetail")
+    @GetMapping("/bookingdetail")
     public String themPhong() {
         return "bookingdetail";
     }
