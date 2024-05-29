@@ -1,4 +1,4 @@
-package com.isp.project.controller;
+package com.isp.project.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -10,6 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserResetPasswordDto {
+    @NotNull
+    @Size(min = 6, message = "password must be at least 6 characters")
+    private String oldPassword;
     @NotNull
     @Size(min = 6, message = "password must be at least 6 characters")
     private String newPassword;

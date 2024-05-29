@@ -25,7 +25,7 @@ public class Employee {
     public Date getDob() {
         return dob;
     }
-
+    
     @Column(name = "user_name")
     private String userName;
     private String password;

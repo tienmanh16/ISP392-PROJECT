@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.isp.project.dto.UserDTO;
+import com.isp.project.dto.UserResetPasswordDto;
 import com.isp.project.model.Email;
 import com.isp.project.model.Employee;
 import com.isp.project.service.UserService;
@@ -43,11 +44,11 @@ public class ForgotPasswordController {
 
     @PostMapping("/forgotPassword")
     public String forgotPasswordProcess(@ModelAttribute UserDTO userDTO, Model model) {
-        // Check for primary email
+        // Check for email
         Employee checkEmail = userService.findByEmail(userDTO.getEmail());
         if (checkEmail != null) {
             try {
-                emailService.sendEmail(checkEmail.getEmail(),checkEmail.getPassword());
+                emailService.sendEmail(checkEmail.getEmail(), checkEmail.getPassword());
                 session.setAttribute("rawUser", checkEmail);
                 model.addAttribute("message", "Password of your account has been sent to Gmail");
                 return "forgotpass"; // Redirect to success page
@@ -59,7 +60,7 @@ public class ForgotPasswordController {
         }
         model.addAttribute("error", "Email not found. Please try again later.");
         // If no user found with the provided email, return error
-        return "forgotpass"; // No user found
+        return "forgotpass";
     }
 
     @GetMapping("/forgotPassword/resetpassword")
@@ -77,13 +78,24 @@ public class ForgotPasswordController {
     public String changePassword(@Valid @ModelAttribute("employee") UserResetPasswordDto userResetPasswordDto,
             BindingResult bindingResult, Model model) {
         Employee rawUser = (Employee) session.getAttribute("rawUser");
+        
         if (rawUser == null) {
-            return "redirect:/";
+            return "redirect:/home";
+        }
+
+        Employee userId = userService.findById(rawUser.getId());
+    
+        // Check if the old password input from resetpassword.html matches the one in
+        // the database
+        if (!userId.getPassword().equals(userResetPasswordDto.getOldPassword())) {
+            bindingResult.addError(new FieldError("employee", "oldPassword", "Old password is incorrect!"));
+            return "/resetpassword";
         }
 
         // Check if new passwords match
-        if (!userResetPasswordDto.getNewPassword().equals(userResetPasswordDto.getConfirmPassword())) {//bug dòng này Cannot invoke "String.equals(Object)" because the return value of "com.isp.project.controller.UserResetPasswordDto.getNewPassword()" is null
+        if (!userResetPasswordDto.getNewPassword().equals(userResetPasswordDto.getConfirmPassword())) {
             bindingResult.addError(new FieldError("employee", "confirmPassword", "Confirm password does not match!"));
+            return "/resetpassword";
         }
 
         if (bindingResult.hasErrors()) {
@@ -92,7 +104,7 @@ public class ForgotPasswordController {
 
         // Change the user's password
         userService.changePassword(rawUser.getId(), userResetPasswordDto.getNewPassword());
-
-        return "redirect:/home";
+        model.addAttribute("successMessage", "Password has been successfully changed.");
+        return "/resetpassword";
     }
 }
