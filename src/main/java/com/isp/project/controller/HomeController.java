@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -22,7 +23,15 @@ public class HomeController {
 
     @GetMapping("/room")
     public String listRoom(Model model) {
+        model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
         model.addAttribute("rooms", roomService.getAllRoomsWithDetails());
+        return "room";
+    }
+
+    @PostMapping("/filterRoomType")
+    public String filter(@RequestParam("selectedRoomTypeId") Integer id, Model model){
+        model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
+        model.addAttribute("rooms", roomService.getAllRoomsWithDetailsByRoomTypeId(id));
         return "room";
     }
 

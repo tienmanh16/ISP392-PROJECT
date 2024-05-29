@@ -19,4 +19,9 @@ public class RoomService {
         return roomRepository.findAllRoomsWithDetails();
     }
 
+    public List<RoomDetailDTO> getAllRoomsWithDetailsByRoomTypeId(Integer id){
+        return roomRepository.findAllRoomsWithDetailsByRoomTypeId(id);
+
+    }
+
 }
