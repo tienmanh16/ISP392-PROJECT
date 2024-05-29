@@ -2,13 +2,14 @@ package com.isp.project.model;
 
 import java.sql.Date;
 
-import javax.xml.crypto.Data;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,83 +20,86 @@ public class BookingMapping {
     @Id
     @Column(name = "BookingMappingID")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int BookingMappingID;
+    private int bookingMappingID;
 
-    @Column(name = "RoomID")
-    private int RoomID;
+    @ManyToOne
+    @JoinColumn(name = "RoomID")
+    private Room roomID;
 
-    @Column(name = "BookingID")
-    private int BookingID;
+    @ManyToOne
+    @JoinColumn(name = "BookingID")
+    private Booking bookingID;
 
     @Column(name = "CheckInDate")
-    private Date CheckInDate;
+    private Date checkInDate;
 
     @Column(name = "CheckOutDate")
-    private Date CheckOutDate;
+    private Date checkOutDate;
 
     @Column(name = "BookingTotalAmount")
-    private int BookingTotalAmount;
-
-    public int getBookingMappingID() {
-        return BookingMappingID;
-    }
-
-    public void setBookingMappingID(int bookingMappingID) {
-        BookingMappingID = bookingMappingID;
-    }
-
-    public int getRoomID() {
-        return RoomID;
-    }
-
-    public void setRoomID(int roomID) {
-        RoomID = roomID;
-    }
-
-    public int getBookingID() {
-        return BookingID;
-    }
-
-    public void setBookingID(int bookingID) {
-        BookingID = bookingID;
-    }
-
-    public Date getCheckInDate() {
-        return CheckInDate;
-    }
-
-    public void setCheckInDate(Date checkInDate) {
-        CheckInDate = checkInDate;
-    }
-
-    public Date getCheckOutDate() {
-        return CheckOutDate;
-    }
-
-    public void setCheckOutDate(Date checkOutDate) {
-        CheckOutDate = checkOutDate;
-    }
-
-    public int getBookingTotalAmount() {
-        return BookingTotalAmount;
-    }
-
-    public void setBookingTotalAmount(int bookingTotalAmount) {
-        BookingTotalAmount = bookingTotalAmount;
-    }
+    private int bookingTotalAmount;
 
     public BookingMapping() {
     }
 
-    public BookingMapping(int bookingMappingID, int roomID, int bookingID, Date checkInDate, Date checkOutDate,
+    public BookingMapping(int bookingMappingID, Room roomID, Booking bookingID, Date checkInDate, Date checkOutDate,
             int bookingTotalAmount) {
-        BookingMappingID = bookingMappingID;
-        RoomID = roomID;
-        BookingID = bookingID;
-        CheckInDate = checkInDate;
-        CheckOutDate = checkOutDate;
-        BookingTotalAmount = bookingTotalAmount;
+        this.bookingMappingID = bookingMappingID;
+        this.roomID = roomID;
+        this.bookingID = bookingID;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        this.bookingTotalAmount = bookingTotalAmount;
     }
 
+    public int getBookingMappingID() {
+        return bookingMappingID;
+    }
+
+    public void setBookingMappingID(int bookingMappingID) {
+        this.bookingMappingID = bookingMappingID;
+    }
+
+    public Room getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(Room roomID) {
+        this.roomID = roomID;
+    }
+
+    public Booking getBookingID() {
+        return bookingID;
+    }
+
+    public void setBookingID(Booking bookingID) {
+        this.bookingID = bookingID;
+    }
+
+    public Date getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(Date checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public Date getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(Date checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+
+    public int getBookingTotalAmount() {
+        return bookingTotalAmount;
+    }
+
+    public void setBookingTotalAmount(int bookingTotalAmount) {
+        this.bookingTotalAmount = bookingTotalAmount;
+    }
+
+    
     
 }

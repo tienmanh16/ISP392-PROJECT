@@ -1,10 +1,12 @@
 package com.isp.project.model;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,6 +27,9 @@ public class Booking {
     @JoinColumn(name = "CustomerID")
     private Customer customerID;
 
+    @Column(name = "RoomID")
+    private int roomID;
+
     @Column(name = "BookingDate")
     private Date bookingDate;
 
@@ -33,6 +38,9 @@ public class Booking {
 
     @OneToMany(mappedBy = "bookingID")
     private Set<Register> register;
+
+     @OneToMany(mappedBy = "bookingID")
+    private List<BookingMapping> bookingMappings;
 
     public int getBookingID() {
         return bookingID;

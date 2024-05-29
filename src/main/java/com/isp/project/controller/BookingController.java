@@ -1,22 +1,32 @@
 package com.isp.project.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.isp.project.dto.BookingRoomDTO;
+// import com.isp.project.service.BookingService;
+import com.isp.project.service.BookingServiceImpl;
 
 @Controller
 public class BookingController {
 
+    @Autowired
+    private BookingServiceImpl bookingServiceImpl;
+
     @GetMapping("booking")
-    public String datphong1() {
-        return "datphong";
+    public String BookingRoom(Model model) {
+        List<BookingRoomDTO> listBooking = bookingServiceImpl.getAllBooking();
+        model.addAttribute("listBooking", listBooking);
+        return "booking.html";
     }
 
     @GetMapping("bookingdetail")
     public String themPhong() {
-        return "detaildatphong";
+        return "bookingdetail";
     }
 
-    
-
-    
 }
