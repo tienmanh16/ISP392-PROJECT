@@ -57,4 +57,35 @@ public class ForgotPasswordController {
         // If no user found with the provided email, return error
         return "forgotpass"; // No user found
     }
+
+    @GetMapping("/forgotPassword/resetpassword")
+    public String reset() {
+        // Check if the user is logged in or not
+        UserDTO user = (UserDTO) session.getAttribute("user_sess");
+        if (user != null) {
+            return "redirect:/home";
+        } else {
+            return "resetpassword";
+        }
+    }
+
+    @PostMapping("/resetpassword")
+    public String resetProcess(@ModelAttribute UserDTO userDTO, Model model) {
+      
+        Employee checkEmail = userService.findByEmail(userDTO.getEmail());
+        if (checkEmail != null) {
+            try {
+                emailService.sendEmail(checkEmail.getEmail(),checkEmail.getPassword());
+                model.addAttribute("message", "Password of your account has been sent to Gmail");
+                return "login"; // Redirect to success page
+            } catch (MessagingException e) {
+                // Handle email sending failure
+                model.addAttribute("error", "Failed to send email. Please try again later.");
+                return "login";
+            }
+        }
+        model.addAttribute("error", "Email not found. Please try again later.");
+        // If no user found with the provided email, return error
+        return "login"; // No user found
+    }
 }
