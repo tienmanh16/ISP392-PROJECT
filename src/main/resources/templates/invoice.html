@@ -27,13 +27,13 @@
                 <div class="col-10">
                     <div class="row bb pb-3">
                         <div class="col-7">
-                            <h2 th:text="${InvoiceDetailDTO[0].CustomerName}">Tên khách</h2>
-                            <p class="address"> Ngày lập hóa đơn: <span th:text="${InvoiceDetailDTO[0].InvoiceDate}"></span></p>
-                            <p class="address">Mã hóa đơn: <span th:text="${InvoiceDetailDTO[0].InvoiceID}"></span></p>
+                            <h2 th:text="${InvoiceDetailDTO[0].CustomerName}"></h2>
+                            <p class="address"> Invoice Date: <span th:text="${InvoiceDetailDTO[0].InvoiceDate}"></span></p>
+                            <p class="address">Invoice Number: <span th:text="${InvoiceDetailDTO[0].InvoiceID}"></span></p>
                         </div>
-                        <div class="col-5">
+                        <div class="col-5 ">
                             <h2></h2>
-                            <p class="address">Số phòng: <span th:text="${InvoiceDetailDTO[0].RoomNumber}"></span></p>
+                            <p class="address">Room Number: <span th:text="${InvoiceDetailDTO[0].RoomNumber}"></span></p>
                             <p class="address">Check-in Date: <span th:text="${InvoiceDetailDTO[0].CheckInDate}"></span></p>
                             <p class="address">Check-out Date: <span th:text="${InvoiceDetailDTO[0].CheckOutDate}"></span></p>
                         </div>
@@ -53,14 +53,8 @@
                     </thead>
                     <tbody >
                         <tr th:each="detail : ${InvoiceDetailDTO}">
-                            <td>
-                                <div class="media">
-                                    <img class="mr-3 img-fluid" src="mobile.jpg" alt="Product 01">
-                                    <div class="media-body">
-                                        <p class="mt-0 title" th:text="${detail.SeName}">Service Name</p>
-                                    </div>
-                                </div>
-                            </td>
+                           
+                            <td th:text="${detail.SeName}">$</td>
                             <td th:text="${detail.SePrice}">$</td>
                             <td th:text="${detail.Quantity}"></td>
                             <td th:text="${detail.LineTotalAmount}">$</td>
