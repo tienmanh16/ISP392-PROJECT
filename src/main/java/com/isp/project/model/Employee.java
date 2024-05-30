@@ -2,15 +2,24 @@ package com.isp.project.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+
 
 @Entity
-@Table(name = "employee")
+@Table(name = "Employee")
 public class Employee {
     @Id
     @Column(name = "Id")
@@ -21,34 +30,11 @@ public class Employee {
     private String phone;
     private String address;
     private String idenId;
-    private Date dob;
-    public Date getDob() {
-        return dob;
-    }
     
-    @Column(name = "user_name")
-    private String userName;
-    private String password;
-    private int roleId;
-
-    public String getIdenId() {
-        return idenId;
-    }
-
-    public void setIdenId(String idenId) {
-        this.idenId = idenId;
-    }
-
-    // @OneToMany(mappedBy = "employee", fetch = FetchType.EAGER)
-    // private Set<UserRole> userRoles;
-
-    public Employee() {
-    }
-
-   
+    
 
     public Employee(int id, String fullName, String email, String phone, String address, String idenId, Date dob,
-            String userName, String password, int roleId) {
+            String userName, String password, Role role) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
@@ -58,8 +44,34 @@ public class Employee {
         this.dob = dob;
         this.userName = userName;
         this.password = password;
-        this.roleId = roleId;
+        this.role = role;
     }
+
+    @DateTimeFormat(pattern ="dd/MM/yyyy")
+    @Temporal(TemporalType.DATE)
+    private Date dob;
+
+    public Employee() {
+    }
+   
+    public Date getDob() {
+        return dob;
+    }
+
+    private String userName;
+    private String password;
+
+    public String getIdenId() {
+        return idenId;
+    }
+
+    public void setIdenId(String idenId) {
+        this.idenId = idenId;
+    }
+
+    @ManyToOne( fetch = FetchType.LAZY)
+    @JoinColumn(name="RoleId")
+    private Role role;
 
     public String getUserName() {
         return userName;
@@ -118,8 +130,6 @@ public class Employee {
         this.phone = phone;
     }
 
-   
-
     public String getUsername() {
         return userName;
     }
@@ -136,13 +146,6 @@ public class Employee {
         this.password = password;
     }
 
-    public int getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
-    }
 
     public void setDob(Date dob) {
         this.dob = dob;
@@ -154,6 +157,14 @@ public class Employee {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
 }
