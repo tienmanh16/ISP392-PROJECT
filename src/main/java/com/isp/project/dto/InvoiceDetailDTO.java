@@ -18,5 +18,5 @@ public class InvoiceDetailDTO {
     private double SePrice;
     private Date CheckInDate;
     private Date CheckOutDate;
-
+    private String RoomNumber;
 }

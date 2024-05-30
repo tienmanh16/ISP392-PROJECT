@@ -1,6 +1,7 @@
 package com.isp.project.service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,29 @@ public class InvoiceServiceImpl implements InvoiceService{
     }
     @Override
     public List<InvoiceDetailDTO> findInvoiceDetail(int InvoiceID) {
-        return this.invoiceRepository.findInvoiceDetail(InvoiceID);
+        List<Object[]> rawResults = invoiceRepository.findInvoiceDetail(InvoiceID); // Ensure you are using the
+                                                                                           // correct method name
+        List<InvoiceDetailDTO> invoiceDetailDTOs = new ArrayList<>();
+        for (Object[] rawResult : rawResults) {
+            // Extracting data from the rawResult array and casting it to the appropriate
+            // types
+            int invoiceID = ((Number) rawResult[0]).intValue(); // InvoiceID
+            double invoiceTotalAmount = ((Number) rawResult[1]).doubleValue(); // InvoiceTotalAmount
+            String customerName = (String) rawResult[2]; // CustomerName
+            Date invoiceDate = (Date) rawResult[3]; // InvoiceDate
+            double lineTotalAmount = ((Number) rawResult[4]).doubleValue(); // LineTotalAmount
+            int quantity = ((Number) rawResult[5]).intValue(); // Quantity
+            String seName = (String) rawResult[6]; // SeName
+            double sePrice = ((Number) rawResult[7]).doubleValue(); // SePrice
+            Date checkInDate = (Date) rawResult[8]; // CheckInDate
+            Date checkOutDate = (Date) rawResult[9]; // CheckOutDate
+            String roomNumber = ((String) rawResult[10]);
+            // Create a new InvoiceDetailDTO with the extracted data
+            InvoiceDetailDTO dto = new InvoiceDetailDTO(invoiceID, invoiceTotalAmount, customerName, invoiceDate, lineTotalAmount, quantity, seName, sePrice, checkInDate, checkOutDate,roomNumber);
+            invoiceDetailDTOs.add(dto);
+        }
+    
+        return invoiceDetailDTOs;
     }
+    
 }

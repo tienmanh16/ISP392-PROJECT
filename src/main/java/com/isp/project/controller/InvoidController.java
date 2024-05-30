@@ -47,8 +47,13 @@ public class InvoidController {
     
     @GetMapping("/invoiceDetail/{invoiceID}")
     public String invoice(Model model, @PathVariable("invoiceID") int invoiceID){    
-        List<InvoiceDetailDTO> invoiceDetailDTO = this.invoiceService.findInvoiceDetail(invoiceID);  
+        List<InvoiceDetailDTO> invoiceDetailDTO = this.invoiceService.findInvoiceDetail(invoiceID); 
+        double totalSePrice = 0.0;
+        for (InvoiceDetailDTO dto : invoiceDetailDTO) {
+            totalSePrice += dto.getSePrice()*dto.getQuantity();
+        } 
         model.addAttribute("InvoiceDetailDTO", invoiceDetailDTO);
+        model.addAttribute("totalSePrice", totalSePrice);
         return "invoice.html"; 
     }  
 }
