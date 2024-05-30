@@ -37,46 +37,49 @@
             <div class="inner-container">
                 <div class="right-box">
                     <div class="form-sec">
-                                <div class="form-box">
-                                    <div class="title"> <h3>Login</h3></div>
+                        <div class="form-box">
+                            <div class="title">
+                                <h3>Login</h3>
+                            </div>
 
-                                    <form th:action="@{/login}" th:object="${employee}" method="post">
-                                        <div th:if="${loginError}" class="alert alert-danger" role="alert">
-                                            <p th:text="${loginError}"></p>
-                                        </div>
-                                        <div class="form_boxes">
-                                            <label>Username</label>
-                                            <input type="text" name="username" placeholder="enter" required/>
-                                        </div>
-                                        <div class="form_boxes">
-                                            <label>Password</label>
-                                            <input type="password" name="password" placeholder="at least 6 character" required/>
-                                        </div>
-                                    
-                                        <div class="btn-box">
-                                            <!-- <label class="contain">Remember me
+                            <form th:action="@{/login}" th:object="${employee}" method="post">
+                                <div th:if="${loginError}" class="alert alert-danger" role="alert">
+                                    <p th:text="${loginError}"></p>
+                                </div>
+                                <div class="form_boxes">
+                                    <label>Username</label>
+                                    <input type="text" name="username" placeholder="enter" required />
+                                </div>
+                                <div class="form_boxes">
+                                    <label>Password</label>
+                                    <input type="password" name="password" placeholder="at least 6 character"
+                                        required />
+                                </div>
+
+                                <div class="btn-box">
+                                    <!-- <label class="contain">Remember me
                                                 <input type="checkbox" checked="checked">
                                                 <span class="checkmark"></span>
                                             </label> -->
-                                            <a href="/forgotpass" class="pasword-btn">Forgotten password?</a>
-                                        </div>
-                                        <div class="form-submit">
-                                            <button type="submit" class="theme-btn">Login
-                                            </button>
-                                        </div>
-                                    </form>
+                                    <a href="/forgotpass" class="pasword-btn">Forgotten password?</a>
                                 </div>
-                            </div>
+                                <div class="form-submit">
+                                    <button type="submit" class="theme-btn">Login
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- End login-section -->
+    </div>
+    </div>
+    </section>
+    <!-- End login-section -->
 
-        <!-- main footer -->
+    <!-- main footer -->
 
-        <!-- End boxcar-footer -->
+    <!-- End boxcar-footer -->
 
     </div><!-- End Page Wrapper -->
     <div th:replace="~{fragments/footer :: footer}"></div>

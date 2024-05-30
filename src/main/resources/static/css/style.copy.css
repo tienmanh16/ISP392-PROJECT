@@ -320,7 +320,8 @@ iframe {
   padding-left: 0;
   padding-right: 0;
 }
- /* tien fix header  */
+
+/* tien fix header  */
 section>.container,
 section>.container-fluid {
   /* padding-top: var(--container-pt); */
@@ -2053,7 +2054,7 @@ Main Header
   margin-right: 31px;
   /* Medium Large devices */
   display: none;
-   
+
 }
 
 @media (max-width: 1399px) {

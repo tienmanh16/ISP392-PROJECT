@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.isp.project.model.Employee;
+import com.isp.project.service.RoomTypeService;
 import com.isp.project.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -67,6 +68,25 @@ public class HomeController {
         return "login";
     }
 
+ @Autowired
+    private RoomTypeService roomTypeService;
 
+    @GetMapping("/room")
+    public String listRoom(Model model) {
+        model.addAttribute("rooms", roomService.getAllRoomsWithDetails());
+        return "room";
+    }
+
+    @GetMapping("/detail")
+    public String detailR(@RequestParam("roomTypeId") Integer roomTypeId, Model model) {
+        model.addAttribute("roomType", roomTypeService.getRoomTypeDetailById(roomTypeId));
+        return "detail";
+    }
+
+    @GetMapping("/home")
+    public String room(Model model) {
+        model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
+        return "home";
+    }
     
 }

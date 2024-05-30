@@ -46,53 +46,53 @@
                                         <div class="shop-single-thumbs-slider">
                                             <div class="shop-single-thumb">
                                                 <div class="thumb-img">
-                                                    <img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt="" />
+                                                    <img th:src="@{${roomType.image1}}" alt="">
                                                 </div>
                                             </div>
-                                            <div class="shop-single-thumb">
+                                            <!-- <div class="shop-single-thumb">
                                                 <div class="thumb-img">
                                                     <img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt="" />
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div class="shop-single-thumb">
                                                 <div class="thumb-img">
-                                                    <img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt="" />
+                                                    <img th:src="@{${roomType.image2}}" alt="">
                                                 </div>
                                             </div>
                                         </div><!--shop-single-thumbs-slider-->
                                         <div class="shop-single-product-slider">
                                             <div class="shop-single-product-slide">
-                                                <img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt="" />
+                                                <img th:src="@{${roomType.image1}}" alt="">
                                             </div>
-                                            <div class="shop-single-product-slide">
+                                            <!-- <div class="shop-single-product-slide">
                                                 <img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt="" />
-                                            </div>
+                                            </div> -->
                                             <div class="shop-single-product-slide">
-                                                <img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt="" />
+                                                <img th:src="@{${roomType.image2}}" alt="">
                                             </div>
                                         </div><!--shop-single-product-slider-->
                                     </div>
                                 </div>
                                 <div class="content-column col-lg-5 col-md-12 col-sm-12">
                                     <div class="inner-column">
-                                        <h2>P01</h2>
-                                        Per hour:<span class="price">$399<del>$699</del></span>
+                                        <h2 th:text="${roomType.roomTypeName}"></h2>
+                                        Per hour:<span class="price" th:text="${roomType.priceHour}"></span>
+                                        Per day:<span class="price" th:text="${roomType.priceDay}"></span>
                                         <!-- <small><i class="fa-solid fa-check"></i>Phong trong</small> -->
-                                        <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Tempus nulla faucibus viverra nisl non senectus tortor.
+                                        <div class="text">Phòng rộng, thoáng mát, view đẹp, đầy đủ tiện nghi
                                         </div>
-                                        <div class="btn-box">
+                                        <!-- <div class="btn-box">
                                             <div class="number">
                                                 <span class="minus">-</span>
                                         <input type="text" value="1" />
                                         <span class="plus">+</span>
                                         </div>
                                         <a href="#" class="shoping-btn">Luu</a>
-                                        </div>
+                                        </div> -->
                                         <ul class="list">
-                                            <li><span>Sku:</span>RTA-0058</li>
-                                            <li><span>Category:</span>Oil & Filters, Parts</li>
-                                            <li><span>Tags:</span>dealership, motors, parts</li>
+                                            <li><span>Inroom:</span>Điều hòa, TV, Tủ lạnh, Quạt, Đồ dùng cá nhân</li>
+                                            <li><span>Outroom:</span>Bể Bơi, Mát-xa, Tập gym</li>
+                                            <li><span>Tags:</span>Thẻ phòng, mật mã phòng</li>
                                         </ul>
                                         </div>
                                         </div>
@@ -124,9 +124,7 @@
                                                                 <h4 class="title">Details</h4>
                                                                 <div class="text two"> This is..............
                                                                 </div>
-                                                <div class="text">Ut enim ad minima veniam, quis nostrum exercitationem
-                                                    ullam corporis
-                                                    suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.
+                                                <div class="text" th:text="${roomType.roomTypeDescription}">
                                                 </div>
                                                 </div>
                                                 <!-- features-sec -->
