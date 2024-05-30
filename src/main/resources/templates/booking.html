@@ -64,25 +64,28 @@
             </div>
           </div>
           <div class="box">
-            <div class="box-header d-flex justify-content-between align-items-center">
-                <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a>
-                <form th:action="@{/booking}" method="get" class="form-inline">
-                    <div class="input-group" style="width: 200px">
-                      <input
-                      type="text"
-                      name="table_search"
-                      class="form-control"
-                      placeholder="Search"
-                      th:value="${query}" />
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+    <div class="box-header d-flex justify-content-between align-items-center">
+        <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a>
+        <form th:action="@{/booking}" method="get" class="form-inline ml-auto">
+            <div class="input-group" style="width: 200px">
+                <input
+                type="text"
+                name="table_search"
+                class="form-control form-control-sm"
+                placeholder="Search"
+                th:value="${query}" />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-default btn-sm">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
             </div>
-        </div>
+        </form>
+    </div>
+</div>
+
+
+        
         
           <div class="row">
             <div class="col-md-12">
