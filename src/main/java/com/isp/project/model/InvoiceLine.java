@@ -22,8 +22,6 @@ public class InvoiceLine {
     @Column(name = "TotalAmount")
     private double InvoiceTotalAmount;
 
- 
-
     @ManyToOne
     @JoinColumn(name = "SeID")
     private Service service;

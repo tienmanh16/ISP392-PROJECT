@@ -3,7 +3,6 @@ package com.isp.project.service;
 import java.sql.Date;
 import java.util.List;
 
-import com.isp.project.dto.InvoiceDetailDTO;
 import com.isp.project.model.Invoice;
 
 public interface InvoiceService {
