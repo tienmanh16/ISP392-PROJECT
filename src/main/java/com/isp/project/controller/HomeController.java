@@ -58,7 +58,22 @@ public class HomeController {
 
     @GetMapping("/room")
     public String listRoom(Model model) {
+        model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
         model.addAttribute("rooms", roomService.getAllRoomsWithDetails());
+        return "room";
+    }
+
+    @PostMapping("/filterRoomType")
+    public String filter(@RequestParam("selectedRoomTypeId") Integer id, Model model){
+        model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
+        model.addAttribute("rooms", roomService.getAllRoomsWithDetailsByRoomTypeId(id));
+        return "room";
+    }
+
+    @PostMapping("/filter-status")
+    public String filterStatus(@RequestParam("statusFilter") String status, Model model){
+        model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
+        model.addAttribute("rooms", roomService.getAllRoomsByStatus(status));
         return "room";
     }
 

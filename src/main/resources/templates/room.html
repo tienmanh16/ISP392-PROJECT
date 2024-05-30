@@ -51,7 +51,7 @@
                             <label for="time">Giờ:</label>
                             <input type="time" id="time">
                         </div>
-                        <div class="categories-box">
+                        <!-- <div class="categories-box">
                             <h6 class="title">Stattus</h6>
                             <div class="cheak-box">
                                 <label class="contain">Phong trong
@@ -71,12 +71,48 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                        </div>
-                        <div class="categories-box">
+                        </div> -->
+                        <form th:action="@{/filter-status}" method="post">
+                            <div class="categories-box">
+                                <h6 class="title">Status</h6>
+                                <div class="cheak-box">
+                                    <label class="contain">
+                                        Phong trong
+                                        <input type="radio" name="statusFilter" value="Phong trong">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="contain">
+                                        Phong dang thue
+                                        <input type="radio" name="statusFilter" value="Phong dang thue">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <label class="contain">
+                                        Phong da dat
+                                        <input type="radio" name="statusFilter" value="Phong da dat">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="submit">Submit</button>
+                            </div>
+                        </form>
+                        <form th:action="@{/filterRoomType}" method="post">
+                            <div class="categories-box">
+                                <h6 class="title">Loại Phòng</h6>
+                                <div class="cheak-box" th:each="roomType : ${roomTypes}">
+                                    <label class="contain">
+                                        <h6 th:text="${roomType.roomTypeName}"></h6>
+                                        <input type="radio" name="selectedRoomTypeId" th:value="${roomType.roomTypeId}" th:checked="${selectedRoomTypeId == roomType.roomTypeId}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button type="submit">Submit</button>
+                            </div>
+                        </form>
+                        <!-- <div class="categories-box">
                             <h6 class="title">Loai Phong</h6>
-                            <div class="cheak-box">
-                                <label class="contain">Phong don
-                                    <input type="checkbox" checked="checked">
+                            <div class="cheak-box" th:each="roomType : ${roomTypes}">
+                                <label class="contain"><h6 th:text="${roomType.roomTypeName}"></h6>
+                                    <input type="checkbox" name="selectedRoomTypes" th:value="${roomType.roomTypeId}" th:checked="${selectedRoomTypes.contains(roomType.roomTypeId)}">
                                     <span class="checkmark"></span>
                                 </label>
                                 <label class="contain">Phong doi
@@ -86,14 +122,14 @@
                                 <label class="contain">Phong gia dinh
                                     <input type="checkbox">
                                     <span class="checkmark"></span>
-                                </label>
-                                <label class="contain">Tat ca phong
+                                </label> -->
+                                <!-- <label class="contain">Tat ca phong
                                     <input type="checkbox">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                        </div>
-                        <div class="categories-box">
+                        </div> -->
+                        <!-- <div class="categories-box">
                             <h6 class="title">Don Dep</h6>
                             <div class="cheak-box">
                                 <label class="contain">Da don dep
@@ -113,7 +149,7 @@
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="content-column col-lg-9 col-md-12 col-sm-12">
@@ -125,9 +161,6 @@
                             <!-- car-block-fourteen -->
                             <div class="car-block-fourteen col-lg-4 col-md-6 col-sm-6" th:each="room : ${rooms}">
                                 <div class="inner-box">
-                                    <!-- <div class="image-box">
-                                        <figure class="image"><a href="#"><img src="images/resource/10032021170917-gioi-thieu-ve-khach-san-hoang-hai.jpg" alt=""></a></figure>
-                                    </div> -->
                                     <div class="content-box">
                                         <h5 class="title" th:text="${room.roomNum}"></h5> 
                                         <ul class="rating"> 
@@ -139,7 +172,6 @@
                                         </ul> 
                                         <p><h10 th:text="${room.status}"></h10></p>
                                         <h10 th:text="${room.roomTypeName}"></h10> 
-                                        <!-- <p><span class="price" th:text="${room.priceHour}"></span></p> <p><span class="price" -->
                                         <div><button class="btn js-buy-ticket">Sửa Thông Tin</button></div>
                                     </div>
                                 </div>
