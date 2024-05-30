@@ -102,7 +102,7 @@
                     <tr th:each="booking : ${listBooking}">
                       <td th:text="${booking.bookingID}"></td>
                       <td th:text="${booking.customerName}"></td>
-                      <td th:text="${booking.bookingDate}"></td>
+                      <td><span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span></td>
                       <td th:text="${booking.employeeName}"></td>
                       <td><a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-menu"></a></td>
                       <td><a
@@ -181,3 +181,5 @@
     <script th:src="@{/js/main.copy1.js}"></script>
   </body>
 </html>
+
+

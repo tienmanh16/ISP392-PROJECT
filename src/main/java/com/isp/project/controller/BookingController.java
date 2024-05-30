@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.isp.project.dto.BookingRoomDTO;
-import com.isp.project.model.Booking;
+
 import com.isp.project.service.BookingService;
 
 @Controller
@@ -37,9 +37,10 @@ public class BookingController {
         
     }
     
-
-    @GetMapping("/bookingdetail")
-    public String themPhong() {
+@GetMapping("bookingdetail")
+    public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
+        List<BookingRoomDTO> bookingDetail = bookingService.findBookingRoomByBookingID(id);
+            model.addAttribute("bookdetail", bookingDetail);
         return "bookingdetail";
     }
 
