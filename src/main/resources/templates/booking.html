@@ -64,26 +64,26 @@
             </div>
           </div>
           <div class="box">
-            <div class="box-header">
-              <a href="bookingdetail" class="btn btn-success">+Đặt phòng</a>
-              <div class="box-tools">
-                <div class="input-group input-group-btn" style="width: 200px">
-                  <input
-                    type="text"
-                    name="table_search"
-                    class="form-control pull-right"
-                    placeholder="Search"
-                  />
-
-                  <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default">
-                      <i class="fa fa-search"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
+            <div class="box-header d-flex justify-content-between align-items-center">
+                <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a>
+                <form th:action="@{/booking}" method="get" class="form-inline">
+                    <div class="input-group" style="width: 200px">
+                      <input
+                      type="text"
+                      name="table_search"
+                      class="form-control"
+                      placeholder="Search"
+                      th:value="${query}" />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-          </div>
+        </div>
+        
           <div class="row">
             <div class="col-md-12">
               <div class="table-wrap">
@@ -104,9 +104,14 @@
                       <td th:text="${booking.customerName}"></td>
                       <td th:text="${booking.bookingDate}"></td>
                       <td th:text="${booking.employeeName}"></td>
-                      <td><a th:href="@{'Invoice.html?id=' + ${booking.bookingID}}" class="ti-menu"></a></td>
-                      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-                  </tr>             
+                      <td><a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-menu"></a></td>
+                      <td><a
+                          href="javascript:void(0);"
+                          th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'"
+                          class="btn btn-danger ti-close"
+                        ></a>
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -127,6 +132,41 @@
     <div class="scroll-to-top scroll-to-target" data-target="html">
       <span class="fa fa-angle-up"></span>
     </div>
+
+    <script>
+      function confirmDelete(id) {
+          if (confirm('Are you sure you want to delete it?')) {
+              deleteBooking(id);
+          }
+      }
+
+      function deleteBooking(id) {
+    fetch(`/delete/${id}`, { // Ensure the endpoint matches the controller endpoint
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to delete booking");
+        }
+        return response.text(); // Read the response text
+    })
+    .then(message => {
+        if (message === "Booking deleted successfully") {
+            alert(message);
+            location.reload(); // Reload the page to reflect the deletion
+        } else {
+            throw new Error(message); // If the message is not expected, throw an error
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred: " + error.message);
+    });
+}
+
+
+  </script>
+    
     <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.copy1.js}"></script>

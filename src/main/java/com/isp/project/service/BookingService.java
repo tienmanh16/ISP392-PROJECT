@@ -1,12 +1,14 @@
 package com.isp.project.service;
 
-// import java.util.List;
+import java.util.List;
 
 
 
-// import com.isp.project.dto.BookingRoomDTO;
+import com.isp.project.dto.BookingRoomDTO;
 
 
 public interface BookingService {
-// List<BookingRoomDTO> getAllBooking();
+List<BookingRoomDTO> getAllBooking();
+boolean deleteBookingRoom(Integer id);
+List<BookingRoomDTO> getAllBookingByName(String customer_name);
 }
