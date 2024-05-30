@@ -10,5 +10,5 @@ public interface InvoiceService {
     List<Invoice> getAllInvoice();
     List<Invoice> searchInvoice(String key);
     List<Invoice> searchInvoice(Date keyDate);
-    // List<InvoiceDetailDTO> findInvoiceDetail(int InvoiceID);
+    List<InvoiceDetailDTO> findInvoiceDetail(int InvoiceID);
 }

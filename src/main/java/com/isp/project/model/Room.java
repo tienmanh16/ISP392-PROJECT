@@ -29,5 +29,5 @@ public class Room {
 
     @Column(name = "RoomStatus", nullable = false)
     private String status;
-
+    
 }

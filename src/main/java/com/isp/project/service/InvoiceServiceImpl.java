@@ -25,8 +25,8 @@ public class InvoiceServiceImpl implements InvoiceService{
     public List<Invoice> searchInvoice(Date keyDate) {
         return this.invoiceRepository.searchInvoice(keyDate);
     }
-    // @Override
-    // public List<InvoiceDetailDTO> findInvoiceDetail(int InvoiceID) {
-    //     return this.invoiceRepository.findInvoiceDetail(InvoiceID);
-    // }
+    @Override
+    public List<InvoiceDetailDTO> findInvoiceDetail(int InvoiceID) {
+        return this.invoiceRepository.findInvoiceDetail(InvoiceID);
+    }
 }
