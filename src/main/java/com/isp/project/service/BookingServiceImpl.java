@@ -56,6 +56,7 @@ public class BookingServiceImpl implements BookingService {
             return false;
         }
     }
+    
 
     @Override
     public List<BookingRoomDTO> getAllBookingByName(String name) {
@@ -106,5 +107,18 @@ public class BookingServiceImpl implements BookingService {
         }
 
         return findbyID;
+    }
+
+    @Override
+    public boolean deleteBookingByRoomID(Integer id) {
+        try {
+
+            bookingRepository.deleteByRoomID(id);
+            
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
