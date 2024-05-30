@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.isp.project.model.Employee;
+import com.isp.project.service.RoomService;
 import com.isp.project.service.RoomTypeService;
 import com.isp.project.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
-
 
 @Controller
 @RequestMapping("")
@@ -22,27 +22,11 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-
-    @GetMapping("/room")
-    public String listRoom() {
-        return "room";
-    }
-
-    @GetMapping("/detail")
-    public String detailR() {
-        return "detail";
-    }
-
-    @GetMapping("/home")
-    public String room() {
-        return "home";
-    }
-
     @GetMapping("/login")
     public String login() {
         return "login";
     }
-     
+
     @PostMapping("/login")
     public String login(@RequestParam("username") String username,
             @RequestParam("password") String password,
@@ -61,14 +45,15 @@ public class HomeController {
         }
     }
 
-
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "login";
     }
 
- @Autowired
+    @Autowired
+    private RoomService roomService;
+    @Autowired
     private RoomTypeService roomTypeService;
 
     @GetMapping("/room")
@@ -88,5 +73,5 @@ public class HomeController {
         model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
         return "home";
     }
-    
+
 }
