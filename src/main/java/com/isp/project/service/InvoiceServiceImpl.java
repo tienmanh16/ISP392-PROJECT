@@ -7,7 +7,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isp.project.dto.InvoiceDetailDTO;
 import com.isp.project.model.Invoice;
 import com.isp.project.repositories.InvoiceRepository;
 @Service

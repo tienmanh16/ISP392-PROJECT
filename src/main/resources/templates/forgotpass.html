@@ -37,42 +37,34 @@
             <div class="inner-container">
                 <div class="right-box">
                     <div class="form-sec">
-                        <div class="form-box">
-                            <div class="title">
-                                <h3>Login</h3>
-                            </div>
+                        <div class="title">
+                            <h3>Forgot Password?</h3>
+                        </div>
 
-                            <form th:action="@{/login}" th:object="${employee}" method="post">
-                                <div th:if="${loginError}" class="alert alert-danger" role="alert">
-                                    <p th:text="${loginError}"></p>
+                        <div class="form-box two">
+                        <div class="">
+                            <form th:action="@{/forgotPassword}" method="post">
+                                <div th:if="${error}" class="alert alert-danger" role="alert">
+                                    <p th:text="${error}"></p>
                                 </div>
-                                <div class="form_boxes">
-                                    <label>Username</label>
-                                    <input type="text" name="username" placeholder="enter" required />
-                                </div>
-                                <div class="form_boxes">
-                                    <label>Password</label>
-                                    <input type="password" name="password" placeholder="at least 6 character"
-                                        required />
+                                <div th:if="${message}" class="alert alert-success" role="alert">
+                                    <p th:text="${message}"></p>
                                 </div>
 
-                                <div class="btn-box">
-                                    <!-- <label class="contain">Remember me
-                                                <input type="checkbox" checked="checked">
-                                                <span class="checkmark"></span>
-                                            </label> -->
-                                    <a href="/forgotpass" class="pasword-btn">Forgotten password?</a>
+                                <div class="form_boxes">
+                                    <label>Email</label>
+                                    <input type="email" name="email" placeholder="123@gmail.com" required/>
                                 </div>
+
                                 <div class="form-submit">
-                                    <button type="submit" class="theme-btn">Login
-                                    </button>
+                                    <button type="submit" class="theme-btn">Send password to Gmail</button>
                                 </div>
                             </form>
+                        </div>
                         </div>
                     </div>
                 </div>
             </div>
-    </div>
     </div>
     </section>
     <!-- End login-section -->
