@@ -77,18 +77,18 @@
                                 <h6 class="title">Status</h6>
                                 <div class="cheak-box">
                                     <label class="contain">
-                                        Phong trong
-                                        <input type="radio" name="statusFilter" value="Phong trong">
+                                        <h6>Phòng trống</h6>
+                                        <input type="radio" name="statusFilter" value="Phòng trống">
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="contain">
-                                        Phong dang thue
-                                        <input type="radio" name="statusFilter" value="Phong dang thue">
+                                        <h6>Phòng đang thuê</h6>
+                                        <input type="radio" name="statusFilter" value="Phòng đang thuê">
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="contain">
-                                        Phong da dat
-                                        <input type="radio" name="statusFilter" value="Phong da dat">
+                                        <h6>Phòng đã đặt</h6>
+                                        <input type="radio" name="statusFilter" value="Phòng đã đặt">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
@@ -171,7 +171,7 @@
                                             <li><i class="fa fa-star"></i></li> 
                                         </ul> 
                                         <p><h10 th:text="${room.status}"></h10></p>
-                                        <h10 th:text="${room.roomTypeName}"></h10> 
+                                        <p><h10 th:text="${room.roomTypeName}"></h10></p>
                                         <div><button class="btn js-buy-ticket">Sửa Thông Tin</button></div>
                                     </div>
                                 </div>

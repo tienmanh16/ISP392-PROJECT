@@ -20,14 +20,10 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "rt.des, "
            + "rt.priceHour, "
            + "rt.priceDay, "
-           + "r.status, "
-           + "i.id, "
-           + "i.image1, "
-           + "i.image2 "
+           + "r.status "
            + ") "
            + "FROM Room r "
-           + "JOIN r.roomType rt "
-           + "JOIN rt.imageDetail i")
+           + "JOIN r.roomType rt ")
     List<RoomDetailDTO> findAllRoomsWithDetails();
 
     @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
@@ -38,14 +34,10 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "rt.des, "
        + "rt.priceHour, "
        + "rt.priceDay, "
-       + "r.status, "
-       + "i.id, "
-       + "i.image1, "
-       + "i.image2 "
+       + "r.status "
        + ") "
        + "FROM Room r "
        + "JOIN r.roomType rt "
-       + "JOIN rt.imageDetail i "
        + "WHERE rt.id = :roomTypeId")
     List<RoomDetailDTO> findAllRoomsWithDetailsByRoomTypeId(@Param("roomTypeId") Integer roomTypeId);
 
@@ -57,14 +49,10 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "rt.des, "
        + "rt.priceHour, "
        + "rt.priceDay, "
-       + "r.status, "
-       + "i.id, "
-       + "i.image1, "
-       + "i.image2 "
+       + "r.status "
        + ") "
        + "FROM Room r "
        + "JOIN r.roomType rt "
-       + "JOIN rt.imageDetail i "
        + "WHERE r.status = :status")
     List<RoomDetailDTO> findAllRoomsByStatus(@Param("status") String status);
 
