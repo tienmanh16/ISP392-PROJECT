@@ -9,6 +9,8 @@ import com.isp.project.model.Role;
 @Service
 public interface RoleService {
 
+    Role findByName(String name);
+
     void delete(Role entity);
 
     void deleteAll();

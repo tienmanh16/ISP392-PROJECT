@@ -1,6 +1,7 @@
 package com.isp.project.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,15 @@ public class RoleServiceImpl implements RoleService{
     public List<Role> saveAll(List<Role> entities) {
         return (List<Role>) roleRepository.saveAll(entities);
     }
+
+    @Override
+    public Role findByName(String name) {
+        return roleRepository.findByName(name);
+    }
+
+ 
+
+  
 
     
 }

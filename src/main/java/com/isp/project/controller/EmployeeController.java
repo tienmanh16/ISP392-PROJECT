@@ -1,15 +1,9 @@
 package com.isp.project.controller;
 
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +14,7 @@ import com.isp.project.model.Employee;
 import com.isp.project.service.EmployeeService;
 import com.isp.project.service.RoleService;
 
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/employee")
@@ -43,41 +38,53 @@ public class EmployeeController {
         model.addAttribute("employee", employee);
         model.addAttribute("role", roleService.findAll());
         model.addAttribute("action", "/employee/saveOrUpdate");
-        return "addEmployee";
+        return "addEm";
     }
 
     @PostMapping("/saveOrUpdate")
-    public String save(Model model, @ModelAttribute("employee") Employee employee) {
-        Employee existingEmployee = employeeService.findById(employee.getId());
+public String save(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+        model.addAttribute("role", roleService.findAll());
+        model.addAttribute("action", "/employee/saveOrUpdate");
+        return "addEmployee";
+    }
+
+    Employee existingEmployee = employeeService.findById(employee.getId());
     if (existingEmployee != null) {
-        //save
+        // Update the existing employee
+        existingEmployee.setFullName(employee.getFullName());
+        existingEmployee.setAddress(employee.getAddress());
+        existingEmployee.setEmail(employee.getEmail());
+        existingEmployee.setIdenId(employee.getIdenId());
+        existingEmployee.setUsername(employee.getUsername());
+        existingEmployee.setPassword(employee.getPassWord());
+        existingEmployee.setPhone(employee.getPhone());
+        existingEmployee.setDob(employee.getDob());
+        existingEmployee.setRole(roleService.findByName(employee.getRole().getName()));
+        employeeService.save(existingEmployee);
     } else {
-        // Add new staff
+        // Add new employee
         employeeService.save(employee);
     }
     return "redirect:/employee/list";
-    }
-
+}
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable("id") int id) {
         Employee employee = employeeService.findById(id);
         if (employee != null) {
+            model.addAttribute("role", roleService.findAll());
             model.addAttribute("employee", employee);
         } else {
+            model.addAttribute("role", roleService.findAll());
             model.addAttribute("employee", new Employee());
         }
         model.addAttribute("action", "/staffs/saveOrUpdate");
-        return "viewEmployee";
+        return "addEmployee";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         employeeService.deleteById(id);
-        List<Employee> employees = employeeService.findAll();
-        for (int i = 0; i < employees.size(); i++) {
-            employees.get(i).setId(i + 1);
-            employeeService.save(employees.get(i));
-        }
         return "redirect:/employee/list";
     }
     

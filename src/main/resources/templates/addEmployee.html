@@ -19,7 +19,7 @@
 			style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; margin: 0 auto; padding: 20px;">
 			<div class="col-sm-12">
 
-				<h2 class="myclass">Add Employee</h2>
+				<h2 class="myclass">Edit Employee</h2>
 				<form th:action="@{/employee/saveOrUpdate}" th:object="${employee}" method="post" enctype="multipart/form-data">
 					<div class="form-group">
 						<label>Empoyee ID</label> <input type="text" th:field="*{id}" class="form-control" name="id" placeholder="Enter id" id="id" value="">
@@ -69,7 +69,7 @@
 					</div>
 
 					<div class="form-group">
-						<label>Password</label> <input type="password" th:field = "*{password}"  class="form-control" name="password" placeholder="Enter password" id="password" value="">
+						<label>Password</label> <input type="text" th:field = "*{password}"  class="form-control" name="password" placeholder="Enter password" id="password" value="">
 					</div>
 					
 					<!-- <div class="form-group">
@@ -77,13 +77,9 @@
 					</div> -->
 					
 					
-					<div class="form-group">
-						<label for="comment">Notes:</label>
-						<textarea class="form-control" rows="3" id="notes" name="notes"></textarea>
-					</div>
 					<button type="submit" class="btn btn-primary">Save</button>
 					<button type="reset" class="btn btn-primary">Cancel</button>
-					<a class="btn btn-primary" href="/staffs/list">Display List Staff</a>
+					<a class="btn btn-primary" href="/employee/list">Display List Employee</a>
 				</form>
 			</div>
 		</div>
