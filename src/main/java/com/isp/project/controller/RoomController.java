@@ -3,6 +3,8 @@ package com.isp.project.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -76,10 +78,24 @@ public class RoomController {
         // }
     }
 
-    @GetMapping("/list/{RoomTypeID}/delete")
-    public String delete(@PathVariable("RoomTypeID") Integer id, Model model) {
-        roomTypeService.delete(id);
-        return "redirect:/roomcategory";
+    // @GetMapping("/list/{RoomTypeID}/delete")
+    // public String delete(@PathVariable("RoomTypeID") Integer id, Model model) {
+    //     roomTypeService.delete(id);
+    //     return "redirect:/roomcategory";
+    // }
+
+    @GetMapping("/delete/{RoomTypeID}")
+    public ResponseEntity<String> deleteBooking(@PathVariable("RoomTypeID") Integer id) {
+        try {
+            boolean deleted = roomTypeService.delete(id);;
+            if (deleted) {
+                return ResponseEntity.ok("Booking deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete booking");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
     }
 
 }

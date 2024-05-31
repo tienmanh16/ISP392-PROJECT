@@ -79,14 +79,15 @@
 						      <td th:text="${list.PricePerHour}"></td>
 						      <td th:text="${list.PricePerDay}"></td>
 						      <td><a th:href="@{/list/{RoomTypeID}/edit(RoomTypeID=${list.RoomTypeID})}" class="ti-menu"></a></td>
-						      <td><a th:href="@{/list/{RoomTypeID}/delete(RoomTypeID=${list.RoomTypeID})}" class="btn btn-danger ti-close"></a></td>
+						      <!-- <td><a th:href="@{/list/{RoomTypeID}/delete(RoomTypeID=${list.RoomTypeID})}" class="btn btn-danger ti-close"></a></td> -->
+							  <td><a
+								href="javascript:void(0);"
+								th:onclick="'confirmDelete(' + ${list.RoomTypeID} + ');'"
+								class="btn btn-danger ti-close"
+							  ></a>
+							</td>
+	  
 						    </tr>
-
-						    
-
-
-
-						    
 						  </tbody>
 						</table>
 					</div>
@@ -94,6 +95,40 @@
 			</div>
 		</div>
 	</section>
+	<script>
+		function confirmDelete(RoomTypeID) {
+			if (confirm('Are you sure you want to delete it?')) {
+				deleteBooking(RoomTypeID);
+			}
+		}
+  
+		function deleteBooking(RoomTypeID) {
+	  fetch(`/delete/${RoomTypeID}`, { // Ensure the endpoint matches the controller endpoint
+		  method: 'GET'
+	  })
+	  .then(response => {
+		  if (!response.ok) {
+			  throw new Error("Failed to delete booking");
+		  }
+		  return response.text(); // Read the response text
+	  })
+	  .then(message => {
+		  if (message === "Booking deleted successfully") {
+			  alert(message);
+			  location.reload(); // Reload the page to reflect the deletion
+		  } else {
+			  throw new Error(message); // If the message is not expected, throw an error
+		  }
+	  })
+	  .catch(error => {
+		  console.error('Error:', error);
+		  alert("An error occurred: " + error.message);
+	  });
+  }
+  
+  
+	</script>
+  
 
 	
 </div>
