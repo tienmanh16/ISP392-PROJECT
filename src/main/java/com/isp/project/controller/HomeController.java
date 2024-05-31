@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.isp.project.model.Employee;
 import com.isp.project.service.RoomService;
 import com.isp.project.service.RoomTypeService;
-import com.isp.project.service.UserService;
+import com.isp.project.service.EmployeeService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 public class HomeController {
 
     @Autowired
-    private UserService userService;
+    private EmployeeService userService;
 
     @GetMapping("/login")
     public String login() {

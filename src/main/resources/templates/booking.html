@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Booking Room</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <link
+      rel="stylesheet"
+      th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}"
+    />
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <link
+      rel="stylesheet"
+      th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}"
+    />
+    <link rel="stylesheet" th:href="@{/css/AdminLTE.css}" />
+    <!-- thư viện để add header và footer  -->
+
+    <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}" />
+    <link th:href="@{/css/mmenu.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.copy.css}" rel="stylesheet" />
+
+    <link
+      rel="shortcut icon"
+      th:href="@{/images/favicon.png}"
+      type="image/x-icon"
+    />
+    <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon" />
+
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+  </head>
+  <body>
+    <div class="boxcar-wrapper">
+      <header
+        class="boxcar-header header-style-v1 style-two inner-header cus-style-1"
+      >
+        <div th:replace="~{fragments/header :: header}"></div>
+      </header>
+
+      <!-- thêm class layout-radius để fix header  -->
+      <section class="ftco-section layout-radius">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+              <h2 class="heading-section">Đặt phòng</h2>
+            </div>
+          </div>
+          <div class="box">
+    <div class="box-header d-flex justify-content-between align-items-center">
+        <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a>
+        <form th:action="@{/booking}" method="get" class="form-inline ml-auto">
+            <div class="input-group" style="width: 200px">
+                <input
+                type="text"
+                name="table_search"
+                class="form-control form-control-sm"
+                placeholder="Search"
+                th:value="${query}" />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-default btn-sm">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+        
+        
+          <div class="row">
+            <div class="col-md-12">
+              <div class="table-wrap">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Số phiếu thuê</th>
+                      <th>Tên khách hàng</th>
+                      <th>Ngày lập phiếu</th>
+                      <th>Tên nhân viên</th>
+                      <th>Chi tiết</th>
+                      <th>xoá</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="booking : ${listBooking}">
+                      <td th:text="${booking.bookingID}"></td>
+                      <td th:text="${booking.customerName}"></td>
+                      <td><span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span></td>
+                      <td th:text="${booking.employeeName}"></td>
+                      <td><a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-menu"></a></td>
+                      <td><a
+                          href="javascript:void(0);"
+                          th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'"
+                          class="btn btn-danger ti-close"
+                        ></a>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <script th:src="@{/js/popper.js}"></script>
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <script th:src="@{/js/main.js}"></script>
+
+    <!-- thư viện để add header và footer  -->
+
+    <div class="scroll-to-top scroll-to-target" data-target="html">
+      <span class="fa fa-angle-up"></span>
+    </div>
+
+    <script>
+      function confirmDelete(id) {
+          if (confirm('Are you sure you want to delete it?')) {
+              deleteBooking(id);
+          }
+      }
+
+      function deleteBooking(id) {
+    fetch(`/delete/${id}`, { // Ensure the endpoint matches the controller endpoint
+        method: 'POST'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to delete booking");
+        }
+        return response.text();
+    })
+    .then(message => {
+        if (message === "Booking deleted successfully") {
+            alert(message);
+            location.reload(); // Reload the page to reflect the deletion
+        } else {
+            throw new Error(message); // If the message is not expected, throw an error
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred: " + error.message);
+    });
+}
+
+
+  </script>
+    
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+    <script th:src="@{/js/slick.min.js}"></script>
+    <script th:src="@{/js/slick-animation.min.js}"></script>
+    <script th:src="@{/js/jquery.fancybox.js}"></script>
+    <script th:src="@{/js/wow.js}"></script>
+    <script th:src="@{/js/appear.js}"></script>
+    <script th:src="@{/js/mixitup.js}"></script>
+    <script th:src="@{/js/knob.js}"></script>
+    <script th:src="@{/js/mmenu.js}"></script>
+    <script th:src="@{/js/main.copy1.js}"></script>
+  </body>
+</html>
+
+
