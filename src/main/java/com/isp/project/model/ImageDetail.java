@@ -29,5 +29,5 @@ public class ImageDetail {
     @ManyToOne
     @JoinColumn(name = "RoomTypeID")
     private RoomType roomType;
-
+//ok
 }
