@@ -24,11 +24,11 @@
 					</div> -->
                     <div class="form-group">
                         <label>Full Name</label> <input type="text" th:field="*{fullName}" class="form-control"
-                            name="name" placeholder="Enter name" id="name" value="">
+                            name="name" placeholder="Enter name" id="name" value="" required>
                     </div>
                     <div class="form-group">
-                        <label>Dob</label> <input type="text" th:field="*{dob}" class="form-control" name="name"
-                            placeholder="Enter name" id="name" value="">
+                        <label>Dob</label> <input type="text" th:field="*{dob}" class="form-control" name="dob" placeholder="Enter dob" id="dob"
+                            value="" required>
                     </div>
                     <div class="form-group">
                         <label>Choose Role</label>
@@ -54,31 +54,34 @@
 
                     <div class="form-group">
                         <label>CCCD</label> <input type="text" th:field="*{idenId}" class="form-control" name="idenId"
-                            placeholder="Enter CCCD" id="idenId" value="">
+                            placeholder="Enter CCCD" id="idenId" value="" required>
                     </div>
 
                     <div class="form-group">
                         <label>Phone</label> <input type="tel" th:field="*{phone}" class="form-control" name="phone"
-                            placeholder="Enter phone" id="phone" value="">
+                            placeholder="Enter phone" id="phone" value="" required>
                     </div>
                     <div class="form-group">
-                        <label>Email</label> <input type="text" th:field="*{email}" class="form-control" name="email"
-                            placeholder="Enter email" id="email" value="">
+                        <label>Email</label> <input type="email" th:field="*{email}" class="form-control" name="email" placeholder="Enter email"
+                            id="email" value="" required>
                     </div>
 
                     <div class="form-group">
                         <label>User Name</label> <input type="text" th:field="*{username}" class="form-control"
-                            name="username" placeholder="Enter username" id="username" value="">
+                            name="username" placeholder="Enter username" id="username" value="" required>
                     </div>
 
                     <div class="form-group">
                         <label>Password</label> <input type="password" th:field="*{password}" class="form-control"
-                            name="password" placeholder="Enter password" id="password" value="">
+                            name="password" placeholder="Enter password" id="password" value="" required>
                     </div>
 
                     <!-- <div class="form-group">
 						<label>Salary</label> <input type="number" class="form-control" name="salary" placeholder="Enter salary" id="salary" value="">
 					</div> -->
+                    <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger" role="alert">
+                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                    </div>
 
                     <button type="submit" class="btn btn-primary">Save</button>
                     <button type="reset" class="btn btn-primary">Cancel</button>

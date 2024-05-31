@@ -15,6 +15,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Size;
 
 
 @Entity
@@ -60,6 +61,8 @@ public class Employee {
     }
 
     private String username;
+    
+    @Size(min = 6, message = "password must be at least 6 characters")
     private String password;
 
     public String getIdenId() {
