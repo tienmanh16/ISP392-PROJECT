@@ -13,7 +13,7 @@ import com.isp.project.dto.UserDTO;
 import com.isp.project.dto.UserResetPasswordDto;
 import com.isp.project.model.Email;
 import com.isp.project.model.Employee;
-import com.isp.project.service.UserService;
+import com.isp.project.service.EmployeeService;
 
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
@@ -26,7 +26,7 @@ public class ForgotPasswordController {
     HttpSession session;
 
     @Autowired
-    private UserService userService;
+    private EmployeeService userService;
 
     @Autowired
     Email emailService;

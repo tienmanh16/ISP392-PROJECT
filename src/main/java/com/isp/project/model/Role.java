@@ -2,6 +2,7 @@ package com.isp.project.model;
 
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,13 +17,14 @@ import lombok.AllArgsConstructor;
 @Table(name = "Role")
 public class Role {
     @Id
+    @Column(name="RoleID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name="RoleName")
     private String name;
 
     @OneToMany(fetch=FetchType.LAZY ,mappedBy = "role")
 	private Set<Employee> employee;
-
 
     public Role(){
 
@@ -43,15 +45,9 @@ public class Role {
     public void setEmployee(Set<Employee> employee) {
         this.employee = employee;
     }
-
-
-
     public int getId() {
         return id;
     }
-
-
-
     public void setId(int id) {
         this.id = id;
     }

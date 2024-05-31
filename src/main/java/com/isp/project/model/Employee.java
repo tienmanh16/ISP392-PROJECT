@@ -21,13 +21,15 @@ import jakarta.persistence.TemporalType;
 @Table(name = "Employee")
 public class Employee {
     @Id
-    @Column(name = "Id")
+    @Column(name = "EmployeeID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name="Name")
     private String fullName;
     private String email;
     private String phone;
     private String address;
+    @Column(name="IdentificationID")
     private String idenId;
     
     
@@ -41,7 +43,7 @@ public class Employee {
         this.address = address;
         this.idenId = idenId;
         this.dob = dob;
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
         this.role = role;
     }
@@ -57,7 +59,7 @@ public class Employee {
         return dob;
     }
 
-    private String userName;
+    private String username;
     private String password;
 
     public String getIdenId() {
@@ -68,17 +70,9 @@ public class Employee {
         this.idenId = idenId;
     }
 
-    @ManyToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name="RoleId")
+    @ManyToOne( fetch = FetchType.EAGER)
+    @JoinColumn(name="RoleID")
     private Role role;
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     public String getPassWord() {
         return password;
@@ -130,11 +124,11 @@ public class Employee {
     }
 
     public String getUsername() {
-        return userName;
+        return username;
     }
 
     public void setUsername(String username) {
-        this.userName = username;
+        this.username = username;
     }
 
     public String getPassword() {
