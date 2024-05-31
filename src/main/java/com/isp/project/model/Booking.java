@@ -26,9 +26,6 @@ public class Booking {
     @JoinColumn(name = "CustomerID")
     private Customer customerID;
 
-    @Column(name = "RoomID")
-    private int roomID;
-
     @Column(name = "BookingDate")
     private Date bookingDate;
 

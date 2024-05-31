@@ -33,8 +33,7 @@ public class Invoice {
     @Column(name = "InvoiceDate")
     private Date InvoiceDate;
 
-    
-
+   
     
 
 }

@@ -151,7 +151,7 @@
         if (!response.ok) {
             throw new Error("Failed to delete booking");
         }
-        return response.text(); // Read the response text
+        return response.text();
     })
     .then(message => {
         if (message === "Booking deleted successfully") {

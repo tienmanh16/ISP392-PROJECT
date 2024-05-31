@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.isp.project.dto.InvoiceDetailDTO;
 import com.isp.project.model.Invoice;
-import com.isp.project.repositories.InvoiceRepository;
+
 import com.isp.project.service.InvoiceService;
 
 
@@ -45,10 +45,15 @@ public class InvoidController {
         return "listInvoice.html"; 
     }  
     
-    // @GetMapping("/invoiceDetail/{invoiceID}")
-    // public String invoice(Model model, @PathVariable("invoiceID") int invoiceID){    
-    //     List<InvoiceDetailDTO> invoiceDetailDTO = this.invoiceService.findInvoiceDetail(invoiceID);  
-    //     model.addAttribute("InvoiceDetailDTO", invoiceDetailDTO);
-    //     return "invoice.html"; 
-    // }  
+    @GetMapping("/invoiceDetail/{invoiceID}")
+    public String invoice(Model model, @PathVariable("invoiceID") int invoiceID){    
+        List<InvoiceDetailDTO> invoiceDetailDTO = this.invoiceService.findInvoiceDetail(invoiceID); 
+        double totalSePrice = 0.0;
+        for (InvoiceDetailDTO dto : invoiceDetailDTO) {
+            totalSePrice += dto.getSePrice()*dto.getQuantity();
+        } 
+        model.addAttribute("InvoiceDetailDTO", invoiceDetailDTO);
+        model.addAttribute("totalSePrice", totalSePrice);
+        return "invoice.html"; 
+    }  
 }
