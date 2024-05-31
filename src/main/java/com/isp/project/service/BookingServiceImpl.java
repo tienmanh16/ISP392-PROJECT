@@ -102,9 +102,22 @@ public class BookingServiceImpl implements BookingService {
             // Create a new BookingRoomDTO with the extracted data
             BookingRoomDTO dto = new BookingRoomDTO(bookingId, customerName, checkInDate, checkOutDate, bookingDate,
                     customerQuantity, roomId, employeeName);
-                    findbyID.add(dto);
+            findbyID.add(dto);
         }
 
         return findbyID;
+    }
+
+    @Override
+    public boolean deleteBookingByRoomID(Integer id, Integer bookingID) {
+        try {
+
+            bookingRepository.deleteByRoomIDAndBookingID(id, bookingID);;
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
