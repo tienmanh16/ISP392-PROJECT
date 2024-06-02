@@ -50,8 +50,8 @@ public class Employee {
     @JoinColumn(name = "RoleID")
     private Role roleID;
 
-    @OneToMany(mappedBy = "employeeID")
-    private Set<Register> register;
+   
+   
 
    
 
