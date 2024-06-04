@@ -2,18 +2,25 @@ package com.isp.project.model;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Table(name = "BookingMapping")
+@Data
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+
 public class BookingMapping {
 
 
@@ -22,12 +29,18 @@ public class BookingMapping {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int bookingMappingID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RoomID")
+    @JsonBackReference
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Room roomID;
 
-    @ManyToOne
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BookingID")
+    @JsonBackReference
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Booking bookingID;
 
     @Column(name = "CheckInDate")
@@ -38,67 +51,6 @@ public class BookingMapping {
 
     @Column(name = "BookingTotalAmount")
     private int bookingTotalAmount;
-
-    public BookingMapping() {
-    }
-
-    public BookingMapping(int bookingMappingID, Room roomID, Booking bookingID, Date checkInDate, Date checkOutDate,
-            int bookingTotalAmount) {
-        this.bookingMappingID = bookingMappingID;
-        this.roomID = roomID;
-        this.bookingID = bookingID;
-        this.checkInDate = checkInDate;
-        this.checkOutDate = checkOutDate;
-        this.bookingTotalAmount = bookingTotalAmount;
-    }
-
-    public int getBookingMappingID() {
-        return bookingMappingID;
-    }
-
-    public void setBookingMappingID(int bookingMappingID) {
-        this.bookingMappingID = bookingMappingID;
-    }
-
-    public Room getRoomID() {
-        return roomID;
-    }
-
-    public void setRoomID(Room roomID) {
-        this.roomID = roomID;
-    }
-
-    public Booking getBookingID() {
-        return bookingID;
-    }
-
-    public void setBookingID(Booking bookingID) {
-        this.bookingID = bookingID;
-    }
-
-    public Date getCheckInDate() {
-        return checkInDate;
-    }
-
-    public void setCheckInDate(Date checkInDate) {
-        this.checkInDate = checkInDate;
-    }
-
-    public Date getCheckOutDate() {
-        return checkOutDate;
-    }
-
-    public void setCheckOutDate(Date checkOutDate) {
-        this.checkOutDate = checkOutDate;
-    }
-
-    public int getBookingTotalAmount() {
-        return bookingTotalAmount;
-    }
-
-    public void setBookingTotalAmount(int bookingTotalAmount) {
-        this.bookingTotalAmount = bookingTotalAmount;
-    }
 
     
     

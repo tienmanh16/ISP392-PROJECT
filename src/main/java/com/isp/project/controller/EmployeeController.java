@@ -57,7 +57,7 @@ public String save(Model model, @Valid @ModelAttribute("employee") Employee empl
         existingEmployee.setEmail(employee.getEmail());
         existingEmployee.setIdenId(employee.getIdenId());
         existingEmployee.setUsername(employee.getUsername());
-        existingEmployee.setPassword(employee.getPassWord());
+        existingEmployee.setPassword(employee.getPassword());
         existingEmployee.setPhone(employee.getPhone());
         existingEmployee.setDob(employee.getDob());
         existingEmployee.setRole(roleService.findByName(employee.getRole().getName()));
