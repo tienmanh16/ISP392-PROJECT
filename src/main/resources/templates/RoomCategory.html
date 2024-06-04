@@ -44,16 +44,16 @@
 			<div class="InputContainer" style="margin-bottom: 20px;">
 				<input placeholder="Search..." id="input" class="input" name="text" type="text">
 				
-			  </div>
+			</div>
 
 			  <!-- <div class="InputContainer" style="position: absolute; top: 210px; right: 280px;">
 				<input id="input" class="input" name="text" type="date">
 				
 			  </div> -->
-			  <div class="InputContainer" style="position: absolute; top: 210px; right: 280px;">
+			<div class="InputContainer" style="position: absolute; top: 150px; right: 150px;">
 				<a th:href = "@{/add-cate}">
 				<button id="addRoomType" class="button">Thêm loại phòng</button>
-			</a>
+				</a>
 			</div>
 			
 			<div class="row">
@@ -65,24 +65,24 @@
 						      <th>Category ID</th>
 						      <th>Name</th>
 							  <th>Description</th>
-						      <th>Price Per Hour</th>
-						      <th>Price Per Day</th>
+						      <th>Per Hour</th>
+						      <th>Per Day</th>
 						      <th>Update</th>
 						      <th>Delete</th>
 						    </tr>
 						  </thead>
 						  <tbody>
 						    <tr th:each="list : ${listRoomType}">
-						      <th scope="row" th:text="${list.RoomTypeID}"></th>
-							  <td th:text="${list.RoomTypeName}"></td>
-						      <td th:text="${list.Description}"></td>
-						      <td th:text="${list.PricePerHour}"></td>
-						      <td th:text="${list.PricePerDay}"></td>
-						      <td><a th:href="@{/list/{RoomTypeID}/edit(RoomTypeID=${list.RoomTypeID})}" class="ti-menu"></a></td>
-						      <!-- <td><a th:href="@{/list/{RoomTypeID}/delete(RoomTypeID=${list.RoomTypeID})}" class="btn btn-danger ti-close"></a></td> -->
+						      <th scope="row" th:text="${list.id}"></th>
+							  <td th:text="${list.name}"></td>
+						      <td th:text="${list.des}"></td>
+						      <td th:text="${list.priceHour}"></td>
+						      <td th:text="${list.priceDay}"></td>
+						      <td><a th:href="@{/list/{id}/edit(id=${list.id})}" class="ti-menu"></a></td>
+						      <!-- <td><a th:href="@{/list/{id}/delete(id=${list.id})}" class="btn btn-danger ti-close"></a></td> -->
 							  <td><a
 								href="javascript:void(0);"
-								th:onclick="'confirmDelete(' + ${list.RoomTypeID} + ');'"
+								th:onclick="'confirmDelete(' + ${list.id} + ');'"
 								class="btn btn-danger ti-close"
 							  ></a>
 							</td>

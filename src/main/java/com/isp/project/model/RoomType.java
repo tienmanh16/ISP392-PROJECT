@@ -1,100 +1,47 @@
 package com.isp.project.model;
 
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 
+
+@Data
 @Entity
 @Table(name = "RoomType")
 public class RoomType {
     @Id
-    @Column(name = "RoomTypeID")
-    private int RoomTypeID;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "RoomTypeID", nullable = false)
+    private int id;
 
-    @Column(name = "RoomTypeName")
-    private String RoomTypeName;
+    @Column(name = "RoomTypeName", nullable = false)
+    private String name;
 
-    @Column(name = "Description")
-    private String Description;
+    @Column(name = "Description", nullable = false)
+    private String des;
 
-    @ManyToOne
-    @JoinColumn(name="ImageID")
-    private ImageDetail imageDetail;
-    
+    @Column(name = "PricePerHour", nullable = false)
+    private int priceHour;
 
-    @Column(name = "PricePerHour")
-    private String PricePerHour;
+    @Column(name = "PricePerDay", nullable = false)
+    private int priceDay;
 
-    @Column(name = "PricePerDay")
-    private String PricePerDay;
-    
-    
-    public RoomType() {
-    }
+   @OneToMany(mappedBy = "roomType")
+   @JsonManagedReference
+   private List<ImageDetail> imageDetail;
 
-
-    public int getRoomTypeID() {
-        return RoomTypeID;
-    }
+   @OneToMany(mappedBy = "roomType")
+   @JsonManagedReference
+   private List<Room> room; 
 
 
-    public void setRoomTypeID(int roomTypeID) {
-        RoomTypeID = roomTypeID;
-    }
-
-
-    public String getRoomTypeName() {
-        return RoomTypeName;
-    }
-
-
-    public void setRoomTypeName(String roomTypeName) {
-        RoomTypeName = roomTypeName;
-    }
-
-
-    public String getDescription() {
-        return Description;
-    }
-
-
-    public void setDescription(String description) {
-        Description = description;
-    }
-
-
-    public ImageDetail getImageDetail() {
-        return imageDetail;
-    }
-
-
-    public void setImageDetail(ImageDetail imageDetail) {
-        this.imageDetail = imageDetail;
-    }
-
-
-    public String getPricePerHour() {
-        return PricePerHour;
-    }
-
-
-    public void setPricePerHour(String pricePerHour) {
-        PricePerHour = pricePerHour;
-    }
-
-
-    public String getPricePerDay() {
-        return PricePerDay;
-    }
-
-
-    public void setPricePerDay(String pricePerDay) {
-        PricePerDay = pricePerDay;
-    }
-
-    
-   
 }
