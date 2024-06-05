@@ -28,7 +28,7 @@ private EmployeeRepository employeeRepository;
         if (username == null || username.trim().isEmpty()) {
             return null;
         }
-        if (user != null && user.getPassWord().equals(password)) {
+        if (user != null && user.getPassword().equals(password)) {
             return user;
         } else {
             return null;

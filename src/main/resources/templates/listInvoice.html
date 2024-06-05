@@ -44,16 +44,19 @@
 			</div>
 
 			<div class="InputContainer" style="margin-bottom: 20px;">
-				<input placeholder="Search.." id="input" class="input" name="text" type="text">
+				<form>
+				<input placeholder="Search.." id="input" name="key"  class="input" type="text">
 				
-			  </div>
 
-			  <!-- <div class="InputContainer" style="position: absolute; top: 190px; right: 150px;">
-				<input id="input" class="input" name="text" type="date"> -->
+			</form>
+			  </div>
+			  <form >
+			  <div class="InputContainer" style="position: absolute; top: 190px; right: 150px;">
 				
-				<div class="InputContainer" style="position: absolute; top: 190px; right: 150px;">
-					<button id="addRoomType" class="button">Thêm loại phòng</button>
-				</div>
+				<input id="input" class="input" name="keyDate" type="date">
+				<button type="submit" class="submit-button"></button>
+			</form>
+				
 			  </div>
 			<div class="row">
 				<div class="col-md-12">
@@ -61,10 +64,11 @@
 						<table class="table table-striped">
 						  <thead>
 						    <tr>
-						      <th>Invoice</th>
+						      <th>Invoce</th>
 							  <th>Invoice Date</th>
 						      <th>Customer</th>
-						      <th>Total Amount</th>						      
+						      <th>Total Amount</th>
+						      
 						      <th>Details</th>
 						      
 						    </tr>
@@ -77,7 +81,7 @@
 						      <td th:text="${list.TotalAmount}"></td>
 						      
 						      
-						      <td ><a th:href="@{/invoice}" class="ti-menu"></a></td>
+						      <td ><a th:href="@{/invoiceDetail/{invoiceID}(invoiceID=${list.InvoiceID})}" class="ti-menu"></a></td>
 						      
 						    </tr>
 
@@ -119,4 +123,3 @@
 	<script th:src="@{/src/main/resources/static/js/main.js}"></script>
 	</body>
 </html>
-

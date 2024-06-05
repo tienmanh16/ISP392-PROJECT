@@ -1,6 +1,7 @@
 package com.isp.project.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +17,8 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "ImageDetail")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+
 public class ImageDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,5 +36,8 @@ public class ImageDetail {
     @JoinColumn(name = "RoomTypeID")
     @JsonBackReference
     private RoomType roomType;
+
+
+
 //ok
 }

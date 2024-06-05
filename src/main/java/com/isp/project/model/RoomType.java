@@ -2,6 +2,7 @@ package com.isp.project.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -17,6 +18,8 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name = "RoomType")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+
 public class RoomType {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -35,13 +38,11 @@ public class RoomType {
     @Column(name = "PricePerDay", nullable = false)
     private int priceDay;
 
-   @OneToMany(mappedBy = "roomType")
-   @JsonManagedReference
-   private List<ImageDetail> imageDetail;
+    @OneToMany(mappedBy = "roomType")
+    @JsonManagedReference
+    private List<Room> room;
 
-   @OneToMany(mappedBy = "roomType")
-   @JsonManagedReference
-   private List<Room> room; 
-
-
+    @OneToMany(mappedBy = "roomType")
+    @JsonManagedReference
+    private List<ImageDetail> imageDetail;
 }
