@@ -74,14 +74,14 @@ public class RoomController {
     //     return "redirect:/roomcategory";
     // }
 
-    @GetMapping("/delete/{RoomTypeID}")
+    @GetMapping("/deleteRo/{RoomTypeID}")
     public ResponseEntity<String> deleteBooking(@PathVariable("RoomTypeID") Integer id) {
         try {
             boolean deleted = roomTypeServiceImpl.delete(id);;
             if (deleted) {
-                return ResponseEntity.ok("Booking deleted successfully");
+                return ResponseEntity.ok("Room category deleted successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete booking");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete room category");
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());

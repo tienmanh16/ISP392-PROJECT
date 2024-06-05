@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" >
   <head>
-  	<title>Room Category</title>
+  	<title>Service Category</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -37,7 +37,7 @@
 		<div class="container">
 			<div class="row justify-content-center">
 				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Room Category Management</h2>
+					<h2 class="heading-section">Service Category Management</h2>
 				</div>
 			</div>
 
@@ -51,8 +51,8 @@
 				
 			  </div> -->
 			<div class="InputContainer" style="position: absolute; top: 150px; right: 150px;">
-				<a th:href = "@{/add-cate}">
-				<button id="addRoomType" class="button">Add Room Category</button>
+				<a th:href = "@{/add-secate}">
+				<button id="addServiceType" class="button">Add Service Category</button>
 				</a>
 			</div>
 			
@@ -64,25 +64,19 @@
 						    <tr>
 						      <th>Category ID</th>
 						      <th>Name</th>
-							  <th>Description</th>
-						      <th>Per Hour</th>
-						      <th>Per Day</th>
 						      <th>Update</th>
 						      <th>Delete</th>
 						    </tr>
 						  </thead>
 						  <tbody>
-						    <tr th:each="list : ${listRoomType}">
-						      <th scope="row" th:text="${list.id}"></th>
-							  <td th:text="${list.name}"></td>
-						      <td th:text="${list.des}"></td>
-						      <td th:text="${list.priceHour}"></td>
-						      <td th:text="${list.priceDay}"></td>
-						      <td><a th:href="@{/list/{id}/edit(id=${list.id})}" class="ti-menu"></a></td>
+						    <tr th:each="list : ${listServiceType}">
+						      <th scope="row" th:text="${list.SeTypeID}"></th>
+							  <td th:text="${list.SeTypeName}"></td>
+						      <td><a th:href="@{/listSe/{SeTypeID}/editservice(id=${list.SeTypeID})}" class="ti-menu"></a></td>
 						      <!-- <td><a th:href="@{/list/{id}/delete(id=${list.id})}" class="btn btn-danger ti-close"></a></td> -->
 							  <td><a
 								href="javascript:void(0);"
-								th:onclick="'confirmDelete(' + ${list.id} + ');'"
+								th:onclick="'confirmDelete(' + ${list.SeTypeID} + ');'"
 								class="btn btn-danger ti-close"
 							  ></a>
 							</td>
@@ -96,24 +90,24 @@
 		</div>
 	</section>
 	<script>
-		function confirmDelete(RoomTypeID) {
+		function confirmDelete(SeTypeID) {
 			if (confirm('Are you sure you want to delete it?')) {
-				deleteBooking(RoomTypeID);
+				deleteBooking(SeTypeID);
 			}
 		}
   
-		function deleteBooking(RoomTypeID) {
-	  fetch(`/deleteRo/${RoomTypeID}`, { // Ensure the endpoint matches the controller endpoint
+		function deleteBooking(SeTypeID) {
+	  fetch(`/deleteSe/${SeTypeID}`, { // Ensure the endpoint matches the controller endpoint
 		  method: 'GET'
 	  })
 	  .then(response => {
 		  if (!response.ok) {
-			  throw new Error("Failed to delete room category");
+			  throw new Error("Failed to delete service category");
 		  }
 		  return response.text(); // Read the response text
 	  })
 	  .then(message => {
-		  if (message === "Room category deleted successfully") {
+		  if (message === "Service category deleted successfully") {
 			  alert(message);
 			  location.reload(); // Reload the page to reflect the deletion
 		  } else {

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head  >
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+            
+        .product-form {
+display: flex;
+flex-direction: column;
+max-width: 400px;
+margin: auto;
+}
+
+.form-group {
+margin-bottom: 10px;
+}
+
+label {
+display: block;
+margin-bottom: 5px;
+}
+
+input {
+width: 100%;
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 4px;
+}
+
+input[type="submit"] {
+background-color: #4CAF50;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+input[type="submit"]:hover {
+background-color: #45a049;
+}
+
+    </style>
+</head>
+<body>
+    <!-- <h2>Add Service Type Category</h2> -->
+    <form action="#" th:action="@{/addServiceType}" th:object="${serviceType}" method="post">
+        <h1 style="color: #10ac2d">Add New Service Type Category</h1>
+
+    <div class="form-group">
+        <label for="name">RoomTypeName:</label>
+        <input type="text" th:field="*{SeTypeName}" required/>
+    </div>
+    
+    <input type="submit" value="Add"/>
+</form> 
+</body>
+</html>
