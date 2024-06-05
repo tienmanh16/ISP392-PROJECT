@@ -46,13 +46,14 @@ public String save(Model model, @Valid @ModelAttribute("employee") Employee empl
     if (bindingResult.hasErrors()) {
         model.addAttribute("role", roleService.findAll());
         model.addAttribute("action", "/employee/saveOrUpdate");
-        return "addEmployee";
+        return "editEm";
     }
 
     Employee existingEmployee = employeeService.findById(employee.getId());
     if (existingEmployee != null) {
         // Update the existing employee
         existingEmployee.setFullName(employee.getFullName());
+        existingEmployee.setGender(employee.getGender());
         existingEmployee.setAddress(employee.getAddress());
         existingEmployee.setEmail(employee.getEmail());
         existingEmployee.setIdenId(employee.getIdenId());
@@ -60,6 +61,7 @@ public String save(Model model, @Valid @ModelAttribute("employee") Employee empl
         existingEmployee.setPassword(employee.getPassword());
         existingEmployee.setPhone(employee.getPhone());
         existingEmployee.setDob(employee.getDob());
+        existingEmployee.setSalary(employee.getSalary());
         existingEmployee.setRole(roleService.findByName(employee.getRole().getName()));
         employeeService.save(existingEmployee);
     } else {
@@ -79,7 +81,7 @@ public String save(Model model, @Valid @ModelAttribute("employee") Employee empl
             model.addAttribute("employee", new Employee());
         }
         model.addAttribute("action", "/staffs/saveOrUpdate");
-        return "addEmployee";
+        return "editEm";
     }
 
     @GetMapping("/delete/{id}")

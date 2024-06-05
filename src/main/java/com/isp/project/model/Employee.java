@@ -22,12 +22,14 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Size;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "Employee")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 
+@NoArgsConstructor
 public class Employee {
     @Id
     @Column(name = "EmployeeID")
@@ -36,39 +38,37 @@ public class Employee {
 
     @Column(name="Name")
     private String fullName;
-
+private int gender;
     private String email;
     private String phone;
     private String address;
     @Column(name="IdentificationID")
     private String idenId;
-    
-    
+    private int salary;
 
-    public Employee(int id, String fullName, String email, String phone, String address, String idenId, Date dob,
-            String userName, String password, Role role) {
+    
+    public Employee(int id, String fullName, int gender, String email, String phone, String address, String idenId, int salary, Date dob, String username, String password, List<Register> register, Role role) {
         this.id = id;
         this.fullName = fullName;
+        this.gender = gender;
         this.email = email;
         this.phone = phone;
         this.address = address;
         this.idenId = idenId;
+        this.salary = salary;
         this.dob = dob;
-        this.username = userName;
+        this.username = username;
         this.password = password;
+        this.register = register;
         this.role = role;
     }
+    
+
+
 
     @DateTimeFormat(pattern ="dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date dob;
-
-    public Employee() {
-    }
-   
-    public Date getDob() {
-        return dob;
-    }
 
     private String username;
     
@@ -181,4 +181,33 @@ public class Employee {
     @JsonBackReference
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Role role;
+
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public List<Register> getRegister() {
+        return register;
+    }
+
+    public void setRegister(List<Register> register) {
+        this.register = register;
+    }
 }

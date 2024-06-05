@@ -81,6 +81,7 @@
                                 <tr th:each="list : ${emList}">
                                     <th th:text="${list.id}"></th>
                                     <td th:text="${list.fullName}"></td>
+                                    <td th:text="${list.gender == 1 ? 'Male' : 'Female'}"></td>
                                     <td th:text="${list.dob}"></td>
                                     <td th:text="${list.role.name}"></td>
                                     <td th:text="${list.address}"></td>
@@ -89,6 +90,7 @@
                                     <td th:text="${list.email}"></td>
                                     <td th:text="${list.username}"></td>
                                     <td th:text="${list.password}"></td>
+                                    <td th:text="${list.salary}"></td>
                                     <td><a th:href="@{'/employee/edit/'+${list.id}}" class="ti-menu"></a></td>
                                     <td><a th:href="@{'/employee/delete/'+${list.id}}" class="btn btn-danger ti-close"></a></td>
 

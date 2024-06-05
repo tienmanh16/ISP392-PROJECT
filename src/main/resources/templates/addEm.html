@@ -19,9 +19,6 @@
                 <h2 class="myclass">Add Employee</h2>
                 <form th:action="@{/employee/saveOrUpdate}" th:object="${employee}" method="post"
                     enctype="multipart/form-data">
-                    <!-- <div class="form-group">
-						<label>Empoyee ID</label> <input type="text" th:field="*{id}" class="form-control" name="id" placeholder="Enter id" id="id" value="">
-					</div> -->
                     <div class="form-group">
                         <label>Full Name</label> <input type="text" th:field="*{fullName}" class="form-control"
                             name="name" placeholder="Enter name" id="name" value="" required>
@@ -36,17 +33,17 @@
                             <option th:each="role: ${role}" th:value="${role.id}" th:text="${role.name}"></option>
                         </select>
                     </div>
-                    <!-- <div class="form-group">
-						<label>Gender</label>
-						<div class="radio"> -->
-                    <!--value = 1 => Nam| 0 =>Nu -->
-                    <!-- <label class="checkbox-inline"> <input type="radio"
-								name="gender" value="1" id="gender1">Male
-							</label> <label class="checkbox-inline"> <input type="radio"
-								name="gender" checked="checked" value="0" id="gender2">Female
-							</label>
-						</div>
-					</div> -->
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <div class="radio">
+                            <label class="checkbox-inline">
+                                <input type="radio" th:field="*{gender}" value="1">Male
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" th:field="*{gender}" value="0">Female
+                            </label>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label>Address</label> <input type="text" th:field="*{address}" class="form-control"
                             name="address" placeholder="Enter address" id="address" value="">
@@ -76,9 +73,10 @@
                             name="password" placeholder="Enter password" id="password" value="" required>
                     </div>
 
-                    <!-- <div class="form-group">
-						<label>Salary</label> <input type="number" class="form-control" name="salary" placeholder="Enter salary" id="salary" value="">
-					</div> -->
+                    <div class="form-group">
+                        <label>Salary</label> <input type="number" th:field="*{salary}" class="form-control" name="salary"
+                            placeholder="Enter salary" id="salary" value="">
+                    </div>
                     <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger" role="alert">
                         <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
                     </div>
