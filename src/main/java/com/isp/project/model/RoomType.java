@@ -22,20 +22,20 @@ import lombok.Data;
 
 public class RoomType {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RoomTypeID", nullable = false)
     private int id;
 
-    @Column(name = "RoomTypeName", nullable = false)
+    @Column(name = "RoomTypeName")
     private String name;
 
-    @Column(name = "Description", nullable = false)
+    @Column(name = "Description")
     private String des;
 
-    @Column(name = "PricePerHour", nullable = false)
+    @Column(name = "PricePerHour")
     private String priceHour;
 
-    @Column(name = "PricePerDay", nullable = false)
+    @Column(name = "PricePerDay")
     private String priceDay;
 
     @OneToMany(mappedBy = "roomType")
