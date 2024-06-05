@@ -37,106 +37,49 @@
             <div class="inner-container">
                 <div class="right-box">
                     <div class="form-sec">
-                        <nav>
-                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home"
-                                    aria-selected="true">Sign In</button>
-                                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab"
-                                    data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile"
-                                    aria-selected="false">Forgot Password?</button>
+                        <div class="form-box">
+                            <div class="title">
+                                <h3>Login</h3>
                             </div>
-                        </nav>
-                        <div class="tab-content" id="nav-tabContent">
-                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                aria-labelledby="nav-home-tab">
-                                <div class="form-box">
-                                    <form>
-                                        <div class="form_boxes">
-                                            <label>Username</label>
-                                            <input type="text" name="name" placeholder="Creativelayer088" />
-                                        </div>
-                                        <div class="form_boxes">
-                                            <label>Password</label>
-                                            <input type="password" name="password" placeholder="********" />
-                                        </div>
-                                        <div class="btn-box">
-                                            <label class="contain">Remember me
+
+                            <form th:action="@{/login}" th:object="${employee}" method="post">
+                                <div th:if="${loginError}" class="alert alert-danger" role="alert">
+                                    <p th:text="${loginError}"></p>
+                                </div>
+                                <div class="form_boxes">
+                                    <label>Username</label>
+                                    <input type="text" name="username" placeholder="enter" required />
+                                </div>
+                                <div class="form_boxes">
+                                    <label>Password</label>
+                                    <input type="password" name="password" placeholder="at least 6 character"
+                                        required />
+                                </div>
+
+                                <div class="btn-box">
+                                    <!-- <label class="contain">Remember me
                                                 <input type="checkbox" checked="checked">
                                                 <span class="checkmark"></span>
-                                            </label>
-                                        </div>
-                                        <div class="form-submit">
-                                            <button type="submit" class="theme-btn">Login <img src="images/arrow.svg"
-                                                    alt="" />
-                                            </button>
-                                        </div>
-                                    </form>
+                                            </label> -->
+                                    <a href="/forgotpass" class="pasword-btn">Forgotten password?</a>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                                aria-labelledby="nav-profile-tab">
-                                <div class="form-box two">
-                                    <form>
-                                        <!-- <div class="form_boxes">
-                                            <label>Username</label>
-                                            <input type="text" name="name" placeholder="Creativelayer088" />
-                                        </div> -->
-                                        <div class="form_boxes">
-                                            <label>Email</label>
-                                            <input type="email" name="email" placeholder="Creative@gmail.com" />
-                                        </div>
-                                        <!-- <div class="form_boxes">
-                                            <label>Phone</label>
-                                            <input type="number" name="phone" placeholder="+67" />
-                                        </div>
-                                        <div class="form_boxes">
-                                            <label>Password</label>
-                                            <input type="password" name="password" placeholder="********" />
-                                        </div> -->
-                                        <!-- <div class="btn-box-three">
-                                            <label class="contain">Private seller
-                                                <input type="radio" checked="checked" name="radio">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                            <label class="contain">Business seller
-                                                <input type="radio" checked="checked" name="radio">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        </div> -->
-                                        <div class="form-submit">
-                                            <button type="submit" class="theme-btn">Login <img src="images/arrow.svg"
-                                                    alt="" />
-                                            </button>
-                                        </div>
-                                        <!-- <div class="btn-box">
-                                            <label class="contain">I accept the privacy policy
-                                                <input type="checkbox" checked="checked">
-                                                <span class="checkmark"></span>
-                                            </label>
-                                        </div> -->
-                                    </form>
-                                    <!-- <div class="btn-box-two">
-                                        <span>OR</span>
-                                        <div class="social-btns">
-                                            <a href="#" class="fb-btn"><i class="fa-brands fa-facebook-f"></i>Continue
-                                                Facebook</a>
-                                            <a href="#" class="fb-btn two"><i class="fa-brands fa-google"></i>Continue
-                                                Google</a>
-                                        </div>
-                                    </div> -->
+                                <div class="form-submit">
+                                    <button type="submit" class="theme-btn">Login
+                                    </button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        <!-- End login-section -->
+    </div>
+    </div>
+    </section>
+    <!-- End login-section -->
 
-        <!-- main footer -->
+    <!-- main footer -->
 
-        <!-- End boxcar-footer -->
+    <!-- End boxcar-footer -->
 
     </div><!-- End Page Wrapper -->
     <div th:replace="~{fragments/footer :: footer}"></div>

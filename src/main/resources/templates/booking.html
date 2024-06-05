@@ -98,7 +98,8 @@
                       <th>Ngày lập phiếu</th>
                       <th>Tên nhân viên</th>
                       <th>Chi tiết</th>
-                      <th>xoá</th>
+                      <th>Sửa</th>
+                      <th>Xoá</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -107,7 +108,8 @@
                       <td th:text="${booking.customerName}"></td>
                       <td><span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span></td>
                       <td th:text="${booking.employeeName}"></td>
-                      <td><a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-menu"></a></td>
+                      <td><a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-list"></a></td>
+                      <td><a th:href="@{'#?id=' + ${booking.bookingID}}" class="ti-pencil-alt"></a></td>                      
                       <td><a
                           href="javascript:void(0);"
                           th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'"
@@ -142,32 +144,26 @@
               deleteBooking(id);
           }
       }
-
+  
       function deleteBooking(id) {
-    fetch(`/delete/${id}`, { // Ensure the endpoint matches the controller endpoint
-        method: 'POST'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Failed to delete booking");
-        }
-        return response.text(); // Read the response text
-    })
-    .then(message => {
-        if (message === "Booking deleted successfully") {
-            alert(message);
-            location.reload(); // Reload the page to reflect the deletion
-        } else {
-            throw new Error(message); // If the message is not expected, throw an error
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert("An error occurred: " + error.message);
-    });
-}
-
-
+          fetch(`/delete/${id}`, { 
+              method: 'POST'
+          })
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error("Failed to delete booking");
+              }
+              return response.text(); 
+          })
+          .then(message => {
+              alert(message); 
+              location.reload();
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              alert("An error occurred: " + error.message);
+          });
+      }
   </script>
     
     <script th:src="@{/js/jquery.js}"></script>

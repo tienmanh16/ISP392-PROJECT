@@ -87,48 +87,48 @@
             <td th:text="${detail.customerQuantity}"></td>
             <td th:text="${detail.roomID}"></td>
             <td th:text="${detail.employeeName}"></td>
-            <td>
-              <a
-                href="javascript:void(0);"
-                th:onclick="'confirmDelete1(' + ${detail.roomID} + ',' + ${detail.bookingID} + ');'"
-                class="btn btn-danger ti-close"
-              ></a>
-            </td>
+            <td><a
+              href="javascript:void(0);"
+              th:onclick="'confirmDelete(' + ${detail.roomID} + ');'"
+              class="btn btn-danger ti-close"
+            ></a>
+          </td>
           </tr>
         </tbody>
       </table>
     </div>
     <script>
-      function confirmDelete1(roomid, bookingid) {
+      function confirmDelete(id) {
           if (confirm('Are you sure you want to delete it?')) {
-              deleteBooking1(roomid, bookingid);
+              deleteBooking(id);
           }
       }
-      
-      function deleteBooking1(roomid, bookingid) {
-          fetch(`/delete1/${roomid}/${bookingid}`, {
-              method: 'POST'
-          })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error("Failed to delete booking");
-              }
-              return response.text(); // Expecting a plain text response
-          })
-          .then(message => {
-              if (message === "Booking deleted successfully") {
-                  alert(message);
-                  location.reload(); // Reload the page to reflect the deletion
-              } else {
-                  throw new Error(message); // If the message is not expected, throw an error
-              }
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              alert("An error occurred: " + error.message);
-          });
-      }
-      </script>
-      
+
+      function deleteBooking(id) {
+    fetch(`/delete/${id}`, { // Ensure the endpoint matches the controller endpoint
+        method: 'GET'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to delete booking");
+        }
+        return response.text(); // Read the response text
+    })
+    .then(message => {
+        if (message === "Booking deleted successfully") {
+            alert(message);
+            location.reload(); // Reload the page to reflect the deletion
+        } else {
+            throw new Error(message); // If the message is not expected, throw an error
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred: " + error.message);
+    });
+}
+
+
+  </script>
   </body>
 </html>

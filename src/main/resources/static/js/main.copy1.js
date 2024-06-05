@@ -284,3 +284,70 @@
     preloader();
   });
 })(window.jQuery);
+
+
+
+//collection info
+submit.addEventListener("click", async (e) => {
+  e.preventDefault(); // Ngăn chặn hành vi mặc định
+
+  // Lấy giá trị từ các trường nhập liệu
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const email = document.getElementById("email").value;
+  const message = document.getElementById("message").value;
+
+  // Kiểm tra xem các trường đã được điền đầy đủ hay không
+  if (!name || !phone || !email || !message) {
+      alert("Please fill in all fields.");
+      return; // Dừng việc gửi form nếu có trường nào thiếu thông tin
+  }
+
+  // Kiểm tra tính hợp lệ của địa chỉ email
+  if (!validateEmail(email)) {
+      alert("Please enter a valid email address.");
+      return; // Dừng việc gửi form nếu địa chỉ email không hợp lệ
+  }
+
+  // Nếu tất cả các trường đã được điền đầy đủ và địa chỉ email hợp lệ, gửi dữ liệu lên Google Forms
+  const data = {
+      name: name,
+      phone: phone,
+      email: email,
+      message: message
+  };
+
+  await postGoogle(data);
+});
+
+// Hàm kiểm tra tính hợp lệ của địa chỉ email
+function validateEmail(email) {
+  const re = /\S+@\S+\.\S+/;
+  return re.test(String(email).toLowerCase());
+}
+
+async function postGoogle(data) {
+  const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLScPiI26u6TXXw3D-0sNVn_DXoRhiP9HdxLbQRHM2iUwrGX9tg/formResponse";
+  const formData = new FormData();
+  formData.append("entry.131724785", data.name);
+  formData.append("entry.1360198127", data.phone);
+  formData.append("entry.1601884560", data.email);
+  formData.append("entry.1221998928", data.message);
+
+  try {
+      const response = await fetch(formUrl, {
+          method: "POST",
+          body: formData,
+          mode: "no-cors" // Sử dụng no-cors để tránh lỗi CORS
+      });
+
+      // Kiểm tra nếu response không có trạng thái vì chế độ no-cors
+      alert("Form submitted successfully!");
+
+  } catch (error) {
+      console.error("Network error: ", error);
+      alert("There was an error submitting the form.");
+  }
+}
+
+

@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.BookingRoomDTO;
+import com.isp.project.model.Booking;
+import com.isp.project.model.BookingMapping;
+import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
+import com.isp.project.repositories.RegisterRepository;
 
 @Service
 
@@ -16,6 +20,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private BookingMappingRepository bookingMappingRepository;
+
+    @Autowired
+    private RegisterRepository registerRepository;
 
     @Override
     public List<BookingRoomDTO> getAllBooking() {
@@ -44,19 +54,41 @@ public class BookingServiceImpl implements BookingService {
         return bookingRoomDTOs;
     }
 
+    public void testPostMan(Integer id) {
+        bookingRepository.deleteFromBookingMapping(id);
+
+        //  bookingMappingRepository.deleteAllByBookingID(id);
+
+         //deleteById(bookingMappingRepository.getReferenceById(id).getBookingID());
+    }
+
     @Override
+    // public boolean deleteBookingRoom(Integer id) {
+    //     try {
+    //         bookingRepository.deleteFromRegister(id);
+    //         bookingRepository.deleteFromBookingMapping(id);
+    //         bookingRepository.deleteFromBooking(id);
+    //         return true;
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return false;
+    //     }
+    // }
     public boolean deleteBookingRoom(Integer id) {
         try {
             bookingRepository.deleteFromRegister(id);
             bookingRepository.deleteFromBookingMapping(id);
-            bookingRepository.deleteFromBooking(id);
+            
+            bookingRepository.deleteById(id);
+           
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-    
+
+
 
     @Override
     public List<BookingRoomDTO> getAllBookingByName(String name) {
@@ -110,10 +142,10 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public boolean deleteBookingByRoomID(Integer id, Integer bookingID) {
+    public boolean deleteBookingByRoomID(Integer id) {
         try {
 
-            bookingRepository.deleteByRoomIDAndBookingID(id, bookingID);;
+            bookingRepository.deleteByRoomID(id);
 
             return true;
         } catch (Exception e) {
@@ -121,4 +153,5 @@ public class BookingServiceImpl implements BookingService {
             return false;
         }
     }
+
 }

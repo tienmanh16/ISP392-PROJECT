@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<title>Employee</title>
+</head>
+<body>
+	<div class="container" style="margin-top: 10px;">
+		<div class="row"
+			style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; margin: 0 auto; padding: 20px;">
+			<div class="col-sm-12">
+
+				<h2 class="myclass">Edit Employee</h2>
+				<form th:action="@{/employee/saveOrUpdate}" th:object="${employee}" method="post" enctype="multipart/form-data">
+					
+					<div class="form-group">
+						<label>Empoyee ID</label> <input type="text" th:field="*{id}" class="form-control" name="id" placeholder="Enter id"
+							id="id" value="" readonly>
+					</div>
+					<div class="form-group">
+						<label>Full Name</label> <input type="text" th:field="*{fullName}" class="form-control" name="name"
+							placeholder="Enter name" id="name" value="" required>
+					</div>
+                    <div class="form-group">
+						<label>Dob</label> <input type="text" th:field="*{dob}" class="form-control" name="name" placeholder="Enter dob"
+							id="name" value="" required>
+					</div>
+					<div class="form-group">
+						<label>Choose Role</label>
+						<select th:field = "*{role}" class="form-control" id="departId" name="departId">
+							<option th:each ="role: ${role}"  th:value="${role.id}" th:text="${role.name}"></option>
+						</select>
+					</div>
+					<!-- <div class="form-group">
+						<label>Gender</label>
+						<div class="radio"> -->
+							<!--value = 1 => Nam| 0 =>Nu -->
+							<!-- <label class="checkbox-inline"> <input type="radio"
+								name="gender" value="1" id="gender1">Male
+							</label> <label class="checkbox-inline"> <input type="radio"
+								name="gender" checked="checked" value="0" id="gender2">Female
+							</label>
+						</div>
+					</div> -->
+					<div class="form-group">
+						<label>Address</label> <input type="text" th:field = "*{address}" 
+							class="form-control" name="address"
+							placeholder="Enter address" id="address" value="" required>
+					</div>
+
+					<div class="form-group">
+						<label>CCCD</label> <input type="text" th:field="*{idenId}" class="form-control" name="idenId" placeholder="Enter CCCD"
+							id="idenId" value="" required>
+					</div>
+
+					<div class="form-group">
+						<label>Phone</label> <input type="tel" th:field="*{phone}" class="form-control" name="phone" placeholder="Enter phone"
+							id="phone" value="" required>
+					</div>
+					<div class="form-group">
+						<label>Email</label> <input type="email" th:field="*{email}" class="form-control" name="email" placeholder="Enter email"
+							id="email" value="" required>
+					</div>
+
+					<div class="form-group">
+						<label>User Name</label> <input type="text" th:field="*{username}" class="form-control" name="username"
+							placeholder="Enter username" id="username" value="" required>
+					</div>
+
+					<div class="form-group">
+						<label>Password</label> <input type="text" th:field="*{password}" class="form-control" name="password"
+							placeholder="Enter password" id="password" value="" required>
+					</div>
+					<div th:if="${#fields.hasErrors('password')}"
+                                class="alert alert-danger" role="alert">
+                                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                            </div>
+					<!-- <div class="form-group">
+						<label>Salary</label> <input type="number" class="form-control" name="salary" placeholder="Enter salary" id="salary" value="">
+					</div> -->
+					
+					
+					<button type="submit" class="btn btn-primary">Save</button>
+					<button type="reset" class="btn btn-primary">Cancel</button>
+					<a class="btn btn-primary" href="/employee/list">Display List Employee</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

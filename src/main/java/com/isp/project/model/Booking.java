@@ -4,6 +4,10 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,21 +18,24 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "Booking")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+
 public class Booking {
     @Id
     @Column(name = "BookingID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int bookingID;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerID")
+    @JsonBackReference
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Customer customerID;
-
-    @Column(name = "RoomID")
-    private int roomID;
 
     @Column(name = "BookingDate")
     private Date bookingDate;
@@ -36,57 +43,18 @@ public class Booking {
     @Column(name = "CustomerQuantity")
     private int customerQuantity;
 
+    
     @OneToMany(mappedBy = "bookingID")
-    private Set<Register> register;
+    @JsonManagedReference
+    private List<Register> register;
 
      @OneToMany(mappedBy = "bookingID")
-    private List<BookingMapping> bookingMappings;
+     @JsonManagedReference
+    private List<BookingMapping> bookingMapping;
 
-    public int getBookingID() {
-        return bookingID;
-    }
+    @OneToMany(mappedBy = "booking")
+    @JsonManagedReference
+    private List<Invoice> invoice;
 
-    public void setBookingID(int bookingID) {
-        this.bookingID = bookingID;
-    }
-
-    
-    public Customer getCustomerID() {
-        return customerID;
-    }
-
-    
-
-    public void setCustomerID(Customer customerID) {
-        this.customerID = customerID;
-    }
-
-    public Date getBookingDate() {
-        return bookingDate;
-    }
-
-    public void setBookingDate(Date bookingDate) {
-        this.bookingDate = bookingDate;
-    }
-
-    public int getCustomerQuantity() {
-        return customerQuantity;
-    }
-
-    public void setCustomerQuantity(int customerQuantity) {
-        this.customerQuantity = customerQuantity;
-    }
-
-    public Booking() {
-    }
-
-    public Booking(int bookingID, Customer customerID, Date bookingDate, int customerQuantity) {
-        this.bookingID = bookingID;
-        this.customerID = customerID;
-        this.bookingDate = bookingDate;
-        this.customerQuantity = customerQuantity;
-    }
-
-    
-
+   
 }

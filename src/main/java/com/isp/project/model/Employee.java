@@ -1,10 +1,17 @@
 package com.isp.project.model;
 
-import java.sql.Date;
-import java.util.Set;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -12,82 +19,95 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "Employee")
-public class Employee {
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 
+public class Employee {
     @Id
     @Column(name = "EmployeeID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int employeeID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
-    @Column(name = "Name")
-    private String name;
+    @Column(name="Name")
+    private String fullName;
 
-    @Column(name = "Email")
     private String email;
-
-    @Column(name = "Phone")
     private String phone;
-
-    @Column(name = "Address")
     private String address;
-
-    @Column(name = "IdentificationID")
-    private String identificationID;
-
-    @Column(name = "Dob")
-    private Date dob;
-
-    @Column(name = "Username")
-    private String username;
-
-    @Column(name = "Password")
-    private String password;
-
-    @ManyToOne
-    @JoinColumn(name = "RoleID")
-    private Role roleID;
-
-   
-   
-
-   
-
+    @Column(name="IdentificationID")
+    private String idenId;
+    
     
 
-    public Employee(int employeeID, String name, String email, String phone, String address, String identificationID,
-            Date dob, String username, String password, Role roleID) {
-        this.employeeID = employeeID;
-        this.name = name;
+    public Employee(int id, String fullName, String email, String phone, String address, String idenId, Date dob,
+            String userName, String password, Role role) {
+        this.id = id;
+        this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.address = address;
-        this.identificationID = identificationID;
+        this.idenId = idenId;
         this.dob = dob;
-        this.username = username;
+        this.username = userName;
         this.password = password;
-        this.roleID = roleID;
+        this.role = role;
     }
+
+    @DateTimeFormat(pattern ="dd/MM/yyyy")
+    @Temporal(TemporalType.DATE)
+    private Date dob;
 
     public Employee() {
     }
-
-    public int getEmployeeID() {
-        return employeeID;
+   
+    public Date getDob() {
+        return dob;
     }
 
-    public void setEmployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    private String username;
+    
+    @Size(min = 6, message = "password must be at least 6 characters")
+    private String password;
+
+    public String getIdenId() {
+        return idenId;
     }
 
-    public String getName() {
-        return name;
+    public void setIdenId(String idenId) {
+        this.idenId = idenId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+   
+
+    public String getPassWord() {
+        return password;
+    }
+
+    public void setPassWord(String passWord) {
+        this.password = passWord;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getEmail() {
@@ -98,36 +118,20 @@ public class Employee {
         this.email = email;
     }
 
+    public String getTelephone() {
+        return phone;
+    }
+
+    public void setTelephone(String telephone) {
+        this.phone = telephone;
+    }
+
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getIdentificationID() {
-        return identificationID;
-    }
-
-    public void setIdentificationID(String identificationID) {
-        this.identificationID = identificationID;
-    }
-
-    public Date getDob() {
-        return dob;
-    }
-
-    public void setDob(Date dob) {
-        this.dob = dob;
     }
 
     public String getUsername() {
@@ -146,13 +150,35 @@ public class Employee {
         this.password = password;
     }
 
-    public Role getRoleID() {
-        return roleID;
+
+    public void setDob(Date dob) {
+        this.dob = dob;
     }
 
-    public void setRoleID(Role roleID) {
-        this.roleID = roleID;
+    public int getId() {
+        return id;
     }
 
-    
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    @OneToMany(mappedBy = "employeeID")
+     @JsonManagedReference
+    private List<Register> register;
+
+
+     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RoleID")
+    @JsonBackReference
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Role role;
 }

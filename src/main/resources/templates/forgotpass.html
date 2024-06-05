@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Mirrored from creativelayers.net/themes/boxcar-html/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 May 2024 03:28:16 GMT -->
+
+<head>
+    <meta charset="utf-8">
+    <title>BOXCAR | HTML Template</title>
+    <!-- Stylesheets -->
+    <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+    <link th:href="@{/css/mmenu.css}" rel="stylesheet">
+    <link th:href="@{/css/style.copy.css}" rel="stylesheet">
+
+    <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+    <link rel="icon" href="images/favicon.png" type="image/x-icon">
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+    <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+</head>
+
+<body>
+
+    <div class="boxcar-wrapper">
+
+        <!-- Main Header-->
+        <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+            <div th:replace="~{fragments/header :: header}"></div>
+        </header>
+        <!-- End header-section -->
+
+        <!-- login-section -->
+        <section class="login-section layout-radius">
+            <div class="inner-container">
+                <div class="right-box">
+                    <div class="form-sec">
+                        <div class="title">
+                            <h3>Forgot Password?</h3>
+                        </div>
+
+                        <div class="form-box two">
+                        <div class="">
+                            <form th:action="@{/forgotPassword}" method="post">
+                                <div th:if="${error}" class="alert alert-danger" role="alert">
+                                    <p th:text="${error}"></p>
+                                </div>
+                                <div th:if="${message}" class="alert alert-success" role="alert">
+                                    <p th:text="${message}"></p>
+                                </div>
+
+                                <div class="form_boxes">
+                                    <label>Email</label>
+                                    <input type="email" name="email" placeholder="123@gmail.com" required/>
+                                </div>
+
+                                <div class="form-submit">
+                                    <button type="submit" class="theme-btn">Send password to Gmail</button>
+                                </div>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    </section>
+    <!-- End login-section -->
+
+    <!-- main footer -->
+
+    <!-- End boxcar-footer -->
+
+    </div><!-- End Page Wrapper -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <!-- Scroll To Top -->
+    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+    <script th:src="@{/js/slick.min.js}"></script>
+    <script th:src="@{/js/slick-animation.min.js}"></script>
+    <script th:src="@{/js/jquery.fancybox.js}"></script>
+    <script th:src="@{/js/wow.js}"></script>
+    <script th:src="@{/js/appear.js}"></script>
+    <script th:src="@{/js/mixitup.js}"></script>
+    <script th:src="@{/js/knob.js}"></script>
+    <script th:src="@{/js/mmenu.js}"></script>
+    <script th:src="@{/js/main.copy1.js}"></script>
+</body>
+
+<!-- Mirrored from creativelayers.net/themes/boxcar-html/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 May 2024 03:28:16 GMT -->
+
+</html>

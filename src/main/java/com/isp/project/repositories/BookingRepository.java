@@ -34,6 +34,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "WHERE nb.RowNum = 1", nativeQuery = true)
     List<Object[]> findAllBookingRoom();
 
+    
+
 
     //Search Booking By Customer Name
     @Query(value = "WITH NumberedBookings AS ( " +
@@ -84,8 +86,6 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM BookingMapping bm " +
-                   "WHERE bm.BookingID = (SELECT TOP 1 BookingID FROM Booking WHERE BookingID = :bookingID) " +
-                   "AND bm.RoomID = (SELECT TOP 1 RoomID FROM BookingMapping WHERE RoomID = :roomID)", nativeQuery = true)
-    void deleteByRoomIDAndBookingID(@Param("bookingID") int bookingID, @Param("roomID") int roomID);
+    @Query("DELETE FROM BookingMapping b WHERE b.roomID = :roomID")
+    void deleteByRoomID(@Param("roomID") Integer roomID);
 }

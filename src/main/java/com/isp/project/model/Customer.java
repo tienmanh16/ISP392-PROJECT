@@ -4,6 +4,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,9 +14,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name="Customer")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 
 public class Customer {
 
@@ -41,81 +47,8 @@ public class Customer {
  private Date customerDob;
 
   @OneToMany(mappedBy = "customerID")
+   @JsonManagedReference
   private List<Booking> booking;
-
-public Customer() {
-}
-
-public Customer(int customerID, String customerName, String customerAddress, String customerPhone, String customerEmail,
-        String customerIdentificationID, Date customerDob) {
-    this.customerID = customerID;
-    this.customerName = customerName;
-    this.customerAddress = customerAddress;
-    this.customerPhone = customerPhone;
-    this.customerEmail = customerEmail;
-    this.customerIdentificationID =customerIdentificationID;
-    this.customerDob = customerDob;
-}
-
-public int getCustomerID() {
-    return customerID;
-}
-
-public void setCustomerID(int customerID) {
-    this.customerID = customerID;
-}
-
-public String getCustomerName() {
-    return customerName;
-}
-
-public void setCustomerName(String customerName) {
-    this.customerName = customerName;
-}
-
-public String getCustomerAddress() {
-    return customerAddress;
-}
-
-public void setCustomerAddress(String customerAddress) {
-    this.customerAddress = customerAddress;
-}
-
-public String getCustomerPhone() {
-    return customerPhone;
-}
-
-public void setCustomerPhone(String customerPhone) {
-    this.customerPhone = customerPhone;
-}
-
-public String getCustomerEmail() {
-    return customerEmail;
-}
-
-public void setCustomerEmail(String customerEmail) {
-    this.customerEmail = customerEmail;
-}
-
-public String getCustomerIdentificationID() {
-    return customerIdentificationID;
-}
-
-public void setCustomerIdentificationID(String customerIdentificationID) {
-    this.customerIdentificationID = customerIdentificationID;
-}
-
-public Date getCustomerDob() {
-    return customerDob;
-}
-
-public void setCustomerDob(Date customerDob) {
-    this.customerDob = customerDob;
-}
- 
-
-    
-
 
 
 }
