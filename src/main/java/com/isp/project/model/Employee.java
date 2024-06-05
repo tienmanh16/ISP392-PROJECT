@@ -1,8 +1,13 @@
 package com.isp.project.model;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -20,13 +26,17 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "Employee")
+@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+
 public class Employee {
     @Id
     @Column(name = "EmployeeID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name="Name")
     private String fullName;
+
     private String email;
     private String phone;
     private String address;
@@ -73,9 +83,7 @@ public class Employee {
         this.idenId = idenId;
     }
 
-    @ManyToOne( fetch = FetchType.EAGER)
-    @JoinColumn(name="RoleID")
-    private Role role;
+   
 
     public String getPassWord() {
         return password;
@@ -163,4 +171,14 @@ public class Employee {
         this.role = role;
     }
 
+    @OneToMany(mappedBy = "employeeID")
+     @JsonManagedReference
+    private List<Register> register;
+
+
+     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RoleID")
+    @JsonBackReference
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    private Role role;
 }

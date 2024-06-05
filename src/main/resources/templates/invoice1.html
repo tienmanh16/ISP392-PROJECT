@@ -226,20 +226,20 @@
                 <div class="col-10">
                     <div class="row bb pb-3">
                         <div class="col-7">
-                            <h2 th:text="${InvoiceDetailDTO[0].CustomerName}"></h2>
-                            <p class="address"> Invoice Date: <span th:text="${InvoiceDetailDTO[0].InvoiceDate}"></span>
+                            <h2 th:text="${booking.invoice[0].customerName}"></h2>
+                            <p class="address"> Invoice Date: <span th:text="${booking.Invoice[0].InvoiceDate}"></span>
                             </p>
-                            <p class="address">Invoice Number: <span th:text="${InvoiceDetailDTO[0].InvoiceID}"></span>
+                            <p class="address">Invoice Number: <span th:text="${booking.Invoice[0].InvoiceID}"></span>
                             </p>
                         </div>
                         <div class="col-5 ">
                             <h2></h2>
-                            <p class="address">Room Number: <span th:text="${InvoiceDetailDTO[0].RoomNumber}"></span>
+                            <p class="address">Room Number: <span th:text="${booking.BookingMapping[0].RoomID.RoomNum}"></span>
                             </p>
-                            <p class="address">Check-in Date: <span th:text="${InvoiceDetailDTO[0].CheckInDate}"></span>
+                            <p class="address">Check-in Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
                             </p>
                             <p class="address">Check-out Date: <span
-                                    th:text="${InvoiceDetailDTO[0].CheckOutDate}"></span></p>
+                                    th:text="${booking.invoice[0].invoiceDate}"></span></p>
                         </div>
                     </div>
                 </div>
@@ -256,12 +256,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="detail : ${InvoiceDetailDTO}">
-
-                            <td th:text="${detail.SeName}">$</td>
-                            <td th:text="${detail.SePrice}">$</td>
-                            <td th:text="${detail.Quantity}"></td>
-                            <td th:text="${totalSePrice}">$</td>
+                        <tr th:each="service : ${listService}">
+                            <td th:text="${service.seName}"></td>
+                            <td th:text="${service.sePrice}">$</td>
+                            <td>
+                                <span th:each="line : ${service.invoiceLine}">
+                                    <span th:text="${line.quantity}"></span><br/>
+                                    
+                                </span>
+                            </td>
+                            <td>
+                                <span th:each="line : ${service.invoiceLine}">
+                                    <span th:text="${line.invoiceTotalAmount}"></span><br/>
+                                    
+                                </span>
+                            </td>
+                            
+                            
+                            
+                           
                         </tr>
                     </tbody>
                 </table>
@@ -278,17 +291,17 @@
                         <table class="table border-0 table-hover">
                             <tr>
                                 <td>Service:</td>
-                                <td th:text="${totalSePrice} + ' $'">$</td>
+                                <td th:text="${totalSePrice}">$</td>
                             </tr>
                             <tr>
                                 <td>Room:</td>
-                                <td th:text="${InvoiceDetailDTO[0].InvoiceTotalAmount}">$</td>
+                                <td th:text="${totalAmountRoom}">$</td>
                             </tr>
 
                             <tfoot>
                                 <tr>
                                     <td>Total:</td>
-                                    <td th:text="${InvoiceDetailDTO[0].InvoiceTotalAmount} + ${totalSePrice} + ' $'">$
+                                    <td th:text="${totalAmountRoom} + ${totalSePrice}">$
                                     </td>
                                 </tr>
                             </tfoot>

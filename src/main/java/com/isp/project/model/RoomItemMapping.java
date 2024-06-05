@@ -11,34 +11,30 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
 @Data
-@Table(name="Register")
+@Table(name="RoomItemMapping")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 
-public class Register {
-
+public class RoomItemMapping {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "RegisterID")
-    private int registerID;
-    
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "EmployeeID")
-    @JsonBackReference
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Employee employeeID;
+    @Column(name = "RoomItemID")
+    private int RoomItemID;
 
+     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "RoomID")
+    @JsonBackReference
+    private Room room;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BookingID")
+    @JoinColumn(name = "ItemID")
     @JsonBackReference
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Booking bookingID;
+    private RoomItem roomItem;
 
-    
+    @Column(name="Quantity")
+    private int Quantity;
 }

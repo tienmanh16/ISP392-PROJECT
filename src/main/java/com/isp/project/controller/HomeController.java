@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.isp.project.model.Employee;
-import com.isp.project.service.RoomService;
-import com.isp.project.service.RoomTypeService;
 import com.isp.project.service.EmployeeService;
+import com.isp.project.service.RoomServiceImpl;
+import com.isp.project.service.RoomTypeServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -52,26 +52,48 @@ public class HomeController {
     }
 
     @Autowired
-    private RoomService roomService;
+    private RoomServiceImpl roomServiceImpl;
+
     @Autowired
-    private RoomTypeService roomTypeService;
+    private RoomTypeServiceImpl roomTypeServiceImpl;
 
     @GetMapping("/room")
     public String listRoom(Model model) {
-        model.addAttribute("rooms", roomService.getAllRoomsWithDetails());
+        model.addAttribute("roomTypes", roomTypeServiceImpl.getAllRoomTypesWithDetails());
+        model.addAttribute("rooms", roomServiceImpl.getAllRoomsWithDetails());
+        return "room";
+    }
+
+    @PostMapping("/filterRoomType")
+    public String filter(@RequestParam("selectedRoomTypeId") Integer id, Model model){
+        model.addAttribute("roomTypes", roomTypeServiceImpl.getAllRoomTypesWithDetails());
+        model.addAttribute("rooms", roomServiceImpl.getAllRoomsWithDetailsByRoomTypeId(id));
+        return "room";
+    }
+
+    @PostMapping("/filter-status")
+    public String filterStatus(@RequestParam("statusFilter") String status, Model model){
+        model.addAttribute("roomTypes", roomTypeServiceImpl.getAllRoomTypesWithDetails());
+        model.addAttribute("rooms", roomServiceImpl.getAllRoomsByStatus(status));
         return "room";
     }
 
     @GetMapping("/detail")
     public String detailR(@RequestParam("roomTypeId") Integer roomTypeId, Model model) {
-        model.addAttribute("roomType", roomTypeService.getRoomTypeDetailById(roomTypeId));
+        model.addAttribute("roomType", roomTypeServiceImpl.getRoomTypeDetailById(roomTypeId));
         return "detail";
     }
 
     @GetMapping("/home")
     public String room(Model model) {
-        model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
+        model.addAttribute("roomTypes", roomTypeServiceImpl.getAllRoomTypesWithDetails());
         return "home";
     }
+
+    @GetMapping("/contact")
+    public String contact() {
+        return "contact";
+    }
+    
 
 }
