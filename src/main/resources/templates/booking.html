@@ -26,7 +26,7 @@
     />
     <link rel="stylesheet" th:href="@{/css/AdminLTE.css}" />
     <!-- thư viện để add header và footer  -->
-
+    <link th:href="@{/css/modal.css}" rel="stylesheet">
     <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}" />
     <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}" />
@@ -46,6 +46,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
     />
+    
   </head>
   <body>
     <div class="boxcar-wrapper">
@@ -65,7 +66,13 @@
           </div>
           <div class="box">
     <div class="box-header d-flex justify-content-between align-items-center">
-        <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a>
+      
+      <!-- <a href="bookingdetail" class="btn js-buy-ticket"">+ Đặt phòng</a> -->
+        <!-- <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a> -->
+        <!-- <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a> -->
+        <div>
+          <button class="btn js-buy-ticket">+ Đặt phòng</button>
+      </div>
         <form th:action="@{/booking}" method="get" class="form-inline ml-auto">
             <div class="input-group" style="width: 200px">
                 <input
@@ -127,6 +134,187 @@
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
 
+    <!-- modal chứa cả các giao diện phủ lên -->
+<!-- <div class="modal js-modal">
+  <div class="window js-modal-window">
+      <div class="title">P01</div>
+      <div class="main">
+          <div class="header">
+              <div>
+                  <span class="material-icons">account_box</span>
+                  <span id="txblTenKH" class="text"></span>
+              </div>
+              <div>
+                  <span class="material-icons">calendar_today</span>
+                  <span id="txblNgayDen" class="text"></span>
+              </div>
+              <div>
+                  <span class="material-icons" id="icDayorHour">access_time</span>
+                  <span id="txblSoNgay" class="text"></span>
+              </div>
+              <div>
+                  <span class="material-icons">group</span>
+                  <span id="txblSoNguoi" class="text"></span>
+                  <span>người</span>
+              </div>
+              
+          </div>
+          <div class="lefttt">
+              <div class="list-view">
+                  <table border="1">
+                      <thead>
+                          <tr>
+                              <th>Dịch vụ</th>
+                              <th>SL</th>
+                              <th>Thành tiền</th>
+                          </tr>
+                      </thead>
+                      <tbody id="lvSuDungDV">
+                          <tr>
+                              <td>1</td>
+                              <td>alo</td>
+                              <td>123</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <button class="button green-button" id="btnThemDV">Thêm dịch vụ</button>
+          </div>
+          <div class="righttt">
+              <div class="list view">
+                  <p>Cap nhat tinh trang phong</p>
+                  <input type="text" name="t1" value="Phong dang thue">
+                  <br>
+                  <p>Cap nhat tinh trang don dep</p>
+                  <select>
+                      <option>Da don dep</option>
+                      <option>Chưa dọn dẹp</option>
+                  </select>
+              </div>
+          </div>
+      </div>
+      <div class="footer">
+          
+          <button class="button green-button" id="btnLuu">Lưu</button>
+          <button class="button gray-button js-modal-close" id="btnThoat">Thoát</button>
+      </div>
+  </div>
+</div> -->
+<div class="modal js-modal">
+  <div class="window js-modal-window">
+      <div class="title">P01</div>
+      <div class="main">
+          <div class="header">
+              <div>
+                  <span class="material-icons">account_box</span>
+                  <span id="txblTenKH" class="text"></span>
+              </div>
+              <div>
+                  <span class="material-icons">calendar_today</span>
+                  <span id="txblNgayDen" class="text"></span>
+              </div>
+              <div>
+                  <span class="material-icons" id="icDayorHour">access_time</span>
+                  <span id="txblSoNgay" class="text"></span>
+              </div>
+              <div>
+                  <span class="material-icons">group</span>
+                  <span id="txblSoNguoi" class="text"></span>
+                  <span>người</span>
+              </div>
+          </div>
+          <div class="righttt">
+              <div class="list-view">
+                  <table border="1">
+                      <thead>
+                          <tr>
+                              <th>Dịch vụ</th>
+                              <th>SL</th>
+                              <th>Thành tiền</th>
+                          </tr>
+                      </thead>
+                      <tbody id="lvSuDungDV">
+                          <tr>
+                              <td>1</td>
+                              <td>alo</td>
+                              <td>123</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <button class="button green-button" id="btnThemDV">Thêm dịch vụ</button>
+          </div>
+          <div class="lefttt"> 
+              
+              <!-- Bắt đầu phần nhập thông tin khách hàng -->
+              <div class="list-view">                 
+                  <label for="CustomerName">Tên khách hàng:</label>
+                  <input type="text" id="CustomerName" name="CustomerName">
+                  <br>
+                  <label for="CustomerAddress">Địa chỉ khách hàng:</label>
+                  <input type="text" id="CustomerAddress" name="CustomerAddress">
+                  <br>
+                  <label for="CustomerPhone">Số điện thoại:</label>
+                  <input type="text" id="CustomerPhone" name="CustomerPhone">
+                  <br>
+                  <label for="CustomerEmail">Email:</label>
+                  <input type="email" id="CustomerEmail" name="CustomerEmail">
+                  <br>
+                  <label for="CustomerIdentificationID">Số CMND:</label>
+                  <input type="text" id="CustomerIdentificationID" name="CustomerIdentificationID">
+                  <br>
+                  <label for="CustomerDob">Ngày sinh:</label>
+                  <input type="date" id="CustomerDob" name="CustomerDob">
+              </div>
+              <!-- Kết thúc phần nhập thông tin khách hàng -->
+          </div>
+      </div>
+      <div class="footer">
+          <button class="button green-button" id="btnThanhToan">Thanh toán</button>
+          <button class="button green-button" id="btnNhanPhong">Nhận phòng</button>
+          <button class="button green-button" id="btnLuu">Lưu</button>
+          <button class="button gray-button js-modal-close" id="btnThoat">Thoát</button>
+      </div>
+  </div>
+</div>
+
+<!-- hiệu ứng js trượt vào  -->
+<script>
+  const buyBtns = document.querySelectorAll('.js-buy-ticket')
+  // 3 nút có class js.. lưu vào biến buyBtns
+  const modal = document.querySelector('.js-modal')
+  // lấy tất cả các thằng có class .js-modal
+  const modalClose = document.querySelector('.js-modal-close')
+
+  const modalWindow = document.querySelector('.js-modal-window')
+
+  // hàm hiện modal mua vé (thêm class open cả modal)
+  function showByTickets() {
+      modal.classList.add('open')
+      // alert('ok')
+  }
+  
+  // hàm ẩn modal mua vé (xóa class open ở modal)
+  function hideByTickets() {
+      modal.classList.remove('open')
+      
+  }
+  // lặp qua từng thẻ button và nghe hành vi click
+  for(const buyBtn of buyBtns){
+      // từng thằng trong buyBtns
+      buyBtn.addEventListener('click',showByTickets)
+  }
+  // nghe hành vi click vaof button close
+  modalClose.addEventListener('click',hideByTickets)
+  // khi click vào tất cả các khoảng modal 
+  modal.addEventListener('click',hideByTickets)
+  // vì khi click vào tất cả các khoảng modal thì nó
+  // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
+  modalWindow.addEventListener('click', function(event){
+      event.stopPropagation()
+  })
+</script>
+
     <script th:src="@{/js/jquery.min.js}"></script>
     <script th:src="@{/js/popper.js}"></script>
     <script th:src="@{/js/bootstrap.min.js}"></script>
@@ -137,6 +325,8 @@
     <div class="scroll-to-top scroll-to-target" data-target="html">
       <span class="fa fa-angle-up"></span>
     </div>
+
+
 
     <script>
       function confirmDelete(id) {
@@ -165,6 +355,22 @@
           });
       }
   </script>
+  <style>
+    .btn.js-buy-ticket {
+        background-color: green;
+        color: white; /* Để đảm bảo văn bản trên nút có thể đọc được */
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+</style>
+  <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
     
     <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
