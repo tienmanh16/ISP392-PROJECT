@@ -29,7 +29,7 @@
         <label>Service Type Name</label> <input type="text" th:field="*{SeTypeName}" class="form-control" name="SeTypeName"
             placeholder="Enter name" id="SeTypeName" value="" required>
     </div>
-    
+    <div style="color: red;" th:if="${#fields.hasErrors('SeTypeName')}" th:errors="*{SeTypeName}">Name Error</div>
     <button type="submit" class="btn btn-primary">Save</button>
 					<button type="reset" class="btn btn-primary">Cancel</button>
 					<a class="btn btn-primary" href="/servicecategory">Display List Service Type</a>

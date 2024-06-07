@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.isp.project.model.RoomType;
 import com.isp.project.service.RoomTypeServiceImpl;
+
+import jakarta.validation.Valid;
 
 @Controller
 public class RoomController {
@@ -35,9 +38,20 @@ public class RoomController {
         return "addRoomType";
     }
 
+    public RoomController(RoomTypeServiceImpl roomTypeServiceImpl) {
+        this.roomTypeServiceImpl = roomTypeServiceImpl;
+    }
+
     @PostMapping("/addRoomType")
-    public String save(@ModelAttribute("roomType") RoomType roomType) {
-       
+    public String save(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "addRoomType";
+        }
+        if (roomType.getPriceHour() <= 0 || roomType.getPriceDay() <= 0) {
+            bindingResult.rejectValue("priceHour", "PositiveValue");
+            bindingResult.rejectValue("priceDay", "PositiveValue");
+            return "addRoomType";
+        }
         if (this.roomTypeServiceImpl.create(roomType)) {
             return "redirect:/roomcategory";
         } else {
@@ -52,7 +66,7 @@ public class RoomController {
     }
 
     @PostMapping("/saveRoomType")
-    public String updated(@ModelAttribute("roomType") RoomType roomType) {
+    public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult, Model model) {
         // if(result.hasErrors()){
         //     return "updateRoomType";
         // }
@@ -61,6 +75,14 @@ public class RoomController {
         // model.addAttribute("listRoomType", roomTypeService.getAllRoomType());
         
         //return "redirect:/roomcategory";
+        if (bindingResult.hasErrors()) {
+            return "updateRoomType"; // Trả về lại trang hiện tại nếu có lỗi
+        }
+        if (roomType.getPriceHour() <= 0 || roomType.getPriceDay() <= 0) {
+            bindingResult.rejectValue("priceHour", "PositiveValue");
+            bindingResult.rejectValue("priceDay", "PositiveValue");
+            return "updateRoomType";
+        }
         if (this.roomTypeServiceImpl.create(roomType)) {
             return "redirect:/roomcategory";
         } else {

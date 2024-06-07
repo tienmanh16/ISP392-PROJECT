@@ -30,21 +30,25 @@
             <label>Room Type Name</label> <input type="text" th:field="*{name}" class="form-control" name="name"
                 placeholder="Enter name" id="name" value="" required>
         </div>
+        <div style="color: red;" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
     <div class="form-group">
         <label>Description</label> <input type="text" th:field = "*{des}" 
             class="form-control" name="des"
             placeholder="Enter description" id="des" value="" required>
     </div>
+    <div style="color: red;" th:if="${#fields.hasErrors('des')}" th:errors="*{des}">Description Error</div>
     <div class="form-group">
         <label>Price Per Hour</label> <input type="number" th:field = "*{priceHour}" 
             class="form-control" name="priceHour"
             placeholder="Enter price per hour" id="priceHour" value="" required>
     </div>
+    <div style="color: red;" th:if="${#fields.hasErrors('priceHour')}" th:errors="*{priceHour}">Price Per Hour Error</div>
     <div class="form-group">
         <label>Price Per Day</label> <input type="number" th:field = "*{priceDay}" 
             class="form-control" name="priceDay"
             placeholder="Enter price per day" id="priceDay" value="" required>
     </div>
+    <div style="color: red;" th:if="${#fields.hasErrors('priceDay')}" th:errors="*{priceDay}">Price Per Day Error</div>
     <button type="submit" class="btn btn-primary">Save</button>
 					<button type="reset" class="btn btn-primary">Cancel</button>
 					<a class="btn btn-primary" href="/roomcategory">Display List Room Type</a>
