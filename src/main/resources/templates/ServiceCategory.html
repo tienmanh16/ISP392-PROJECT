@@ -72,7 +72,7 @@
 						    <tr th:each="list : ${listServiceType}">
 						      <th scope="row" th:text="${list.SeTypeID}"></th>
 							  <td th:text="${list.SeTypeName}"></td>
-						      <td><a th:href="@{/listSe/{SeTypeID}/editservice(id=${list.SeTypeID})}" class="ti-menu"></a></td>
+						      <td><a th:href="@{/listSe/editservice/{SeTypeID}(SeTypeID=${list.SeTypeID})}" class="ti-menu"></a></td>
 						      <!-- <td><a th:href="@{/list/{id}/delete(id=${list.id})}" class="btn btn-danger ti-close"></a></td> -->
 							  <td><a
 								href="javascript:void(0);"

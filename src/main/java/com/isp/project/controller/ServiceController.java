@@ -45,7 +45,7 @@ public class ServiceController {
         }
     }
 
-    @GetMapping("/listSe/{SeTypeID}/editservice")
+    @GetMapping("/listSe/editservice/{SeTypeID}")
     public String update(@PathVariable("SeTypeID") Integer id, Model model) {
         model.addAttribute("serviceType", serviceTypeServiceImpl.findByID(id));
         return "updateServiceType";
