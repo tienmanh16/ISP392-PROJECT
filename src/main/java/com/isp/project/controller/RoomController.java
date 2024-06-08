@@ -1,5 +1,8 @@
 package com.isp.project.controller;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.isp.project.model.RoomType;
 import com.isp.project.service.RoomTypeServiceImpl;
@@ -20,6 +25,7 @@ import jakarta.validation.Valid;
 public class RoomController {
     @Autowired
     private RoomTypeServiceImpl roomTypeServiceImpl;
+
     @GetMapping("/managerbooking")
     public String ManagerBooking() {
         return "ManagerBooking";
@@ -66,15 +72,16 @@ public class RoomController {
     }
 
     @PostMapping("/saveRoomType")
-    public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult, Model model) {
+    public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult,
+            Model model) {
         // if(result.hasErrors()){
-        //     return "updateRoomType";
+        // return "updateRoomType";
         // }
-        
-        //roomTypeServiceImpl.update(roomType);
+
+        // roomTypeServiceImpl.update(roomType);
         // model.addAttribute("listRoomType", roomTypeService.getAllRoomType());
-        
-        //return "redirect:/roomcategory";
+
+        // return "redirect:/roomcategory";
         if (bindingResult.hasErrors()) {
             return "updateRoomType"; // Trả về lại trang hiện tại nếu có lỗi
         }
@@ -92,14 +99,15 @@ public class RoomController {
 
     // @GetMapping("/list/{RoomTypeID}/delete")
     // public String delete(@PathVariable("RoomTypeID") Integer id, Model model) {
-    //     roomTypeService.delete(id);
-    //     return "redirect:/roomcategory";
+    // roomTypeService.delete(id);
+    // return "redirect:/roomcategory";
     // }
 
     @GetMapping("/deleteRo/{RoomTypeID}")
     public ResponseEntity<String> deleteBooking(@PathVariable("RoomTypeID") Integer id) {
         try {
-            boolean deleted = roomTypeServiceImpl.delete(id);;
+            boolean deleted = roomTypeServiceImpl.delete(id);
+            ;
             if (deleted) {
                 return ResponseEntity.ok("Room category deleted successfully");
             } else {
@@ -110,4 +118,24 @@ public class RoomController {
         }
     }
 
+    @GetMapping("/search")
+    public String search(@RequestParam("text") String text, Model model) {
+        // List<RoomType> roomType = roomTypeServiceImpl.findByName(text);
+        // model.addAttribute("roomType", roomType);
+        // return "roomcategory";
+
+        logger.info("Searching for room types containing: " + text);
+        List<RoomType> roomType = roomTypeServiceImpl.findByName(text);
+        logger.info("Found " + roomType.size() + " room types");
+        model.addAttribute("roomType", roomType);
+        return "roomcategory";
+    }
+
+    private static final Logger logger = Logger.getLogger(RoomController.class.getName());
+
+    @GetMapping("/test")
+    @ResponseBody
+    public List<RoomType> test(@RequestParam("text") String text) {
+        return roomTypeServiceImpl.findByName(text);
+    }
 }

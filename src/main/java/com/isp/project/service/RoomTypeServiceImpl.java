@@ -2,6 +2,7 @@ package com.isp.project.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomTypeDetailDTO;
@@ -10,6 +11,7 @@ import com.isp.project.repositories.RoomTypeRepository;
 
 @Service
 public class RoomTypeServiceImpl implements RoomTypeService {
+    @Autowired
     private RoomTypeRepository roomTypeRepository;
 
     public RoomTypeServiceImpl(RoomTypeRepository roomTypeRepository) {
@@ -72,6 +74,10 @@ public class RoomTypeServiceImpl implements RoomTypeService {
             e.printStackTrace();
         }
         return  false;
+    }
+
+    public List<RoomType> findByName(String name) {
+        return roomTypeRepository.findByNameContaining(name);
     }
 
 }
