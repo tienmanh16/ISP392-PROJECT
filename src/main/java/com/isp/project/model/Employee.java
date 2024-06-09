@@ -5,18 +5,14 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
@@ -45,35 +41,38 @@ private int gender;
     @Column(name="IdentificationID")
     private String idenId;
     private int salary;
-
-    
-    public Employee(int id, String fullName, int gender, String email, String phone, String address, String idenId, int salary, Date dob, String username, String password, List<Register> register, Role role) {
-        this.id = id;
-        this.fullName = fullName;
-        this.gender = gender;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.idenId = idenId;
-        this.salary = salary;
-        this.dob = dob;
-        this.username = username;
-        this.password = password;
-        this.register = register;
-        this.role = role;
-    }
-    
-
-
-
+    @Column(name = "Role")
+    private String role;
+    @Column(name = "IsActive")
+    private Boolean isActive;
     @DateTimeFormat(pattern ="dd/MM/yyyy")
     @Temporal(TemporalType.DATE)
     private Date dob;
-
     private String username;
-    
     @Size(min = 6, message = "password must be at least 6 characters")
     private String password;
+
+
+    
+    public Employee(String address, Date dob, String email, String fullName, int gender, int id, String idenId, Boolean isActive, String password, String phone, List<Register> register, String role, int salary, String username) {
+        this.address = address;
+        this.dob = dob;
+        this.email = email;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.id = id;
+        this.idenId = idenId;
+        this.isActive = isActive;
+        this.password = password;
+        this.phone = phone;
+        this.register = register;
+        this.role = role;
+        this.salary = salary;
+        this.username = username;
+    }
+
+
+    
 
     public String getIdenId() {
         return idenId;
@@ -163,24 +162,11 @@ private int gender;
         this.id = id;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @OneToMany(mappedBy = "employeeID")
      @JsonManagedReference
     private List<Register> register;
 
-
-     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RoleID")
-    @JsonBackReference
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Role role;
 
 
     public int getGender() {
@@ -209,5 +195,21 @@ private int gender;
 
     public void setRegister(List<Register> register) {
         this.register = register;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
     }
 }
