@@ -56,5 +56,7 @@ public class Booking {
     @JsonManagedReference
     private List<Invoice> invoice;
 
+    // @Column(name = "BookingActive", nullable = false)
+    // private int bookingActive;
    
 }

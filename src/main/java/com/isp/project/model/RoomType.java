@@ -54,4 +54,7 @@ public class RoomType {
     @OneToMany(mappedBy = "roomType")
     @JsonManagedReference
     private List<ImageDetail> imageDetail;
+
+    // @Column(name = "RoomTypeActive", nullable = false)
+    // private int roomTypeActive;
 }
