@@ -55,6 +55,6 @@ public class RoomType {
     @JsonManagedReference
     private List<ImageDetail> imageDetail;
 
-    // @Column(name = "RoomTypeActive", nullable = false)
-    // private int roomTypeActive;
+    @Column(name = "RoomTypeActive", nullable = false)
+    private int roomTypeActive;
 }

@@ -2,7 +2,6 @@ package com.isp.project.model;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -56,7 +55,7 @@ public class Booking {
     @JsonManagedReference
     private List<Invoice> invoice;
 
-    // @Column(name = "BookingActive", nullable = false)
-    // private int bookingActive;
+    @Column(name = "BookingActive", nullable = false)
+    private int bookingActive;
    
 }
