@@ -78,14 +78,14 @@ public class ServiceController {
     public String listServiceTypeActive(Model model) {
         List<ServiceType> serviceType = serviceTypeServiceImpl.findAllActive();
         model.addAttribute("listServiceType", serviceType);
-        return "listServiceType";
+        return "ServiceCategory";
     }
 
     @GetMapping("/listServiceTypeInactive")
     public String listServiceTypeInactive(Model model) {
         List<ServiceType> serviceType = serviceTypeServiceImpl.findAllInactive();
         model.addAttribute("listServiceType", serviceType);
-        return "listServiceType";
+        return "ServiceCategory";
     }
 
     @GetMapping("/hideServiceType/{SeTypeID}")

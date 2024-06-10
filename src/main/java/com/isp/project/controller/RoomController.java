@@ -76,14 +76,14 @@ public class RoomController {
     public String listRoomTypeActive(Model model) {
         List<RoomType> roomType = roomTypeServiceImpl.findAllActive();
         model.addAttribute("listRoomType", roomType);
-        return "listRoomType";
+        return "RoomCategory";
     }
 
     @GetMapping("/listRoomTypeInactive")
     public String listRoomTypeInactive(Model model) {
         List<RoomType> roomType = roomTypeServiceImpl.findAllInactive();
         model.addAttribute("listRoomType", roomType);
-        return "listRoomType";
+        return "RoomCategory";
     }
 
     @GetMapping("/hideRoomType/{id}")
