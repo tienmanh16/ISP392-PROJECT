@@ -43,8 +43,8 @@ public class Customer {
  @Column(name = "CustomerIdentificationID")
  private String customerIdentificationID;
 
- @Column(name = "CustomerDob")
- private Date customerDob;
+ @Column(name = "CustomerGender")
+ private String customerGender;
 
   @OneToMany(mappedBy = "customerID")
    @JsonManagedReference
