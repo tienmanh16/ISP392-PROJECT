@@ -1,7 +1,6 @@
 package com.isp.project.controller;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -108,8 +107,7 @@ public class RoomController {
 
     @PostMapping("/saveRoomType")
     @Validated
-    public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult,
-            Model model) {
+    public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult, Model model) {
         // if(result.hasErrors()){
         // return "updateRoomType";
         // }
@@ -154,24 +152,22 @@ public class RoomController {
     //     }
     // }
 
-    @GetMapping("/search")
-    public String search(@RequestParam("text") String text, Model model) {
-        // List<RoomType> roomType = roomTypeServiceImpl.findByName(text);
+    @GetMapping("/searchRoomType")
+    public String search(@RequestParam("name") String name, Model model) {
+        // logger.info("Searching for room types containing: " + name);
+        // List<RoomType> roomType = roomTypeServiceImpl.findByName(name);
+        // logger.info("Found " + roomType.size() + " room types");
         // model.addAttribute("roomType", roomType);
-        // return "listRoomType";
+        // return "RoomCategory";
 
-        logger.info("Searching for room types containing: " + text);
-        List<RoomType> roomType = roomTypeServiceImpl.findByName(text);
-        logger.info("Found " + roomType.size() + " room types");
+        List<RoomType> roomType = roomTypeServiceImpl.findByName(name);
         model.addAttribute("roomType", roomType);
-        return "listRoomType";
+        return "RoomCategory";
     }
-
-    private static final Logger logger = Logger.getLogger(RoomController.class.getName());
 
     @GetMapping("/test")
     @ResponseBody
-    public List<RoomType> test(@RequestParam("text") String text) {
-        return roomTypeServiceImpl.findByName(text);
+    public List<RoomType> test(@RequestParam("name") String name) {
+        return roomTypeServiceImpl.findByName(name);
     }
 }

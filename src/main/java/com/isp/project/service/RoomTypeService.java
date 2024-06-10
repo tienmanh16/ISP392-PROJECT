@@ -16,5 +16,6 @@ public interface RoomTypeService {
     Boolean update(RoomType roomType);
     Boolean delete(Integer id);
 
+    List<RoomType> findByName(String name);
 
 }

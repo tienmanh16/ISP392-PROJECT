@@ -77,7 +77,7 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     }
 
     public List<RoomType> findByName(String name) {
-        return roomTypeRepository.findByNameContaining(name);
+        return roomTypeRepository.findByNameContainingIgnoreCase(name);
     }
 
     public List<RoomType> findAllActive() {
@@ -93,8 +93,6 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     }
 
     public void updateRoomTypeActiveStatus(int id, int status) {
-        // roomTypeRepository.updateRoomTypeActiveStatus(id, status);
-
         RoomType roomType = roomTypeRepository.findById(id).orElseThrow(() -> new RuntimeException("RoomType not found"));
         roomType.setRoomTypeActive(status);
         roomTypeRepository.save(roomType);
