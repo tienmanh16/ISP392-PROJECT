@@ -31,7 +31,7 @@ public class RoomController {
         return "ManagerBooking";
     }
 
-    @GetMapping("/roomcategory")
+    @GetMapping("/listRoomType")
     public String RoomCategory(Model model) {
         model.addAttribute("listRoomType", roomTypeServiceImpl.getAll());
         return "RoomCategory";
@@ -90,7 +90,6 @@ public class RoomController {
             roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 0);
             return ResponseEntity.ok("Room category hidden successfully");
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to hide room category");
         }
     }
@@ -101,7 +100,6 @@ public class RoomController {
             roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 1);
             return ResponseEntity.ok("Room category showed successfully");
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to show room category");
         }
     }

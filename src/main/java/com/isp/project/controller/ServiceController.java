@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.isp.project.model.RoomType;
 import com.isp.project.model.ServiceType;
-import com.isp.project.service.RoomTypeServiceImpl;
 import com.isp.project.service.ServiceTypeServiceImpl;
 
 import jakarta.validation.Valid;
@@ -29,7 +27,7 @@ public class ServiceController {
     // return "ManagerBooking";
     // }
 
-    @GetMapping("/servicecategory")
+    @GetMapping("/listServiceType")
     public String ServiceType(Model model) {
         model.addAttribute("listServiceType", serviceTypeServiceImpl.getAll());
         return "ServiceCategory";
@@ -96,7 +94,6 @@ public class ServiceController {
             serviceTypeServiceImpl.updateServiceTypeActiveStatus(id, 0);
             return ResponseEntity.ok("Service category hidden successfully");
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to hide service category");
         }
     }
@@ -107,7 +104,6 @@ public class ServiceController {
             serviceTypeServiceImpl.updateServiceTypeActiveStatus(id, 1);
             return ResponseEntity.ok("Service category showed successfully");
         } catch (Exception e) {
-            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to show service category");
         }
     }

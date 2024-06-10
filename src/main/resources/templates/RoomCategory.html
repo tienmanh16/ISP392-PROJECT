@@ -78,7 +78,7 @@
 										<th>Per Day</th>
 										<th>Update</th>
 										<!-- <th>Delete</th> -->
-										<th>Hide</th> 
+										<th>Hide / Show</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -96,14 +96,12 @@
 										</td> -->
 										<!-- <td><a href="javascript:void(0);" th:onclick="'confirmHide(' + ${list.id} + ');'" class="btn btn-danger ti-close"></a></td> -->
 										<td>
-											<a href="javascript:void(0);" 
-											   th:if="${list.roomTypeActive == 1}" 
-											   th:onclick="'confirmHideRoomType(' + ${list.id} + ');'" 
-											   class="btn btn-danger ti-close"> Hide</a>
-											<a th:href="@{/show/{id}(id=${list.id})}" 
-											   th:if="${list.roomTypeActive == 0}" 
-											   th:onclick="'confirmShowRoomType(' + ${list.id} + ');'" 
-											   class="btn btn-success ti-check"> Show</a>
+											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 1}"
+												th:onclick="'confirmHideRoomType(' + ${list.id} + ');'"
+												class="btn btn-danger ti-close"> Hide</a>
+											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 0}"
+												th:onclick="'confirmShowRoomType(' + ${list.id} + ');'"
+												class="btn btn-success ti-check"> Show</a>
 										</td>
 									</tr>
 								</tbody>
@@ -119,24 +117,24 @@
 					hideRoomType(RoomTypeID);
 				}
 			}
-		
+
 			function hideRoomType(RoomTypeID) {
 				fetch(`/hideRoomType/${RoomTypeID}`, {
 					method: 'GET'
 				})
-				.then(response => response.text().then(text => ({status: response.status, text})))
-				.then(({status, text}) => {
-					alert(text);
-					if (status === 200) { // HTTP OK status
-						location.reload(); // Reload the page to reflect the change
-					} else {
-						throw new Error(text); // If the message is not expected, throw an error
-					}
-				})
-				.catch(error => {
-					console.error('Error:', error);
-					alert("An error occurred: " + error.message);
-				});
+					.then(response => response.text().then(text => ({ status: response.status, text })))
+					.then(({ status, text }) => {
+						alert(text);
+						if (status === 200) { // HTTP OK status
+							location.reload(); // Reload the page to reflect the change
+						} else {
+							throw new Error(text); // If the message is not expected, throw an error
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("An error occurred: " + error.message);
+					});
 			}
 		</script>
 		<script>
@@ -145,24 +143,24 @@
 					showRoomType(RoomTypeID);
 				}
 			}
-		
+
 			function showRoomType(RoomTypeID) {
 				fetch(`/showRoomType/${RoomTypeID}`, {
 					method: 'GET'
 				})
-				.then(response => response.text().then(text => ({status: response.status, text})))
-				.then(({status, text}) => {
-					alert(text);
-					if (status === 200) { // HTTP OK status
-						location.reload(); // Reload the page to reflect the change
-					} else {
-						throw new Error(text); // If the message is not expected, throw an error
-					}
-				})
-				.catch(error => {
-					console.error('Error:', error);
-					alert("An error occurred: " + error.message);
-				});
+					.then(response => response.text().then(text => ({ status: response.status, text })))
+					.then(({ status, text }) => {
+						alert(text);
+						if (status === 200) { // HTTP OK status
+							location.reload(); // Reload the page to reflect the change
+						} else {
+							throw new Error(text); // If the message is not expected, throw an error
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("An error occurred: " + error.message);
+					});
 			}
 		</script>
 

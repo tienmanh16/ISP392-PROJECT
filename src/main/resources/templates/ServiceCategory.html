@@ -69,7 +69,7 @@
 										<th>Name</th>
 										<th>Update</th>
 										<!-- <th>Delete</th> -->
-										<th>Hide</th>
+										<th>Hide / Show</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -89,8 +89,7 @@
 											<a href="javascript:void(0);" th:if="${list.serviceTypeActive == 1}"
 												th:onclick="'confirmHideServiceType(' + ${list.SeTypeID} + ');'"
 												class="btn btn-danger ti-close"> Hide</a>
-											<a th:href="@{/show/{SeTypeID}(id=${list.SeTypeID})}"
-												th:if="${list.serviceTypeActive == 0}"
+											<a href="javascript:void(0);" th:if="${list.serviceTypeActive == 0}"
 												th:onclick="'confirmShowServiceType(' + ${list.SeTypeID} + ');'"
 												class="btn btn-success ti-check"> Show</a>
 										</td>
@@ -132,8 +131,6 @@
 			function confirmShowServiceType(ServiceTypeID) {
 				if (confirm('Are you sure you want to show it?')) {
 					showServiceType(ServiceTypeID);
-				} else {
-					// Người dùng không xác nhận, không làm gì cả
 				}
 			}
 
