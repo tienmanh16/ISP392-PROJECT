@@ -70,6 +70,41 @@ public class RoomController {
         model.addAttribute("roomType", roomTypeServiceImpl.findByID(id));
         return "updateRoomType";
     }
+    @GetMapping("/listActive")
+    public String listRoomTypeActive(Model model) {
+        List<RoomType> roomType = roomTypeServiceImpl.findAllActive();
+        model.addAttribute("listRoomType", roomType);
+        return "roomcategory";
+    }
+
+    @GetMapping("/listInactive")
+    public String listRoomTypeInactive(Model model) {
+        List<RoomType> roomType = roomTypeServiceImpl.findAllInactive();
+        model.addAttribute("listRoomType", roomType);
+        return "roomcategory";
+    }
+
+    @GetMapping("/hide/{id}")
+    public ResponseEntity<String> hideRoomType(@PathVariable("id") int id) {
+        try {
+            roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 0);
+            return ResponseEntity.ok("Room category hidden successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to hide room category");
+        }
+    }
+
+    @GetMapping("/show/{id}")
+    public ResponseEntity<String> showRoomType(@PathVariable("id") int id) {
+        try {
+            roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 1);
+            return ResponseEntity.ok("Room category showed successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to show room category");
+        }
+    }
 
     @PostMapping("/saveRoomType")
     public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult,
@@ -103,20 +138,20 @@ public class RoomController {
     // return "redirect:/roomcategory";
     // }
 
-    @GetMapping("/deleteRo/{RoomTypeID}")
-    public ResponseEntity<String> deleteBooking(@PathVariable("RoomTypeID") Integer id) {
-        try {
-            boolean deleted = roomTypeServiceImpl.delete(id);
-            ;
-            if (deleted) {
-                return ResponseEntity.ok("Room category deleted successfully");
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete room category");
-            }
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
-        }
-    }
+    // @GetMapping("/deleteRo/{RoomTypeID}")
+    // public ResponseEntity<String> deleteBooking(@PathVariable("RoomTypeID") Integer id) {
+    //     try {
+    //         boolean deleted = roomTypeServiceImpl.delete(id);
+    //         ;
+    //         if (deleted) {
+    //             return ResponseEntity.ok("Room category deleted successfully");
+    //         } else {
+    //             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete room category");
+    //         }
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+    //     }
+    // }
 
     @GetMapping("/search")
     public String search(@RequestParam("text") String text, Model model) {

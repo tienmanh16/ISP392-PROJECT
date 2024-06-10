@@ -80,4 +80,25 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         return roomTypeRepository.findByNameContaining(name);
     }
 
+    public List<RoomType> findAllActive() {
+        return roomTypeRepository.findAll().stream()
+            .filter(roomType -> roomType.getRoomTypeActive() == 1)
+            .toList();
+    }
+
+    public List<RoomType> findAllInactive() {
+        return roomTypeRepository.findAll().stream()
+            .filter(roomType -> roomType.getRoomTypeActive() == 0)
+            .toList();
+    }
+
+    public void updateRoomTypeActiveStatus(int id, int status) {
+        // roomTypeRepository.updateRoomTypeActiveStatus(id, status);
+
+        RoomType roomType = roomTypeRepository.findById(id).orElseThrow(() -> new RuntimeException("RoomType not found"));
+        roomType.setRoomTypeActive(status);
+        roomTypeRepository.save(roomType);
+    }
+
+
 }

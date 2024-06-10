@@ -56,5 +56,5 @@ public class RoomType {
     private List<ImageDetail> imageDetail;
 
     @Column(name = "RoomTypeActive", nullable = false)
-    private int roomTypeActive;
+    private int roomTypeActive; // 1 for active, 0 for inactive
 }
