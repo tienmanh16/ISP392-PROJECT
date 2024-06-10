@@ -54,14 +54,7 @@ public class BookingServiceImpl implements BookingService {
         return bookingRoomDTOs;
     }
 
-    public void testPostMan(Integer id) {
-        bookingRepository.deleteFromBookingMapping(id);
-
-        //  bookingMappingRepository.deleteAllByBookingID(id);
-
-         //deleteById(bookingMappingRepository.getReferenceById(id).getBookingID());
-    }
-
+    
     @Override
     // public boolean deleteBookingRoom(Integer id) {
     //     try {
@@ -152,6 +145,21 @@ public class BookingServiceImpl implements BookingService {
             e.printStackTrace();
             return false;
         }
+    }
+
+
+
+
+    @Override
+    public List<Booking> testPostManlist() {
+        return bookingRepository.findAll();
+    }
+
+
+    @Override
+    public void testPostMan(Integer id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'testPostMan'");
     }
 
 }

@@ -5,13 +5,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
+import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Register;
 import com.isp.project.model.Service;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
+import com.isp.project.repositories.EmployeeRepository;
 import com.isp.project.service.BookingService;
+import com.isp.project.service.EmployeeService;
 import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
 
@@ -23,21 +26,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-
+import org.springframework.web.bind.annotation.PostMapping;
 
 //class này test postman thui
 
 @RestController
-@RequestMapping(path ="/api/test")
+@RequestMapping(path = "/api/test")
 
 public class test {
-  
+
     @Autowired
     private BookingRepository bookingRepository;
-    @Autowired 
+    @Autowired
     private BookingMappingRepository bookingMappingRepository;
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private EmployeeService employeeService;
+
+    @Autowired EmployeeRepository employeeRepository;
 
     @GetMapping("/{id}")
     public ResponseEntity<BookingMapping> deleteBooking(@PathVariable Integer id) {
@@ -52,6 +59,9 @@ public class test {
         }
     }
 
+    @PostMapping("1")
+    public List<Employee> testPostMan() {
+        return employeeService.findAll();
+    }
 
-    
 }

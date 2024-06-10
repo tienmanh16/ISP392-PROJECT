@@ -69,9 +69,7 @@
             <div
               class="box-header d-flex justify-content-between align-items-center"
             >
-              <!-- <a href="bookingdetail" class="btn js-buy-ticket"">+ Đặt phòng</a> -->
-              <!-- <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a> -->
-              <!-- <a href="bookingdetail" class="btn btn-success">+ Đặt phòng</a> -->
+
               <div>
                 <button class="btn js-buy-ticket">+ Đặt phòng</button>
               </div>
@@ -102,7 +100,7 @@
             <div class="col-md-12">
               <div class="table-wrap">
                 <table class="table table-striped">
-                  <thead>
+                  <thead class="thead-dark">
                     <tr>
                       <th>Số phiếu thuê</th>
                       <th>Tên khách hàng</th>
@@ -118,36 +116,24 @@
                       <td th:text="${booking.bookingID}"></td>
                       <td th:text="${booking.customerName}"></td>
                       <td>
-                        <span
-                          th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"
-                        ></span>
+                        <span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span>
                       </td>
                       <td th:text="${booking.employeeName}"></td>
                       <td>
-                        <a
-                          th:href="@{'bookingdetail?id=' + ${booking.bookingID}}"
-                          class="ti-list"
-                        ></a>
+                        <a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-list"></a>
                       </td>
                       <td>
-                        <a
-                          th:href="@{'#?id=' + ${booking.bookingID}}"
-                          class="ti-pencil-alt"
-                        ></a>
+                        <a th:href="@{'#?id=' + ${booking.bookingID}}" class="ti-pencil-alt"></a>
                       </td>
                       <td>
-                        <a
-                          href="javascript:void(0);"
-                          th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'"
-                          class="btn btn-danger ti-close"
-                        ></a>
+                        <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'" class="btn btn-danger ti-close"></a>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-          </div>
+          </div>          
         </div>
       </section>
     </div>
@@ -156,163 +142,110 @@
     <!-- modal chứa cả các giao diện phủ lên -->
     <div class="modal js-modal">
       <div class="window js-modal-window">
-        <div class="title">ĐẶT PHÒNG</div>
-        <div class="main">
-          <div class="lefttt" style="background-color: #F2F1F1;">
-            <!-- Thông tin khách hàng -->
-            <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin khách hàng</h6>
-            <!-- Bắt đầu phần nhập thông tin khách hàng -->
-            <span class="material-icons" style="vertical-align: middle;">account_box</span>
-            <input type="text" id="CustomerName" name="CustomerName" style="vertical-align: middle; width: 200px;" placeholder="Nhập tên khách hàng...">
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">badge</span>
-            <input type="text" id="CustomerIdentificationID" name="CustomerIdentificationID" style="vertical-align: middle; width: 200px;" placeholder="Nhập số CMND...">
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">call</span>
-            <input type="text" id="CustomerPhone" name="CustomerPhone" style="vertical-align: middle; width: 200px;" placeholder="Nhập số điện thoại...">
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">mail</span>
-            <input type="email" id="CustomerEmail" name="CustomerEmail" style="vertical-align: middle; width: 200px;" placeholder="Nhập địa chỉ email...">
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">location_on</span>
-            <input type="text" id="CustomerAddress" name="CustomerAddress" style="vertical-align: middle; width: 200px;" placeholder="Nhập địa chỉ...">
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">transgender</span>
-            <label for="male" style="vertical-align: middle; margin-right: 10px;">Male</label>
-            <input type="radio" id="male" name="gender" value="male" style="vertical-align: middle; margin-right: 20px;">
-            <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
-            <input type="radio" id="female" name="gender" value="female" style="vertical-align: middle;">
-            <!-- Kết thúc phần nhập thông tin khách hàng -->
-          </div>
+          <div class="title">ĐẶT PHÒNG</div>
+          <form th:action="@{/saveBooking}" th:object="${bookingInfo}" method="post">
+              <div class="main">
+                  <div class="lefttt" style="background-color: #F2F1F1;">
+                      <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin khách hàng</h6>
+                      <span class="material-icons" style="vertical-align: middle;">account_box</span>
+                      <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;" placeholder="Nhập tên khách hàng..." required>
+                      <br><br>
+                      <span class="material-icons" style="vertical-align: middle;">badge</span>
+                      <input type="text" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 200px;" placeholder="Nhập số CMND..." required>
+                      <br><br>
+                      <span class="material-icons" style="vertical-align: middle;">call</span>
+                      <input type="text" th:field="*{customerPhone}" style="vertical-align: middle; width: 200px;" placeholder="Nhập số điện thoại..." required>
+                      <br><br>
+                      <span class="material-icons" style="vertical-align: middle;">mail</span>
+                      <input type="email" th:field="*{customerEmail}" style="vertical-align: middle; width: 200px;" placeholder="Nhập địa chỉ email..." required>
+                      <br><br>
+                      <span class="material-icons" style="vertical-align: middle;">location_on</span>
+                      <input type="text" th:field="*{customerAddress}" style="vertical-align: middle; width: 200px;" placeholder="Nhập địa chỉ..." required>
+                      <br><br>
+                      <span class="material-icons" style="vertical-align: middle;">transgender</span>
+                      <label for="male" style="vertical-align: middle; margin-right: 10px;">Male</label>
+                      <input type="radio" th:field="*{gender}" value="male" style="vertical-align: middle; margin-right: 20px;">
+                      <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
+                      <input type="radio" th:field="*{gender}" value="female" style="vertical-align: middle;">
+                  </div>
 
+                  <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin phòng</h6>
+                  <div class="container" style="margin-left: 320px;">
+                      <div style="margin-bottom: 10px;">
+                          <label for="checkin-date" style="display: inline-block; width: 150px;">Ngày bắt đầu</label>
+                          <input type="date" th:field="*{checkinDate}" style="display: inline-block;margin-left: -40px;" required>
+                          <label for="checkin-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ bắt đầu</label>
+                          <input type="time" th:field="*{checkinTime}" style="display: inline-block; margin-left: -50px;" required>
+                      </div>
+                      <div>
+                          <label for="checkout-date" style="display: inline-block; width: 150px;">Ngày kết thúc</label>
+                          <input type="date" th:field="*{checkoutDate}" style="display: inline-block; margin-left: -40px;" required>
+                          <label for="checkout-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ kết thúc</label>
+                          <input type="time" th:field="*{checkoutTime}" style="display: inline-block; margin-left: -50px;" required>
+                      </div>
+                      <div style="margin-top: 10px;">
+                          <label for="employee-id" style="display: inline-block; width: 150px;">Mã nhân viên</label>
+                          <input type="number" th:field="*{employeeId}" style="display: inline-block; margin-left: -40px; width: 147px;" placeholder="Nhập mã nhân viên..." required>
+                      </div>
+                  </div>
+                 
+                  <!-- Danh sách phòng trống -->
+                  <div class="container" style="margin-left: -20px; margin-top: 10px;">  
+                      <h6 style="margin-bottom: 10px; margin-right: 250px; text-align: center; color: #0077cc;">Danh sách phòng trống</h6>
+                      <div class="list-view1" style="max-height: 170px; margin-top: 0; margin-left: 290px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; padding: 10px;">
+                          <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
+                              <thead>
+                                  <tr>
+                                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Số Phòng</th>
+                                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Loại phòng</th>
+                                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Thêm</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">1</td>
+                                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">alo</td>
+                                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
+                                          <a href="listinvoice" class="wait-link">
+                                              <span class="material-icons" style="color: green;">add_circle</span>
+                                          </a>
+                                      </td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
 
-  <!-- phần nhập thông tin phòng -->
-        <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin phòng</h6>
-<div class="container" style="margin-left: 320px;">
-    <div style="margin-bottom: 10px;">
-        <label for="checkin-date" style="display: inline-block; width: 150px;">Ngày bắt đầu</label>
-        <input type="date" id="checkin-date" name="checkin-date" style="display: inline-block;margin-left: -40px;" placeholder="Nhập ngày check-in...">
-        <label for="checkin-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ bắt đầu</label>
-        <input type="time" id="checkin-time" name="checkin-time" style="display: inline-block; margin-left: -50px;" placeholder="Nhập giờ check-in...">
-    </div>
-    <div>
-        <label for="checkout-date" style="display: inline-block; width: 150px;">Ngày kết thúc</label>
-        <input type="date" id="checkout-date" name="checkout-date" style="display: inline-block; margin-left: -40px;" placeholder="Nhập ngày check-out...">
-        <label for="checkout-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ kết thúc</label>
-        <input type="time" id="checkout-time" name="checkout-time" style="display: inline-block; margin-left: -50px;" placeholder="Nhập giờ check-out...">
-    </div>
-</div>
-
-        
-          
-
-         <!-- ========Danh sách phòng trống ============================================================ -->
-        <div class="container" style="margin-left: -20px; margin-top: 50px;">  
-          <h6 style="margin-bottom: 10px; margin-right: 250px; text-align: center; color: #0077cc;">
-              Danh sách phòng trống
-          </h6>
-          <div class="list-view1" style="max-height: 170px; margin-top: 0; margin-left: 290px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; padding: 10px;">                 
-            <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
-              <thead>
-                    <tr>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Số Phòng</th>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Loại phòng</th>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Thêm</th>
-                    </tr>
-                  </thead>
-                  <tbody id="lvSuDungDV">
-                    <tr>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">1</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">alo</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
-                        <a href="listinvoice" class="wait-link">
-                            <span class="material-icons" style="color: green;">add_circle</span>
-                        </a>
-                      </td>
-                                     
-                    </tr>
-                    <tr>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">2</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">alo</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);  text-align: center; vertical-align: middle;">
-                          <a href="#" class="wait-link">
-                              <span class="material-icons" style="color: green;">add_circle</span>
-                          </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">2</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">alo</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);  text-align: center; vertical-align: middle;">
-                          <a href="listinvoice" class="wait-link">
-                              <span class="material-icons" style="color: green;">add_circle</span>
-                          </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">2</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">alo</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);  text-align: center; vertical-align: middle;">
-                          <a href="listinvoice" class="wait-link">
-                              <span class="material-icons" style="color: green;">add_circle</span>
-                          </a>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">2</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">alo</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);  text-align: center; vertical-align: middle;">
-                          <a href="listinvoice" class="wait-link">
-                              <span class="material-icons" style="color: green;">add_circle</span>
-                          </a>
-                      </td>
-                    </tr>
-
-                  </tbody>
-                </table>             
-            </div> 
-          </div>
-
-         <!-- ===== Phòng đã chọn =================================================================================== -->
-          <div class="container" style="margin-left: 280px; margin-top: -197px;">  
-            <h6 style="margin-bottom: 10px; margin-left: 30px; text-align: center; color: #0077cc;">
-              Phòng đã chọn
-            </h6>
-            <div class="list-view1" style="max-height: 170px; margin-top: 0; margin-left: 300px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; overflow-x: auto; padding: 10px;">
-              <table style="border-collapse: collapse; width: 100%; border-radius: 10px;font-size: smaller;">
-                  <thead>
-                      <tr>
-                          <th style="border: 2px solid rgba(0, 0, 0, 0.2);  background-color: #44444470;">Số Phòng</th>
-                          <th style="border: 2px solid rgba(0, 0, 0, 0.2);  background-color: #44444470;">Loại phòng</th>
-                          <th style="border: 2px solid rgba(0, 0, 0, 0.2);  background-color: #44444470;">Thêm</th>
-                      </tr>
-                  </thead>
-                  <tbody id="lvSuDungDV">
-                      <tr>
-                          <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">1</td>
-                          <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">alo</td>
-                          <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">123</td>
-                      </tr>
-                      <tr>
-                          <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">2</td>
-                          <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">alo</td>
-                          <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">12</td>
-                      </tr>
-                      <!-- Add more rows as needed -->
-                  </tbody>
-              </table>
-          </div>
-          
-             
-          </div>
-        </div>
-
-        <div class="footer">
-          <button class="button green-button" id="btnLuu">Lưu</button>
-          <button class="button gray-button js-modal-close" id="btnThoat">Thoát</button>
-        </div>
+                  <!-- Phòng đã chọn -->
+                  <div class="container" style="margin-left: 280px; margin-top: -197px;">  
+                      <h6 style="margin-bottom: 10px; margin-left: 30px; text-align: center; color: #0077cc;">Phòng đã chọn</h6>
+                      <div class="list-view1" style="max-height: 170px; margin-top: 0; margin-left: 300px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; overflow-x: auto; padding: 10px;">
+                          <table style="border-collapse: collapse; width: 100%; border-radius: 10px; font-size: smaller;">
+                              <thead>
+                                  <tr>
+                                      <th style="border: 2px solid rgba(0, 0, 0, 0.2);  background-color: #44444470;">Số Phòng</th>
+                                      <th style="border: 2px solid rgba(0, 0, 0, 0.2);  background-color: #44444470;">Loại phòng</th>
+                                      <th style="border: 2px solid rgba(0, 0, 0, 0.2);  background-color: #44444470;">Thêm</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  <tr>
+                                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">1</td>
+                                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">alo</td>
+                                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); ">123</td>
+                                  </tr>
+                              </tbody>
+                          </table>
+                      </div>      
+                  </div>
+              </div>
+              <div class="footer">
+                  <button type="submit" class="button green-button">Lưu</button>
+                  <button type="button" class="button gray-button js-modal-close">Thoát</button>
+              </div>
+          </form>
       </div>
-    </div>
+  </div>
     
 
     <!-- hiệu ứng js trượt vào  -->
@@ -362,6 +295,7 @@
       <span class="fa fa-angle-up"></span>
     </div>
 
+    <!-- ==================confirm delete ========================= -->
     <script>
       function confirmDelete(id) {
         if (confirm("Are you sure you want to delete it?")) {

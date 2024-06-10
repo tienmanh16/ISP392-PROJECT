@@ -50,7 +50,8 @@ public class Room {
     @JsonManagedReference
     private List<RoomItemMapping> roomItemMapping;
 
-
+    @Column(name = "RoomActive", nullable = false)
+    private int roomActive;
     
     
 }
