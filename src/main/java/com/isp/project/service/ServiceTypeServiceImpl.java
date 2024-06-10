@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.isp.project.model.RoomType;
 import com.isp.project.model.ServiceType;
 import com.isp.project.repositories.ServiceTypeRepository;
 
@@ -64,4 +65,23 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
         return  false;
     }
     
+    public List<ServiceType> findAllActive() {
+        return serviceTypeRepository.findAll().stream()
+            .filter(serviceType -> serviceType.getServiceTypeActive() == 1)
+            .toList();
+    }
+
+    public List<ServiceType> findAllInactive() {
+        return serviceTypeRepository.findAll().stream()
+            .filter(serviceType -> serviceType.getServiceTypeActive() == 0)
+            .toList();
+    }
+
+    public void updateServiceTypeActiveStatus(int id, int status) {
+        // roomTypeRepository.updateRoomTypeActiveStatus(id, status);
+
+        ServiceType serviceType = serviceTypeRepository.findById(id).orElseThrow(() -> new RuntimeException("ServiceType not found"));
+        serviceType.setServiceTypeActive(status);
+        serviceTypeRepository.save(serviceType);
+    }
 }

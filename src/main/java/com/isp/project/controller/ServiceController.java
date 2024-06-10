@@ -1,5 +1,7 @@
 package com.isp.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.isp.project.model.RoomType;
 import com.isp.project.model.ServiceType;
 import com.isp.project.service.RoomTypeServiceImpl;
 import com.isp.project.service.ServiceTypeServiceImpl;
@@ -73,20 +76,56 @@ public class ServiceController {
         }
     }
 
-    @GetMapping("/deleteSe/{SeTypeID}")
-    public ResponseEntity<String> deleteBooking(@PathVariable("SeTypeID") Integer id) {
+    @GetMapping("/listServiceTypeActive")
+    public String listServiceTypeActive(Model model) {
+        List<ServiceType> serviceType = serviceTypeServiceImpl.findAllActive();
+        model.addAttribute("listServiceType", serviceType);
+        return "servicecategory";
+    }
+
+    @GetMapping("/listServiceTypeInactive")
+    public String listServiceTypeInactive(Model model) {
+        List<ServiceType> serviceType = serviceTypeServiceImpl.findAllInactive();
+        model.addAttribute("listServiceType", serviceType);
+        return "servicecategory";
+    }
+
+    @GetMapping("/hideServiceType/{SeTypeID}")
+    public ResponseEntity<String> hideServiceType(@PathVariable("SeTypeID") int id) {
         try {
-            boolean deleted = serviceTypeServiceImpl.delete(id);
-            ;
-            if (deleted) {
-                return ResponseEntity.ok("Service category deleted successfully");
-            } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Failed to delete service category");
-            }
+            serviceTypeServiceImpl.updateServiceTypeActiveStatus(id, 0);
+            return ResponseEntity.ok("Service category hidden successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to hide service category");
         }
     }
+
+    @GetMapping("/showServiceType/{SeTypeID}")
+    public ResponseEntity<String> showServiceType(@PathVariable("SeTypeID") int id) {
+        try {
+            serviceTypeServiceImpl.updateServiceTypeActiveStatus(id, 1);
+            return ResponseEntity.ok("Service category showed successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to show service category");
+        }
+    }
+
+    // @GetMapping("/deleteSe/{SeTypeID}")
+    // public ResponseEntity<String> deleteBooking(@PathVariable("SeTypeID") Integer id) {
+    //     try {
+    //         boolean deleted = serviceTypeServiceImpl.delete(id);
+    //         ;
+    //         if (deleted) {
+    //             return ResponseEntity.ok("Service category deleted successfully");
+    //         } else {
+    //             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    //                     .body("Failed to delete service category");
+    //         }
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+    //     }
+    // }
 
 }

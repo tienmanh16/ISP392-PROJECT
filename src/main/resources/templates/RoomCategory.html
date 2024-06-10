@@ -98,11 +98,11 @@
 										<td>
 											<a href="javascript:void(0);" 
 											   th:if="${list.roomTypeActive == 1}" 
-											   th:onclick="'confirmHide(' + ${list.id} + ');'" 
+											   th:onclick="'confirmHideRoomType(' + ${list.id} + ');'" 
 											   class="btn btn-danger ti-close"> Hide</a>
 											<a th:href="@{/show/{id}(id=${list.id})}" 
 											   th:if="${list.roomTypeActive == 0}" 
-											   th:onclick="'confirmShow(' + ${list.id} + ');'" 
+											   th:onclick="'confirmShowRoomType(' + ${list.id} + ');'" 
 											   class="btn btn-success ti-check"> Show</a>
 										</td>
 									</tr>
@@ -114,14 +114,14 @@
 			</div>
 		</section>
 		<script>
-			function confirmHide(RoomTypeID) {
+			function confirmHideRoomType(RoomTypeID) {
 				if (confirm('Are you sure you want to hide it?')) {
 					hideRoomType(RoomTypeID);
 				}
 			}
 		
 			function hideRoomType(RoomTypeID) {
-				fetch(`/hide/${RoomTypeID}`, {
+				fetch(`/hideRoomType/${RoomTypeID}`, {
 					method: 'GET'
 				})
 				.then(response => response.text().then(text => ({status: response.status, text})))
@@ -140,14 +140,14 @@
 			}
 		</script>
 		<script>
-			function confirmShow(RoomTypeID) {
+			function confirmShowRoomType(RoomTypeID) {
 				if (confirm('Are you sure you want to show it?')) {
 					showRoomType(RoomTypeID);
 				}
 			}
 		
 			function showRoomType(RoomTypeID) {
-				fetch(`/show/${RoomTypeID}`, {
+				fetch(`/showRoomType/${RoomTypeID}`, {
 					method: 'GET'
 				})
 				.then(response => response.text().then(text => ({status: response.status, text})))

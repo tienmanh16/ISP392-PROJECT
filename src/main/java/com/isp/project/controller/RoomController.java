@@ -70,21 +70,21 @@ public class RoomController {
         model.addAttribute("roomType", roomTypeServiceImpl.findByID(id));
         return "updateRoomType";
     }
-    @GetMapping("/listActive")
+    @GetMapping("/listRoomTypeActive")
     public String listRoomTypeActive(Model model) {
         List<RoomType> roomType = roomTypeServiceImpl.findAllActive();
         model.addAttribute("listRoomType", roomType);
         return "roomcategory";
     }
 
-    @GetMapping("/listInactive")
+    @GetMapping("/listRoomTypeInactive")
     public String listRoomTypeInactive(Model model) {
         List<RoomType> roomType = roomTypeServiceImpl.findAllInactive();
         model.addAttribute("listRoomType", roomType);
         return "roomcategory";
     }
 
-    @GetMapping("/hide/{id}")
+    @GetMapping("/hideRoomType/{id}")
     public ResponseEntity<String> hideRoomType(@PathVariable("id") int id) {
         try {
             roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 0);
@@ -95,7 +95,7 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/show/{id}")
+    @GetMapping("/showRoomType/{id}")
     public ResponseEntity<String> showRoomType(@PathVariable("id") int id) {
         try {
             roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 1);

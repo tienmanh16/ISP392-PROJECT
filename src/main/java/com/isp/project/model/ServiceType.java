@@ -37,6 +37,7 @@ public class ServiceType {
     private List<Service> service;
     
     @Column(name = "ServiceTypeActive", nullable = false)
-    private int serviceActive;
+    private int serviceTypeActive;
+
 
 }
