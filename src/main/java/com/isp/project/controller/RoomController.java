@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,7 @@ public class RoomController {
     }
 
     @PostMapping("/addRoomType")
+    @Validated
     public String save(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "addRoomType";
@@ -59,7 +61,7 @@ public class RoomController {
             return "addRoomType";
         }
         if (this.roomTypeServiceImpl.create(roomType)) {
-            return "redirect:/roomcategory";
+            return "redirect:/listRoomType";
         } else {
             return "redirect:/add-cate";
         }
@@ -74,14 +76,14 @@ public class RoomController {
     public String listRoomTypeActive(Model model) {
         List<RoomType> roomType = roomTypeServiceImpl.findAllActive();
         model.addAttribute("listRoomType", roomType);
-        return "roomcategory";
+        return "listRoomType";
     }
 
     @GetMapping("/listRoomTypeInactive")
     public String listRoomTypeInactive(Model model) {
         List<RoomType> roomType = roomTypeServiceImpl.findAllInactive();
         model.addAttribute("listRoomType", roomType);
-        return "roomcategory";
+        return "listRoomType";
     }
 
     @GetMapping("/hideRoomType/{id}")
@@ -105,6 +107,7 @@ public class RoomController {
     }
 
     @PostMapping("/saveRoomType")
+    @Validated
     public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult,
             Model model) {
         // if(result.hasErrors()){
@@ -124,7 +127,7 @@ public class RoomController {
             return "updateRoomType";
         }
         if (this.roomTypeServiceImpl.create(roomType)) {
-            return "redirect:/roomcategory";
+            return "redirect:/listRoomType";
         } else {
             return "redirect:/add-cate";
         }
@@ -133,7 +136,7 @@ public class RoomController {
     // @GetMapping("/list/{RoomTypeID}/delete")
     // public String delete(@PathVariable("RoomTypeID") Integer id, Model model) {
     // roomTypeService.delete(id);
-    // return "redirect:/roomcategory";
+    // return "redirect:/listRoomType";
     // }
 
     // @GetMapping("/deleteRo/{RoomTypeID}")
@@ -155,13 +158,13 @@ public class RoomController {
     public String search(@RequestParam("text") String text, Model model) {
         // List<RoomType> roomType = roomTypeServiceImpl.findByName(text);
         // model.addAttribute("roomType", roomType);
-        // return "roomcategory";
+        // return "listRoomType";
 
         logger.info("Searching for room types containing: " + text);
         List<RoomType> roomType = roomTypeServiceImpl.findByName(text);
         logger.info("Found " + roomType.size() + " room types");
         model.addAttribute("roomType", roomType);
-        return "roomcategory";
+        return "listRoomType";
     }
 
     private static final Logger logger = Logger.getLogger(RoomController.class.getName());

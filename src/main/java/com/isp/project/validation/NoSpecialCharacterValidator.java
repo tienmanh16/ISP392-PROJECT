@@ -4,8 +4,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class NoSpecialCharacterValidator implements ConstraintValidator<NoSpecialCharacter, String> {
 
-    private static final String SPECIAL_CHARACTERS = ".*[^a-zA-Z0-9 ].*";
-                                                    //  "^[a-zA-Z0-9\\p{L} ]+$"
+    private static final String SPECIAL_CHARACTERS = ".*[^a-zA-Z0-9 \\p{L},.;:'\"\\-].*"; 
     @Override
     public void initialize(NoSpecialCharacter constraintAnnotation) {
     }

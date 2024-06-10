@@ -50,7 +50,7 @@ public class ServiceController {
             return "addServiceType";
         }
         if (this.serviceTypeServiceImpl.create(serviceType)) {
-            return "redirect:/servicecategory";
+            return "redirect:/listServiceType";
         } else {
             return "redirect:/add-secate";
         }
@@ -68,7 +68,7 @@ public class ServiceController {
             return "updateServiceType";
         }
         if (this.serviceTypeServiceImpl.create(serviceType)) {
-            return "redirect:/servicecategory";
+            return "redirect:/listServiceType";
         } else {
             return "redirect:/add-secate";
         }
@@ -78,14 +78,14 @@ public class ServiceController {
     public String listServiceTypeActive(Model model) {
         List<ServiceType> serviceType = serviceTypeServiceImpl.findAllActive();
         model.addAttribute("listServiceType", serviceType);
-        return "servicecategory";
+        return "listServiceType";
     }
 
     @GetMapping("/listServiceTypeInactive")
     public String listServiceTypeInactive(Model model) {
         List<ServiceType> serviceType = serviceTypeServiceImpl.findAllInactive();
         model.addAttribute("listServiceType", serviceType);
-        return "servicecategory";
+        return "listServiceType";
     }
 
     @GetMapping("/hideServiceType/{SeTypeID}")
