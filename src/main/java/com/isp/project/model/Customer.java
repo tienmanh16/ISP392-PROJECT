@@ -25,7 +25,8 @@ public class Customer {
 
   @Id
   @Column(name = "CustomerID")
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  // @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int customerID;
 
   @Column(name = "CustomerName")

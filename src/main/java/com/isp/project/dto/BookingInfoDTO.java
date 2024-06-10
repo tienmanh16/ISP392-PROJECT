@@ -14,14 +14,17 @@ public class BookingInfoDTO {
     private Date checkoutDate;
     private String checkoutTime;
     private int employeeId;
+    private int customerQuantity;
+    
     public BookingInfoDTO() {
     }
-    
+ 
    
+
 
     public BookingInfoDTO(String customerName, String customerIdentificationID, String customerPhone,
             String customerEmail, String customerAddress, String gender, Date checkinDate, String checkinTime,
-            Date checkoutDate, String checkoutTime, int employeeId) {
+            Date checkoutDate, String checkoutTime, int employeeId, int customerQuantity) {
         this.customerName = customerName;
         this.customerIdentificationID = customerIdentificationID;
         this.customerPhone = customerPhone;
@@ -33,7 +36,9 @@ public class BookingInfoDTO {
         this.checkoutDate = checkoutDate;
         this.checkoutTime = checkoutTime;
         this.employeeId = employeeId;
+        this.customerQuantity = customerQuantity;
     }
+
 
 
 
@@ -123,6 +128,20 @@ public class BookingInfoDTO {
 
     public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
+    }
+
+
+
+
+    public int getCustomerQuantity() {
+        return customerQuantity;
+    }
+
+
+
+
+    public void setCustomerQuantity(int customerQuantity) {
+        this.customerQuantity = customerQuantity;
     }
     
 

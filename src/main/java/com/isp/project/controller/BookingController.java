@@ -99,11 +99,11 @@ public class BookingController {
         // Tạo và lưu thông tin của khách hàng
         Customer customer = new Customer();
         customer.setCustomerName(bookingInfo.getCustomerName());
-        customer.setCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
+        customer.setCustomerGender(bookingInfo.getGender());
+        customer.setCustomerAddress(bookingInfo.getCustomerAddress());
         customer.setCustomerPhone(bookingInfo.getCustomerPhone());
         customer.setCustomerEmail(bookingInfo.getCustomerEmail());
-        customer.setCustomerAddress(bookingInfo.getCustomerAddress());
-        customer.setCustomerGender(bookingInfo.getGender());
+        customer.setCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
         customerRepository.save(customer);
 
         // Tạo và lưu thông tin đặt phòng
@@ -112,25 +112,29 @@ public class BookingController {
         // Đặt ngày hiện tại cho bookingDate
         Date bookingDate = new Date(System.currentTimeMillis());
         booking.setBookingDate(bookingDate);
+        booking.setCustomerQuantity(bookingInfo.getCustomerQuantity());
         booking.setIsCancelled(1); // Mặc định không hủy
         bookingRepository.save(booking);
 
-        // Tạo và lưu thông tin đăng ký
-        int employeeIdFromForm = bookingInfo.getEmployeeId();
-        Register register = new Register();
-        Employee employee = employeeRepository.findById(employeeIdFromForm);
-        register.setEmployeeID(employee);
-        register.setBookingID(booking); // Lấy ID của đặt phòng mới tạo
-        registerRepository.save(register);
-
-        // Tạo và lưu thông tin ánh xạ đặt phòng
-        BookingMapping bookingMapping = new BookingMapping();
-        bookingMapping.setBookingID(booking); // Lấy ID của đặt phòng mới tạo
-        bookingMapping.setCheckInDate(mergeDateAndTime(bookingInfo.getCheckinDate(), bookingInfo.getCheckinTime()));
-        bookingMapping.setCheckOutDate(mergeDateAndTime(bookingInfo.getCheckoutDate(), bookingInfo.getCheckoutTime()));
-        // Bạn cần xử lý thông tin phòng đã chọn tại đây, nhưng trong form không có
-        // trường phòng, vì vậy tạm thời bỏ qua
-        bookingMappingRepository.save(bookingMapping);
+        // // Tạo và lưu thông tin đăng ký
+        // int employeeIdFromForm = bookingInfo.getEmployeeId();
+        // Register register = new Register();
+        // // Tìm kiếm nhân viên theo ID đã được truyền từ form
+        // Employee employeeOptional = employeeRepository.findById(employeeIdFromForm);      
+        //     register.setEmployeeID(employeeOptional);
+        //     register.setBookingID(booking);
+        //     registerRepository.save(register);
+      
+        // // Tạo và lưu thông tin ánh xạ đặt phòng
+        // BookingMapping bookingMapping = new BookingMapping();
+        // bookingMapping.setBookingID(booking); // Lấy ID của đặt phòng mới tạo
+        // bookingMapping.setCheckInDate(mergeDateAndTime(bookingInfo.getCheckinDate(),
+        // bookingInfo.getCheckinTime()));
+        // bookingMapping.setCheckOutDate(mergeDateAndTime(bookingInfo.getCheckoutDate(),
+        // bookingInfo.getCheckoutTime()));
+        // // Bạn cần xử lý thông tin phòng đã chọn tại đây, nhưng trong form không có
+        // // trường phòng, vì vậy tạm thời bỏ qua
+        // bookingMappingRepository.save(bookingMapping);
 
         return "redirect:/booking"; // Chuyển hướng đến trang kết quả đặt phòng
     }

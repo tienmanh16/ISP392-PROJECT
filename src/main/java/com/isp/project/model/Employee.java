@@ -177,8 +177,9 @@ public class Employee {
 
 
      @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RoleID")
+    @JoinColumn(name = "Role")
     @JsonBackReference
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Role role;
+
 }
