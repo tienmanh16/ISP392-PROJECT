@@ -31,7 +31,7 @@ public class RoomController {
         return "ManagerBooking";
     }
 
-    @GetMapping("/listRoomType")
+    @GetMapping("/roomcategory")
     public String RoomCategory(Model model) {
         model.addAttribute("listRoomType", roomTypeServiceImpl.getAll());
         return "RoomCategory";
@@ -60,7 +60,7 @@ public class RoomController {
             return "addRoomType";
         }
         if (this.roomTypeServiceImpl.create(roomType)) {
-            return "redirect:/listRoomType";
+            return "redirect:/roomcategory";
         } else {
             return "redirect:/add-cate";
         }
@@ -125,7 +125,7 @@ public class RoomController {
             return "updateRoomType";
         }
         if (this.roomTypeServiceImpl.create(roomType)) {
-            return "redirect:/listRoomType";
+            return "redirect:/roomcategory";
         } else {
             return "redirect:/add-cate";
         }
@@ -134,7 +134,7 @@ public class RoomController {
     // @GetMapping("/list/{RoomTypeID}/delete")
     // public String delete(@PathVariable("RoomTypeID") Integer id, Model model) {
     // roomTypeService.delete(id);
-    // return "redirect:/listRoomType";
+    // return "redirect:/roomcategory";
     // }
 
     // @GetMapping("/deleteRo/{RoomTypeID}")
