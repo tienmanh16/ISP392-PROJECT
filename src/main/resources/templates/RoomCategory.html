@@ -48,13 +48,26 @@
 				<input placeholder="Search..." id="input" class="input" name="text" type="text">
 				
 			</div> -->
-				<div class="InputContainer" style="margin-bottom: 20px;">
+				<!-- <div class="InputContainer" style="margin-bottom: 20px;">
 					<form th:action="@{/searchRoomType}" method="get">
 						<input placeholder="Search..." id="input" class="input" name="name" type="text">
-						<!-- <button type="submit">Search</button> -->
+						<button type="submit">Search</button>
+					</form>
+				</div> -->
+
+				<div class="col-md-11 text-left mb-4">
+					<form th:action="@{/searchRoomType}" method="get">
+						<div class="input-group">
+							<input type="text" class="form-control" name="query" placeholder="Search roomTypeName..." aria-label="Search" aria-describedby="search-button">
+							<div class="input-group-append">
+								<button class="btn btn-primary" type="submit" id="search-button" style="background-color: #05073e; color: #fff;">
+									Search
+								</button>
+							</div>
+						</div>
 					</form>
 				</div>
-
+				
 				<!-- <div class="InputContainer" style="position: absolute; top: 210px; right: 280px;">
 				<input id="input" class="input" name="text" type="date">
 				
@@ -65,12 +78,12 @@
 					</a>
 				</div> -->
 
-				<div class="col-md-11 text-right  mb-4">
+				<!-- <div class="col-md-11 text-right  mb-4">
 					<button class="btn btn-primary" onclick="window.location.href='/add-cate'"
 						style="background-color: #05073e; color: #fff;">
 						Add Employee
 					</button>
-				</div>
+				</div> -->
 
 				<div class="row">
 					<div class="col-md-12">
