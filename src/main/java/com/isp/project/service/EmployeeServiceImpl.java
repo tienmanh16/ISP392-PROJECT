@@ -87,5 +87,20 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeRepository.existsByEmail(email);
     }
 
+    @Override
+    public boolean toggleEmployeeStatus(int employeeId, boolean currentStatus) {
+        Employee employee = employeeRepository.findById(employeeId);
+        if (employee == null) {
+            throw new IllegalArgumentException("Employee not found with ID: " + employeeId);
+        }
+        
+        // Update the status
+        employee.setIsActive(!currentStatus);
+        employeeRepository.save(employee);
+        
+        // Return the new status
+        return !currentStatus;
+    }
+
 
 }

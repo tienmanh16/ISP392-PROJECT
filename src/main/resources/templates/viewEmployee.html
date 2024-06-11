@@ -45,7 +45,8 @@
 
             </div>
             <div class="col-md-11 text-right  mb-4">
-                <button class="btn btn-primary" onclick="window.location.href='/employee/add'" style="background-color: #05073e; color: #fff;">
+                <button class="btn btn-primary" onclick="window.location.href='/employee/add'"
+                    style="background-color: #05073e; color: #fff;">
                     Add Employee
                 </button>
             </div>
@@ -67,9 +68,8 @@
                                     <th>UserName</th>
                                     <th>Password</th>
                                     <th>Salary</th>
+                                    <th>Status</th>
                                     <th>Edit</th>
-                                    <th>Delete</th>
-
                                 </tr>
                             </thead>
                             <tbody>
@@ -86,9 +86,19 @@
                                     <td th:text="${list.username}"></td>
                                     <td th:text="${list.password}"></td>
                                     <td th:text="${list.salary}"></td>
-                                    <td><a th:href="@{'/employee/edit/'+${list.id}}" class="ti-menu"></a></td>
-                                    <td><a th:href="@{'/employee/delete/'+${list.id}}" class="btn btn-danger ti-close deleteButton"></a>
+                                    <!-- <td th:text="${list.isActive}"></td> -->
+                                    <td>
+                                        <!-- hien thi tu database -->
+                                        <button type="button" class="btn statusButton"
+                                            th:classappend="${list.isActive == true ? 'btn-success' : 'btn-danger'}"
+                                            th:text="${list.isActive == true ? 'Active' : 'InActive'}"
+                                            th:data-id="${list.id}" th:data-active="${list.isActive}"
+                                            onclick="toggleStatus(this)"
+                                            style="width: 85px; height: 40px;">
+                                        </button>
                                     </td>
+                                    <td><a th:href="@{'/employee/edit/'+${list.id}}" class="ti-menu"></a></td>
+                                
                                 </tr>
                             </tbody>
                         </table>
@@ -96,46 +106,39 @@
                 </div>
             </div>
     </div>
-    <div class="modal fade" tabindex="-1" role="dialog" id="deleteModal">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Delete Account</h5>
-                    <button type="button" class="close js-modal-close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you want to delete?</p>
-                </div>
-                <div class="modal-footer">
-                    <a href="" type="button" class="btn btn-primary" id="deleteId"> Save changes </a>
-                    <button type="button" class="btn btn-secondary js-modal-close">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    
     </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
     <!-- thư viện để add header và footer  -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    
-    <script>
-        const closeModalButtons = $('.js-modal-close, .modal-footer .btn-secondary');
 
-        closeModalButtons.on('click', function () {
-            $('#deleteModal').modal('hide');
-        });
-        $(document).ready(function () {
-            $('.table .deleteButton').on('click', function (event) {
-                event.preventDefault();
-                var href = $(this).attr('href');
-                $('#deleteModal #deleteId').attr('href', href);
-                $('#deleteModal').modal('show');
+    <script>
+        function toggleStatus(button) {
+            const employeeId = button.getAttribute('data-id');
+            const isActive = button.getAttribute('data-active') === 'true';
+
+            $.ajax({
+                url: '/employee/toggleStatus/' + employeeId,
+                type: 'POST',
+                data: { isActive: isActive },
+                success: function (data) {
+                    // Update button text and style
+                    button.textContent = !isActive ? 'Active' : 'InActive';
+                    button.classList.toggle('btn-success', !isActive);
+                    button.classList.toggle('btn-danger', isActive);
+                    // Update data attribute in database
+                    button.setAttribute('data-active', !isActive);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Failed to update status:', error);
+                }
             });
-        });
+        }
+
+
     </script>
+
 
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
     <script th:src="@{/js/jquery.js}"></script>
@@ -149,7 +152,6 @@
     <script th:src="@{/js/mixitup.js}"></script>
     <script th:src="@{/js/knob.js}"></script>
     <script th:src="@{/js/mmenu.js}"></script>
-    <script th:src="@{/js/main.copy1.js}"></script>
 </body>
 
 </html>

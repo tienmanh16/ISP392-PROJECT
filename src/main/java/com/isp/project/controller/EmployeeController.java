@@ -1,6 +1,7 @@
 package com.isp.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,7 @@ public class EmployeeController {
 
     @GetMapping("/list")
     public String listEmployee(Model model) {
-        model.addAttribute("emList", employeeService.findActiveEmployees());
+        model.addAttribute("emList", employeeService.findAll());
         return "viewEmployee";
     }
 
@@ -92,6 +93,16 @@ public class EmployeeController {
             employeeService.save(employee);
         }
         return "redirect:/employee/list";
+    }
+
+    @PostMapping("/toggleStatus/{employeeId}")
+    public ResponseEntity<?> toggleStatus(@PathVariable("employeeId") int employeeId, @RequestParam("isActive") boolean isActive) {
+        try {
+            boolean newStatus = employeeService.toggleEmployeeStatus(employeeId, isActive);
+            return ResponseEntity.ok().body(newStatus);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to toggle employee status.");
+        }
     }
 
     @GetMapping("/check-email")

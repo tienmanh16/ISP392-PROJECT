@@ -25,5 +25,5 @@ public interface EmployeeService {
     Employee save(Employee entity);
     
     boolean existsByEmail(String email);
-
+    boolean toggleEmployeeStatus(int employeeId, boolean currentStatus);
 }
