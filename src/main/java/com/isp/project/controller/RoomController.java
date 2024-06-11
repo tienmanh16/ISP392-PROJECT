@@ -31,7 +31,7 @@ public class RoomController {
         return "ManagerBooking";
     }
 
-    @GetMapping("/roomcategory")
+    @GetMapping("/listRoomType")
     public String RoomCategory(Model model) {
         model.addAttribute("listRoomType", roomTypeServiceImpl.getAll());
         return "RoomCategory";
@@ -60,7 +60,7 @@ public class RoomController {
             return "addRoomType";
         }
         if (this.roomTypeServiceImpl.create(roomType)) {
-            return "redirect:/roomcategory";
+            return "redirect:/listRoomType";
         } else {
             return "redirect:/add-cate";
         }
@@ -115,7 +115,7 @@ public class RoomController {
         // roomTypeServiceImpl.update(roomType);
         // model.addAttribute("listRoomType", roomTypeService.getAllRoomType());
 
-        // return "redirect:/roomcategory";
+        // return "redirect:/listRoomType";
         if (bindingResult.hasErrors()) {
             return "updateRoomType"; // Trả về lại trang hiện tại nếu có lỗi
         }
@@ -125,7 +125,7 @@ public class RoomController {
             return "updateRoomType";
         }
         if (this.roomTypeServiceImpl.create(roomType)) {
-            return "redirect:/roomcategory";
+            return "redirect:/listRoomType";
         } else {
             return "redirect:/add-cate";
         }
@@ -134,7 +134,7 @@ public class RoomController {
     // @GetMapping("/list/{RoomTypeID}/delete")
     // public String delete(@PathVariable("RoomTypeID") Integer id, Model model) {
     // roomTypeService.delete(id);
-    // return "redirect:/roomcategory";
+    // return "redirect:/listRoomType";
     // }
 
     // @GetMapping("/deleteRo/{RoomTypeID}")
