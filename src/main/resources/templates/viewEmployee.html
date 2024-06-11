@@ -42,16 +42,12 @@
                         <h2 class="heading-section">Employee List</h2>
                     </div>
                 </div>
-                <!-- 
-                <div class="InputContainer" style="margin-bottom: 20px;">
-                    <form>
-                        <input placeholder="Search.." id="input" name="key" class="input" type="text">
-                    </form>
-                </div> -->
 
             </div>
-            <div class="col-md-6 text-center mb-5">
-                <button class="btn btn-primary" onclick="window.location.href='/employee/add'">Add Employee</button>
+            <div class="col-md-11 text-right  mb-4">
+                <button class="btn btn-primary" onclick="window.location.href='/employee/add'" style="background-color: #05073e; color: #fff;">
+                    Add Employee
+                </button>
             </div>
             <div class="container">
                 <div class="col-lg-12">
@@ -81,7 +77,7 @@
                                     <th th:text="${list.id}"></th>
                                     <td th:text="${list.fullName}"></td>
                                     <td th:text="${list.gender == 1 ? 'Male' : 'Female'}"></td>
-                                    <td th:text="${list.dob}"></td>
+                                    <td th:text="${#dates.format(list.dob,'dd/MM/yyyy')}"></td>
                                     <td th:text="${list.role}"></td>
                                     <td th:text="${list.address}"></td>
                                     <td th:text="${list.phone}"></td>
@@ -93,7 +89,6 @@
                                     <td><a th:href="@{'/employee/edit/'+${list.id}}" class="ti-menu"></a></td>
                                     <td><a th:href="@{'/employee/delete/'+${list.id}}" class="btn btn-danger ti-close deleteButton"></a>
                                     </td>
-
                                 </tr>
                             </tbody>
                         </table>
@@ -116,15 +111,11 @@
                 <div class="modal-footer">
                     <a href="" type="button" class="btn btn-primary" id="deleteId"> Save changes </a>
                     <button type="button" class="btn btn-secondary js-modal-close">Close</button>
-    
                 </div>
             </div>
         </div>
     </div>
-
     </section>
-
-
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
     <!-- thư viện để add header và footer  -->

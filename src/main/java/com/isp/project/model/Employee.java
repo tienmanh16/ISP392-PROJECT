@@ -15,9 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.Size;
 import lombok.NoArgsConstructor;
 
 
@@ -45,11 +42,9 @@ private int gender;
     private String role;
     @Column(name = "IsActive")
     private Boolean isActive;
-    @DateTimeFormat(pattern ="dd/MM/yyyy")
-    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private Date dob;
     private String username;
-    @Size(min = 6, message = "password must be at least 6 characters")
     private String password;
 
 

@@ -3,13 +3,11 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
     <title>Employee</title>
     <style>
-        /* Căn giữa container */
         .container {
             display: flex;
             justify-content: center;
@@ -17,8 +15,7 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
-     
-        .passText, .emailText {
+        .passText, .emailText,.salaryText, .dobText {
             color: red; 
         }
     </style>
@@ -27,25 +24,24 @@
 <body>
     <div class="container"></div>
     <div class="container">
-
-        <div class="row " style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; padding: 20px;">
+        <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; padding: 20px;">
             <div class="col-sm-12">
-                <h2 class="myclass">Add Employee</h2>
-                <form th:action="@{/employee/saveOrUpdate}" th:object="${employee}" method="post"
-                    enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
+                <h2>Add Employee</h2>
+                <form th:action="@{/employee/add}" th:object="${employee}" method="post" enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
                     <div class="form-group">
-                        <label>Full Name</label> <input type="text" th:field="*{fullName}" class="form-control"
-                            name="name" placeholder="Enter name" id="name" value="" required>
+                        <label>Full Name</label>
+                        <input type="text" th:field="*{fullName}" class="form-control" placeholder="Enter name" required>
                     </div>
                     <div class="form-group">
-                        <label>Dob</label> <input type="text" th:field="*{dob}" class="form-control" name="dob"
-                            placeholder="Enter dob" id="dob" value="" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Role</label> <input type="text" th:field="*{role}" class="form-control" name="role"
-                            placeholder="Enter role" id="role" value="" required>
-                    </div>
+                        <label>Dob</label>
+                        <input type="date" th:field="*{dob}" class="form-control" placeholder="Enter dob" name="dob" id="dob" required>
+						<span class="dobText" ></span>
 
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" th:field="*{role}" class="form-control" placeholder="Enter role" required>
+                    </div>
                     <div class="form-group">
                         <label>Gender</label>
                         <div class="radio">
@@ -58,132 +54,150 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label>Address</label> <input type="text" th:field="*{address}" class="form-control"
-                            name="address" placeholder="Enter address" id="address" value="">
-                    </div>
-
-                    <div class="form-group">
-                        <label>CCCD</label> <input type="text" th:field="*{idenId}" class="form-control" name="idenId"
-                            placeholder="Enter CCCD" id="idenId" value="" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Phone</label> <input type="tel" th:field="*{phone}" class="form-control" name="phone"
-                            placeholder="Enter phone" id="phone" value="" required>
+                        <label>Address</label>
+                        <input type="text" th:field="*{address}" class="form-control" placeholder="Enter address">
                     </div>
                     <div class="form-group">
-                        <label class="emailBox">Email </label>
-                            <input type="email" th:field="*{email}" class="form-control" name="email"
-                                placeholder="Enter email" id="email" value="" required>
-                                <span class="emailText"></span>
-                                <div id="errorMessage" class="alert alert-danger" style="display: none;" role="alert"></div>
+                        <label>CCCD</label>
+                        <input type="text" th:field="*{idenId}" class="form-control" placeholder="Enter CCCD" required>
                     </div>
-
                     <div class="form-group">
-                        <label>User Name</label> <input type="text" th:field="*{username}" class="form-control"
-                            name="username" placeholder="Enter username" id="username" value="" required>
+                        <label>Phone</label>
+                        <input type="tel" th:field="*{phone}" class="form-control" placeholder="Enter phone" required>
                     </div>
-
                     <div class="form-group">
-                        <label class="passBox">Password </label>
-                            <input type="password" th:field="*{password}" class="form-control" name="password"
-                                placeholder="Enter password" id="password" value="" required>
-                            <span class="passText"></span>
-                       
+                        <label class="emailBox">Email</label>
+                        <input type="email" th:field="*{email}" class="form-control" placeholder="Enter email" required>
+                        <span class="emailText"></span>
+                        <div id="errorMessage" class="alert alert-danger" style="display: none;" role="alert"></div>
                     </div>
-
                     <div class="form-group">
-                        <label>Salary</label> <input type="tesxt" th:field="*{salary}" class="form-control"
-                            name="salary" placeholder="Enter salary" id="salary" value="">
+                        <label>User Name</label>
+                        <input type="text" th:field="*{username}" class="form-control" placeholder="Enter username" required>
                     </div>
-                    <div th:if="${#fields.hasErrors('password')}" class="alert alert-danger" role="alert">
-                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+                    <div class="form-group">
+                        <label class="passBox">Password</label>
+                        <input type="password" th:field="*{password}" class="form-control" placeholder="Enter password" required>
+                        <span class="passText"></span>
                     </div>
-
+                    <div class="form-group">
+                        <label>Salary</label>
+                        <input type="number" th:field="*{salary}" class="form-control" placeholder="Enter salary">
+                        <span class="salaryText"></span>
+                    </div>
+        
                     <button type="submit" class="btn btn-primary">Save</button>
-                    <button type="reset" class="btn btn-primary">Cancel</button>
+                    <button type="reset" class="btn btn-primary">Reset</button>
                     <a class="btn btn-primary" href="/employee/list">Display List Staff</a>
                 </form>
             </div>
         </div>
     </div>
     <div class="container"></div>
-
     <script>
-		const form = document.querySelector('form');
-		const email = document.getElementById('email');
-		const password = document.getElementById('password');
-		const passText = document.querySelector('.passText');
-		const emailText = document.querySelector('.emailText');
-		const emailError = document.getElementById('emailError');
+		// Lấy ngày hiện tại và định dạng thành yyyy-mm-dd
+		var currentDate = new Date(); // Lấy ngày hiện tại
+		var yyyy = currentDate.getFullYear(); 
+		var mm = String(currentDate.getMonth() + 1).padStart(2, '0'); // thêm số 0 đằng trước nếu cần
+		var dd = String(currentDate.getDate()).padStart(2, '0'); 
+		var maxDate = yyyy + '-' + mm + '-' + dd; 
 
-		password.addEventListener('input', checkPassword);
-		email.addEventListener('input', checkEmail);
+		// Đặt thuộc tính max của input date là ngày hiện tại
+		document.getElementById("dob").setAttribute("max", maxDate);
 
+		// Validate ngày sinh
+		document.getElementById("dob").addEventListener("change", function () {
+			var input = this.value; // Lấy ngày được chọn từ trường nhập ngày sinh
+			var inputDate = new Date(input); 
+			var currentDate = new Date(maxDate); 
 
-		function checkPassword() {
-			const passPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-			if (password.value.match(passPattern)) {
-				passText.innerHTML = '';
-				return true;
+			if (inputDate > currentDate) { 
+                dobText.innerHTML = 'Dob can not be in the future.';
+				this.value = ""; // Xóa giá trị ngày được chọn từ trường nhập ngày sinh
 			} else {
-				passText.innerHTML = 'Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.';
-				return false;
+                dobText.innerHTML = '';// Xóa thông báo lỗi nếu không có lỗi
 			}
-		}
+		});
 
-		function checkFormSubmission() {
-			const isValidPass = checkPassword();
-			const isValidEmail = checkEmail();
-			const isDuplicateEmail = checkDuplicateEmail();
+        const form = document.querySelector('form');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const passText = document.querySelector('.passText');
+        const emailText = document.querySelector('.emailText');
+        const dobText = document.querySelector('.dobText');
+        const salaryText = document.querySelector('.salaryText');
+        const emailError = document.getElementById('emailError');
+        const errorMessage = document.getElementById('errorMessage');
 
-			return isValidEmail && !isDuplicateEmail&& isValidPass;
-		}
-	function checkEmail() {
-    const email = document.getElementById('email');
-    const emailPattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
-    const emailText = document.querySelector('.emailText');
-    const emailError = document.getElementById('errorMessage');
+        password.addEventListener('input', checkPassword);
+        email.addEventListener('input', checkEmail);
 
-    if (email.value.match(emailPattern)) {
-        emailText.innerHTML = '';
-        emailError.style.display = 'none';
-        return true;
-    } else {
-        emailText.innerHTML = 'Must be a valid email address.';
-        emailError.style.display = 'none';
-        return false;
-    }
-}
+        function checkPassword() {
+            const passPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+            if (password.value.match(passPattern)) {
+                passText.innerHTML = '';
+                return true;
+            } else {
+                passText.innerHTML = 'Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.';
+                return false;
+            }
+        }
 
-		function checkDuplicateEmail() {
-			const email = document.getElementById('email');
-			let isDuplicate = false;
+        function checkFormSubmission() {
+            const isValidPass = checkPassword();
+            const isValidEmail = checkEmail();
 
-			$.ajax({
-				url: '/employee/check-email',
-				type: 'GET',
-				data: { email: email.value },
-				success: function (response) {
-					if (response) {
-						document.getElementById('errorMessage').innerText = 'Email already exists.';
-						document.getElementById('errorMessage').style.display = 'block';
-						isDuplicate = true;
-					} else {
-						document.getElementById('errorMessage').style.display = 'none';
-						isDuplicate = false;
-					}
-				},
-				error: function () {
-					isDuplicate = true;
-				}
-			});
+            return isValidEmail && isValidPass && !checkDuplicateEmail();
+        }
 
-			return isDuplicate;
-		}
-	</script>
+        function checkEmail() {
+            const emailPattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+            if (email.value.match(emailPattern)) {
+                emailText.innerHTML = '';
+                errorMessage.style.display = 'none';
+                return true;
+            } else {
+                emailText.innerHTML = 'Must be a valid email address.';
+                errorMessage.style.display = 'none';
+                return false;
+            }
+        }
+
+        function checkDuplicateEmail() {
+            let isDuplicate = false;
+
+            $.ajax({
+                url: '/employee/check-email',
+                type: 'GET',
+                data: { email: email.value },
+                async: false,
+                success: function (response) {
+                    if (response) {
+                        errorMessage.innerText = 'Email already exists.';
+                        errorMessage.style.display = 'block';
+                        isDuplicate = true;
+                    } else {
+                        errorMessage.style.display = 'none';
+                        isDuplicate = false;
+                    }
+                },
+                error: function () {
+                    isDuplicate = true;
+                }
+            });
+
+            return isDuplicate;
+        }
+
+        document.getElementById("salary").addEventListener("input", function () {
+			var input = this.value; 
+			if (input<=0) { 
+                salaryText.innerHTML = 'Salary must be a positive number'; // Hiển thị thông báo lỗi
+				this.value="";
+			} else {
+				document.getElementById("salaryError").innerText = ""; // Xóa thông báo lỗi nếu không có lỗi
+			}
+		});
+    </script>
 </body>
-
-
-
 </html>

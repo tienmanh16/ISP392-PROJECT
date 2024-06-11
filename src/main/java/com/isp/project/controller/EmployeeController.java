@@ -25,34 +25,47 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @GetMapping("/list")
-    public String listEmployee(Model model){
+    public String listEmployee(Model model) {
         model.addAttribute("emList", employeeService.findActiveEmployees());
         return "viewEmployee";
     }
 
     @GetMapping("/add")
-    public String addorEdit(Model model){
+    public String add(Model model) {
         Employee employee = new Employee();
         model.addAttribute("employee", employee);
-        model.addAttribute("action", "/employee/saveOrUpdate");
         return "addEm";
     }
 
-    @PostMapping("/saveOrUpdate")
+    @PostMapping("/add")
     public String save(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("action", "/employee/saveOrUpdate");
-            return "editEm";
+            return "addEm";
         }
-        boolean exists = employeeService.existsByEmail(employee.getEmail());
+        employee.setIsActive(true);
+        employeeService.save(employee);
+        return "redirect:/employee/list";
+    }
+    
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable("id") int id) {
+        Employee employee = employeeService.findById(id);
+        if (employee != null) {
+            model.addAttribute("employee", employee);
+            return "editEm"; 
+        } else {
+            return "redirect:/employee/list"; 
+        }
+    }
 
-        if(exists){
-            model.addAttribute("emailError", "Email already exists.");
+    @PostMapping("/edit")
+    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "editEm";
         }
+
         Employee existingEmployee = employeeService.findById(employee.getId());
         if (existingEmployee != null) {
-            // Update the existing employee
             existingEmployee.setFullName(employee.getFullName());
             existingEmployee.setGender(employee.getGender());
             existingEmployee.setAddress(employee.getAddress());
@@ -64,33 +77,18 @@ public class EmployeeController {
             existingEmployee.setDob(employee.getDob());
             existingEmployee.setSalary(employee.getSalary());
             existingEmployee.setRole(employee.getRole());
-            existingEmployee.setIsActive(true);  // Ensure the employee is active
+            existingEmployee.setIsActive(true); 
             employeeService.save(existingEmployee);
-        } else {
-            // Add new employee
-            employee.setIsActive(true);  // Ensure the employee is active
-            employeeService.save(employee);
         }
         return "redirect:/employee/list";
-    }
-
-    @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable("id") int id) {
-        Employee employee = employeeService.findById(id);
-        if (employee != null) {
-            model.addAttribute("employee", employee);
-        } else {
-            model.addAttribute("employee", new Employee());
-        }
-        model.addAttribute("action", "/employee/saveOrUpdate");
-        return "editEm";
+        
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) {
         Employee employee = employeeService.findById(id);
         if (employee != null) {
-            employee.setIsActive(false);  
+            employee.setIsActive(false);
             employeeService.save(employee);
         }
         return "redirect:/employee/list";
