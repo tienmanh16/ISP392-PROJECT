@@ -100,7 +100,6 @@ public class RoomTypeServiceImpl implements RoomTypeService {
 
     @Override
     public List<RoomType> searchRoomType(String name) {
-       
      return this.roomTypeRepository.searchRoomType(name);   
     }
 

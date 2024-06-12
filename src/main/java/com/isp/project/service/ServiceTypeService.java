@@ -10,5 +10,5 @@ public interface ServiceTypeService {
     ServiceType findByID(Integer id);
     Boolean update(ServiceType serviceType);
     Boolean delete(Integer id);
-    List<ServiceType> listServiceType(String name);
+    List<ServiceType> searchServiceType(String name);
 } 

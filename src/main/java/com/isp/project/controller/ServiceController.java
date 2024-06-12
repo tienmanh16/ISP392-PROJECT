@@ -27,23 +27,19 @@ import jakarta.validation.Valid;
 public class ServiceController {
     @Autowired
     private ServiceTypeServiceImpl serviceTypeServiceImpl;
-   
+
     @Autowired
     private ServiceTypeService serviceTypeService;
 
     @GetMapping("/listServiceType")
-    public String ServiceType(Model model , @Param("name") String name) {
+    public String ServiceType(Model model, @Param("name") String name) {
         List<ServiceType> listServiceType;
-        if(name != null){
-        listServiceType = this.serviceTypeService.listServiceType(name);
-           
-        }else{
+        if (name != null) {
+            listServiceType = this.serviceTypeService.searchServiceType(name);
+        } else {
             listServiceType = this.serviceTypeService.getAll();
-           
-            
+
         }
-
-
         model.addAttribute("listServiceType", listServiceType);
         return "ServiceCategory";
     }
