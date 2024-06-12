@@ -7,6 +7,7 @@ import java.util.Map;
 import com.isp.project.model.Booking;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.Service;
+import com.isp.project.model.Service;
 
 public interface InvoiceService {
     List<Invoice> getAllInvoice();

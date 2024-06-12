@@ -13,12 +13,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import com.isp.project.dto.InvoiceDetailDTO;
+
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
+
 import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Service;
+
 import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
 
@@ -34,6 +36,8 @@ public class InvoidController {
 
     @Autowired
     private SpringTemplateEngine templateEngine;
+
+
 
     @GetMapping("/listinvoice")
     public String listInvoice(Model model, @Param("key") String key, @Param("keyDate") Date keyDate) {
