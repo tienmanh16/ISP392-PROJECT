@@ -98,5 +98,10 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         roomTypeRepository.save(roomType);
     }
 
+    @Override
+    public List<RoomType> searchRoomType(String name) {
+       
+     return this.roomTypeRepository.searchRoomType(name);   
+    }
 
 }

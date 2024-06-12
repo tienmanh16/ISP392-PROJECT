@@ -84,4 +84,9 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
         serviceType.setServiceTypeActive(status);
         serviceTypeRepository.save(serviceType);
     }
+
+    @Override
+    public List<ServiceType> listServiceType(String name) {
+       return this.serviceTypeRepository.searchServiceType(name);
+    }
 }

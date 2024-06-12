@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.isp.project.dto.RoomTypeDetailDTO;
+import com.isp.project.model.Invoice;
 import com.isp.project.model.RoomType;
 
 @Repository
@@ -51,4 +52,7 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Integer> {
 
        @Query("SELECT r FROM RoomType r WHERE LOWER(r.name) LIKE LOWER(CONCAT('%', :name, '%'))")  
        List<RoomType> findByNameContainingIgnoreCase(String name);
+
+       @Query("Select c FROM RoomType c WHERE c.name LIKE %?1%")
+        List<RoomType> searchRoomType(String name);
 }

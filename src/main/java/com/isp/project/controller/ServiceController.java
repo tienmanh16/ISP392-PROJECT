@@ -3,6 +3,7 @@ package com.isp.project.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.isp.project.model.RoomType;
 import com.isp.project.model.ServiceType;
+import com.isp.project.service.ServiceTypeService;
 import com.isp.project.service.ServiceTypeServiceImpl;
 
 import jakarta.validation.Valid;
@@ -24,14 +27,24 @@ import jakarta.validation.Valid;
 public class ServiceController {
     @Autowired
     private ServiceTypeServiceImpl serviceTypeServiceImpl;
-    // @GetMapping("/managerbooking")
-    // public String ManagerBooking() {
-    // return "ManagerBooking";
-    // }
+   
+    @Autowired
+    private ServiceTypeService serviceTypeService;
 
     @GetMapping("/listServiceType")
-    public String ServiceType(Model model) {
-        model.addAttribute("listServiceType", serviceTypeServiceImpl.getAll());
+    public String ServiceType(Model model , @Param("name") String name) {
+        List<ServiceType> listServiceType;
+        if(name != null){
+        listServiceType = this.serviceTypeService.listServiceType(name);
+           
+        }else{
+            listServiceType = this.serviceTypeService.getAll();
+           
+            
+        }
+
+
+        model.addAttribute("listServiceType", listServiceType);
         return "ServiceCategory";
     }
 

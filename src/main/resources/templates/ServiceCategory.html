@@ -44,25 +44,12 @@
 					</div>
 				</div>
 
-				<!-- <div class="InputContainer" style="margin-bottom: 20px;">
-					<input placeholder="Search..." id="input" class="input" name="text" type="text">
-
-				</div>
-
-				 <div class="InputContainer" style="position: absolute; top: 210px; right: 280px;">
-				<input id="input" class="input" name="text" type="date">
-				
-			  </div>
-				<div class="InputContainer" style="position: absolute; top: 150px; right: 150px;">
-					<a th:href="@{/add-secate}">
-						<button id="addServiceType" class="button">Add Service Category</button>
-					</a>
-				</div> -->
+			
 
 				<div class="col-md-4 text-left mb-4">
-					<form th:action="@{/admin/searchServiceType}" method="get">
+					<form>
 						<div class="input-group">
-							<input type="text" class="form-control" name="text" placeholder="Search Service Type Name..." aria-label="Search" aria-describedby="search-button">
+							<input type="text" class="form-control" name="name" placeholder="Search Room Type Name..." aria-label="Search" aria-describedby="search-button">
 							<div class="input-group-append">
 								<button class="btn btn-primary" type="submit" id="search-button" style="background-color: #05073e; color: #fff;">
 									Search
@@ -97,13 +84,7 @@
 										<td th:text="${list.SeTypeName}"></td>
 										<td><a th:href="@{/listSe/editservice/{SeTypeID}(SeTypeID=${list.SeTypeID})}"
 												class="ti-menu"></a></td>
-										<!-- <td><a th:href="@{/list/{id}/delete(id=${list.id})}" class="btn btn-danger ti-close"></a></td> -->
-										<!-- <td><a
-								href="javascript:void(0);"
-								th:onclick="'confirmDelete(' + ${list.SeTypeID} + ');'"
-								class="btn btn-danger ti-close"
-							  ></a>
-							</td> -->
+									
 										<td>
 											<a href="javascript:void(0);" th:if="${list.serviceTypeActive == 1}"
 												th:onclick="'confirmInactiveServiceType(' + ${list.SeTypeID} + ');'"
