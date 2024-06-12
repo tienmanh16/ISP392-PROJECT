@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.model.Room;
 import com.isp.project.model.RoomType;
 import com.isp.project.service.RoomService;
 import com.isp.project.service.RoomTypeService;
@@ -23,6 +24,7 @@ import com.isp.project.service.RoomTypeServiceImpl;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin")
@@ -42,6 +44,80 @@ public class RoomController {
         model.addAttribute("rooms", rooms);
         return "RoomList";
     }
+
+    @GetMapping("/add-room")
+    public String addRoom(Model model) {
+        Room room = new Room();
+        List<RoomType> roomTypes = roomTypeService.getAll();
+        model.addAttribute("room", room);
+        model.addAttribute("roomTypes", roomTypes);
+        return "addRoom";
+    }
+
+    @PostMapping("/saveRoom")
+    @Validated
+    public String saveRoom(@Valid @ModelAttribute("room") Room room, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            List<RoomType> roomTypes = roomTypeService.getAll();
+            model.addAttribute("roomTypes", roomTypes);
+            return "addRoom";
+        }
+        roomService.save(room);
+        return "redirect:/admin/listRooms";
+    }
+
+    @GetMapping("/listRooms/search")
+    public String searchRooms(@RequestParam("roomNum") String roomNum, Model model) {
+        List<RoomDetailDTO> rooms = roomService.searchRooms(roomNum);
+        model.addAttribute("rooms", rooms);
+        return "RoomList";
+    }
+
+    @GetMapping("/listRooms/{id}/edit")
+    public String editRoom(@PathVariable("id") int id, Model model) {
+        Room room = roomService.findById(id);
+        List<RoomType> roomTypes = roomTypeService.getAll();
+        model.addAttribute("room", room);
+        model.addAttribute("roomTypes", roomTypes);
+        return "updateRoom";
+    }
+
+    @PostMapping("/listRooms/{id}/update")
+    public String updateRoom(@PathVariable("id") int id, @Valid @ModelAttribute("room") Room room, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            List<RoomType> roomTypes = roomTypeService.getAll();
+            model.addAttribute("roomTypes", roomTypes);
+            return "updateRoom";
+        }
+        room.setId(id);
+        roomService.save(room);
+        return "redirect:/admin/listRooms";
+    }
+
+    @GetMapping("/inactiveRoom/{id}")
+    public ResponseEntity<String> inactiveRoom(@PathVariable("id") int id) {
+        try {
+            roomService.updateRoomStatus(id, "inactive");
+            return ResponseEntity.ok("Room inactive successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
+        }
+    }
+
+    @GetMapping("/activeRoom/{id}")
+    public ResponseEntity<String> activeRoom(@PathVariable("id") int id) {
+        try {
+            roomService.updateRoomStatus(id, "active");
+            return ResponseEntity.ok("Room active successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active room");
+        }
+    }
+
+
+
+
+
 
     @GetMapping("/managerbooking")
     public String ManagerBooking() {
@@ -89,7 +165,7 @@ public class RoomController {
         }
     }
 
-    @GetMapping("/list/{id}/edit")
+    @GetMapping("/list/{id}/update")
     public String update(@PathVariable("id") Integer id, Model model) {
         model.addAttribute("roomType", roomTypeServiceImpl.findByID(id));
         return "updateRoomType";
