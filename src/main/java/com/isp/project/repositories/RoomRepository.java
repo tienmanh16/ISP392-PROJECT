@@ -55,22 +55,4 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "JOIN r.roomType rt "
        + "WHERE r.status = :status")
     List<RoomDetailDTO> findAllRoomsByStatus(@Param("status") String status);
-
-
-
-
-    @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
-           + "r.id, "
-           + "r.roomNum, "
-           + "rt.id, "
-           + "rt.name, "
-           + "rt.des, "
-           + "rt.priceHour, "
-           + "rt.priceDay, "
-           + "r.status "
-           + ") "
-           + "FROM Room r "
-           + "JOIN r.roomType rt "
-           + "WHERE r.roomNum LIKE %:roomNum%")
-    List<RoomDetailDTO> findRoomsByRoomNum(@Param("roomNum") String roomNum);
 }

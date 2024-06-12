@@ -52,9 +52,4 @@ public class RoomServiceImpl implements RoomService{
         }
     }
 
-    @Override
-    public List<RoomDetailDTO> searchRooms(String roomNum) {
-        return roomRepository.findRoomsByRoomNum(roomNum);
-    }
-    
 }

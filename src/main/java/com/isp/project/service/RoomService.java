@@ -19,6 +19,5 @@ public interface RoomService {
 
     void updateRoomStatus(int id, String status);
 
-    List<RoomDetailDTO> searchRooms(String roomNum);
 
 }

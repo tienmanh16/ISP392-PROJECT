@@ -66,13 +66,6 @@ public class RoomController {
         return "redirect:/admin/listRooms";
     }
 
-    @GetMapping("/listRooms/search")
-    public String searchRooms(@RequestParam("roomNum") String roomNum, Model model) {
-        List<RoomDetailDTO> rooms = roomService.searchRooms(roomNum);
-        model.addAttribute("rooms", rooms);
-        return "RoomList";
-    }
-
     @GetMapping("/listRooms/{id}/edit")
     public String editRoom(@PathVariable("id") int id, Model model) {
         Room room = roomService.findById(id);
