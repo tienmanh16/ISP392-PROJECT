@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.RoomType;
+import com.isp.project.service.RoomService;
 import com.isp.project.service.RoomTypeService;
 import com.isp.project.service.RoomTypeServiceImpl;
 
@@ -30,6 +32,16 @@ public class RoomController {
 
     @Autowired
     private RoomTypeService roomTypeService;
+
+    @Autowired
+    private RoomService roomService;
+
+    @GetMapping("/listRooms")
+    public String listRooms(Model model) {
+        List<RoomDetailDTO> rooms = roomService.getAllRoomsWithDetails();
+        model.addAttribute("rooms", rooms);
+        return "RoomList";
+    }
 
     @GetMapping("/managerbooking")
     public String ManagerBooking() {

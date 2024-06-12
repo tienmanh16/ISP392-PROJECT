@@ -13,10 +13,5 @@ public class RoomDetailDTO {
     private String roomTypeDescription;
     private int priceHour;
     private int priceDay;
-    private String status;
-    // private int imageId;
-    // private String image1;
-    // private String image2;
-    
-    
+    private String status;    
 }
