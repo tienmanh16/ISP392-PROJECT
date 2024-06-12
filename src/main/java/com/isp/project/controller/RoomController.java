@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.isp.project.model.RoomType;
 import com.isp.project.service.RoomTypeService;
@@ -45,8 +43,6 @@ public class RoomController {
             listRoomType = this.roomTypeService.searchRoomType(name);
         }else{
             listRoomType = this.roomTypeService.getAll();
-           
-
         }
         model.addAttribute("listRoomType", listRoomType);
         return "RoomCategory";
@@ -136,22 +132,5 @@ public class RoomController {
         } else {
             return "redirect:/admin/add-cate";
         }
-    }
-
-   
-
-    @GetMapping("/searchRoomType")
-    public String search(@RequestParam("name") String name, Model model) {
- 
-
-        List<RoomType> roomType = roomTypeServiceImpl.findByName(name);
-        model.addAttribute("roomType", roomType);
-        return "RoomCategory";
-    }
-
-    @GetMapping("/test")
-    @ResponseBody
-    public List<RoomType> test(@RequestParam("name") String name) {
-        return roomTypeServiceImpl.findByName(name);
     }
 }

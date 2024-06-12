@@ -76,10 +76,6 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         return  false;
     }
 
-    public List<RoomType> findByName(String name) {
-        return roomTypeRepository.findByNameContainingIgnoreCase(name);
-    }
-
     public List<RoomType> findAllActive() {
         return roomTypeRepository.findAll().stream()
             .filter(roomType -> roomType.getRoomTypeActive() == 1)

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.isp.project.model.RoomType;
 import com.isp.project.model.ServiceType;
 import com.isp.project.service.ServiceTypeService;
 import com.isp.project.service.ServiceTypeServiceImpl;
