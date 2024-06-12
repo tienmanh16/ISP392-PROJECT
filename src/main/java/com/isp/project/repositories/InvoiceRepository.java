@@ -6,9 +6,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Service;
 
 import com.isp.project.model.Invoice;
-
+@Service
 public interface InvoiceRepository extends JpaRepository<Invoice, Integer>{
     @Query("Select c FROM Invoice c WHERE c.CustomerName LIKE %?1%")
     List<Invoice> searchInvoice(String key);
@@ -16,33 +17,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer>{
     @Query("Select c FROM Invoice c WHERE c.InvoiceDate = ?1")
     List<Invoice> searchInvoice(Date keyDate);
     
-    // @Query(value = "SELECT \r\n" + //
-    //             "    i.InvoiceID,\r\n" + //
-    //             "    i.TotalAmount AS InvoiceTotalAmount,\r\n" + //
-    //             "    i.CustomerName,\r\n" + //
-    //             "    i.InvoiceDate,\r\n" + //
-    //             "    il.TotalAmount AS LineTotalAmount,\r\n" + //
-    //             "    il.Quantity,\r\n" + //
-    //             "    s.SeName,\r\n" + //
-    //             "    s.SePrice,\r\n" + //
-    //             "    bm.CheckInDate,\r\n" + //
-    //             "    bm.CheckOutDate,\r\n" + //
-    //             "    r.RoomNumber\r\n" + //
-    //             "FROM \r\n" + //
-    //             "    Invoice i\r\n" + //
-    //             "JOIN \r\n" + //
-    //             "    InvoiceLine il ON i.InvoiceID = il.InvoiceID\r\n" + //
-    //             "JOIN \r\n" + //
-    //             "    [Service] s ON il.SeID = s.SeID\r\n" + //
-    //             "JOIN \r\n" + //
-    //             "    Booking b ON i.BookingID = b.BookingID\r\n" + //
-    //             "JOIN \r\n" + //
-    //             "    BookingMapping bm ON b.BookingID = bm.BookingID\r\n" + //
-    //             "JOIN \r\n" + //
-    //             "    Room r ON bm.RoomID = r.RoomID\r\n" + //
-    //             "WHERE \r\n" + //
-    //             "    i.InvoiceID = :invoiceID\r\n" + //
-    //             "ORDER BY \r\n" + //
-    //             "    i.InvoiceID;", nativeQuery = true)
-    // List<Object[]> findInvoiceDetail(@Param("invoiceID") int invoiceID);
+    @Query("SELECT i FROM Invoice i JOIN i.booking b WHERE MONTH(b.bookingDate) = :month AND YEAR(b.bookingDate) = :year")
+    List<Invoice> getInvoicesForMonth(@Param("month") int month, @Param("year") int year);
 }

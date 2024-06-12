@@ -2,8 +2,8 @@ package com.isp.project.service;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
-import com.isp.project.dto.InvoiceDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.Service;
@@ -16,4 +16,6 @@ public interface InvoiceService {
     public String htmlToPdf(String processedHtml);
     public Booking getInfoInvoice(int invoiceID);
     public List<Service> listService(int invoiceID); 
+    double getTotalInvoiceForMonth(int month, int year);
+    Map<String, Double> getTotalServiceByYear(int year);
 }

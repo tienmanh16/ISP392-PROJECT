@@ -38,6 +38,9 @@ public class RoomType {
     @Column(name = "PricePerDay")
     private String priceDay;
 
+    @Column(name = "RoomTypeActive", nullable = false)
+    private int roomTypeActive;
+
     @OneToMany(mappedBy = "roomType")
     @JsonManagedReference
     private List<Room> room;

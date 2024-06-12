@@ -53,18 +53,6 @@ public class InvoidController {
         return "listInvoice.html";
     }
 
-    // @GetMapping("/invoiceDetail/{invoiceID}")
-    // public String invoice(Model model, @PathVariable("invoiceID") int invoiceID){
-    // List<InvoiceDetailDTO> invoiceDetailDTO =
-    // this.invoiceService.findInvoiceDetail(invoiceID);
-    // double totalSePrice = 0.0;
-    // for (InvoiceDetailDTO dto : invoiceDetailDTO) {
-    // totalSePrice += dto.getSePrice()*dto.getQuantity();
-    // }
-    // model.addAttribute("InvoiceDetailDTO", invoiceDetailDTO);
-    // model.addAttribute("totalSePrice", totalSePrice);
-    // return "invoice.html";
-    // }
 
     @GetMapping("/printInvoice/{invoiceID}")
     public String printInvoice(@PathVariable("invoiceID") int invoiceID, Model model) {
@@ -119,6 +107,11 @@ public class InvoidController {
         model.addAttribute("totalAmountRoom", totalAmountRoom);
         model.addAttribute("listService", serviceList);
         model.addAttribute("totalSePrice", totalSePrice);
+
+
+
+
+        
         return "invoice1";
     }
 }

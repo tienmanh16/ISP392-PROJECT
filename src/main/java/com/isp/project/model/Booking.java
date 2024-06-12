@@ -43,6 +43,8 @@ public class Booking {
     @Column(name = "CustomerQuantity")
     private int customerQuantity;
 
+    @Column(name = "IsCancelled", nullable = false)
+    private int isCancelled;
     
     @OneToMany(mappedBy = "bookingID")
     @JsonManagedReference

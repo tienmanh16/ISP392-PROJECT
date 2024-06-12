@@ -1,10 +1,11 @@
 package com.isp.project.service;
 
-
 import java.io.FileOutputStream;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,12 @@ import com.isp.project.dto.InvoiceDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
+import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Register;
+import com.isp.project.repositories.BookingMappingRepository;
+import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.InvoiceRepository;
 
 import com.itextpdf.html2pdf.ConverterProperties;
@@ -25,99 +29,126 @@ import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.io.source.ByteArrayOutputStream;
 import com.itextpdf.kernel.pdf.PdfWriter;
 
-
 // import com.itextpdf.io.source.ByteArrayOutputStream;
 
 @Service
-public class InvoiceServiceImpl implements InvoiceService{
-@Autowired
+public class InvoiceServiceImpl implements InvoiceService {
+    @Autowired
     private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private BookingMappingRepository bookingMappingRepository;
+
     @Override
     public List<Invoice> getAllInvoice() {
-     return this.invoiceRepository.findAll();
+        return this.invoiceRepository.findAll();
     }
+
     @Override
     public List<Invoice> searchInvoice(String key) {
-     return this.invoiceRepository.searchInvoice(key);
+        return this.invoiceRepository.searchInvoice(key);
     }
+
     @Override
     public List<Invoice> searchInvoice(Date keyDate) {
         return this.invoiceRepository.searchInvoice(keyDate);
     }
-    // @Override
-    // public List<InvoiceDetailDTO> findInvoiceDetail(int InvoiceID) {
-    //     List<Object[]> rawResults = invoiceRepository.findInvoiceDetail(InvoiceID); // Ensure you are using the
-    //                                                                                        // correct method name
-    //     List<InvoiceDetailDTO> invoiceDetailDTOs = new ArrayList<>();
-    //     for (Object[] rawResult : rawResults) {
-    //         // Extracting data from the rawResult array and casting it to the appropriate
-    //         // types
-    //         int invoiceID = ((Number) rawResult[0]).intValue(); // InvoiceID
-    //         double invoiceTotalAmount = ((Number) rawResult[1]).doubleValue(); // InvoiceTotalAmount
-    //         String customerName = (String) rawResult[2]; // CustomerName
-    //         Date invoiceDate = (Date) rawResult[3]; // InvoiceDate
-    //         double lineTotalAmount = ((Number) rawResult[4]).doubleValue(); // LineTotalAmount
-    //         int quantity = ((Number) rawResult[5]).intValue(); // Quantity
-    //         String seName = (String) rawResult[6]; // SeName
-    //         double sePrice = ((Number) rawResult[7]).doubleValue(); // SePrice
-    //         Date checkInDate = (Date) rawResult[8]; // CheckInDate
-    //         Date checkOutDate = (Date) rawResult[9]; // CheckOutDate
-    //         String roomNumber = ((String) rawResult[10]);
-    //         // Create a new InvoiceDetailDTO with the extracted data
-    //         InvoiceDetailDTO dto = new InvoiceDetailDTO(invoiceID, invoiceTotalAmount, customerName, invoiceDate, lineTotalAmount, quantity, seName, sePrice, checkInDate, checkOutDate,roomNumber);
-    //         invoiceDetailDTOs.add(dto);
-    //     }
-    
-    //     return invoiceDetailDTOs;
-    // }
+   
     @Override
     public String htmlToPdf(String processedHtml) {
-       ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
-       try {
+        try {
             PdfWriter pdfWriter = new PdfWriter(byteArrayOutputStream);
             DefaultFontProvider fontProvider = new DefaultFontProvider(false, true, false);
             ConverterProperties converterProperties = new ConverterProperties();
             converterProperties.setFontProvider(fontProvider);
 
-            HtmlConverter.convertToPdf(processedHtml, pdfWriter, converterProperties);    
+            HtmlConverter.convertToPdf(processedHtml, pdfWriter, converterProperties);
             FileOutputStream fout = new FileOutputStream("D:/FPTU/Invoice.pdf");
             byteArrayOutputStream.writeTo(fout);
             byteArrayOutputStream.close();
             byteArrayOutputStream.flush();
             fout.close();
-           return null;
-            
-       }catch (Exception e) {
-            e.printStackTrace();
-       }
+            return null;
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
-   
-    public Booking testPostMan(int invoiceID) {
-        return invoiceRepository.getReferenceById(invoiceID).getBooking();
+
+    public List<Booking> testPostMan(int invoiceID) {
+        return bookingRepository.findAll();
     }
-   
-    
 
     @Override
     public Booking getInfoInvoice(int invoiceID) {
         return invoiceRepository.getReferenceById(invoiceID).getBooking();
     }
+
     @Override
     public List<com.isp.project.model.Service> listService(int invoiceID) {
         List<com.isp.project.model.Service> serviceList = new ArrayList<>();
         List<InvoiceLine> invoiceLines = invoiceRepository.getReferenceById(invoiceID).getInvoiceLine();
-        
+
         for (InvoiceLine invoiceLine : invoiceLines) {
             serviceList.add(invoiceLine.getService());
         }
-        
+
         return serviceList;
     }
-    
-   
-}
 
+    @Override
+    public double getTotalInvoiceForMonth(int month, int year) {
+        double total = 0.0;
+        for (Invoice ls : invoiceRepository.getInvoicesForMonth(month, year)) {
+            total += ls.getTotalAmount();
+        }
+
+        return total;
+    }
+
+    @Override
+    public Map<String, Double> getTotalServiceByYear(int year) {
+        Map<String, Double> data = new LinkedHashMap<>();
+    
+        for (int month = 1; month <= 12; month++) {
+            double totalServiceByMonth = 0; 
+            double totalInvoiceByMonth = 0;
+            double totalBookingByMonth = 0;
+    
+            // Lấy danh sách hóa đơn từ repository cho tháng và năm cụ thể
+            List<Invoice> invoiceList = this.invoiceRepository.getInvoicesForMonth(month, year);
+            for (Invoice invoice : invoiceList) {
+                totalInvoiceByMonth += invoice.getTotalAmount();
+            }
+    
+            // Lấy danh sách booking từ repository cho tháng và năm cụ thể
+            List<BookingMapping> bookingList = this.bookingMappingRepository.revenueBooking(month, year);
+            for (BookingMapping booking : bookingList) {
+                totalBookingByMonth += booking.getBookingTotalAmount();
+            }
+    
+            // Tính toán tổng dịch vụ theo tháng
+            totalServiceByMonth = totalInvoiceByMonth - totalBookingByMonth;
+    
+            // Đặt giá trị tổng vào map với key là tháng
+            data.put("Tháng " + month, totalServiceByMonth);
+        }
+    
+        return data;
+    }
+    
+
+
+
+    public List<Invoice> testReport() {
+        return invoiceRepository.getInvoicesForMonth(5, 2024);
+    }
+    // get(0).getBooking().getRegister().get(0).getEmployeeID().getFullName()
+}
