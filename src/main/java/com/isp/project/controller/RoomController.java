@@ -62,9 +62,9 @@ public class RoomController {
             return "addRoomType";
         }
         if (this.roomTypeServiceImpl.create(roomType)) {
-            return "redirect:/listRoomType";
+            return "redirect:/admin/listRoomType";
         } else {
-            return "redirect:/add-cate";
+            return "redirect:/admin/add-cate";
         }
     }
 
@@ -87,23 +87,23 @@ public class RoomController {
         return "RoomCategory";
     }
 
-    @GetMapping("/hideRoomType/{id}")
-    public ResponseEntity<String> hideRoomType(@PathVariable("id") int id) {
+    @GetMapping("/inactiveRoomType/{id}")
+    public ResponseEntity<String> inactiveRoomType(@PathVariable("id") int id) {
         try {
             roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 0);
-            return ResponseEntity.ok("Room category hidden successfully");
+            return ResponseEntity.ok("Room category inactive successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to hide room category");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room type");
         }
     }
 
-    @GetMapping("/showRoomType/{id}")
-    public ResponseEntity<String> showRoomType(@PathVariable("id") int id) {
+    @GetMapping("/activeRoomType/{id}")
+    public ResponseEntity<String> activeRoomType(@PathVariable("id") int id) {
         try {
             roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 1);
-            return ResponseEntity.ok("Room category showed successfully");
+            return ResponseEntity.ok("Room category active successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to show room category");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active room type");
         }
     }
 
@@ -127,9 +127,9 @@ public class RoomController {
             return "updateRoomType";
         }
         if (this.roomTypeServiceImpl.create(roomType)) {
-            return "redirect:/listRoomType";
+            return "redirect:/admin/listRoomType";
         } else {
-            return "redirect:/add-cate";
+            return "redirect:/admin/add-cate";
         }
     }
 

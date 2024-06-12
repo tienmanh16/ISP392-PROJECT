@@ -56,7 +56,7 @@
 				</div> -->
 
 				<div class="col-md-4 text-left mb-4">
-					<form th:action="@{/searchRoomType}" method="get">
+					<form th:action="@{/admin/searchRoomType}" method="get">
 						<div class="input-group">
 							<input type="text" class="form-control" name="name" placeholder="Search Room Type Name..." aria-label="Search" aria-describedby="search-button">
 							<div class="input-group-append">
@@ -79,7 +79,7 @@
 				</div> -->
 
 				<div class="col-md-11 text-right  mb-4">
-					<button class="btn btn-primary" onclick="window.location.href='/add-cate'"
+					<button class="btn btn-primary" onclick="window.location.href='/admin/add-cate'"
 						style="background-color: #05073e; color: #fff;">
 						Add Room Type
 					</button>
@@ -98,7 +98,7 @@
 										<th>Per Day</th>
 										<th>Update</th>
 										<!-- <th>Delete</th> -->
-										<th>Hide / Show</th>
+										<th>Status</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -117,11 +117,11 @@
 										<!-- <td><a href="javascript:void(0);" th:onclick="'confirmHide(' + ${list.id} + ');'" class="btn btn-danger ti-close"></a></td> -->
 										<td>
 											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 1}"
-												th:onclick="'confirmHideRoomType(' + ${list.id} + ');'"
-												class="btn btn-danger ti-close"> Hide</a>
+												th:onclick="'confirmInactiveRoomType(' + ${list.id} + ');'"
+												class="btn btn-success"> Active</a>
 											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 0}"
-												th:onclick="'confirmShowRoomType(' + ${list.id} + ');'"
-												class="btn btn-success ti-check"> Show</a>
+												th:onclick="'confirmActiveRoomType(' + ${list.id} + ');'"
+												class="btn btn-danger"> Inactive</a>
 										</td>
 									</tr>
 								</tbody>
@@ -132,14 +132,14 @@
 			</div>
 		</section>
 		<script>
-			function confirmHideRoomType(RoomTypeID) {
-				if (confirm('Are you sure you want to hide it?')) {
-					hideRoomType(RoomTypeID);
+			function confirmInactiveRoomType(RoomTypeID) {
+				if (confirm('Are you sure you want to inactive it?')) {
+					inactiveRoomType(RoomTypeID);
 				}
 			}
 
-			function hideRoomType(RoomTypeID) {
-				fetch(`/hideRoomType/${RoomTypeID}`, {
+			function inactiveRoomType(RoomTypeID) {
+				fetch(`/admin/inactiveRoomType/${RoomTypeID}`, {
 					method: 'GET'
 				})
 					.then(response => response.text().then(text => ({ status: response.status, text })))
@@ -158,14 +158,14 @@
 			}
 		</script>
 		<script>
-			function confirmShowRoomType(RoomTypeID) {
-				if (confirm('Are you sure you want to show it?')) {
-					showRoomType(RoomTypeID);
+			function confirmActiveRoomType(RoomTypeID) {
+				if (confirm('Are you sure you want to active it?')) {
+					activeRoomType(RoomTypeID);
 				}
 			}
 
-			function showRoomType(RoomTypeID) {
-				fetch(`/showRoomType/${RoomTypeID}`, {
+			function activeRoomType(RoomTypeID) {
+				fetch(`/admin/activeRoomType/${RoomTypeID}`, {
 					method: 'GET'
 				})
 					.then(response => response.text().then(text => ({ status: response.status, text })))

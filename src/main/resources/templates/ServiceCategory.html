@@ -60,7 +60,7 @@
 				</div> -->
 
 				<div class="col-md-4 text-left mb-4">
-					<form th:action="@{/searchServiceType}" method="get">
+					<form th:action="@{/admin/searchServiceType}" method="get">
 						<div class="input-group">
 							<input type="text" class="form-control" name="text" placeholder="Search Service Type Name..." aria-label="Search" aria-describedby="search-button">
 							<div class="input-group-append">
@@ -72,7 +72,7 @@
 					</form>
 				</div>
 				<div class="col-md-11 text-right  mb-4">
-					<button class="btn btn-primary" onclick="window.location.href='/add-secate'"
+					<button class="btn btn-primary" onclick="window.location.href='/admin/add-secate'"
 						style="background-color: #05073e; color: #fff;">
 						Add Service Type
 					</button>
@@ -88,7 +88,7 @@
 										<th>Name</th>
 										<th>Update</th>
 										<!-- <th>Delete</th> -->
-										<th>Hide / Show</th>
+										<th>Status</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -106,11 +106,11 @@
 							</td> -->
 										<td>
 											<a href="javascript:void(0);" th:if="${list.serviceTypeActive == 1}"
-												th:onclick="'confirmHideServiceType(' + ${list.SeTypeID} + ');'"
-												class="btn btn-danger ti-close"> Hide</a>
+												th:onclick="'confirmInactiveServiceType(' + ${list.SeTypeID} + ');'"
+												class="btn btn-success"> Active</a>
 											<a href="javascript:void(0);" th:if="${list.serviceTypeActive == 0}"
-												th:onclick="'confirmShowServiceType(' + ${list.SeTypeID} + ');'"
-												class="btn btn-success ti-check"> Show</a>
+												th:onclick="'confirmActiveServiceType(' + ${list.SeTypeID} + ');'"
+												class="btn btn-danger"> Inactive</a>
 										</td>
 									</tr>
 								</tbody>
@@ -121,14 +121,14 @@
 			</div>
 		</section>
 		<script>
-			function confirmHideServiceType(ServiceTypeID) {
-				if (confirm('Are you sure you want to hide it?')) {
-					hideServiceType(ServiceTypeID);
+			function confirmInactiveServiceType(ServiceTypeID) {
+				if (confirm('Are you sure you want to inactive it?')) {
+					inactiveServiceType(ServiceTypeID);
 				}
 			}
 
-			function hideServiceType(ServiceTypeID) {
-				fetch(`/hideServiceType/${ServiceTypeID}`, {
+			function inactiveServiceType(ServiceTypeID) {
+				fetch(`/admin/inactiveServiceType/${ServiceTypeID}`, {
 					method: 'GET'
 				})
 					.then(response => response.text().then(text => ({ status: response.status, text })))
@@ -147,14 +147,14 @@
 			}
 		</script>
 		<script>
-			function confirmShowServiceType(ServiceTypeID) {
-				if (confirm('Are you sure you want to show it?')) {
-					showServiceType(ServiceTypeID);
+			function confirmActiveServiceType(ServiceTypeID) {
+				if (confirm('Are you sure you want to active it?')) {
+					activeServiceType(ServiceTypeID);
 				}
 			}
 
-			function showServiceType(ServiceTypeID) {
-				fetch(`/showServiceType/${ServiceTypeID}`, {
+			function activeServiceType(ServiceTypeID) {
+				fetch(`/admin/activeServiceType/${ServiceTypeID}`, {
 					method: 'GET'
 				})
 					.then(response => response.text().then(text => ({ status: response.status, text })))

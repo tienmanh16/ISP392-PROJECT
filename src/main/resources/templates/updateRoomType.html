@@ -20,7 +20,7 @@
 			<div class="col-sm-12">
 
 				<h2 class="myclass">Edit Room Type</h2>
-    <form th:action="@{/saveRoomType}" th:object="${roomType}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/admin/saveRoomType}" th:object="${roomType}" method="post" enctype="multipart/form-data">
 
         <div class="form-group">
             <label>Room Type ID</label> <input type="text" th:field="*{id}" class="form-control" name="id" placeholder="Enter id"
@@ -51,7 +51,7 @@
     <div style="color: red;" th:if="${#fields.hasErrors('priceDay')}" th:errors="*{priceDay}">Price Per Day Error</div>
     <button type="submit" class="btn btn-primary">Save</button>
 					<button type="reset" class="btn btn-primary">Cancel</button>
-					<a class="btn btn-primary" href="/listRoomType">Display List Room Type</a>
+					<a class="btn btn-primary" href="/admin/listRoomType">Display List Room Type</a>
 				</form>
 			</div>
 		</div>

@@ -53,9 +53,9 @@ public class ServiceController {
             return "addServiceType";
         }
         if (this.serviceTypeServiceImpl.create(serviceType)) {
-            return "redirect:/listServiceType";
+            return "redirect:/admin/listServiceType";
         } else {
-            return "redirect:/add-secate";
+            return "redirect:/admin/add-secate";
         }
     }
 
@@ -72,9 +72,9 @@ public class ServiceController {
             return "updateServiceType";
         }
         if (this.serviceTypeServiceImpl.create(serviceType)) {
-            return "redirect:/listServiceType";
+            return "redirect:/admin/listServiceType";
         } else {
-            return "redirect:/add-secate";
+            return "redirect:/admin/add-secate";
         }
     }
 
@@ -92,23 +92,23 @@ public class ServiceController {
         return "ServiceCategory";
     }
 
-    @GetMapping("/hideServiceType/{SeTypeID}")
-    public ResponseEntity<String> hideServiceType(@PathVariable("SeTypeID") int id) {
+    @GetMapping("/inactiveServiceType/{SeTypeID}")
+    public ResponseEntity<String> inactiveServiceType(@PathVariable("SeTypeID") int id) {
         try {
             serviceTypeServiceImpl.updateServiceTypeActiveStatus(id, 0);
-            return ResponseEntity.ok("Service category hidden successfully");
+            return ResponseEntity.ok("Service category inactive successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to hide service category");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive service category");
         }
     }
 
-    @GetMapping("/showServiceType/{SeTypeID}")
-    public ResponseEntity<String> showServiceType(@PathVariable("SeTypeID") int id) {
+    @GetMapping("/activeServiceType/{SeTypeID}")
+    public ResponseEntity<String> activeServiceType(@PathVariable("SeTypeID") int id) {
         try {
             serviceTypeServiceImpl.updateServiceTypeActiveStatus(id, 1);
-            return ResponseEntity.ok("Service category showed successfully");
+            return ResponseEntity.ok("Service category active successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to show service category");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active service category");
         }
     }
 
