@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isp.project.model.ServiceType;
 import com.isp.project.service.ServiceTypeServiceImpl;
@@ -19,6 +20,7 @@ import com.isp.project.service.ServiceTypeServiceImpl;
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("/admin")
 public class ServiceController {
     @Autowired
     private ServiceTypeServiceImpl serviceTypeServiceImpl;
@@ -45,7 +47,8 @@ public class ServiceController {
     }
 
     @PostMapping("/addServiceType")
-    public String save(@Valid @ModelAttribute("serviceType") ServiceType serviceType, BindingResult bindingResult, Model model) {
+    public String save(@Valid @ModelAttribute("serviceType") ServiceType serviceType, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return "addServiceType";
         }
@@ -63,7 +66,8 @@ public class ServiceController {
     }
 
     @PostMapping("/saveServiceType")
-    public String updated(@Valid @ModelAttribute("serviceType") ServiceType serviceType, BindingResult bindingResult, Model model) {
+    public String updated(@Valid @ModelAttribute("serviceType") ServiceType serviceType, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return "updateServiceType";
         }
@@ -109,19 +113,21 @@ public class ServiceController {
     }
 
     // @GetMapping("/deleteSe/{SeTypeID}")
-    // public ResponseEntity<String> deleteBooking(@PathVariable("SeTypeID") Integer id) {
-    //     try {
-    //         boolean deleted = serviceTypeServiceImpl.delete(id);
-    //         ;
-    //         if (deleted) {
-    //             return ResponseEntity.ok("Service category deleted successfully");
-    //         } else {
-    //             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-    //                     .body("Failed to delete service category");
-    //         }
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
-    //     }
+    // public ResponseEntity<String> deleteBooking(@PathVariable("SeTypeID") Integer
+    // id) {
+    // try {
+    // boolean deleted = serviceTypeServiceImpl.delete(id);
+    // ;
+    // if (deleted) {
+    // return ResponseEntity.ok("Service category deleted successfully");
+    // } else {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    // .body("Failed to delete service category");
+    // }
+    // } catch (Exception e) {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error
+    // occurred: " + e.getMessage());
+    // }
     // }
 
 }

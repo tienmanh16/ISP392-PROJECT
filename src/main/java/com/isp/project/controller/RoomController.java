@@ -20,8 +20,10 @@ import com.isp.project.model.RoomType;
 import com.isp.project.service.RoomTypeServiceImpl;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/admin")
 public class RoomController {
     @Autowired
     private RoomTypeServiceImpl roomTypeServiceImpl;
