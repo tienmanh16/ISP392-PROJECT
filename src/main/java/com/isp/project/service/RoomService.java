@@ -12,12 +12,12 @@ public interface RoomService {
 
     List<RoomDetailDTO> getAllRoomsByStatus(String status);
 
+    Boolean create(Room room);
 
     void save(Room room);
 
     Room findById(int id);
 
     void updateRoomStatus(int id, String status);
-
 
 }

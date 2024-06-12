@@ -5,6 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.isp.project.validation.NoSpecialCharacter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 
@@ -31,6 +33,8 @@ public class Room {
     private int id;
 
     @Column(name = "RoomNumber", nullable = false)
+    @NoSpecialCharacter
+    @NotBlank(message = "Room number is mandatory")
     private String roomNum;
 
     @ManyToOne(fetch = FetchType.LAZY)

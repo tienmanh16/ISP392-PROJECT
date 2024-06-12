@@ -76,8 +76,6 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
     }
 
     public void updateServiceTypeActiveStatus(int id, int status) {
-        // roomTypeRepository.updateRoomTypeActiveStatus(id, status);
-
         ServiceType serviceType = serviceTypeRepository.findById(id).orElseThrow(() -> new RuntimeException("ServiceType not found"));
         serviceType.setServiceTypeActive(status);
         serviceTypeRepository.save(serviceType);

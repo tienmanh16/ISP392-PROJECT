@@ -15,5 +15,8 @@ public interface RoomTypeService {
     RoomType findByID(Integer id);
     Boolean update(RoomType roomType);
     Boolean delete(Integer id);
+    List<RoomType> findAllActive();
+    List<RoomType> findAllInactive();
+    void updateRoomTypeActiveStatus(int id, int status);
     List<RoomType> searchRoomType(String name);
 }

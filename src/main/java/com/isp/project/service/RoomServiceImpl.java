@@ -31,6 +31,19 @@ public class RoomServiceImpl implements RoomService{
         return roomRepository.findAllRoomsByStatus(status);
     }
 
+    @Override
+    public Boolean create(Room room) {
+        try {
+            this.roomRepository.save(room);
+            return true;
+
+        } catch (Exception e) {
+            // Ghi log chi tiết hơn để dễ dàng chẩn đoán lỗi
+            System.err.println("Failed to save Room: " + room);
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
     @Override

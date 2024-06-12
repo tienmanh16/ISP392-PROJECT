@@ -20,17 +20,13 @@ import com.isp.project.model.Room;
 import com.isp.project.model.RoomType;
 import com.isp.project.service.RoomService;
 import com.isp.project.service.RoomTypeService;
-import com.isp.project.service.RoomTypeServiceImpl;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin")
 public class RoomController {
-    @Autowired
-    private RoomTypeServiceImpl roomTypeServiceImpl;
 
     @Autowired
     private RoomTypeService roomTypeService;
@@ -54,58 +50,40 @@ public class RoomController {
         return "addRoom";
     }
 
-    @PostMapping("/saveRoom")
+    @PostMapping("/addRoom")
     @Validated
     public String saveRoom(@Valid @ModelAttribute("room") Room room, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            List<RoomType> roomTypes = roomTypeService.getAll();
-            model.addAttribute("roomTypes", roomTypes);
             return "addRoom";
         }
-        roomService.save(room);
-        return "redirect:/admin/listRooms";
+        if (this.roomService.create(room)) {
+            return "redirect:/admin/listRooms";
+        } else {
+            return "redirect:/admin/add-room";
+        }
     }
 
-    @GetMapping("/listRooms/{id}/edit")
+    @GetMapping("/listRooms/{id}/update")
     public String editRoom(@PathVariable("id") int id, Model model) {
-        Room room = roomService.findById(id);
-        List<RoomType> roomTypes = roomTypeService.getAll();
-        model.addAttribute("room", room);
-        model.addAttribute("roomTypes", roomTypes);
+        model.addAttribute("room", roomService.findById(id));
+        model.addAttribute("roomType", roomTypeService.findByID(id));
         return "updateRoom";
     }
 
-    @PostMapping("/listRooms/{id}/update")
-    public String updateRoom(@PathVariable("id") int id, @Valid @ModelAttribute("room") Room room, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            List<RoomType> roomTypes = roomTypeService.getAll();
-            model.addAttribute("roomTypes", roomTypes);
-            return "updateRoom";
+    @PostMapping("/saveRoom")
+    @Validated
+    public String updated(@Valid @ModelAttribute("room") Room room, BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            return "updateRoom"; // Trả về lại trang hiện tại nếu có lỗi
         }
-        room.setId(id);
-        roomService.save(room);
-        return "redirect:/admin/listRooms";
-    }
-
-    @GetMapping("/inactiveRoom/{id}")
-    public ResponseEntity<String> inactiveRoom(@PathVariable("id") int id) {
-        try {
-            roomService.updateRoomStatus(id, "inactive");
-            return ResponseEntity.ok("Room inactive successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
+        if (this.roomService.create(room)) {
+            return "redirect:/admin/listRooms";
+        } else {
+            return "redirect:/admin/add-room";
         }
     }
 
-    @GetMapping("/activeRoom/{id}")
-    public ResponseEntity<String> activeRoom(@PathVariable("id") int id) {
-        try {
-            roomService.updateRoomStatus(id, "active");
-            return ResponseEntity.ok("Room active successfully");
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active room");
-        }
-    }
 
 
 
@@ -120,9 +98,9 @@ public class RoomController {
     @GetMapping("/listRoomType")
     public String RoomCategory(Model model, @Param("name") String name) {
         List<RoomType> listRoomType;
-        if(name != null){
+        if (name != null) {
             listRoomType = this.roomTypeService.searchRoomType(name);
-        }else{
+        } else {
             listRoomType = this.roomTypeService.getAll();
         }
         model.addAttribute("listRoomType", listRoomType);
@@ -136,10 +114,6 @@ public class RoomController {
         return "addRoomType";
     }
 
-    public RoomController(RoomTypeServiceImpl roomTypeServiceImpl) {
-        this.roomTypeServiceImpl = roomTypeServiceImpl;
-    }
-
     @PostMapping("/addRoomType")
     @Validated
     public String save(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult, Model model) {
@@ -151,7 +125,7 @@ public class RoomController {
             bindingResult.rejectValue("priceDay", "PositiveValue");
             return "addRoomType";
         }
-        if (this.roomTypeServiceImpl.create(roomType)) {
+        if (this.roomTypeService.create(roomType)) {
             return "redirect:/admin/listRoomType";
         } else {
             return "redirect:/admin/add-cate";
@@ -160,19 +134,20 @@ public class RoomController {
 
     @GetMapping("/list/{id}/update")
     public String update(@PathVariable("id") Integer id, Model model) {
-        model.addAttribute("roomType", roomTypeServiceImpl.findByID(id));
+        model.addAttribute("roomType", roomTypeService.findByID(id));
         return "updateRoomType";
     }
+
     @GetMapping("/listRoomTypeActive")
     public String listRoomTypeActive(Model model) {
-        List<RoomType> roomType = roomTypeServiceImpl.findAllActive();
+        List<RoomType> roomType = roomTypeService.findAllActive();
         model.addAttribute("listRoomType", roomType);
         return "RoomCategory";
     }
 
     @GetMapping("/listRoomTypeInactive")
     public String listRoomTypeInactive(Model model) {
-        List<RoomType> roomType = roomTypeServiceImpl.findAllInactive();
+        List<RoomType> roomType = roomTypeService.findAllInactive();
         model.addAttribute("listRoomType", roomType);
         return "RoomCategory";
     }
@@ -180,7 +155,7 @@ public class RoomController {
     @GetMapping("/inactiveRoomType/{id}")
     public ResponseEntity<String> inactiveRoomType(@PathVariable("id") int id) {
         try {
-            roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 0);
+            roomTypeService.updateRoomTypeActiveStatus(id, 0);
             return ResponseEntity.ok("Room category inactive successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room type");
@@ -190,7 +165,7 @@ public class RoomController {
     @GetMapping("/activeRoomType/{id}")
     public ResponseEntity<String> activeRoomType(@PathVariable("id") int id) {
         try {
-            roomTypeServiceImpl.updateRoomTypeActiveStatus(id, 1);
+            roomTypeService.updateRoomTypeActiveStatus(id, 1);
             return ResponseEntity.ok("Room category active successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active room type");
@@ -199,7 +174,8 @@ public class RoomController {
 
     @PostMapping("/saveRoomType")
     @Validated
-    public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult, Model model) {
+    public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult,
+            Model model) {
         if (bindingResult.hasErrors()) {
             return "updateRoomType"; // Trả về lại trang hiện tại nếu có lỗi
         }
@@ -208,7 +184,7 @@ public class RoomController {
             bindingResult.rejectValue("priceDay", "PositiveValue");
             return "updateRoomType";
         }
-        if (this.roomTypeServiceImpl.create(roomType)) {
+        if (this.roomTypeService.create(roomType)) {
             return "redirect:/admin/listRoomType";
         } else {
             return "redirect:/admin/add-cate";
