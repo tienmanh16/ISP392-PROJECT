@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.isp.project.dto.RoomTypeDetailDTO;
-import com.isp.project.model.Invoice;
 import com.isp.project.model.RoomType;
 
 @Repository

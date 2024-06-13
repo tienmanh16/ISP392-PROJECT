@@ -65,14 +65,18 @@ public class RoomController {
 
     @GetMapping("/listRooms/{id}/update")
     public String editRoom(@PathVariable("id") int id, Model model) {
-        model.addAttribute("room", roomService.findById(id));
-        model.addAttribute("roomType", roomTypeService.findByID(id));
+        Room room = roomService.findById(id);
+        if (room == null) {
+            return "redirect:/admin/listRooms";
+        }
+        model.addAttribute("room", room);
+        model.addAttribute("roomType", room.getRoomType());
         return "updateRoom";
     }
 
     @PostMapping("/saveRoom")
     @Validated
-    public String updated(@Valid @ModelAttribute("room") Room room, BindingResult bindingResult,
+    public String updateRoom(@Valid @ModelAttribute("room") Room room, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
             return "updateRoom"; // Trả về lại trang hiện tại nếu có lỗi
@@ -83,12 +87,6 @@ public class RoomController {
             return "redirect:/admin/add-room";
         }
     }
-
-
-
-
-
-
 
     @GetMapping("/managerbooking")
     public String ManagerBooking() {
@@ -174,7 +172,7 @@ public class RoomController {
 
     @PostMapping("/saveRoomType")
     @Validated
-    public String updated(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult,
+    public String updateRoomType(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
             return "updateRoomType"; // Trả về lại trang hiện tại nếu có lỗi
