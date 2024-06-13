@@ -3,7 +3,7 @@ package com.isp.project.controller;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
-
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,15 +19,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.isp.project.dto.BookingInfoDTO;
 import com.isp.project.dto.BookingRoomDTO;
 import com.isp.project.model.Booking;
+import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
 import com.isp.project.model.Employee;
 import com.isp.project.model.Register;
+import com.isp.project.model.Room;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.CustomerRepository;
 import com.isp.project.repositories.EmployeeRepository;
 import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.repositories.RegisterRepository;
+import com.isp.project.repositories.RoomRepository;
 import com.isp.project.service.BookingService;
 
 @Controller
@@ -43,9 +46,6 @@ public class BookingController {
     private BookingRepository bookingRepository;
 
     @Autowired
-    private InvoiceRepository invoiceRepository;
-
-    @Autowired
     private RegisterRepository registerRepository;
 
     @Autowired
@@ -53,6 +53,9 @@ public class BookingController {
 
     @Autowired
     private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private RoomRepository roomRepository;
 
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
@@ -94,6 +97,7 @@ public class BookingController {
     // ======================Đặt phòng ==========================
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute("bookingInfo") BookingInfoDTO bookingInfo) {
+
         // Tạo và lưu thông tin của khách hàng
         Customer customer = new Customer();
         customer.setCustomerName(bookingInfo.getCustomerName());
@@ -114,32 +118,30 @@ public class BookingController {
         booking.setIsCancelled(1); // Mặc định không hủy
         bookingRepository.save(booking);
 
-        // Retrieve employee from repository
-        Employee employeeOptional = employeeRepository.findById(bookingInfo.getEmployeeId());
-
-        // Create a new Register instance
+        // Add to register
+        Optional<Employee> employeeOptional = employeeRepository.findById(bookingInfo.getEmployeeId());
+        Employee employee = employeeOptional.get();
         Register register = new Register();
-        register.setEmployeeID(employeeOptional); // Set the employee
-        register.setBookingID(booking); // Set the booking
-
+        register.setEmployeeID(employee);
+        register.setBookingID(booking);
         try {
-            // Save the register entity
-            registerRepository.save(register);         
+            registerRepository.save(register);
         } catch (Exception ex) {
-            // Handle any exceptions
-            ex.printStackTrace(); // Or log the exception
+            ex.printStackTrace();
         }
 
-        // // Tạo và lưu thông tin ánh xạ đặt phòng
-        // BookingMapping bookingMapping = new BookingMapping();
-        // bookingMapping.setBookingID(booking); // Lấy ID của đặt phòng mới tạo
-        // bookingMapping.setCheckInDate(mergeDateAndTime(bookingInfo.getCheckinDate(),
-        // bookingInfo.getCheckinTime()));
-        // bookingMapping.setCheckOutDate(mergeDateAndTime(bookingInfo.getCheckoutDate(),
-        // bookingInfo.getCheckoutTime()));
-        // // Bạn cần xử lý thông tin phòng đã chọn tại đây, nhưng trong form không có
-        // // trường phòng, vì vậy tạm thời bỏ qua
-        // bookingMappingRepository.save(bookingMapping);
+        // Tạo và lưu thông tin ánh xạ đặt phòng
+        BookingMapping bookingMapping = new BookingMapping();
+        Optional<Room> roomMapping = roomRepository.findById(1);
+        Room roomMapping_new = roomMapping.get();
+        bookingMapping.setRoomID(roomMapping_new);
+        bookingMapping.setBookingID(booking); // Lấy ID của đặt phòng mới tạo
+        bookingMapping.setCheckInDate(bookingInfo.getCheckinDate());
+        bookingMapping.setCheckOutDate(bookingInfo.getCheckoutDate());
+        bookingMapping.setBookingTotalAmount(5000000);
+       
+        // trường phòng, vì vậy tạm thời bỏ qua
+        bookingMappingRepository.save(bookingMapping);
 
         return "redirect:/booking"; // Chuyển hướng đến trang kết quả đặt phòng
     }
