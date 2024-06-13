@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.isp.project.dto.BookingInfoDTO;
 import com.isp.project.dto.BookingRoomDTO;
 import com.isp.project.model.Booking;
-import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
 import com.isp.project.model.Employee;
 import com.isp.project.model.Register;

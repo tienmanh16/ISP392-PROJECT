@@ -8,18 +8,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.isp.project.dto.BookingInfoDTO;
+import org.springframework.web.bind.annotation.RequestParam;
 import com.isp.project.model.Customer;
 import com.isp.project.repositories.CustomerRepository;
+import com.isp.project.service.BookingService;
 import com.isp.project.service.CustomerService;
 
 @Controller
 public class CustomerController {
+   
 
     @Autowired
     private CustomerService customerService;
@@ -29,7 +27,7 @@ public class CustomerController {
 
     @GetMapping("/customer")
     public String listCustomer2(
-            @RequestParam(value = "search_customer", required = false) String queryCustomerName, Model model) {
+            @RequestParam(value = "table_search", required = false) String queryCustomerName, Model model) {
         List<Customer> listCustomers;
         if (queryCustomerName != null && !queryCustomerName.isEmpty()) {
             listCustomers = customerService.findCustomersByNameContaining(queryCustomerName.toLowerCase());
@@ -39,7 +37,8 @@ public class CustomerController {
         }
         model.addAttribute("customerList", listCustomers);
         model.addAttribute("queryCustomerName", queryCustomerName);
-        return "test";
+        model.addAttribute("addCustomer", new Customer());
+        return "customer";
     }
 
     @GetMapping("/updateCustomer")
@@ -56,15 +55,11 @@ public class CustomerController {
         return "redirect:/customer"; // Assuming customerList is a page showing list of customers
     }
 
-    @GetMapping("/addcustomer")
-    public String showAddCustomerPage(Model model) {
-        model.addAttribute("addCustomer", new Customer());
-        return "addcustomer.html"; // Trả về tên template view để hiển thị form thêm khách hàng
-    }
 
     @PostMapping("/addcustomer")
     public String addCustomer(@ModelAttribute("addCustomer") Customer addCustomer) {
         customerRepository.save(addCustomer);
         return "redirect:/customer";
     }
+
 }
