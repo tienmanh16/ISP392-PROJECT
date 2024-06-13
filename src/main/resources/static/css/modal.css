@@ -9,6 +9,19 @@
     align-items: center;
     display: none;
 }
+
+.modal1{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
 .modal.open{
     display:flex ;
 }
@@ -146,4 +159,12 @@ input [type=text]{
 
 .bot2 {
     margin-top: 200px;
+}
+
+.js-modal-cus {
+    display: none; /* Ẩn modal theo mặc định */
+}
+
+.js-modal-cus.open {
+    display: block; /* Hiển thị modal khi có lớp 'open' */
 }

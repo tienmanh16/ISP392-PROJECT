@@ -68,7 +68,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
             "WHERE b.BookingID = :bookingID", nativeQuery = true)
     List<Object[]> findBookingRoomByBookingID(@Param("bookingID") Integer bookingID);
 
-    // Delete Booking 
+    //Delete Booking 
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM Register WHERE BookingID = :bookingID", nativeQuery = true)
@@ -81,7 +81,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     @Modifying
     @Transactional
-    @Query(value = "DELETE FROM Booking WHERE BookingID = :bookingID", nativeQuery = true)
+    @Query(value = "DELETE FROM Booking WHERE bookingID = :bookingID", nativeQuery = true)
     void deleteFromBooking(@Param("bookingID") Integer bookingID);
 
     @Modifying

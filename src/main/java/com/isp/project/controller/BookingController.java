@@ -1,10 +1,9 @@
 package com.isp.project.controller;
 
 import java.sql.Date;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -116,15 +115,22 @@ public class BookingController {
         booking.setIsCancelled(1); // Mặc định không hủy
         bookingRepository.save(booking);
 
-        // // Tạo và lưu thông tin đăng ký
-        // int employeeIdFromForm = bookingInfo.getEmployeeId();
-        // Register register = new Register();
-        // // Tìm kiếm nhân viên theo ID đã được truyền từ form
-        // Employee employeeOptional = employeeRepository.findById(employeeIdFromForm);      
-        //     register.setEmployeeID(employeeOptional);
-        //     register.setBookingID(booking);
-        //     registerRepository.save(register);
-      
+        // Retrieve employee from repository
+        Employee employeeOptional = employeeRepository.findById(bookingInfo.getEmployeeId());
+
+        // Create a new Register instance
+        Register register = new Register();
+        register.setEmployeeID(employeeOptional); // Set the employee
+        register.setBookingID(booking); // Set the booking
+
+        try {
+            // Save the register entity
+            registerRepository.save(register);         
+        } catch (Exception ex) {
+            // Handle any exceptions
+            ex.printStackTrace(); // Or log the exception
+        }
+
         // // Tạo và lưu thông tin ánh xạ đặt phòng
         // BookingMapping bookingMapping = new BookingMapping();
         // bookingMapping.setBookingID(booking); // Lấy ID của đặt phòng mới tạo

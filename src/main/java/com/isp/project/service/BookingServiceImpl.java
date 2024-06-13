@@ -67,12 +67,12 @@ public class BookingServiceImpl implements BookingService {
     //         return false;
     //     }
     // }
-    public boolean deleteBookingRoom(Integer id) {
+    public boolean deleteBookingRoom(Integer bookingID) {
         try {
-            bookingRepository.deleteFromRegister(id);
-            bookingRepository.deleteFromBookingMapping(id);
+            bookingRepository.deleteFromRegister(bookingID);
+            bookingRepository.deleteFromBookingMapping(bookingID);
             
-            bookingRepository.deleteById(id);
+            bookingRepository.deleteById(bookingID);
            
             return true;
         } catch (Exception e) {
