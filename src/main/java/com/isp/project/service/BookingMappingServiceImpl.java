@@ -38,19 +38,15 @@ public class BookingMappingServiceImpl implements BookingMappingService {
     public Map<String, Double> getTotalBookingByYear(int year) {
         Map<String, Double> data = new LinkedHashMap<>();
     
-        // Lặp qua tất cả các tháng trong năm
         for (int month = 1; month <= 12; month++) {
-            double totalBookingByMonth = 0; // Đặt lại tổng tiền cho mỗi tháng
+            double totalBookingByMonth = 0; 
     
-            // Lấy danh sách booking từ repository cho tháng và năm cụ thể
             List<BookingMapping> ls = this.bookingMappingRepository.revenueBooking(month, year);
             
-            // Tính tổng giá trị của tất cả các booking trong danh sách
             for (BookingMapping booking : ls) {
                 totalBookingByMonth += booking.getBookingTotalAmount();
             }
             
-            // Đặt giá trị tổng vào map với key là tháng
             data.put("Tháng " + month, totalBookingByMonth);
         }
         

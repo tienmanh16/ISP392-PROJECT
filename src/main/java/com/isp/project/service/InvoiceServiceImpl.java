@@ -9,9 +9,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.isp.project.dto.InvoiceDetailDTO;
+
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
@@ -47,18 +50,10 @@ public class InvoiceServiceImpl implements InvoiceService {
         return this.invoiceRepository.findAll();
     }
 
-    @Override
-    public List<Invoice> searchInvoice(String key) {
-        return this.invoiceRepository.searchInvoice(key);
-    }
-
-    @Override
-    public List<Invoice> searchInvoice(Date keyDate) {
-        return this.invoiceRepository.searchInvoice(keyDate);
-    }
+   
    
     @Override
-    public String htmlToPdf(String processedHtml) {
+    public String htmlToPdf(String processedHtml, String name) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try {
@@ -68,7 +63,7 @@ public class InvoiceServiceImpl implements InvoiceService {
             converterProperties.setFontProvider(fontProvider);
 
             HtmlConverter.convertToPdf(processedHtml, pdfWriter, converterProperties);
-            FileOutputStream fout = new FileOutputStream("D:/FPTU/Invoice.pdf");
+            FileOutputStream fout = new FileOutputStream("D:/FPTU/"+name);
             byteArrayOutputStream.writeTo(fout);
             byteArrayOutputStream.close();
             byteArrayOutputStream.flush();
@@ -122,22 +117,18 @@ public class InvoiceServiceImpl implements InvoiceService {
             double totalInvoiceByMonth = 0;
             double totalBookingByMonth = 0;
     
-            // Lấy danh sách hóa đơn từ repository cho tháng và năm cụ thể
             List<Invoice> invoiceList = this.invoiceRepository.getInvoicesForMonth(month, year);
             for (Invoice invoice : invoiceList) {
                 totalInvoiceByMonth += invoice.getTotalAmount();
             }
     
-            // Lấy danh sách booking từ repository cho tháng và năm cụ thể
             List<BookingMapping> bookingList = this.bookingMappingRepository.revenueBooking(month, year);
             for (BookingMapping booking : bookingList) {
                 totalBookingByMonth += booking.getBookingTotalAmount();
             }
     
-            // Tính toán tổng dịch vụ theo tháng
             totalServiceByMonth = totalInvoiceByMonth - totalBookingByMonth;
     
-            // Đặt giá trị tổng vào map với key là tháng
             data.put("Tháng " + month, totalServiceByMonth);
         }
     
@@ -147,8 +138,30 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 
 
-    public List<Invoice> testReport() {
-        return invoiceRepository.getInvoicesForMonth(5, 2024);
+    public List<Invoice> testReport(int month, int year) {
+        return invoiceRepository.getReportRevenue(month, year);
     }
     // get(0).getBooking().getRegister().get(0).getEmployeeID().getFullName()
+
+    @Override
+    public Page<Invoice> pageInvoice(Integer pageNo) {
+        Pageable pageable = PageRequest.of(pageNo -1, 1);
+        return this.invoiceRepository.findAll(pageable);
+    }
+
+
+
+    @Override
+    public Page<Invoice> searchInvoice(Integer pageNo, String key) {
+        Pageable pageable = PageRequest.of(pageNo -1, 1);
+        return this.invoiceRepository.searchInvoice(key, pageable);
+    }
+
+
+
+    @Override
+    public Page<Invoice> searchInvoice(Integer pageNo, Date keyDate) {
+        Pageable pageable = PageRequest.of(pageNo -1, 1);
+        return this.invoiceRepository.searchInvoice(keyDate, pageable);
+    }
 }

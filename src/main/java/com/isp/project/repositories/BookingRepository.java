@@ -10,8 +10,6 @@ import org.springframework.stereotype.Repository;
 
 
 import com.isp.project.model.Booking;
-import com.isp.project.model.Customer;
-import com.isp.project.model.Invoice;
 
 import jakarta.transaction.Transactional;
 

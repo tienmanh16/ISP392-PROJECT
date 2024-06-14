@@ -5,11 +5,13 @@ import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
@@ -40,20 +42,25 @@ public class InvoidController {
 
 
     @GetMapping("/listinvoice")
-    public String listInvoice(Model model, @Param("key") String key, @Param("keyDate") Date keyDate) {
+    public String listInvoice(Model model, @RequestParam(name ="pageNo", defaultValue = "1") Integer pageNo, @Param("key") String key, @Param("keyDate") Date keyDate) {
 
-        List<Invoice> invoice;
+        Page<Invoice> invoice =this.invoiceService.pageInvoice(pageNo);
 
         if (key != null) {
-            invoice = this.invoiceService.searchInvoice(key);
+            invoice = this.invoiceService.searchInvoice( pageNo,key);
+            model.addAttribute("key", key);
         } else if (keyDate != null) {
-            invoice = this.invoiceService.searchInvoice(keyDate);
+            invoice = this.invoiceService.searchInvoice(pageNo, keyDate);
+            model.addAttribute("keyDate", keyDate);
         } else {
-            // Nếu không có key hoặc keyDate, hiển thị tất cả hóa đơn
-            invoice = this.invoiceService.getAllInvoice();
+            invoice = this.invoiceService.pageInvoice(pageNo);
         }
-
+        model.addAttribute("totalPage", invoice.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
         model.addAttribute("listInvoice", invoice);
+        
+        
+
         return "listInvoice.html";
     }
 
@@ -84,10 +91,10 @@ public class InvoidController {
 
 
         // Render HTML template as a string
-        String htmlContent = templateEngine.process("invoice1", context);
-
+        String htmlContent = templateEngine.process("printInvoice", context);
+        String name = "invoice_" + invoiceID + ".pdf";
         // Convert HTML to PDF
-        invoiceService.htmlToPdf(htmlContent);
+        invoiceService.htmlToPdf(htmlContent,name);
 
         return "redirect:/listinvoice";
     }

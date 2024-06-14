@@ -1,11 +1,15 @@
 package com.isp.project.controller;
+
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.springframework.ui.Model;
 
 import com.isp.project.model.Invoice;
@@ -15,8 +19,6 @@ import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-
-
 
 @Controller
 
@@ -34,39 +36,27 @@ public class ReportController {
     @Autowired
     private InvoiceServiceImpl invoiceServiceImpl;
 
-    @GetMapping("/report")
-    public String report(Model model) {
-        // khi goi den defaul thang 1 sau do se viet controller khác
-        double revenueBooking = bookingMappingService.revenueBooking(5, 2024);
-        int totalBooking = bookingMappingService.totalBooking(5,2024);
-        double revenueService = invoiceService.getTotalInvoiceForMonth(5, 2024) - revenueBooking;
-        model.addAttribute("revenueBooking", revenueBooking);
-        model.addAttribute("totalBooking", totalBooking);
-        model.addAttribute("revenueService", revenueService);
+    @Autowired
+    private SpringTemplateEngine templateEngine;
 
-        Map<String, Double> data = bookingMappingService.getTotalBookingByYear(2024);
-        model.addAttribute("totalBookingByYear", data.values());
-       
-        Map<String, Double> data1 = invoiceService.getTotalServiceByYear(2024);
-        model.addAttribute("totalServiceByYear", data1.values());
+    @GetMapping("/statistic")
+    public String reportGetdate(@RequestParam(value = "month", required = false) Integer month,
+            @RequestParam(value = "year", required = false) Integer year,
+            Model model) {
+        if (month == null & year == null) {
+            month = 1;
+            year = 2024;
+        }
 
-
-        int totalCustomer = this.bookingService.getCustomerForDate(5, 2024).size();
-        model.addAttribute("totalCustomer", totalCustomer);
-
-        return "report";
-    }
-    @GetMapping("/getdate")
-    public String reportGetdate(@RequestParam("month") int month, @RequestParam("year") int year, Model model) {
         double revenueBooking = bookingMappingService.revenueBooking(month, year);
 
         int totalBooking = bookingMappingService.totalBooking(month, year);
 
-        double revenueService = invoiceService.getTotalInvoiceForMonth(month,year) - revenueBooking;
+        double revenueService = invoiceService.getTotalInvoiceForMonth(month, year) - revenueBooking;
         model.addAttribute("revenueBooking", revenueBooking);
         model.addAttribute("totalBooking", totalBooking);
         model.addAttribute("revenueService", revenueService);
-        
+
         Map<String, Double> totalBookingByYear = bookingMappingService.getTotalBookingByYear(year);
         model.addAttribute("totalBookingByYear", totalBookingByYear.values());
         model.addAttribute("test", totalBookingByYear.keySet());
@@ -76,16 +66,69 @@ public class ReportController {
         model.addAttribute("selectedMonth", month);
         model.addAttribute("selectedYear", year);
 
-
         int totalCustomer = this.bookingService.getCustomerForDate(month, year).size();
         model.addAttribute("totalCustomer", totalCustomer);
         return "report";
     }
 
-    @GetMapping("/testReport")
-    public String testReport(Model model) {
-        List<Invoice> ls = invoiceServiceImpl.testReport();
-        model.addAttribute("ls", ls);
-        return "report1.html";
+    @GetMapping("/revenue_report")
+    public String testReport(@RequestParam(value = "month", required = false) Integer month,
+            @RequestParam(value = "year", required = false) Integer year,
+            Model model) {
+
+        if (month == null & year == null) {
+            month = 1;
+            year = 2024;
+        }
+        double totalAmount = 0.0;
+        List<Invoice> listReport = invoiceServiceImpl.testReport(month, year);
+        for (Invoice ls : listReport) {
+            totalAmount += ls.getTotalAmount();
+        }
+        model.addAttribute("ls", listReport);
+        model.addAttribute("selectedMonth", month);
+        model.addAttribute("selectedYear", year);
+        model.addAttribute("totalAmount", totalAmount);
+        return "revenue";
     }
+
+    @GetMapping("/print_revenue_report")
+    public String printRevenueReport( Model model,@RequestParam(value = "month", required = false) Integer month,
+    @RequestParam(value = "year", required = false) Integer year ) {
+
+        double totalAmount = 0.0;
+        List<Invoice> listReport = invoiceServiceImpl.testReport(month, year);
+        for (Invoice ls : listReport) {
+            totalAmount += ls.getTotalAmount();
+        }
+        Context context = new Context();
+        context.setVariable("ls", listReport);
+       
+        context.setVariable("totalAmount", totalAmount);
+        context.setVariable("selectedMonth", month);
+        context.setVariable("selectedYear", year);
+
+        String htmlContent = templateEngine.process("printRevenue", context);
+        String name = "revenueReport_" + month + "_" + year + ".pdf";
+        invoiceService.htmlToPdf(htmlContent, name);
+        return "redirect:/admin/revenue_report";
+    }
+   
+    @GetMapping("/view_report_revenue")
+    public String getReport(Model model) {
+        int month = 5;
+        int year = 2024;
+        double totalAmount = 0.0;
+        List<Invoice> listReport = invoiceServiceImpl.testReport(month, year);
+        for (Invoice ls : listReport) {
+            totalAmount += ls.getTotalAmount();
+        }
+        model.addAttribute("ls", listReport);
+        model.addAttribute("selectedMonth", month);
+        model.addAttribute("selectedYear", year);
+        model.addAttribute("totalAmount", totalAmount);
+        return "printRevenue";
+    }
+    
+
 }
