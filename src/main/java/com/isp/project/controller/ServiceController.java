@@ -17,15 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isp.project.model.ServiceType;
 import com.isp.project.service.ServiceTypeService;
-import com.isp.project.service.ServiceTypeServiceImpl;
 
 import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/admin")
 public class ServiceController {
-    @Autowired
-    private ServiceTypeServiceImpl serviceTypeServiceImpl;
 
     @Autowired
     private ServiceTypeService serviceTypeService;
@@ -50,17 +47,13 @@ public class ServiceController {
         return "addServiceType";
     }
 
-    public ServiceController(ServiceTypeServiceImpl serviceTypeServiceImpl) {
-        this.serviceTypeServiceImpl = serviceTypeServiceImpl;
-    }
-
     @PostMapping("/addServiceType")
     public String save(@Valid @ModelAttribute("serviceType") ServiceType serviceType, BindingResult bindingResult,
             Model model) {
         if (bindingResult.hasErrors()) {
             return "addServiceType";
         }
-        if (this.serviceTypeServiceImpl.create(serviceType)) {
+        if (this.serviceTypeService.create(serviceType)) {
             return "redirect:/admin/listServiceType";
         } else {
             return "redirect:/admin/add-secate";
@@ -69,7 +62,7 @@ public class ServiceController {
 
     @GetMapping("/listSe/editservice/{SeTypeID}")
     public String update(@PathVariable("SeTypeID") Integer id, Model model) {
-        model.addAttribute("serviceType", serviceTypeServiceImpl.findByID(id));
+        model.addAttribute("serviceType", serviceTypeService.findByID(id));
         return "updateServiceType";
     }
 
@@ -79,7 +72,7 @@ public class ServiceController {
         if (bindingResult.hasErrors()) {
             return "updateServiceType";
         }
-        if (this.serviceTypeServiceImpl.create(serviceType)) {
+        if (this.serviceTypeService.create(serviceType)) {
             return "redirect:/admin/listServiceType";
         } else {
             return "redirect:/admin/add-secate";
@@ -88,14 +81,14 @@ public class ServiceController {
 
     @GetMapping("/listServiceTypeActive")
     public String listServiceTypeActive(Model model) {
-        List<ServiceType> serviceType = serviceTypeServiceImpl.findAllActive();
+        List<ServiceType> serviceType = serviceTypeService.findAllActive();
         model.addAttribute("listServiceType", serviceType);
         return "ServiceCategory";
     }
 
     @GetMapping("/listServiceTypeInactive")
     public String listServiceTypeInactive(Model model) {
-        List<ServiceType> serviceType = serviceTypeServiceImpl.findAllInactive();
+        List<ServiceType> serviceType = serviceTypeService.findAllInactive();
         model.addAttribute("listServiceType", serviceType);
         return "ServiceCategory";
     }
@@ -103,7 +96,7 @@ public class ServiceController {
     @GetMapping("/inactiveServiceType/{SeTypeID}")
     public ResponseEntity<String> inactiveServiceType(@PathVariable("SeTypeID") int id) {
         try {
-            serviceTypeServiceImpl.updateServiceTypeActiveStatus(id, 0);
+            serviceTypeService.updateServiceTypeActiveStatus(id, 0);
             return ResponseEntity.ok("Service category inactive successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive service category");
@@ -113,7 +106,7 @@ public class ServiceController {
     @GetMapping("/activeServiceType/{SeTypeID}")
     public ResponseEntity<String> activeServiceType(@PathVariable("SeTypeID") int id) {
         try {
-            serviceTypeServiceImpl.updateServiceTypeActiveStatus(id, 1);
+            serviceTypeService.updateServiceTypeActiveStatus(id, 1);
             return ResponseEntity.ok("Service category active successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active service category");
@@ -124,7 +117,7 @@ public class ServiceController {
     // public ResponseEntity<String> deleteBooking(@PathVariable("SeTypeID") Integer
     // id) {
     // try {
-    // boolean deleted = serviceTypeServiceImpl.delete(id);
+    // boolean deleted = serviceTypeService.delete(id);
     // ;
     // if (deleted) {
     // return ResponseEntity.ok("Service category deleted successfully");

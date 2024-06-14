@@ -11,4 +11,9 @@ public interface ServiceTypeService {
     Boolean update(ServiceType serviceType);
     Boolean delete(Integer id);
     List<ServiceType> searchServiceType(String name);
+    List<ServiceType> findAllActive();
+    List<ServiceType> findAllInactive();
+    void updateServiceTypeActiveStatus(int id, int status);
+
+
 } 
