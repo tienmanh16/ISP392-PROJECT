@@ -22,6 +22,7 @@ import com.isp.project.service.RoomTypeService;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin")
