@@ -57,6 +57,8 @@ public class BookingController {
     @Autowired
     private RoomRepository roomRepository;
 
+    
+
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
         List<BookingRoomDTO> listBooking;
@@ -119,8 +121,7 @@ public class BookingController {
         bookingRepository.save(booking);
 
         // Add to register
-        Optional<Employee> employeeOptional = employeeRepository.findById(bookingInfo.getEmployeeId());
-        Employee employee = employeeOptional.get();
+        Employee employee = employeeRepository.findById(bookingInfo.getEmployeeId());
         Register register = new Register();
         register.setEmployeeID(employee);
         register.setBookingID(booking);
@@ -139,7 +140,6 @@ public class BookingController {
         bookingMapping.setCheckInDate(bookingInfo.getCheckinDate());
         bookingMapping.setCheckOutDate(bookingInfo.getCheckoutDate());
         bookingMapping.setBookingTotalAmount(5000000);
-       
         // trường phòng, vì vậy tạm thời bỏ qua
         bookingMappingRepository.save(bookingMapping);
 

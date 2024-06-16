@@ -12,7 +12,8 @@ import com.isp.project.model.Customer;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
-    @Query(value = "SELECT * FROM Customer WHERE CustomerName LIKE %:keyword%", nativeQuery = true)
+    // @Query(value = "SELECT * FROM Customer WHERE CustomerName LIKE %:keyword%", nativeQuery = true)
+    // List<Customer> findCustomersByNameContaining(@Param("keyword") String keyword);
+    @Query("SELECT c FROM Customer c WHERE c.customerName LIKE CONCAT('%', :keyword, '%')")
     List<Customer> findCustomersByNameContaining(@Param("keyword") String keyword);
-
 }

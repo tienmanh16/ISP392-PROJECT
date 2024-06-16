@@ -1,5 +1,6 @@
 package com.isp.project.repositories;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -55,5 +56,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "JOIN r.roomType rt "
        + "WHERE r.status = :status")
     List<RoomDetailDTO> findAllRoomsByStatus(@Param("status") String status);
+
+   //  @Query("SELECT r FROM Room r WHERE r.id NOT IN (SELECT b.room.id FROM Booking b WHERE b.checkinDate < :checkoutDate AND b.checkoutDate > :checkinDate)")
+   //  List<Room> findAvailableRooms(Date checkinDate, Date checkoutDate);
 
 }
