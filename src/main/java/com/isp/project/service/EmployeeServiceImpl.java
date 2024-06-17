@@ -102,10 +102,5 @@ public class EmployeeServiceImpl implements EmployeeService{
         return !currentStatus;
     }
 
-    @Override
-    public List<Employee> searchName(String name) {
-       return employeeRepository.searchName(name);
-    }
-
 
 }

@@ -27,5 +27,4 @@ public interface EmployeeService {
     boolean existsByEmail(String email);
     boolean toggleEmployeeStatus(int employeeId, boolean currentStatus);
 
-    List<Employee> searchName(String name);
 }

@@ -1,7 +1,5 @@
 package com.isp.project.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,17 +26,12 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @GetMapping("/employee_list")
-    public String listEmployee(Model model, @RequestParam(name = "name", required = false) String name) {
-        List<Employee> listEmployee;
-        if (name != null && !name.isEmpty()) {
-            listEmployee = employeeService.searchName(name);
-        } else {
-            listEmployee = employeeService.findAll();
-        }
-        model.addAttribute("emList", listEmployee);
+    public String listEmployee(Model model) {
+        model.addAttribute("emList", employeeService.findAll());
         return "viewEmployee";
     }
 
+    
 
     @GetMapping("/employee_add")
     public String add(Model model) {

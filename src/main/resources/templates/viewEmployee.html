@@ -35,24 +35,26 @@
             background-color: #333;
             color: #fff;
         }
+
         .search-container {
             display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .search-input {
             border: 2px solid #05073e;
             border-radius: 5px 0 0 5px;
+            border-right: none;
             height: 38px;
             width: 200px;
-
         }
 
         .search-button {
-            background-color: #05073e;
-            color: #fff;
+            border: 2px solid #05073e;
             border-radius: 0 5px 5px 0;
-            height: 38px; 
-            width: 100px;
+            height: 38px;
+            width: 120px;
         }
 
         .action-buttons {
@@ -81,9 +83,15 @@
             </div>
 
             <div class="action-buttons">
-                <form th:action="@{/admin/employee_list}" method="get" class="search-container">
-                    <input type="text" class="form-control search-input" name="name" placeholder="Search By Name..." th:value="${param.name}">
-                    <button class="search-button" type="submit" id="search-button">Search</button>
+                <form class="search-container">
+                    <input type="text" id="searchbar" class="form-control search-input" placeholder="Search Here">
+                    <select id="category" class="form-select search-button">
+                        <option value="0" selected>Select</option>
+                        <option value="2">Name</option>
+                        <option value="3">Gender</option>
+                        <option value="5">Role</option>
+                        <option value="10">Salary</option>
+                    </select>
                 </form>
                 <button class="btn custom-button" onclick="window.location.href='/admin/employee_add'">
                     Add Employee
@@ -104,14 +112,14 @@
                                     <th>Phone</th>
                                     <th>CCCD</th>
                                     <th>Email</th>
+                                    <th>Salary</th>
                                     <th>UserName</th>
                                     <th>Password</th>
-                                    <th>Salary</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="body">
                                 <tr th:each="list : ${emList}">
                                     <th th:text="${list.id}"></th>
                                     <td th:text="${list.fullName}"></td>
@@ -122,9 +130,9 @@
                                     <td th:text="${list.phone}"></td>
                                     <td th:text="${list.idenId}"></td>
                                     <td th:text="${list.email}"></td>
+                                    <td th:text="${list.salary}"></td>
                                     <td th:text="${list.username}"></td>
                                     <td th:text="${list.password}"></td>
-                                    <td th:text="${list.salary}"></td>
                                     <!-- <td th:text="${list.isActive}"></td> -->
                                     <td>
                                         <!-- hien thi tu database -->
@@ -136,21 +144,19 @@
                                         </button>
                                     </td>
                                     <td><a th:href="@{'/admin/employee_edit/'+${list.id}}" class="ti-menu"></a></td>
-
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-    </div>
-
-    </section>
+        </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
+
     <!-- thư viện để add header và footer  -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-
+    
     <script>
         function toggleStatus(button) {
             const employeeId = button.getAttribute('data-id');
@@ -167,16 +173,39 @@
                     button.classList.toggle('btn-danger', isActive);
                     // Update data attribute in database
                     button.setAttribute('data-active', !isActive);
-                },
-                error: function (xhr, status, error) {
-                    console.error('Failed to update status:', error);
                 }
             });
         }
 
+        var searchbar = document.getElementById('searchbar');
+        var category = document.getElementById('category');
+        var tbody = document.getElementById('body');
+        var orignaltabledata = tbody.innerHTML;
 
+        function Search() {
+            tbody.innerHTML = orignaltabledata;
+            let rows = tbody.children; // all of the tr tags
+            //do not filter data if searchbar is empty or first option is selected
+            if (searchbar.value.length < 1 || category.value == '0') {
+                return;
+            }
+            let filteredrows = '';
+            let catno = Number(category.value) - 1;
+            let searchtext = searchbar.value.toLowerCase();
+            for (let i = 0; i < rows.length; i++) {
+                const currentrowtext = rows[i].children[catno].innerText.toLowerCase(); //assigning current
+                if (currentrowtext.indexOf(searchtext) > -1) {
+                    filteredrows += rows[i].outerHTML; //current tr
+                }
+            }
+            tbody.innerHTML = filteredrows;
+        }
+
+        searchbar.addEventListener('input', Search);
+        category.addEventListener('change', Search);
     </script>
 
+    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
     <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
