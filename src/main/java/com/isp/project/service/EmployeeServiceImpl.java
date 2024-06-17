@@ -97,9 +97,14 @@ public class EmployeeServiceImpl implements EmployeeService{
         // Update the status
         employee.setIsActive(!currentStatus);
         employeeRepository.save(employee);
-        
+
         // Return the new status
         return !currentStatus;
+    }
+
+    @Override
+    public List<Employee> searchName(String name) {
+       return employeeRepository.searchName(name);
     }
 
 

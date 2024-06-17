@@ -4,9 +4,12 @@ package com.isp.project.repositories;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import com.isp.project.model.Employee;
 
+@Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Employee findByUsername(String username);
 
@@ -18,4 +21,9 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     List<Employee> findByIsActiveTrue();
     
+    @Query("SELECT c FROM Employee c WHERE c.fullName LIKE %?1%")
+    List<Employee> searchName(String name);
+    
+
+
 }

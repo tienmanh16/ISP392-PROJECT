@@ -35,6 +35,32 @@
             background-color: #333;
             color: #fff;
         }
+        .search-container {
+            display: flex;
+        }
+
+        .search-input {
+            border: 2px solid #05073e;
+            border-radius: 5px 0 0 5px;
+            height: 38px;
+            width: 200px;
+
+        }
+
+        .search-button {
+            background-color: #05073e;
+            color: #fff;
+            border-radius: 0 5px 5px 0;
+            height: 38px; 
+            width: 100px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
     </style>
 </head>
 
@@ -52,9 +78,13 @@
                         <h2 class="heading-section">Employee List</h2>
                     </div>
                 </div>
-
             </div>
-            <div class="col-md-11 text-right  mb-4">
+
+            <div class="action-buttons">
+                <form th:action="@{/admin/employee_list}" method="get" class="search-container">
+                    <input type="text" class="form-control search-input" name="name" placeholder="Search By Name..." th:value="${param.name}">
+                    <button class="search-button" type="submit" id="search-button">Search</button>
+                </form>
                 <button class="btn custom-button" onclick="window.location.href='/admin/employee_add'">
                     Add Employee
                 </button>
@@ -147,8 +177,6 @@
 
     </script>
 
-
-    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
     <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
