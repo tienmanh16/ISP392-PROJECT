@@ -17,6 +17,8 @@ public class RoomDetailDTO {
     // private int imageId;
     // private String image1;
     // private String image2;
+    public RoomDetailDTO() {
+    }
     
     
 }

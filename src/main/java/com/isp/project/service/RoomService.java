@@ -1,5 +1,6 @@
 package com.isp.project.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import com.isp.project.dto.RoomDetailDTO;
@@ -12,5 +13,5 @@ public interface RoomService {
 
     List<RoomDetailDTO> getAllRoomsByStatus(String status);
     
-    List<RoomDetailDTO> getAvailableRooms(String checkinDate, String checkoutDate);
+    List<RoomDetailDTO> getAvailableRooms(Date checkinDate, Date checkoutDate);
 }

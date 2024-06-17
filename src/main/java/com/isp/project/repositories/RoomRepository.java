@@ -80,6 +80,17 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
 // List<Object[]> findAvailableRooms(@Param("checkinDate") String checkinDate,
 //                    @Param("checkoutDate") String checkoutDate);
 
+// @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus " +
+//                "FROM Room r " +
+//                "INNER JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID " +
+//                "WHERE r.RoomID NOT IN ( " +
+//                "   SELECT bm.RoomID " +
+//                "   FROM BookingMapping bm " +
+//                "   WHERE bm.CheckInDate < :checkoutDate " +
+//                "   AND bm.CheckOutDate > :checkinDate " +
+//                ") AND r.RoomActive = 1", nativeQuery = true)
+// List<Object[]> findAvailableRooms(@Param("checkinDate") String checkinDate,
+//                                   @Param("checkoutDate") String checkoutDate);
 @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus " +
                "FROM Room r " +
                "INNER JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID " +
@@ -89,6 +100,6 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
                "   WHERE bm.CheckInDate < :checkoutDate " +
                "   AND bm.CheckOutDate > :checkinDate " +
                ") AND r.RoomActive = 1", nativeQuery = true)
-List<Object[]> findAvailableRooms(@Param("checkinDate") String checkinDate,
-                                  @Param("checkoutDate") String checkoutDate);
+List<Object[]> findAvailableRooms(@Param("checkinDate") Date checkinDate,
+                                  @Param("checkoutDate") Date checkoutDate);
 }

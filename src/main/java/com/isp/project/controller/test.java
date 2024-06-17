@@ -65,10 +65,10 @@ public class test {
         }
     }
 
-    @PostMapping("/roomtest")
-    public List<RoomDetailDTO> testPostMan() {
-        return roomService.getAvailableRooms("2024-05-31", "2024-06-02");
-    // return roomService.getAllRoomsWithDetails();
-}
+//     @PostMapping("/roomtest")
+//     public List<RoomDetailDTO> testPostMan() {
+//         return roomService.getAvailableRooms("2024-05-31", "2024-06-02");
+//     // return roomService.getAllRoomsWithDetails();
+// }
 
 }

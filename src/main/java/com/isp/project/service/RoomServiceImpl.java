@@ -1,5 +1,6 @@
 package com.isp.project.service;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,9 @@ public class RoomServiceImpl implements RoomService {
     // private String priceDay;
     // private String status;
     @Override
-    public List<RoomDetailDTO> getAvailableRooms(String checkinDate, String checkoutDate) {
+
+    //public List<Object[]> findAvailableRooms(Date checkinDate, Date checkoutDate) 
+    public List<RoomDetailDTO> getAvailableRooms(Date checkinDate, Date checkoutDate) {
         List<Object[]> rawResults = roomRepository.findAvailableRooms(checkinDate, checkoutDate);
         List<RoomDetailDTO> findRoom = new ArrayList<>();
         for (Object[] rawResult : rawResults) {
