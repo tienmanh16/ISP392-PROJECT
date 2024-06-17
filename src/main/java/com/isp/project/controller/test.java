@@ -2,6 +2,7 @@ package com.isp.project.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
@@ -17,6 +18,7 @@ import com.isp.project.service.BookingService;
 import com.isp.project.service.EmployeeService;
 import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
+import com.isp.project.service.RoomService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -44,7 +46,11 @@ public class test {
     @Autowired
     private EmployeeService employeeService;
 
-    @Autowired EmployeeRepository employeeRepository;
+    @Autowired 
+    EmployeeRepository employeeRepository;
+
+    @Autowired 
+    RoomService roomService;
 
     @GetMapping("/{id}")
     public ResponseEntity<BookingMapping> deleteBooking(@PathVariable Integer id) {
@@ -59,9 +65,10 @@ public class test {
         }
     }
 
-    @PostMapping("1")
-    public List<Employee> testPostMan() {
-        return employeeService.findAll();
-    }
+    @PostMapping("/roomtest")
+    public List<RoomDetailDTO> testPostMan() {
+        return roomService.getAvailableRooms("2024-05-31", "2024-06-02");
+    // return roomService.getAllRoomsWithDetails();
+}
 
 }

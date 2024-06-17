@@ -57,14 +57,13 @@ public class BookingController {
     @Autowired
     private RoomRepository roomRepository;
 
-    
+
 
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
         List<BookingRoomDTO> listBooking;
         if (query != null && !query.isEmpty()) {
             listBooking = bookingService.getAllBookingByName(query.toLowerCase());
-
         } else {
             listBooking = bookingService.getAllBooking();
         }

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.BookingRoomDTO;
 import com.isp.project.model.Booking;
-import com.isp.project.model.BookingMapping;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.RegisterRepository;

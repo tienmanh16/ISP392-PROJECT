@@ -42,14 +42,14 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-6 text-center mb-5">
-            <h2 class="heading-section">Đặt phòng</h2>
+            <h2 class="heading-section">Booking</h2>
           </div>
         </div>
         <div class="box">
           <div class="box-header d-flex justify-content-between align-items-center">
 
             <div>
-              <button class="btn js-buy-ticket">+ Đặt phòng</button>
+              <button class="btn js-buy-ticket">+ Booking Room</button>
             </div>
             <form th:action="@{/booking}" method="get" class="form-inline ml-auto">
               <div class="input-group" style="width: 200px">
@@ -112,11 +112,11 @@
   <!-- modal chứa cả các giao diện phủ lên -->
   <div class="modal js-modal">
     <div class="window js-modal-window">
-      <div class="title">ĐẶT PHÒNG</div>
+      <div class="title">BOOKING ROOM</div>
       <form th:action="@{/saveBooking}" th:object="${bookingInfo}" method="post">
         <div class="main">
           <div class="lefttt" style="background-color: #F2F1F1;">
-            <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin khách hàng</h6>
+            <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Customer Information</h6>
             <span class="material-icons" style="vertical-align: middle;">account_box</span>
             <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;"
               placeholder="Nhập tên khách hàng..." required>
@@ -139,7 +139,8 @@
             <br><br>
             <span class="material-icons" style="vertical-align: middle;">transgender</span>
             <label for="male" style="vertical-align: middle; margin-right: 10px;">Male</label>
-            <input type="radio" th:field="*{gender}" value="male" style="vertical-align: middle; margin-right: 20px;" required>
+            <input type="radio" th:field="*{gender}" value="male" style="vertical-align: middle; margin-right: 20px;"
+              required>
             <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
             <input type="radio" th:field="*{gender}" value="female" style="vertical-align: middle;" required>
           </div>
@@ -229,8 +230,8 @@
           </div>
         </div>
         <div class="footer">
-          <button type="submit" class="button green-button">Lưu</button>
-          <button type="button" class="button gray-button js-modal-close">Thoát</button>
+          <button type="submit" class="button green-button">Booking</button>
+          <button type="button" class="button gray-button js-modal-close">Exit</button>
         </div>
       </form>
     </div>
@@ -273,9 +274,9 @@
     });
   </script>
 
-  
 
-  
+
+
 
   <!-- thư viện để add header và footer  -->
 
@@ -330,6 +331,252 @@
   <div class="scroll-to-top scroll-to-target" data-target="html">
     <span class="fa fa-angle-up"></span>
   </div>
+
+  <!-- <script>
+    const themDVs = document.querySelectorAll('.js-themDV')
+    // 3 nút có class js.. lưu vào biến buyBtns
+    const modal2 = document.querySelector('.js-modal-2')
+    // lấy tất cả các thằng có class .js-modal
+    const modalClose2 = document.querySelector('.js-modal-close-2')
+
+    const modalWindow2 = document.querySelector('.js-modal-window-2')
+
+    // hàm hiện modal mua vé (thêm class open cả modal)
+    function showByTickets2() {
+        modal2.classList.add('open')
+        // alert('ok')
+    }
+    
+    // hàm ẩn modal mua vé (xóa class open ở modal)
+    function hideByTickets2() {
+        modal2.classList.remove('open')
+        
+    }
+    // lặp qua từng thẻ button và nghe hành vi click
+    for(const themDV of themDVs){
+        // từng thằng trong buyBtns
+        themDV.addEventListener('click',showByTickets2)
+
+
+
+        
+
+    }
+    // nghe hành vi click vaof button close
+    modalClose2.addEventListener('click',hideByTickets2)
+    // khi click vào tất cả các khoảng modal 
+    modal2.addEventListener('click',hideByTickets2)
+    // vì khi click vào tất cả các khoảng modal thì nó
+    // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
+    modalWindow2.addEventListener('click', function(event){
+        event.stopPropagation()
+    })
+
+    function sendServiceTypeId(serviceTypeId) {
+        if (!serviceTypeId) {
+             return; // Không làm gì nếu không có giá trị được chọn
+        }
+        
+        // Hiển thị modal
+        // Gửi request đến controller để lấy thông tin dịch vụ
+        fetch(/getServiceBySeTypeId?serviceTypeId=${serviceTypeId})
+                .then(response => response.json())
+                .then(data => {
+                    // Lấy reference tới tbody của bảng
+                    const tbodyElement = document.getElementById('lvDanhSachDV');
+
+                    // Xóa các dòng hiện có trong tbody
+                    while (tbodyElement.firstChild) {
+                        tbodyElement.removeChild(tbodyElement.firstChild);
+                    }
+
+                    // Lặp qua từng ServiceDetailDTO trong data     
+                    data.forEach(serviceDetail => {
+                        // Tạo và cấu hình các element cho dòng mới
+                        const newRow = document.createElement('tr');
+                        newRow.id = 'serviceDS';
+
+                        const serviceTypeNameCell = document.createElement('td');
+                        serviceTypeNameCell.id = 'serviceTypeName';
+                        serviceTypeNameCell.textContent = serviceDetail.seTypeName;
+
+                        const serviceNameCell = document.createElement('td');
+                        serviceNameCell.id = 'serviceName';
+                        serviceNameCell.textContent = serviceDetail.seName;
+
+                        const servicePriceCell = document.createElement('td');
+                        servicePriceCell.id = 'servicePrice';
+                        servicePriceCell.textContent = serviceDetail.sePrice;
+
+                        const addServiceCell = document.createElement('td');
+                        addServiceCell.id = 'addService';
+                        const addServiceLink = document.createElement('a');
+                        addServiceLink.href = 'javascript:void(0)';
+                        addServiceLink.classList.add('wait-link');
+                        const addServiceIcon = document.createElement('span');
+                        addServiceIcon.classList.add('material-icons');
+                        addServiceIcon.style.color = 'green';
+                        addServiceIcon.textContent = 'add_circle';
+                        addServiceLink.appendChild(addServiceIcon);
+                        addServiceCell.appendChild(addServiceLink);
+
+                        // Thêm các cell vào dòng mới
+                        newRow.appendChild(serviceTypeNameCell);
+                        newRow.appendChild(serviceNameCell);
+                        newRow.appendChild(servicePriceCell);
+                        newRow.appendChild(addServiceCell);
+
+                        // Thêm dòng mới vào tbody
+                        tbodyElement.appendChild(newRow);
+                    });
+                })
+            .catch(error => {
+                console.error('Lỗi khi lấy danh sách dịch vụ:', error);
+            }
+        );
+    }
+
+
+
+    // Lấy tham chiếu đến ô input
+    const inputElement = document.getElementById('input');
+
+    // Lắng nghe sự kiện "keyup" trên ô input
+    inputElement.addEventListener('keyup', function(event) {
+        // Kiểm tra xem người dùng có nhấn phím Enter hay không
+        if (event.key === 'Enter') {
+            // Lấy giá trị của ô input
+            const seName = inputElement.value;
+            // Gọi hàm sendServiceName với giá trị seName
+            sendServiceName(seName);
+        }
+    });
+    
+    
+    function sendServiceName(seName) {
+        
+        // Hiển thị modal
+        // Gửi request đến controller để lấy thông tin dịch vụ
+        fetch(/getServiceBySeName?seName=${seName})
+                .then(response => response.json())
+                .then(data => {
+                    // Lấy reference tới tbody của bảng
+                    const tbodyElement = document.getElementById('lvDanhSachDV');
+
+                    // Xóa các dòng hiện có trong tbody
+                    while (tbodyElement.firstChild) {
+                        tbodyElement.removeChild(tbodyElement.firstChild);
+                    }
+
+                    // Lặp qua từng ServiceDetailDTO trong data     
+                    data.forEach(serviceDetail => {
+                        // Tạo và cấu hình các element cho dòng mới
+                        const newRow = document.createElement('tr');
+                        newRow.id = 'serviceDS';
+
+                        const serviceTypeNameCell = document.createElement('td');
+                        serviceTypeNameCell.id = 'serviceTypeName';
+                        serviceTypeNameCell.textContent = serviceDetail.seTypeName;
+
+                        const serviceNameCell = document.createElement('td');
+                        serviceNameCell.id = 'serviceName';
+                        serviceNameCell.textContent = serviceDetail.seName;
+
+                        const servicePriceCell = document.createElement('td');
+                        servicePriceCell.id = 'servicePrice';
+                        servicePriceCell.textContent = serviceDetail.sePrice;
+
+                        const addServiceCell = document.createElement('td');
+                        addServiceCell.id = 'addService';
+                        const addServiceLink = document.createElement('a');
+                        addServiceLink.href = 'javascript:void(0)';
+                        addServiceLink.classList.add('wait-link');
+                        const addServiceIcon = document.createElement('span');
+                        addServiceIcon.classList.add('material-icons');
+                        addServiceIcon.style.color = 'green';
+                        addServiceIcon.textContent = 'add_circle';
+                        addServiceLink.appendChild(addServiceIcon);
+                        addServiceCell.appendChild(addServiceLink);
+
+                        // Thêm các cell vào dòng mới
+                        newRow.appendChild(serviceTypeNameCell);
+                        newRow.appendChild(serviceNameCell);
+                        newRow.appendChild(servicePriceCell);
+                        newRow.appendChild(addServiceCell);
+
+                        // Thêm dòng mới vào tbody
+                        tbodyElement.appendChild(newRow);
+                    });
+                })
+            .catch(error => {
+                console.error('Lỗi khi lấy danh sách dịch vụ:', error);
+            }
+        );
+    }
+
+
+    
+    // Sử dụng event delegation
+    const lvDanhSachDV = document.getElementById('lvDanhSachDV');
+    lvDanhSachDV.addEventListener('click', (event) => {
+    if (event.target.closest('.wait-link')) {
+        addServiceToSelectedTable(event);
+    }
+    });
+
+    function addServiceToSelectedTable(event) {
+        const row = event.target.closest('tr');
+        const serviceName = row.querySelector('#serviceName, .serviceName').textContent;
+        const servicePrice = parseFloat(row.querySelector('#servicePrice, .servicePrice').textContent);
+
+        // Kiểm tra xem dịch vụ đã tồn tại trong bảng "Dịch vụ đã chọn"
+        const existingRows = document.querySelectorAll('#lvDichVuDaChon tr');
+        let existingRow = null;
+        for (let i = 0; i < existingRows.length; i++) {
+            if (existingRows[i].querySelector('td:first-child').textContent === serviceName) {
+            existingRow = existingRows[i];
+            break;
+            }
+        }
+
+        if (existingRow) {
+            // Nếu dịch vụ đã tồn tại, cập nhật số lượng và thành tiền
+            const qtyCell = existingRow.querySelector('td:nth-child(2)');
+            const priceCell = existingRow.querySelector('td:nth-child(3)');
+            let qty = parseInt(qtyCell.textContent);
+            qty++;
+            qtyCell.textContent = qty.toString();
+            priceCell.textContent = (qty * servicePrice).toFixed(2);
+        } else {
+            // Nếu dịch vụ chưa tồn tại, thêm hàng mới vào bảng "Dịch vụ đã chọn"
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+            <td class="serviceName">${serviceName}</td>
+            <td>1</td>
+            <td class="servicePrice">${servicePrice.toFixed(2)}</td>
+            <td><a href="javascript:void(0)" class="wait-link-1">
+                <span class="material-icons" style="color: red;">cancel</span>
+            </a></td>
+            `;
+            document.getElementById('lvDichVuDaChon').appendChild(newRow);
+        }
+    }
+
+
+    const lvDichVuDaChon = document.getElementById('lvDichVuDaChon');
+    lvDichVuDaChon.addEventListener('click', (event) => {
+        if (event.target.closest('.wait-link-1')) {
+            removeServiceFromSelectedTable(event);
+        }
+    });
+
+    function removeServiceFromSelectedTable(event) {
+        const row = event.target.closest('tr');
+        row.remove();
+    }
+
+
+</script> -->
 
   <script th:src="@{/js/jquery.min.js}"></script>
   <script th:src="@{/js/popper.js}"></script>
