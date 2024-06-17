@@ -25,7 +25,17 @@
     <!-- Responsive -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <style>
+        .custom-button {
+            background-color: #05073e;
+            color: #fff;
+        }
 
+        .custom-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
 </head>
 
 <body>
@@ -45,8 +55,7 @@
 
             </div>
             <div class="col-md-11 text-right  mb-4">
-                <button class="btn btn-primary" onclick="window.location.href='/admin/employee_add'"
-                    style="background-color: #05073e; color: #fff;">
+                <button class="btn custom-button" onclick="window.location.href='/admin/employee_add'">
                     Add Employee
                 </button>
             </div>
@@ -93,12 +102,11 @@
                                             th:classappend="${list.isActive == true ? 'btn-success' : 'btn-danger'}"
                                             th:text="${list.isActive == true ? 'Active' : 'InActive'}"
                                             th:data-id="${list.id}" th:data-active="${list.isActive}"
-                                            onclick="toggleStatus(this)"
-                                            style="width: 85px; height: 40px;">
+                                            onclick="toggleStatus(this)" style="width: 85px; height: 40px;">
                                         </button>
                                     </td>
                                     <td><a th:href="@{'/admin/employee_edit/'+${list.id}}" class="ti-menu"></a></td>
-                                
+
                                 </tr>
                             </tbody>
                         </table>
@@ -106,7 +114,7 @@
                 </div>
             </div>
     </div>
-    
+
     </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>

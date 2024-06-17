@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,10 +53,15 @@ public class ItemDetailController {
     }
 
     @PostMapping("/itemdetail_add")
-    public String save(Model model, @Valid @ModelAttribute("itemdetail") RoomItemMapping roomItemMapping, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "addItemdetail";
-        }
+    public String save(Model model, @Valid @ModelAttribute("itemdetail") RoomItemMapping roomItemMapping) {
+       // Kiểm tra trùng lặp
+       if (itemDetailService.isDuplicate(roomItemMapping)) {
+        model.addAttribute("duplicate","Duplicate!!! Please try again");
+        model.addAttribute("itemdetail", roomItemMapping);
+        model.addAttribute("rooms", roomService.findAll());
+        model.addAttribute("items", roomItemService.findAll());
+        return "addItemdetail"; 
+    }
        
         itemDetailService.save(roomItemMapping);
         return "redirect:/admin/itemdetail_list";

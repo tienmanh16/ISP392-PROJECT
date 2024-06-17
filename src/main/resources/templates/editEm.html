@@ -19,6 +19,15 @@
 		.passText, .emailText,.salaryText, .dobText {
             color: red; 
         }
+
+		.custom-button {
+            background-color: #05073e;
+            color: #fff;
+        }
+        .custom-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
 	</style>
 </head>
 
@@ -109,8 +118,8 @@
 							<span class="salaryText"></span>
 					</div>
 
-					<button type="submit" class="btn btn-primary" onclick="checkDuplicateEmail()">Save</button>
-					<a class="btn btn-primary" href="/admin/employee_list">Display List Employee</a>
+					<button type="submit" class="btn custom-button" onclick="checkDuplicateEmail()">Save</button>
+					<a class="btn custom-button" href="/admin/employee_list">Display List Employee</a>
 				</form>
 			</div>
 		</div>

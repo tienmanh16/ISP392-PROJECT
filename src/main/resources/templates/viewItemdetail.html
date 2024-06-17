@@ -8,7 +8,8 @@
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
-    <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all" href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
+    <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+        href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
 
     <!-- thư viện để add header và footer  -->
 
@@ -26,18 +27,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
     <style>
-   
-.table-filter {
-            border: 1px solid #ccc; /* Viền xung quanh */
-            border-radius: 5px; /* Bo tròn góc */
-            padding: 5px; /* Khoảng cách bên trong */
-            background-color: #f8f9fa; /* Màu nền */
-            color: #333; /* Màu chữ */
+        .table-filter {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: #f8f9fa;
+            color: #333;
         }
 
         .table-filter:hover {
-            border-color: #007bff; /* Đổi màu viền khi hover */
-            background-color: #e9ecef; /* Đổi màu nền khi hover */
+            border-color: #007bff;
+            /* Đổi màu viền khi hover */
+            background-color: #e9ecef;
+            /* Đổi màu nền khi hover */
+        }
+
+        .custom-button {
+            background-color: #05073e;
+            color: #fff;
+        }
+
+        .custom-button:hover {
+            background-color: #333;
+            color: #fff;
         }
     </style>
 </head>
@@ -58,7 +70,7 @@
                 </div>
             </div>
             <div class="col-md-11 text-right  mb-4">
-                <button class="btn btn-primary" onclick="window.location.href='/admin/itemdetail_add'" style="background-color: #05073e; color: #fff;">
+                <button class="btn custom-button" onclick="window.location.href='/admin/itemdetail_add'">
                     Add Item Detail
                 </button>
             </div>
@@ -90,8 +102,10 @@
                                     <td th:text="${list.room.roomNum}"></td>
                                     <td th:text="${list.roomItem.ItemName}"></td>
                                     <th th:text="${list.Quantity}"></th>
-                                    <td><a th:href="@{'/admin/itemdetail_delete/'+${list.RoomItemID}}" class="btn btn-danger ti-close"></a></td>
-                                    <td><a th:href="@{'/admin/itemdetail_edit/'+${list.RoomItemID}}" class="ti-menu"></a></td>
+                                    <td><a th:href="@{'/admin/itemdetail_delete/'+${list.RoomItemID}}"
+                                            class="btn btn-danger ti-close"></a></td>
+                                    <td><a th:href="@{'/admin/itemdetail_edit/'+${list.RoomItemID}}"
+                                            class="ti-menu"></a></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -106,7 +120,7 @@
     <script th:src="@{/js/filter.js}"></script>
     <script>
         // Call getUniqueValuesFromColumn after the script is loaded
-        window.onload = function() {
+        window.onload = function () {
             getUniqueValuesFromColumn();
         };
     </script>

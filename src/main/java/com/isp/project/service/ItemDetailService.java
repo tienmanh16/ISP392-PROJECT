@@ -16,4 +16,5 @@ public interface ItemDetailService {
 
     RoomItemMapping save(RoomItemMapping entity);
 
+    boolean isDuplicate(RoomItemMapping entity);
 }
