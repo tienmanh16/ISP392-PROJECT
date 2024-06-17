@@ -27,7 +27,7 @@
         <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; padding: 20px;">
             <div class="col-sm-12">
                 <h2>Add Employee</h2>
-                <form th:action="@{/employee/add}" th:object="${employee}" method="post" enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
+                <form th:action="@{/admin/employee_add}" th:object="${employee}" method="post" enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
                     <div class="form-group">
                         <label>Full Name</label>
                         <input type="text" th:field="*{fullName}" class="form-control" placeholder="Enter name" required>
@@ -88,7 +88,7 @@
         
                     <button type="submit" class="btn btn-primary">Save</button>
                     <button type="reset" class="btn btn-primary">Reset</button>
-                    <a class="btn btn-primary" href="/employee/list">Display List Staff</a>
+                    <a class="btn btn-primary" href="/admin/employee_list">Display List Staff</a>
                 </form>
             </div>
         </div>
@@ -167,7 +167,7 @@
             let isDuplicate = false;
 
             $.ajax({
-                url: '/employee/check-email',
+                url: '/admin/employee_check-email',
                 type: 'GET',
                 data: { email: email.value },
                 async: false,

@@ -56,4 +56,5 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "WHERE r.status = :status")
     List<RoomDetailDTO> findAllRoomsByStatus(@Param("status") String status);
 
+    Room findByRoomNum(String roomNum);
 }

@@ -21,7 +21,7 @@ public interface EmployeeService {
 
     List<Employee> findAll();
 
-    List<Employee> findActiveEmployees();
+    // List<Employee> findActiveEmployees();
     Employee save(Employee entity);
     
     boolean existsByEmail(String email);

@@ -72,10 +72,10 @@ public class EmployeeServiceImpl implements EmployeeService{
         return employeeRepository.findAll();
     }
 
-    @Override
-    public List<Employee> findActiveEmployees() {
-        return employeeRepository.findByIsActiveTrue();
-    }
+    // @Override
+    // public List<Employee> findActiveEmployees() {
+    //     return employeeRepository.findByIsActiveTrue();
+    // }
 
     @Override
     public Employee save(Employee entity) {

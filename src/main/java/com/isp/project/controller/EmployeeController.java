@@ -19,47 +19,47 @@ import com.isp.project.service.EmployeeService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/employee")
+@RequestMapping("/admin")
 public class EmployeeController {
 
     @Autowired
     EmployeeService employeeService;
 
-    @GetMapping("/list")
+    @GetMapping("/employee_list")
     public String listEmployee(Model model) {
         model.addAttribute("emList", employeeService.findAll());
         return "viewEmployee";
     }
 
-    @GetMapping("/add")
+    @GetMapping("/employee_add")
     public String add(Model model) {
         Employee employee = new Employee();
         model.addAttribute("employee", employee);
         return "addEm";
     }
 
-    @PostMapping("/add")
+    @PostMapping("/employee_add")
     public String save(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "addEm";
         }
         employee.setIsActive(true);
         employeeService.save(employee);
-        return "redirect:/employee/list";
+        return "redirect:/admin/employee_list";
     }
     
-    @GetMapping("/edit/{id}")
+    @GetMapping("/employee_edit/{id}")
     public String edit(Model model, @PathVariable("id") int id) {
         Employee employee = employeeService.findById(id);
         if (employee != null) {
             model.addAttribute("employee", employee);
             return "editEm"; 
         } else {
-            return "redirect:/employee/list"; 
+            return "redirect:/admin/employee_list"; 
         }
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/employee_edit")
     public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "editEm";
@@ -73,7 +73,7 @@ public class EmployeeController {
             existingEmployee.setEmail(employee.getEmail());
             existingEmployee.setIdenId(employee.getIdenId());
             existingEmployee.setUsername(employee.getUsername());
-            existingEmployee.setPassword(employee.getPassword());
+            // existingEmployee.setPassword(employee.getPassword());
             existingEmployee.setPhone(employee.getPhone());
             existingEmployee.setDob(employee.getDob());
             existingEmployee.setSalary(employee.getSalary());
@@ -81,21 +81,21 @@ public class EmployeeController {
             existingEmployee.setIsActive(true); 
             employeeService.save(existingEmployee);
         }
-        return "redirect:/employee/list";
+        return "redirect:/admin/employee_list";
         
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/employee_delete/{id}")
     public String delete(@PathVariable("id") int id) {
         Employee employee = employeeService.findById(id);
         if (employee != null) {
             employee.setIsActive(false);
             employeeService.save(employee);
         }
-        return "redirect:/employee/list";
+        return "redirect:/admin/employee_list";
     }
 
-    @PostMapping("/toggleStatus/{employeeId}")
+    @PostMapping("/employee_toggleStatus/{employeeId}")
     public ResponseEntity<?> toggleStatus(@PathVariable("employeeId") int employeeId, @RequestParam("isActive") boolean isActive) {
         try {
             boolean newStatus = employeeService.toggleEmployeeStatus(employeeId, isActive);
@@ -105,9 +105,11 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("/check-email")
+    @GetMapping("/employee_check-email")
     public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
         boolean exists = employeeService.existsByEmail(email);
         return ResponseEntity.ok(exists);
     }
+
+
 }

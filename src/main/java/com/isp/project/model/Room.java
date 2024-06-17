@@ -48,9 +48,5 @@ public class Room {
 
     @OneToMany(mappedBy = "room")
     @JsonManagedReference
-    private List<RoomItemMapping> roomItemMapping;
-
-
-    
-    
+    private List<RoomItemMapping> roomItemMapping; 
 }

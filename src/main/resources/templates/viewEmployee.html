@@ -45,7 +45,7 @@
 
             </div>
             <div class="col-md-11 text-right  mb-4">
-                <button class="btn btn-primary" onclick="window.location.href='/employee/add'"
+                <button class="btn btn-primary" onclick="window.location.href='/admin/employee_add'"
                     style="background-color: #05073e; color: #fff;">
                     Add Employee
                 </button>
@@ -97,7 +97,7 @@
                                             style="width: 85px; height: 40px;">
                                         </button>
                                     </td>
-                                    <td><a th:href="@{'/employee/edit/'+${list.id}}" class="ti-menu"></a></td>
+                                    <td><a th:href="@{'/admin/employee_edit/'+${list.id}}" class="ti-menu"></a></td>
                                 
                                 </tr>
                             </tbody>
@@ -119,7 +119,7 @@
             const isActive = button.getAttribute('data-active') === 'true';
 
             $.ajax({
-                url: '/employee/toggleStatus/' + employeeId,
+                url: '/admin/employee_toggleStatus/' + employeeId,
                 type: 'POST',
                 data: { isActive: isActive },
                 success: function (data) {

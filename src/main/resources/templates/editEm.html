@@ -30,7 +30,7 @@
 			<div class="col-sm-12">
 
 				<h2 class="myclass">Edit Employee</h2>
-				<form th:action="@{/employee/edit}" th:object="${employee}" method="post"
+				<form th:action="@{/admin/employee_edit}" th:object="${employee}" method="post"
 					enctype="multipart/form-data">
 
 					<div class="form-group">
@@ -110,7 +110,7 @@
 					</div>
 
 					<button type="submit" class="btn btn-primary" onclick="checkDuplicateEmail()">Save</button>
-					<a class="btn btn-primary" href="/employee/list">Display List Employee</a>
+					<a class="btn btn-primary" href="/admin/employee_list">Display List Employee</a>
 				</form>
 			</div>
 		</div>
