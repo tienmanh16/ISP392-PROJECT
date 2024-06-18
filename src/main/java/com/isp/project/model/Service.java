@@ -43,6 +43,5 @@ public class Service {
     
      @OneToMany(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<InvoiceLine> invoiceLine;
-    
 
 }

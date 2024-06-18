@@ -28,7 +28,8 @@ import lombok.Data;
 public class Booking {
     @Id
     @Column(name = "BookingID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingID;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,6 +58,7 @@ public class Booking {
     @OneToMany(mappedBy = "booking")
     @JsonManagedReference
     private List<Invoice> invoice;
+
 
    
 }

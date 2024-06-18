@@ -47,6 +47,17 @@
     overflow: hidden;
     animation: modalFaceIn ease .5s;
 }
+.windowcustomer {
+    width: 600px;
+    height: 600px;
+    border-radius: 10px;
+    background: white;
+    border: 5px solid #28a730;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalFaceIn ease .5s;
+}
 .title {
     font-size: 30px;
     color: black;
@@ -62,6 +73,17 @@
     padding: 20px;
     margin-bottom: 38px;
 }
+.maincustomer {
+    flex: 1;
+    background: #F2F1F1;
+    margin: 0 20px;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 38px;
+    text-align: center;
+}
+
+
 .header, .footer {
     display: flex;
     justify-content: space-around;

@@ -2,6 +2,7 @@ package com.isp.project.service;
 
 import java.util.List;
 
+import com.isp.project.model.Booking;
 import com.isp.project.model.Employee;
 
 public interface EmployeeService {
@@ -26,5 +27,6 @@ public interface EmployeeService {
     
     boolean existsByEmail(String email);
     boolean toggleEmployeeStatus(int employeeId, boolean currentStatus);
+
 
 }

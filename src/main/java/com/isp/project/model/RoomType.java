@@ -48,4 +48,7 @@ public class RoomType {
     @OneToMany(mappedBy = "roomType")
     @JsonManagedReference
     private List<ImageDetail> imageDetail;
+
+
+
 }

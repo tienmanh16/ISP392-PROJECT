@@ -1,5 +1,6 @@
 package com.isp.project.service;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,9 +15,9 @@ public interface RoomService {
     List<RoomDetailDTO> getAllRoomsWithDetailsByRoomTypeId(Integer id);
 
     List<RoomDetailDTO> getAllRoomsByStatus(String status);
-
-    Room findByRoomNum(String roomNum);
+    
+    List<RoomDetailDTO> getAvailableRooms(Date checkinDate, Date checkoutDate);
+    // Room findByRoomNum(String roomNum);
     
     List<Room> findAll();
-
 }

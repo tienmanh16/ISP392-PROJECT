@@ -235,6 +235,13 @@ h6 {
   line-height: var(--line-height-heading-small);
 }
 
+c {
+  margin-right: 50px;
+  font-size: var(--h6-font-size);
+  font-weight: var(--h6-font-weight);
+  line-height: var(--line-height-heading-small);
+}
+
 /* -------- Body Text ---------- */
 table p {
   margin-bottom: 0;
@@ -449,7 +456,7 @@ Reset
 * {
   margin: 0px;
   padding: 0px;
-  border: none;
+  /* border: none; */
   outline: none;
   font-size: 100%;
 }
