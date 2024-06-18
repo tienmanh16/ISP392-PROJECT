@@ -21,8 +21,10 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "rt.priceHour, "
            + "rt.priceDay, "
            + "r.status "
+           + "r.status "
            + ") "
            + "FROM Room r "
+           + "JOIN r.roomType rt ")
            + "JOIN r.roomType rt ")
     List<RoomDetailDTO> findAllRoomsWithDetails();
 

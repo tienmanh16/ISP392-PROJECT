@@ -29,6 +29,7 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
     @Column(name="Name")
     private String fullName;
 private int gender;
@@ -77,6 +78,7 @@ private int gender;
         this.idenId = idenId;
     }
 
+   
    
 
     public String getPassWord() {
