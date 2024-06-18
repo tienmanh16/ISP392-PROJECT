@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -27,7 +28,7 @@ import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
 
 @Controller
-
+@RequestMapping("/receptionist")
 public class InvoidController {
 
     @Autowired
@@ -37,6 +38,8 @@ public class InvoidController {
     private InvoiceServiceImpl invoiceServiceImpl;
 
     @Autowired
+
+    
     private SpringTemplateEngine templateEngine;
 
 
@@ -96,7 +99,7 @@ public class InvoidController {
         // Convert HTML to PDF
         invoiceService.htmlToPdf(htmlContent,name);
 
-        return "redirect:/listinvoice";
+        return "redirect:/receptionist/listinvoice";
     }
 
     @GetMapping("/invoiceDetail/{invoiceID}")

@@ -1,5 +1,6 @@
 package com.isp.project.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,6 +69,15 @@ public class ReportController {
 
         int totalCustomer = this.bookingService.getCustomerForDate(month, year).size();
         model.addAttribute("totalCustomer", totalCustomer);
+
+
+        Map<String, Double> percentByMonth =new HashMap<>();;
+        percentByMonth.put("percentBooking", ((revenueBooking / (revenueService + revenueBooking)) * 100));
+        percentByMonth.put("percentService",  ((revenueService / (revenueService + revenueBooking)) * 100));
+        model.addAttribute("percentByMonth", percentByMonth.values());
+
+        model.addAttribute("percentBooking", ((revenueBooking / (revenueService + revenueBooking)) * 100));
+        model.addAttribute("percentService",  ((revenueService / (revenueService + revenueBooking)) * 100));
         return "report";
     }
 
@@ -130,5 +140,9 @@ public class ReportController {
         return "printRevenue";
     }
     
+@GetMapping("/testPie")
+public String getMethodName() {
+    return "pie";
+}
 
 }
