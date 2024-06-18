@@ -56,8 +56,6 @@
 	<div class="container"></div>
 	<script>
 		const serviceTypeNameText = document.querySelector('.serviceTypeNameText');
-		const errorMessage = document.getElementById('errorMessage');
-
 		function checkServiceTypeName() {
 			const serviceTypeNamePattern = /^[\p{L}\p{N} ]+$/u;
 			const serviceTypeName = document.getElementById('SeTypeName').value;
@@ -67,7 +65,6 @@
 				return true;
 			} else {
 				serviceTypeNameText.innerHTML = 'Service Type Name must not contain special characters.';
-				errorMessage.style.display = 'none';
 				return false;
 			}
 		}

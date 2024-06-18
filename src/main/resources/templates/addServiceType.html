@@ -34,7 +34,8 @@
 				<form th:action="@{/admin/addServiceType}" th:object="${serviceType}" method="post"
 					enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
 					<div class="form-group">
-						<label>Service Type Name</label> <input type="text" th:field="*{SeTypeName}"
+						<label>Service Type Name</label>
+						<input type="text" th:field="*{SeTypeName}"
 							class="form-control" name="SeTypeName" placeholder="Enter service name" id="SeTypeName"
 							value="" required>
 						<span class="serviceTypeNameText"></span>
@@ -61,7 +62,6 @@
 				return true;
 			} else {
 				serviceTypeNameText.innerHTML = 'Service Type Name must not contain special characters.';
-				errorMessage.style.display = 'none';
 				return false;
 			}
 		}

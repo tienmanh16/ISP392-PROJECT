@@ -68,53 +68,43 @@
         const roomTypeNameText = document.querySelector('.roomTypeNameText');
         const pricePerHourText = document.querySelector('.pricePerHourText');
         const pricePerDayText = document.querySelector('.pricePerDayText');
-        const errorMessage = document.getElementById('errorMessage');
 
         function checkRoomTypeName() {
-            // Biểu thức chính quy mới cho phép các ký tự Unicode, bao gồm cả ký tự tiếng Việt
             const roomTypeNamePattern = /^[\p{L}\p{N} ]+$/u;
             const roomTypeName = document.getElementById('name').value;
-
             if (roomTypeName.match(roomTypeNamePattern)) {
                 roomTypeNameText.innerHTML = '';
                 return true;
             } else {
                 roomTypeNameText.innerHTML = 'Room Type Name must not contain special characters.';
-                errorMessage.style.display = 'none';
-                return false;
-            }
-        }
-
-
-        function checkPricePerHour() {
-            const pricePerHour = document.getElementById('priceHour').value;
-            if (pricePerHour > 0) {
-                pricePerHourText.innerHTML = '';
-                return true;
-            } else {
-                pricePerHourText.innerHTML = 'Price Per Hour must be a positive number.';
-                return false;
-            }
-        }
-
-        function checkPricePerDay() {
-            const pricePerDay = document.getElementById('priceDay').value;
-            if (pricePerDay > 0) {
-                pricePerDayText.innerHTML = '';
-                return true;
-            } else {
-                pricePerDayText.innerHTML = 'Price Per Day must be a positive number.';
                 return false;
             }
         }
 
         function checkFormSubmission() {
-            const isValidRoomTypeName = checkRoomTypeName();
-            const isValidPricePerHour = checkPricePerHour();
-            const isValidPricePerDay = checkPricePerDay();
-
-            return isValidRoomTypeName && isValidPricePerHour && isValidPricePerDay;
+            return checkRoomTypeName();
         }
+
+        document.getElementById("priceDay").addEventListener("input", function () {
+            var input = this.value;
+            if (input<=0) {
+                pricePerDayText.innerHTML = 'Price per Day must be a positive number'; // Hiển thị thông báo lỗi
+                this.value="";
+            } else {
+                pricePerDayText.innerHTML= ""; // Xóa thông báo lỗi nếu không có lỗi
+            }
+        });
+
+        document.getElementById("priceHour").addEventListener("input", function () {
+            var input = this.value;
+            if (input<=0) {
+                pricePerHourText.innerHTML = 'Price per Hour must be a positive number'; // Hiển thị thông báo lỗi
+                this.value="";
+            } else {
+                pricePerHourText.innerHTML= ""; // Xóa thông báo lỗi nếu không có lỗi
+            }
+        });
+
     </script>
 
 </body>
