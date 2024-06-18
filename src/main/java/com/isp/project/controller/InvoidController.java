@@ -121,11 +121,6 @@ public class InvoidController {
         model.addAttribute("totalAmountRoom", totalAmountRoom);
         model.addAttribute("listService", serviceList);
         model.addAttribute("totalSePrice", totalSePrice);
-
-
-
-
-        
         return "invoice1";
     }
 }

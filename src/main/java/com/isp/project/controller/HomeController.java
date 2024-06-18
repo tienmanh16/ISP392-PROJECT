@@ -57,12 +57,12 @@ public class HomeController {
     @Autowired
     private RoomTypeServiceImpl roomTypeServiceImpl;
 
-    @GetMapping("/room")
-    public String listRoom(Model model) {
-        model.addAttribute("roomTypes", roomTypeServiceImpl.getAllRoomTypesWithDetails());
-        model.addAttribute("rooms", roomServiceImpl.getAllRoomsWithDetails());
-        return "room";
-    }
+    // @GetMapping("/room")
+    // public String listRoom(Model model) {
+    //     model.addAttribute("roomTypes", roomTypeServiceImpl.getAllRoomTypesWithDetails());
+    //     model.addAttribute("rooms", roomServiceImpl.getAllRoomsWithDetails());
+    //     return "room";
+    // }
 
     @PostMapping("/filterRoomType")
     public String filter(@RequestParam("selectedRoomTypeId") Integer id, Model model){
