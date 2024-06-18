@@ -52,6 +52,9 @@ public class BookingMapping {
     @Column(name = "BookingTotalAmount")
     private int bookingTotalAmount;
 
+    @Column(name = "BookingMappingActive", nullable = false)
+    private int bookingMappingActive;
+
     
     
 }

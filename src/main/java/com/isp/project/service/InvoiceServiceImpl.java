@@ -96,8 +96,8 @@ public class InvoiceServiceImpl implements InvoiceService{
         return null;
     }
    
-    public Booking testPostMan(int invoiceID) {
-        return invoiceRepository.getReferenceById(invoiceID).getBooking();
+    public List<InvoiceLine> testPostMan(int id) {
+        return invoiceRepository.getReferenceById(id).getInvoiceLine();
     }
    
     
