@@ -32,6 +32,9 @@ public class Service {
     @Column(name="SePrice")
     private double SePrice;
 
+    @Column(name = "ServiceActive", nullable = false)
+    private int serviceActive;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SeTypeID")
     @JsonBackReference
@@ -40,7 +43,5 @@ public class Service {
     
      @OneToMany(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<InvoiceLine> invoiceLine;
-    
-    @Column(name = "ServiceActive", nullable = false)
-    private int serviceActive;
+
 }

@@ -26,7 +26,7 @@ public class BookingMapping {
 
     @Id
     @Column(name = "BookingMappingID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingMappingID;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -54,5 +54,7 @@ public class BookingMapping {
 
     @Column(name = "BookingMappingActive", nullable = false)
     private int bookingMappingActive;
+
     
+
 }

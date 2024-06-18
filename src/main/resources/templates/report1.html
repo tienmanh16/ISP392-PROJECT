@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Table</title>
+</head>
+<body>
+    <h2>Invoice Table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>InvoiceID</th>
+                <th>Date Create</th>
+                <th>Employee</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="invoice : ${ls}">
+                <td th:text="${invoice.InvoiceID}"></td>
+                <td th:text="${invoice.InvoiceDate}"></td>
+                <td>
+                    <span th:each="register : ${invoice.booking.register}">
+                        <span th:text="${register.employeeID.fullName}"></span>
+                    </span>
+                </td>
+                <td th:text="${invoice.totalAmount}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -13,5 +13,10 @@ public class RoomDetailDTO {
     private String roomTypeDescription;
     private int priceHour;
     private int priceDay;
-    private String status;    
+    private String status;
+
+    public RoomDetailDTO() {
+    }
+    
+    
 }

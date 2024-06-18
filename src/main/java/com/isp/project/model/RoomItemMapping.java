@@ -21,7 +21,7 @@ import lombok.Data;
 
 public class RoomItemMapping {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RoomItemID")
     private int RoomItemID;
 
@@ -37,4 +37,5 @@ public class RoomItemMapping {
 
     @Column(name="Quantity")
     private int Quantity;
+    
 }

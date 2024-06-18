@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Booking Room</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link href="https://themify.me/themify-icons" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}" />
+
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" />
+  <link rel="stylesheet" th:href="@{/css/AdminLTE.css}" />
+  <!-- thư viện để add header và footer  -->
+  <link th:href="@{/css/modalviet.css}" rel="stylesheet" />
+  <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}" />
+  <link th:href="@{/css/mmenu.css}" rel="stylesheet" />
+  <link th:href="@{/css/style.copy.css}" rel="stylesheet" />
+
+  <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon" />
+  <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon" />
+
+  <!-- Responsive -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+</head>
+
+<body>
+  <div class="boxcar-wrapper">
+    <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+      <div th:replace="~{fragments/header :: header}"></div>
+    </header>
+
+    <!-- thêm class layout-radius để fix header  -->
+    <section class="ftco-section layout-radius">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">Customer Management</h2>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-header d-flex justify-content-between align-items-center">
+
+            <div>
+              <button class="btn js-buy-ticket">+ Customer</button>
+            </div>
+            <form th:action="@{/customer}" method="get" class="form-inline ml-auto">
+              <div class="input-group" style="width: 200px">
+                <input type="text" name="table_search" class="form-control form-control-sm" placeholder="Search"
+                  th:value="${queryCustomerName}" />
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-default btn-sm">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-wrap">
+              <table class="table table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Customer ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Identification ID</th>
+                    <th>Sửa</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="customer : ${customerList}">
+                    <td th:text="${customer.customerID}"></td>
+                    <td th:text="${customer.customerName}"></td>
+                    <td th:text="${customer.customerGender}"></td>
+                    <td th:text="${customer.customerAddress}"></td>
+                    <td th:text="${customer.customerPhone}"></td>
+                    <td th:text="${customer.customerEmail}"></td>
+                    <td th:text="${customer.customerIdentificationID}"></td>
+                    <td>
+                      <a th:href="@{'updateCustomer?idcus=' + ${customer.customerID}}" class="ti-pencil-alt"></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div th:replace="~{fragments/footer :: footer}"></div>
+
+
+
+  <!-- modal chứa cả các giao diện phủ lên -->
+  <div class="modal js-modal">
+    <div class="windowcustomer js-modal-window">
+      <div class="title">ADD CUSTOMER</div>
+      <form th:action="@{/addcustomer}" th:object="${addCustomer}" method="post">
+        <div class="maincustomer">
+          <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Customer Information</h3>
+          <span class="material-icons" style="vertical-align: middle;">account_box</span>
+          <input type="text" th:field="*{customerName}"  style="vertical-align: middle; width: 400px;" placeholder="Nhập tên khách hàng..."
+            required>
+          <br><br>
+          <span class="material-icons" style="vertical-align: middle;">badge</span>
+          <input type="text" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 400px;" placeholder="Nhập số CMND..." required>
+          <br><br>
+          <span class="material-icons" style="vertical-align: middle;">call</span>
+          <input type="text" th:field="*{customerPhone}" style="vertical-align: middle; width: 400px;" placeholder="Nhập số điện thoại..." required>
+          <br><br>
+          <span class="material-icons" style="vertical-align: middle;">mail</span>
+          <input type="email" th:field="*{customerEmail}" style="vertical-align: middle; width: 400px;" placeholder="Nhập địa chỉ email..."
+            required>           
+          <br><br>
+          <span class="material-icons" style="vertical-align: middle;">location_on</span>
+          <input type="text" th:field="*{customerAddress}" style="vertical-align: middle; width: 400px;" placeholder="Nhập địa chỉ..." required>        
+          <br><br>
+          <span class="material-icons" style="vertical-align: middle;">transgender</span>
+          <label for="male" style="vertical-align: middle; margin-right: 10px;">Male</label>
+          <input type="radio" th:field="*{customerGender}" value="male" style="vertical-align: middle; margin-right: 20px;">
+          <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
+          <input type="radio" th:field="*{customerGender}"value="female" style="vertical-align: middle;">
+          <!-- </div> -->
+         
+        </div>
+        <div class="footer">
+          <button type="submit" class="button green-button">ADD</button>
+          <button type="button" class="button gray-button js-modal-close">EXIT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- hiệu ứng js trượt vào  -->
+  <script>
+    const buyBtns = document.querySelectorAll(".js-buy-ticket");
+    // 3 nút có class js.. lưu vào biến buyBtns
+    const modal = document.querySelector(".js-modal");
+    // lấy tất cả các thằng có class .js-modal
+    const modalClose = document.querySelector(".js-modal-close");
+
+    const modalWindow = document.querySelector(".js-modal-window");
+
+    // hàm hiện modal mua vé (thêm class open cả modal)
+    function showByTickets() {
+      modal.classList.add("open");
+      // alert('ok')
+    }
+
+    // hàm ẩn modal mua vé (xóa class open ở modal)
+    function hideByTickets() {
+      modal.classList.remove("open");
+    }
+    // lặp qua từng thẻ button và nghe hành vi click
+    for (const buyBtn of buyBtns) {
+      // từng thằng trong buyBtns
+      buyBtn.addEventListener("click", showByTickets);
+    }
+    // nghe hành vi click vaof button close
+    modalClose.addEventListener("click", hideByTickets);
+    // khi click vào tất cả các khoảng modal
+    modal.addEventListener("click", hideByTickets);
+    // vì khi click vào tất cả các khoảng modal thì nó
+    // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
+    modalWindow.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+  </script>
+
+
+
+
+  <!-- thư viện để add header và footer  -->
+
+  <div class="scroll-to-top scroll-to-target" data-target="html">
+    <span class="fa fa-angle-up"></span>
+  </div>
+
+
+  <style>
+    .btn.js-buy-ticket {
+      background-color: green;
+      color: white;
+      /* Để đảm bảo văn bản trên nút có thể đọc được */
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+  <div class="scroll-to-top scroll-to-target" data-target="html">
+    <span class="fa fa-angle-up"></span>
+  </div>
+  <script th:src="@{/js/jquery.min.js}"></script>
+  <script th:src="@{/js/popper.js}"></script>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+  <script th:src="@{/js/main.js}"></script>
+  <script th:src="@{/js/jquery.js}"></script>
+  <script th:src="@{/js/popper.min.js}"></script>
+  <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+  <script th:src="@{/js/slick.min.js}"></script>
+  <script th:src="@{/js/slick-animation.min.js}"></script>
+  <script th:src="@{/js/jquery.fancybox.js}"></script>
+  <script th:src="@{/js/wow.js}"></script>
+  <script th:src="@{/js/appear.js}"></script>
+  <script th:src="@{/js/mixitup.js}"></script>
+  <script th:src="@{/js/knob.js}"></script>
+  <script th:src="@{/js/mmenu.js}"></script>
+  <script th:src="@{/js/main.copy1.js}"></script>
+</body>
+
+</html>

@@ -2,6 +2,7 @@ package com.isp.project.model;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -27,7 +28,8 @@ import lombok.Data;
 public class Booking {
     @Id
     @Column(name = "BookingID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    // @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int bookingID;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,7 +44,9 @@ public class Booking {
     @Column(name = "CustomerQuantity")
     private int customerQuantity;
 
-    
+    @Column(name = "IsCancelled", nullable = false)
+    private int isCancelled;
+
     @OneToMany(mappedBy = "bookingID")
     @JsonManagedReference
     private List<Register> register;
@@ -55,7 +59,6 @@ public class Booking {
     @JsonManagedReference
     private List<Invoice> invoice;
 
-    @Column(name = "IsCancelled", nullable = false)
-    private int isCancelled;
-   
+
+
 }

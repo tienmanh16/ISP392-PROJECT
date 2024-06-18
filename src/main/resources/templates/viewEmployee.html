@@ -7,9 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" href="@https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
     <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
         href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
@@ -28,7 +25,45 @@
     <!-- Responsive -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <style>
+        .custom-button {
+            background-color: #05073e;
+            color: #fff;
+        }
 
+        .custom-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-input {
+            border: 2px solid #05073e;
+            border-radius: 5px 0 0 5px;
+            border-right: none;
+            height: 38px;
+            width: 200px;
+        }
+
+        .search-button {
+            border: 2px solid #05073e;
+            border-radius: 0 5px 5px 0;
+            height: 38px;
+            width: 120px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+    </style>
 </head>
 
 <body>
@@ -45,16 +80,22 @@
                         <h2 class="heading-section">Employee List</h2>
                     </div>
                 </div>
-<!-- 
-                <div class="InputContainer" style="margin-bottom: 20px;">
-                    <form>
-                        <input placeholder="Search.." id="input" name="key" class="input" type="text">
-                    </form>
-                </div> -->
-               
             </div>
-            <div class="col-md-6 text-center mb-5">
-                <button class="btn btn-primary" onclick="window.location.href='/employee/add'">Add Employee</button>
+
+            <div class="action-buttons">
+                <form class="search-container">
+                    <input type="text" id="searchbar" class="form-control search-input" placeholder="Search Here">
+                    <select id="category" class="form-select search-button">
+                        <option value="0" selected>Select</option>
+                        <option value="2">Name</option>
+                        <option value="3">Gender</option>
+                        <option value="5">Role</option>
+                        <option value="10">Salary</option>
+                    </select>
+                </form>
+                <button class="btn custom-button" onclick="window.location.href='/admin/employee_add'">
+                    Add Employee
+                </button>
             </div>
             <div class="container">
                 <div class="col-lg-12">
@@ -64,45 +105,104 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>FullName</th>
+                                    <th>Gender</th>
                                     <th>Dob</th>
                                     <th>Role</th>
                                     <th>Address</th>
                                     <th>Phone</th>
                                     <th>CCCD</th>
                                     <th>Email</th>
+                                    <th>Salary</th>
                                     <th>UserName</th>
                                     <th>Password</th>
+                                    <th>Status</th>
                                     <th>Edit</th>
-                                    <th>Delete</th>
-
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="body">
                                 <tr th:each="list : ${emList}">
                                     <th th:text="${list.id}"></th>
                                     <td th:text="${list.fullName}"></td>
-                                    <td th:text="${list.dob}"></td>
-                                    <td th:text="${list.role.name}"></td>
+                                    <td th:text="${list.gender == 1 ? 'Male' : 'Female'}"></td>
+                                    <td th:text="${#dates.format(list.dob,'dd/MM/yyyy')}"></td>
+                                    <td th:text="${list.role}"></td>
                                     <td th:text="${list.address}"></td>
                                     <td th:text="${list.phone}"></td>
                                     <td th:text="${list.idenId}"></td>
                                     <td th:text="${list.email}"></td>
+                                    <td th:text="${list.salary}"></td>
                                     <td th:text="${list.username}"></td>
                                     <td th:text="${list.password}"></td>
-                                    <td><a th:href="@{'/employee/edit/'+${list.id}}" class="ti-menu"></a></td>
-                                    <td><a th:href="@{'/employee/delete/'+${list.id}}" class="btn btn-danger ti-close"></a></td>
-
+                                    <!-- <td th:text="${list.isActive}"></td> -->
+                                    <td>
+                                        <button type="button" class="btn statusButton"
+                                            th:classappend="${list.isActive == true ? 'btn-success' : 'btn-danger'}"
+                                            th:text="${list.isActive == true ? 'Active' : 'InActive'}"
+                                            th:data-id="${list.id}" th:data-active="${list.isActive}"
+                                            onclick="toggleStatus(this)" style="width: 85px; height: 40px;">
+                                        </button>
+                                    </td>
+                                    <td><a th:href="@{'/admin/employee_edit/'+${list.id}}" class="ti-menu"></a></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
-    </div>
-    </section>
+        </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
+
     <!-- thư viện để add header và footer  -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    
+    <script>
+        function toggleStatus(button) {
+            const employeeId = button.getAttribute('data-id');
+            const isActive = button.getAttribute('data-active') === 'true';
+
+            $.ajax({
+                url: '/admin/employee_toggleStatus/' + employeeId,
+                type: 'POST',
+                data: { isActive: isActive },
+                success: function (data) {
+                    // Update button text and style
+                    button.textContent = !isActive ? 'Active' : 'InActive';
+                    button.classList.toggle('btn-success', !isActive);
+                    button.classList.toggle('btn-danger', isActive);
+                    // Update data attribute in database
+                    button.setAttribute('data-active', !isActive);
+                }
+            });
+        }
+
+        var searchbar = document.getElementById('searchbar');
+        var category = document.getElementById('category');
+        var tbody = document.getElementById('body');
+        var orignaltabledata = tbody.innerHTML;
+
+        function Search() {
+            tbody.innerHTML = orignaltabledata;
+            let rows = tbody.children; // all of the tr tags
+            //do not filter data if searchbar is empty or first option is selected
+            if (searchbar.value.length < 1 || category.value == '0') {
+                return;
+            }
+            let filteredrows = '';
+            let catno = Number(category.value) - 1;
+            let searchtext = searchbar.value.toLowerCase();
+            for (let i = 0; i < rows.length; i++) {
+                const currentrowtext = rows[i].children[catno].innerText.toLowerCase(); //assigning current
+                if (currentrowtext.indexOf(searchtext) > -1) {
+                    filteredrows += rows[i].outerHTML; //current tr
+                }
+            }
+            tbody.innerHTML = filteredrows;
+        }
+
+        searchbar.addEventListener('input', Search);
+        category.addEventListener('change', Search);
+    </script>
 
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
     <script th:src="@{/js/jquery.js}"></script>
@@ -116,14 +216,6 @@
     <script th:src="@{/js/mixitup.js}"></script>
     <script th:src="@{/js/knob.js}"></script>
     <script th:src="@{/js/mmenu.js}"></script>
-    <script th:src="@{/js/main.copy1.js}"></script>
-
-
-
-    <script th:src="@{/src/main/resources/static/js/jquery.min.js}"></script>
-    <script th:src="@{/src/main/resources/static/js/popper.js}"></script>
-    <script th:src="@{/src/main/resources/static/js/bootstrap.min.js}"></script>
-    <script th:src="@{/src/main/resources/static/js/main.js}"></script>
 </body>
 
 </html>

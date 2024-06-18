@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <title>Item Detail</title>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .custom-button {
+            background-color: #05073e;
+            color: #fff;
+        }
+        .custom-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container"></div>
+    <div class="container">
+        <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; padding: 20px;">
+            <div class="col-sm-12">
+                <h2>Add Item Detail</h2>
+                <div th:if="${duplicate != null}" class="alert alert-danger" role="alert">
+                    <span th:text="${duplicate}"></span>
+                </div>
+                <form th:action="@{/admin/itemdetail_add}" th:object="${itemdetail}" method="post" enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
+                    <div class="form-group">
+                        <label>Room Number</label>
+                        <select th:field="*{room.id}" class="form-control" required>
+                            <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.roomNum}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Item Name</label>
+                        <select th:field="*{roomItem.ItemID}" class="form-control" required>
+                            <option th:each="item : ${items}" th:value="${item.ItemID}" th:text="${item.itemName}"></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" th:field="*{quantity}" class="form-control" placeholder="Enter quantity" min="1" required>
+                    </div>
+                    <button type="submit" class="btn custom-button">Save</button>
+                    <a class="btn custom-button" href="/admin/itemdetail_list">Display List Item Detail</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container"></div>
+</body>
+</html>

@@ -18,8 +18,11 @@
     <!-- Responsive -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
-    <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+    <style>
+        .passText {
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
@@ -37,12 +40,12 @@
             <div class="inner-container">
                 <div class="right-box">
                     <div class="form-sec">
-                        <div class="form-box">
+                        <div class="form-box" id="form">
                             <div class="title">
                                 <h3>Login</h3>
                             </div>
 
-                            <form th:action="@{/login}" th:object="${employee}" method="post">
+                            <form th:action="@{/login}" th:object="${employee}" method="post" onsubmit="return checkFormSubmission()">
                                 <div th:if="${loginError}" class="alert alert-danger" role="alert">
                                     <p th:text="${loginError}"></p>
                                 </div>
@@ -53,7 +56,9 @@
                                 <div class="form_boxes">
                                     <label>Password</label>
                                     <input type="password" name="password" placeholder="at least 6 character"
-                                        required />
+                                        id= "password" required />
+						<span class="passText"></span>
+
                                 </div>
 
                                 <div class="btn-box">
@@ -84,6 +89,30 @@
     </div><!-- End Page Wrapper -->
     <div th:replace="~{fragments/footer :: footer}"></div>
     <!-- Scroll To Top -->
+    <script>
+        const form = document.querySelector('form');
+        const password = document.getElementById('password');
+        const passText = document.querySelector('.passText');
+
+        password.addEventListener('input', checkPassword);
+
+        function checkPassword() {
+            const passPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+            if (password.value.match(passPattern)) {
+                passText.innerHTML = '';
+                return true;
+            } else {
+                passText.innerHTML = 'Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.';
+                return false;
+            }
+        }
+
+        function checkFormSubmission() {
+            const isValidPass = checkPassword();
+            return isValidPass;
+        }
+
+    </script>
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
 
     <script th:src="@{/js/jquery.js}"></script>

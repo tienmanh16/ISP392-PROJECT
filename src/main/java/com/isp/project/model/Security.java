@@ -3,7 +3,7 @@ package com.isp.project.model;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Security {
+public class Security{
     public String encode(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");

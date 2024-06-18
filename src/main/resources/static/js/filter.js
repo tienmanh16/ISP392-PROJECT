@@ -66,3 +66,4 @@ function filterRows() {
 document.querySelectorAll(".table-filter").forEach((filter) => {
     filter.addEventListener("change", filterRows);
 });
+

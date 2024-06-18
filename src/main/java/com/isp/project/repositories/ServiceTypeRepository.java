@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.isp.project.model.ServiceType;
 
 @Repository
-public interface ServiceTypeRepository extends JpaRepository<ServiceType, Integer> {
+public interface ServiceTypeRepository extends JpaRepository<ServiceType, Integer>{
 
        @Modifying
        @Transactional
@@ -21,5 +21,4 @@ public interface ServiceTypeRepository extends JpaRepository<ServiceType, Intege
 
        @Query("Select c FROM ServiceType c WHERE c.SeTypeName LIKE %?1%")
        List<ServiceType> searchServiceType(String name);
-    
-} 
+}

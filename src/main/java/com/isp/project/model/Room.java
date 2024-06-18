@@ -37,6 +37,7 @@ public class Room {
     @JoinColumn(name = "RoomTypeID")
     @JsonBackReference
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    
     private RoomType roomType;
 
     @Column(name = "RoomStatus", nullable = false)
