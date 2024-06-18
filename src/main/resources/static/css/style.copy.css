@@ -11585,6 +11585,24 @@ Section Title
   text-align: center;
 }
 
+:root {
+  --Border: 1px solid #e5e5e5;
+  --theme-color-light: #f8f8f8;
+}
+
+.inner-box.room-available {
+  background-color: rgb(138, 244, 138);
+}
+
+.inner-box.room-booked {
+  background-color: rgba(113, 125, 113, 0.478);
+}
+
+.inner-box.room-occupied {
+  background-color: rgb(125, 192, 255);
+}
+
+
 .car-block-fourteen .inner-box .image-box {
   margin-bottom: 30px;
 }

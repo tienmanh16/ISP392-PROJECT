@@ -30,7 +30,7 @@ public class ServiceType {
     private String SeTypeName;
 
     @Column(name = "ServiceTypeActive", nullable = false)
-    private int serviceActive;
+    private int serviceTypeActive;
     
     @OneToMany(mappedBy = "serviceType", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Service> service;
