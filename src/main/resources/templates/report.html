@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+	<title>Dashboard </title>
+	<link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+	<link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+	<link rel="stylesheet" th:href="@{/assets/plugins/fontawesome/css/fontawesome.min.css}">
+	<link rel="stylesheet" th:href="@{/assets/plugins/fontawesome/css/all.min.css}">
+	<link rel="stylesheet" th:href="@{/assets/css/feathericon.min.css}">
+	<link rel="stylehseet" th:href="@{https://cdn.oesmith.co.uk/morris-0.5.1.css}">
+	<link rel="stylesheet" th:href="@{/assets/plugins/morris/morris.css}">
+	<link rel="stylesheet" th:href="@{/assets/css/style.css}">
+</head>
+
+<!-- thư viện để add header và footer  -->
+
+<!-- <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet"> -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+<link th:href="@{/css/mmenu.css}" rel="stylesheet">
+<link th:href="@{/css/style.copy.css}" rel="stylesheet">
+
+<link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+<link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+
+<body>
+	<div class="main-wrapper">
+
+		<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+			<div th:replace="~{fragments/header :: header}"></div>
+		</header>
+
+		<div class="content container-fluid layout-radius">
+			<div class="page-header">
+				<div class="row">
+					<div class="col-sm-12 mt-5">
+						<h3 class="page-title mt-3">Good Morning Soeng Souy!</h3>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item active">Dashboard</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<form th:action="@{/admin/statistic}" method="get">
+
+				<div class="row">
+					<div class="col-md-12 d-flex">
+						<div class="card card-table flex-fill">
+							<div class="card-header d-flex align-items-center">
+
+								<div class="d-flex align-items-center mr-3">
+									<h4 class="card-title mb-0 mr-2">Month:</h4>
+
+									<select class="form-control" name="month" style="width: auto;"
+										th:value="${selectedMonth}">
+										<option value="1" th:selected="${selectedMonth == 1}">January</option>
+										<option value="2" th:selected="${selectedMonth == 2}">February</option>
+										<option value="3" th:selected="${selectedMonth == 3}">March</option>
+										<option value="4" th:selected="${selectedMonth == 4}">April</option>
+										<option value="5" th:selected="${selectedMonth == 5}">May</option>
+										<option value="6" th:selected="${selectedMonth == 6}">June</option>
+										<option value="7" th:selected="${selectedMonth == 7}">July</option>
+										<option value="8" th:selected="${selectedMonth == 8}">August</option>
+										<option value="9" th:selected="${selectedMonth == 9}">September</option>
+										<option value="10" th:selected="${selectedMonth == 10}">October</option>
+										<option value="11" th:selected="${selectedMonth == 11}">November</option>
+										<option value="12" th:selected="${selectedMonth == 12}">December</option>
+									</select>
+								</div>
+
+								<div class="d-flex align-items-center">
+									<h4 class="card-title mb-0 mr-2">Year:</h4>
+									<select class="form-control" name="year" style="width: auto;"
+										th:value="${selectedYear}">
+										<option value="2024" th:selected="${selectedYear == 2024}">2024</option>
+										<option value="2023" th:selected="${selectedYear == 2023}">2023</option>
+										<option value="2022" th:selected="${selectedYear == 2022}">2022</option>
+										<option value="2021" th:selected="${selectedYear == 2021}">2021</option>
+										<option value="2020" th:selected="${selectedYear == 2020}">2020</option>
+										<!-- Add more years as needed -->
+									</select>
+								</div>
+								
+								<button type="submit" class="btn btn-primary ml-auto veiwbutton">Submit</button>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card board1 fill">
+						<div class="card-body">
+							<div class="dash-widget-header">
+								<div>
+									<h3 class="card_widget_header" th:text="${revenueBooking}"></h3>
+									<h6 class="text-muted">Room Revenue</h6>
+								</div>
+								<div class="ml-auto mt-md-3 mt-lg-0"> <span class="opacity-7 text-muted"><svg
+											xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+											viewbox="0 0 24 24" fill="none" stroke="#009688" stroke-width="2"
+											stroke-linecap="round" stroke-linejoin="round"
+											class="feather feather-user-plus">
+											<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+											<circle cx="8.5" cy="7" r="4"></circle>
+											<line x1="20" y1="8" x2="20" y2="14"></line>
+											<line x1="23" y1="11" x2="17" y2="11"></line>
+										</svg></span> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card board1 fill">
+						<div class="card-body">
+							<div class="dash-widget-header">
+								<div>
+									<h3 class="card_widget_header" th:text="${revenueService}"></h3>
+									<h6 class="text-muted">Service Revenue</h6>
+								</div>
+								<div class="ml-auto mt-md-3 mt-lg-0"> <span class="opacity-7 text-muted"><svg
+											xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+											viewbox="0 0 24 24" fill="none" stroke="#009688" stroke-width="2"
+											stroke-linecap="round" stroke-linejoin="round"
+											class="feather feather-dollar-sign">
+											<line x1="12" y1="1" x2="12" y2="23"></line>
+											<path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+										</svg></span> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card board1 fill">
+						<div class="card-body">
+							<div class="dash-widget-header">
+								<div>
+									<h3 class="card_widget_header" th:text="${totalBooking}"></h3>
+									<h6 class="text-muted">Total Booking</h6>
+								</div>
+								<div class="ml-auto mt-md-3 mt-lg-0"> <span class="opacity-7 text-muted"><svg
+											xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+											viewbox="0 0 24 24" fill="none" stroke="#009688" stroke-width="2"
+											stroke-linecap="round" stroke-linejoin="round"
+											class="feather feather-file-plus">
+											<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+											</path>
+											<polyline points="14 2 14 8 20 8"></polyline>
+											<line x1="12" y1="18" x2="12" y2="12"></line>
+											<line x1="9" y1="15" x2="15" y2="15"></line>
+										</svg></span> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-xl-3 col-sm-6 col-12">
+					<div class="card board1 fill">
+						<div class="card-body">
+							<div class="dash-widget-header">
+								<div>
+									<h3 class="card_widget_header" th:text="${totalCustomer}"></h3>
+									<h6 class="text-muted">Total Customers</h6>
+								</div>
+								<div class="ml-auto mt-md-3 mt-lg-0"> <span class="opacity-7 text-muted"><svg
+											xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+											viewbox="0 0 24 24" fill="none" stroke="#009688" stroke-width="2"
+											stroke-linecap="round" stroke-linejoin="round"
+											class="feather feather-globe">
+											<circle cx="12" cy="12" r="10"></circle>
+											<line x1="2" y1="12" x2="22" y2="12"></line>
+											<path
+												d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+											</path>
+										</svg></span> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="col-md-12 col-lg-6">
+					<div class="tile">
+						<h3 class="tile-title">Bar chart of revenue by year</h3>
+						<!-- <div class="mt-2">
+							
+							<div style="display: flex; align-items: center;">
+							  <div style="width: 20px; height: 20px; background-color: rgb(255, 212, 59); margin-right: 8px;"></div>
+							  <span>Room Revenue</span>
+							</div>
+							<div style="display: flex; align-items: center; margin-bottom: 8px;">
+								<div style="width: 20px; height: 20px; background-color: rgb(9, 109, 239); margin-right: 8px;"></div>
+								<span>Service Revenue</span>
+							  </div>
+						  </div> -->
+						  <div class="card-body">
+							<canvas id="barChart"></canvas>
+						  </div>
+						
+						 
+					</div>
+				</div>
+				<div class="col-md-10 col-lg-4">
+					<div class="tile">
+						<h3 class="tile-title">Pie chart of revenue by year</h3>
+						<!-- <div class="mt-2">
+							
+							<div style="display: flex; align-items: center;">
+							  <div style="width: 20px; height: 20px; background-color: rgb(255, 212, 59); margin-right: 8px;"></div>
+							  <span>Room Revenue</span>
+							</div>
+							<div style="display: flex; align-items: center; margin-bottom: 8px;">
+								<div style="width: 20px; height: 20px; background-color: rgb(9, 109, 239); margin-right: 8px;"></div>
+								<span>Service Revenue</span>
+							  </div>
+						  </div> -->
+						  <div class="card-body">
+							<canvas id="pieChart"></canvas>
+						  </div>
+						 
+    <!-- <div>
+		<canvas id="pieChart"></canvas>
+	  </div> -->
+  
+					</div>
+				</div>
+
+				
+
+			</div>
+
+
+			<div th:replace="~{fragments/footer :: footer}"></div>
+		</div>
+
+	</div>
+	<!-- thư viện để add header và footer  -->
+
+	<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+	<script th:src="@{/js/slick.min.js}"></script>
+	<script th:src="@{/js/slick-animation.min.js}"></script>
+	<script th:src="@{/js/jquery.fancybox.js}"></script>
+	<script th:src="@{/js/wow.js}"></script>
+	<script th:src="@{/js/appear.js}"></script>
+	<script th:src="@{/js/mixitup.js}"></script>
+	<script th:src="@{/js/knob.js}"></script>
+	<script th:src="@{/js/mmenu.js}"></script>
+	<script th:src="@{/js/main.copy1.js}"></script>
+
+
+	<script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+	<!-- <script th:src="@{/assets/js/jquery-3.5.1.min.js}"></script>
+	<script th:src="@{/assets/js/popper.min.js}"></script> -->
+	<!-- <script th:src="@{/assets/js/bootstrap.min.js}"></script> -->
+	<!-- <script th:src="@{/assets/plugins/slimscroll/jquery.slimscroll.min.js}"></script>
+	<script th:src="@{/assets/plugins/raphael/raphael.min.js}"></script> -->
+	<!-- <script th:src="@{/assets/plugins/morris/morris.min.js}"></script> -->
+	<!-- <script th:src="@{/assets/js/chart.morris.js}"></script> -->
+	<!-- <script th:src="@{/assets/js/script.js}"></script> -->
+
+
+
+	<!-- chart -->
+	<script type="text/javascript" th:src="@{/js/plugins/chart1.js}"></script>
+	<!-- <script th:src="@{/js/jquery-3.2.1.min.js}"></script> -->
+
+	
+    <script type="text/javascript" th:src="@{/assets/js/chart.umd.js}"></script>
+	<script type="text/javascript" th:src="@{/assets/js/vendor.bundle.base.js}"></script>
+	<!-- <script type="text/javascript" th:src="@{/assets/js/chart.js}"></script> -->
+
+
+	<!-- <script type="text/javascript">
+		var data = {
+			labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+			datasets: [{
+				label: "Dữ liệu đầu tiên",
+				fillColor: "rgba(255, 213, 59, 0.767), 212, 59)",
+				strokeColor: "rgb(255, 212, 59)",
+				pointColor: "rgb(255, 212, 59)",
+				pointStrokeColor: "rgb(255, 212, 59)",
+				pointHighlightFill: "rgb(255, 212, 59)",
+				pointHighlightStroke: "rgb(255, 212, 59)",
+				data: [[${ totalBookingByYear }]],
+
+
+			},
+			{
+				label: "Dữ liệu kế tiếp",
+				fillColor: "rgba(9, 109, 239, 0.651)  ",
+				pointColor: "rgb(9, 109, 239)",
+				strokeColor: "rgb(9, 109, 239)",
+				pointStrokeColor: "rgb(9, 109, 239)",
+				pointHighlightFill: "rgb(9, 109, 239)",
+				pointHighlightStroke: "rgb(9, 109, 239)",
+				data: [[${ totalServiceByYear }]]
+			}
+			]
+		};
+		var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+		var lineChart = new Chart(ctxl).Line(data);
+
+		var ctxb = $("#barChartDemo").get(0).getContext("2d");
+		var barChart = new Chart(ctxb).Bar(data);
+	</script> -->
+	<script>
+		$(function () {
+  /* ChartJS
+   * -------
+   * Data and config for chartjs
+   */
+  'use strict';
+  var data = {
+  labels: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+  datasets: [{
+    label: 'Booking',
+    data: [[${ totalBookingByYear }]],
+    backgroundColor: [
+      'rgba(75, 192, 192, 0.2)',  // Màu xanh lá cây nhạt
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(75, 192, 192, 0.2)'
+    ],
+    borderColor: [
+      'rgba(75, 192, 192, 1)',    // Màu xanh lá cây đậm
+      'rgba(75, 192, 192, 1)',
+      'rgba(75, 192, 192, 1)',
+      'rgba(75, 192, 192, 1)',
+      'rgba(75, 192, 192, 1)',
+      'rgba(75, 192, 192, 1)'
+    ],
+    borderWidth: 1,
+    fill: false
+  },{
+    label: 'Service',
+    data: [[${ totalServiceByYear }]],
+    backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',  // Màu đỏ nhạt
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 99, 132, 0.2)'
+    ],
+    borderColor: [
+      'rgba(255,99,132,1)',       // Màu đỏ đậm
+      'rgba(255,99,132,1)',
+      'rgba(255,99,132,1)',
+      'rgba(255,99,132,1)',
+      'rgba(255,99,132,1)',
+      'rgba(255,99,132,1)'
+    ],
+    borderWidth: 1,
+    fill: false
+  }]
+};
+  var multiLineData = {
+    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    datasets: [{
+      label: 'Dataset 1',
+      data: [12, 19, 3, 5, 2, 3],
+      borderColor: [
+        '#587ce4'
+      ],
+      borderWidth: 2,
+      fill: false
+    },
+    {
+      label: 'Dataset 2',
+      data: [5, 23, 7, 12, 42, 23],
+      borderColor: [
+        '#ede190'
+      ],
+      borderWidth: 2,
+      fill: false
+    },
+    {
+      label: 'Dataset 3',
+      data: [15, 10, 21, 32, 12, 33],
+      borderColor: [
+        '#f44252'
+      ],
+      borderWidth: 2,
+      fill: false
+    }
+    ]
+  };
+  var options = {
+    scales: {
+      y: {
+        ticks: {
+          beginAtZero: true
+        }
+      }
+    },
+    legend: {
+      display: false
+    },
+    elements: {
+      line: {
+        tension: 0.5
+      },
+      point: {
+        radius: 0
+      }
+    }
+
+  };
+  var doughnutPieData = {
+    datasets: [{
+      data: [[${ percentByMonth  }]],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(255, 206, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(255, 159, 64, 0.5)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+      
+      'Booking: ' + [[${ percentBooking  }]] + '%',
+      'Service: '  + [[${ percentService  }]] + '%',
+    ]
+  };
+  var doughnutPieOptions = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+  var areaData = {
+    labels: ["2013", "2014", "2015", "2016", "2017"],
+    datasets: [{
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1,
+      fill: true, // 3: no fill
+    },{
+      label: '# of Votes',
+      data: [20, 10, 9, 11, 7, 10],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+      ],
+      borderWidth: 1,
+      fill: true,
+    }]
+  };
+
+  var areaOptions = {
+    elements: {
+      line: {
+        tension: 0.5
+      }
+    },
+    plugins: {
+      filler: {
+        propagate: true
+      }
+    }
+  }
+
+  var multiAreaData = {
+    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    datasets: [{
+      label: 'Facebook',
+      data: [8, 11, 13, 15, 12, 13, 16, 15, 13, 19, 11, 14],
+      borderColor: ['rgba(255, 99, 132, 0.5)'],
+      backgroundColor: ['rgba(255, 99, 132, 0.5)'],
+      borderWidth: 1,
+      fill: true
+    },
+    {
+      label: 'Twitter',
+      data: [7, 17, 12, 16, 14, 18, 16, 12, 15, 11, 13, 9],
+      borderColor: ['rgba(54, 162, 235, 0.5)'],
+      backgroundColor: ['rgba(54, 162, 235, 0.5)'],
+      borderWidth: 1,
+      fill: true
+    },
+    {
+      label: 'Linkedin',
+      data: [6, 14, 16, 20, 12, 18, 15, 12, 17, 19, 15, 11],
+      borderColor: ['rgba(255, 206, 86, 0.5)'],
+      backgroundColor: ['rgba(255, 206, 86, 0.5)'],
+      borderWidth: 1,
+      fill: true
+    }
+    ]
+  };
+
+  var multiAreaOptions = {
+    plugins: {
+      filler: {
+        propagate: true
+      }
+    },
+    elements: {
+      line: {
+        tension: 0.5
+      },
+      point: {
+        radius: 0
+      }
+    },
+    scales: {
+      x: {
+        gridLines: {
+          display: false
+        }
+      },
+      y: {
+        gridLines: {
+          display: false
+        }
+      }
+    }
+  }
+
+  var scatterChartData = {
+    datasets: [{
+      label: 'First Dataset',
+      data: [{
+        x: -10,
+        y: 0
+      },
+      {
+        x: 0,
+        y: 3
+      },
+      {
+        x: -25,
+        y: 5
+      },
+      {
+        x: 40,
+        y: 5
+      }
+      ],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255,99,132,1)'
+      ],
+      borderWidth: 1
+    },
+    {
+      label: 'Second Dataset',
+      data: [{
+        x: 10,
+        y: 5
+      },
+      {
+        x: 20,
+        y: -30
+      },
+      {
+        x: -25,
+        y: 15
+      },
+      {
+        x: -10,
+        y: 5
+      }
+      ],
+      backgroundColor: [
+        'rgba(54, 162, 235, 0.2)',
+      ],
+      borderColor: [
+        'rgba(54, 162, 235, 1)',
+      ],
+      borderWidth: 1
+    }
+    ]
+  }
+
+  var scatterChartOptions = {
+    scales: {
+      x: {
+        type: 'linear',
+        position: 'bottom'
+      }
+    }
+  }
+  // Get context with jQuery - using jQuery's .get() method.
+  if ($("#barChart").length) {
+    var barChartCanvas = $("#barChart").get(0).getContext("2d");
+    // This will get the first returned node in the jQuery collection.
+    var barChart = new Chart(barChartCanvas, {
+      type: 'bar',
+      data: data,
+      options: options
+    });
+  }
+
+  if ($("#lineChart").length) {
+    var lineChartCanvas = $("#lineChart").get(0).getContext("2d");
+    var lineChart = new Chart(lineChartCanvas, {
+      type: 'line',
+      data: data,
+      options: options
+    });
+  }
+
+  if ($("#linechart-multi").length) {
+    var multiLineCanvas = $("#linechart-multi").get(0).getContext("2d");
+    var lineChart = new Chart(multiLineCanvas, {
+      type: 'line',
+      data: multiLineData,
+      options: options
+    });
+  }
+
+  if ($("#areachart-multi").length) {
+    var multiAreaCanvas = $("#areachart-multi").get(0).getContext("2d");
+    var multiAreaChart = new Chart(multiAreaCanvas, {
+      type: 'line',
+      data: multiAreaData,
+      options: multiAreaOptions
+    });
+  }
+
+  if ($("#doughnutChart").length) {
+    var doughnutChartCanvas = $("#doughnutChart").get(0).getContext("2d");
+    var doughnutChart = new Chart(doughnutChartCanvas, {
+      type: 'doughnut',
+      data: doughnutPieData,
+      options: doughnutPieOptions
+    });
+  }
+
+  if ($("#pieChart").length) {
+    var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+    var pieChart = new Chart(pieChartCanvas, {
+      type: 'pie',
+      data: doughnutPieData,
+      options: doughnutPieOptions
+    });
+  }
+
+  if ($("#areaChart").length) {
+    var areaChartCanvas = $("#areaChart").get(0).getContext("2d");
+    var areaChart = new Chart(areaChartCanvas, {
+      type: 'line',
+      data: areaData,
+      options: areaOptions
+    });
+  }
+
+  if ($("#scatterChart").length) {
+    var scatterChartCanvas = $("#scatterChart").get(0).getContext("2d");
+    var scatterChart = new Chart(scatterChartCanvas, {
+      type: 'scatter',
+      data: scatterChartData,
+      options: scatterChartOptions
+    });
+  }
+
+  if ($("#browserTrafficChart").length) {
+    var doughnutChartCanvas = $("#browserTrafficChart").get(0).getContext("2d");
+    var doughnutChart = new Chart(doughnutChartCanvas, {
+      type: 'doughnut',
+      data: browserTrafficData,
+      options: doughnutPieOptions
+    });
+  }
+});
+	</script>
+
+</body>
+
+</html>

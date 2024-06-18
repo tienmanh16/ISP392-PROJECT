@@ -32,6 +32,9 @@ public class Service {
     @Column(name="SePrice")
     private double SePrice;
 
+    @Column(name = "ServiceActive", nullable = false)
+    private int serviceActive;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SeTypeID")
     @JsonBackReference

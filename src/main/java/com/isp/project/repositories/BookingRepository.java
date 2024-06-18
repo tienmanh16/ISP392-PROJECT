@@ -86,4 +86,8 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Transactional
     @Query("DELETE FROM BookingMapping b WHERE b.roomID = :roomID")
     void deleteByRoomID(@Param("roomID") Integer roomID);
+
+
+    @Query("SELECT i FROM Booking i RIGHT JOIN i.customerID b WHERE MONTH(i.bookingDate) = :month AND YEAR(i.bookingDate) = :year")
+    List<Booking> getCustomerForDate(@Param("month") int month, @Param("year") int year);
 }

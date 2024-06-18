@@ -42,7 +42,10 @@ public class Room {
 
     @Column(name = "RoomStatus", nullable = false)
     private String status;
-    
+
+    @Column(name = "RoomActive", nullable = false)
+    private int roomActive;
+     
     @OneToMany(mappedBy = "roomID")
     @JsonManagedReference
     private List<BookingMapping> bookingMapping;
