@@ -28,6 +28,71 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
+	<style>
+		.custom-button {
+			background-color: #05073e;
+			color: #fff;
+		}
+
+		.custom-button:hover {
+			background-color: #333;
+			color: #fff;
+		}
+
+		.search-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.search-input {
+			border: 2px solid #05073e;
+			border-radius: 5px 0 0 5px;
+			border-right: none;
+			height: 38px;
+			width: 200px;
+		}
+
+		.search-button {
+			border: 2px solid #05073e;
+			border-radius: 0 5px 5px 0;
+			height: 38px;
+			width: 120px;
+		}
+
+		.action-buttons {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 20px;
+		}
+	</style>
+	<style>
+		.table-filter {
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			padding: 5px;
+			background-color: #f8f9fa;
+			color: #333;
+		}
+
+		.table-filter:hover {
+			border-color: #007bff;
+			/* Đổi màu viền khi hover */
+			background-color: #e9ecef;
+			/* Đổi màu nền khi hover */
+		}
+
+		.custom-button {
+			background-color: #05073e;
+			color: #fff;
+		}
+
+		.custom-button:hover {
+			background-color: #333;
+			color: #fff;
+		}
+	</style>
 
 </head>
 
@@ -36,34 +101,31 @@
 		<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
 			<div th:replace="~{fragments/header :: header}"></div>
 		</header>
+		<!-- thêm class layout-radius để fix header  -->
 		<section class="ftco-section layout-radius">
-			<div class="container">
+			<div class="row">
 				<div class="row justify-content-center">
 					<div class="col-md-6 text-center mb-5">
 						<h2 class="heading-section">Service Category Management</h2>
 					</div>
 				</div>
-				<div class="col-md-4 text-left mb-4">
-					<form>
-						<div class="input-group">
-							<input type="text" class="form-control" name="name" placeholder="Search Service Type Name..." aria-label="Search" aria-describedby="search-button">
-							<div class="input-group-append">
-								<button class="btn btn-primary" type="submit" id="search-button" style="background-color: #05073e; color: #fff;">
-									Search
-								</button>
-							</div>
-						</div>
-					</form>
-				</div>
-				<div class="col-md-11 text-right  mb-4">
-					<button class="btn btn-primary" onclick="window.location.href='/admin/add-secate'"
-						style="background-color: #05073e; color: #fff;">
-						Add Service Type
-					</button>
-				</div>
+			</div>
 
-				<div class="row">
-					<div class="col-md-12">
+			<div class="action-buttons">
+				<form class="search-container">
+					<input type="text" id="searchbar" class="form-control search-input" name="name" placeholder="Search Service Type Name...">
+					<button class="btn custom-button" type="submit" id="search-button" >
+						Search
+					</button>
+				</form>
+
+				<button class="btn custom-button" onclick="window.location.href='/admin/add-secate'">
+					Add Employee
+				</button>
+			</div>
+
+				<div class="container">
+					<div class="col-lg-12">
 						<div class="table-wrap">
 							<table class="table table-striped">
 								<thead>
