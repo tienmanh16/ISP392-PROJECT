@@ -5,29 +5,24 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import jakarta.validation.constraints.Size;
+import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "Employee")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 
+@NoArgsConstructor
 public class Employee {
     @Id
     @Column(name = "EmployeeID")
@@ -36,44 +31,43 @@ public class Employee {
 
     @Column(name="Name")
     private String fullName;
-
+private int gender;
     private String email;
     private String phone;
     private String address;
     @Column(name="IdentificationID")
     private String idenId;
-    
-    
-
-    public Employee(int id, String fullName, String email, String phone, String address, String idenId, Date dob,
-            String userName, String password, Role role) {
-        this.id = id;
-        this.fullName = fullName;
-        this.email = email;
-        this.phone = phone;
-        this.address = address;
-        this.idenId = idenId;
-        this.dob = dob;
-        this.username = userName;
-        this.password = password;
-        this.role = role;
-    }
-
-    @DateTimeFormat(pattern ="dd/MM/yyyy")
-    @Temporal(TemporalType.DATE)
+    private int salary;
+    @Column(name = "Role")
+    private String role;
+    @Column(name = "IsActive")
+    private Boolean isActive;
+    @DateTimeFormat(pattern ="yyyy-MM-dd")
     private Date dob;
-
-    public Employee() {
-    }
-   
-    public Date getDob() {
-        return dob;
-    }
-
     private String username;
-    
-    @Size(min = 6, message = "password must be at least 6 characters")
     private String password;
+
+
+    
+    public Employee(String address, Date dob, String email, String fullName, int gender, int id, String idenId, Boolean isActive, String password, String phone, List<Register> register, String role, int salary, String username) {
+        this.address = address;
+        this.dob = dob;
+        this.email = email;
+        this.fullName = fullName;
+        this.gender = gender;
+        this.id = id;
+        this.idenId = idenId;
+        this.isActive = isActive;
+        this.password = password;
+        this.phone = phone;
+        this.register = register;
+        this.role = role;
+        this.salary = salary;
+        this.username = username;
+    }
+
+
+    
 
     public String getIdenId() {
         return idenId;
@@ -163,22 +157,54 @@ public class Employee {
         this.id = id;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
     @OneToMany(mappedBy = "employeeID")
      @JsonManagedReference
     private List<Register> register;
 
 
-     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RoleID")
-    @JsonBackReference
-    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-    private Role role;
+
+    public int getGender() {
+        return gender;
+    }
+
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public Date getDob() {
+        return dob;
+    }
+
+    public List<Register> getRegister() {
+        return register;
+    }
+
+    public void setRegister(List<Register> register) {
+        this.register = register;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
 }

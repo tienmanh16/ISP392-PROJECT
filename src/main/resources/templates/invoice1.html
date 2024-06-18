@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <!-- Custom Style -->
     <!-- <link rel="stylesheet" th:href="@{css/style1.css}"> -->
-
+    <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+        href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
     <title>Invoice..!</title>
 
     <style>
@@ -210,6 +211,14 @@
             background-color: var(--white);
             display: inline-block;
         }
+
+        .print-text {
+            color: white;
+            background-color: rgb(41, 166, 168);
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -219,6 +228,11 @@
             <section class="top-content bb d-flex justify-content-between">
                 <div class="logo">
                     <img src="logo.png" alt="" class="img-fluid">
+                    <!-- //print -->
+                    <a th:href="@{/receptionist/printInvoice/{invoiceID}(invoiceID=${booking.Invoice[0].InvoiceID})}"
+                        class="ti-printer print-text">
+                        <span class="print-text">Print</span>
+                    </a>
                 </div>
             </section>
 
@@ -234,12 +248,13 @@
                         </div>
                         <div class="col-5 ">
                             <h2></h2>
-                            <p class="address">Room Number: <span th:text="${booking.BookingMapping[0].RoomID.RoomNum}"></span>
+                            <p class="address">Room Number: <span
+                                    th:text="${booking.BookingMapping[0].RoomID.RoomNum}"></span>
                             </p>
                             <p class="address">Check-in Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
                             </p>
-                            <p class="address">Check-out Date: <span
-                                    th:text="${booking.invoice[0].invoiceDate}"></span></p>
+                            <p class="address">Check-out Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -261,20 +276,20 @@
                             <td th:text="${service.sePrice}">$</td>
                             <td>
                                 <span th:each="line : ${service.invoiceLine}">
-                                    <span th:text="${line.quantity}"></span><br/>
-                                    
+                                    <span th:text="${line.quantity}"></span><br />
+
                                 </span>
                             </td>
                             <td>
                                 <span th:each="line : ${service.invoiceLine}">
-                                    <span th:text="${line.invoiceTotalAmount}"></span><br/>
-                                    
+                                    <span th:text="${line.invoiceTotalAmount}"></span><br />
+
                                 </span>
                             </td>
-                            
-                            
-                            
-                           
+
+
+
+
                         </tr>
                     </tbody>
                 </table>

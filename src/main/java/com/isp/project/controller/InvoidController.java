@@ -5,25 +5,30 @@ import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import com.isp.project.dto.InvoiceDetailDTO;
+
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
+
 import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Service;
+
 import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
 
 @Controller
-
+@RequestMapping("/receptionist")
 public class InvoidController {
 
     @Autowired
@@ -33,38 +38,35 @@ public class InvoidController {
     private InvoiceServiceImpl invoiceServiceImpl;
 
     @Autowired
+
+    
     private SpringTemplateEngine templateEngine;
 
-    @GetMapping("/listinvoice")
-    public String listInvoice(Model model, @Param("key") String key, @Param("keyDate") Date keyDate) {
 
-        List<Invoice> invoice;
+
+    @GetMapping("/listinvoice")
+    public String listInvoice(Model model, @RequestParam(name ="pageNo", defaultValue = "1") Integer pageNo, @Param("key") String key, @Param("keyDate") Date keyDate) {
+
+        Page<Invoice> invoice =this.invoiceService.pageInvoice(pageNo);
 
         if (key != null) {
-            invoice = this.invoiceService.searchInvoice(key);
+            invoice = this.invoiceService.searchInvoice( pageNo,key);
+            model.addAttribute("key", key);
         } else if (keyDate != null) {
-            invoice = this.invoiceService.searchInvoice(keyDate);
+            invoice = this.invoiceService.searchInvoice(pageNo, keyDate);
+            model.addAttribute("keyDate", keyDate);
         } else {
-            // Nếu không có key hoặc keyDate, hiển thị tất cả hóa đơn
-            invoice = this.invoiceService.getAllInvoice();
+            invoice = this.invoiceService.pageInvoice(pageNo);
         }
-
+        model.addAttribute("totalPage", invoice.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
         model.addAttribute("listInvoice", invoice);
+        
+        
+
         return "listInvoice.html";
     }
 
-    // @GetMapping("/invoiceDetail/{invoiceID}")
-    // public String invoice(Model model, @PathVariable("invoiceID") int invoiceID){
-    // List<InvoiceDetailDTO> invoiceDetailDTO =
-    // this.invoiceService.findInvoiceDetail(invoiceID);
-    // double totalSePrice = 0.0;
-    // for (InvoiceDetailDTO dto : invoiceDetailDTO) {
-    // totalSePrice += dto.getSePrice()*dto.getQuantity();
-    // }
-    // model.addAttribute("InvoiceDetailDTO", invoiceDetailDTO);
-    // model.addAttribute("totalSePrice", totalSePrice);
-    // return "invoice.html";
-    // }
 
     @GetMapping("/printInvoice/{invoiceID}")
     public String printInvoice(@PathVariable("invoiceID") int invoiceID, Model model) {
@@ -92,12 +94,12 @@ public class InvoidController {
 
 
         // Render HTML template as a string
-        String htmlContent = templateEngine.process("invoice1", context);
-
+        String htmlContent = templateEngine.process("printInvoice", context);
+        String name = "invoice_" + invoiceID + ".pdf";
         // Convert HTML to PDF
-        invoiceService.htmlToPdf(htmlContent);
+        invoiceService.htmlToPdf(htmlContent,name);
 
-        return "redirect:/listinvoice";
+        return "redirect:/receptionist/listinvoice";
     }
 
     @GetMapping("/invoiceDetail/{invoiceID}")
@@ -119,6 +121,11 @@ public class InvoidController {
         model.addAttribute("totalAmountRoom", totalAmountRoom);
         model.addAttribute("listService", serviceList);
         model.addAttribute("totalSePrice", totalSePrice);
+
+
+
+
+        
         return "invoice1";
     }
 }

@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.BookingRoomDTO;
+import com.isp.project.model.Booking;
+import com.isp.project.model.Customer;
+import com.isp.project.model.Invoice;
 import com.isp.project.repositories.BookingRepository;
 
 @Service
@@ -121,5 +124,12 @@ public class BookingServiceImpl implements BookingService {
             return false;
         }
     }
+
+    @Override
+    public List<Booking> getCustomerForDate(int month, int year) {
+       return this.bookingRepository.getCustomerForDate(month, year);
+    }
+
+
     
 }

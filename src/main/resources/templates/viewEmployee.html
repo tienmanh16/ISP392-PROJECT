@@ -7,9 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
-
-    <link rel="stylesheet" href="@https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
     <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
         href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
@@ -45,16 +42,13 @@
                         <h2 class="heading-section">Employee List</h2>
                     </div>
                 </div>
-<!-- 
-                <div class="InputContainer" style="margin-bottom: 20px;">
-                    <form>
-                        <input placeholder="Search.." id="input" name="key" class="input" type="text">
-                    </form>
-                </div> -->
-               
+
             </div>
-            <div class="col-md-6 text-center mb-5">
-                <button class="btn btn-primary" onclick="window.location.href='/employee/add'">Add Employee</button>
+            <div class="col-md-11 text-right  mb-4">
+                <button class="btn btn-primary" onclick="window.location.href='/employee/add'"
+                    style="background-color: #05073e; color: #fff;">
+                    Add Employee
+                </button>
             </div>
             <div class="container">
                 <div class="col-lg-12">
@@ -64,6 +58,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>FullName</th>
+                                    <th>Gender</th>
                                     <th>Dob</th>
                                     <th>Role</th>
                                     <th>Address</th>
@@ -72,26 +67,38 @@
                                     <th>Email</th>
                                     <th>UserName</th>
                                     <th>Password</th>
+                                    <th>Salary</th>
+                                    <th>Status</th>
                                     <th>Edit</th>
-                                    <th>Delete</th>
-
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr th:each="list : ${emList}">
                                     <th th:text="${list.id}"></th>
                                     <td th:text="${list.fullName}"></td>
-                                    <td th:text="${list.dob}"></td>
-                                    <td th:text="${list.role.name}"></td>
+                                    <td th:text="${list.gender == 1 ? 'Male' : 'Female'}"></td>
+                                    <td th:text="${#dates.format(list.dob,'dd/MM/yyyy')}"></td>
+                                    <td th:text="${list.role}"></td>
                                     <td th:text="${list.address}"></td>
                                     <td th:text="${list.phone}"></td>
                                     <td th:text="${list.idenId}"></td>
                                     <td th:text="${list.email}"></td>
                                     <td th:text="${list.username}"></td>
                                     <td th:text="${list.password}"></td>
+                                    <td th:text="${list.salary}"></td>
+                                    <!-- <td th:text="${list.isActive}"></td> -->
+                                    <td>
+                                        <!-- hien thi tu database -->
+                                        <button type="button" class="btn statusButton"
+                                            th:classappend="${list.isActive == true ? 'btn-success' : 'btn-danger'}"
+                                            th:text="${list.isActive == true ? 'Active' : 'InActive'}"
+                                            th:data-id="${list.id}" th:data-active="${list.isActive}"
+                                            onclick="toggleStatus(this)"
+                                            style="width: 85px; height: 40px;">
+                                        </button>
+                                    </td>
                                     <td><a th:href="@{'/employee/edit/'+${list.id}}" class="ti-menu"></a></td>
-                                    <td><a th:href="@{'/employee/delete/'+${list.id}}" class="btn btn-danger ti-close"></a></td>
-
+                                
                                 </tr>
                             </tbody>
                         </table>
@@ -99,10 +106,39 @@
                 </div>
             </div>
     </div>
+    
     </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
     <!-- thư viện để add header và footer  -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <script>
+        function toggleStatus(button) {
+            const employeeId = button.getAttribute('data-id');
+            const isActive = button.getAttribute('data-active') === 'true';
+
+            $.ajax({
+                url: '/employee/toggleStatus/' + employeeId,
+                type: 'POST',
+                data: { isActive: isActive },
+                success: function (data) {
+                    // Update button text and style
+                    button.textContent = !isActive ? 'Active' : 'InActive';
+                    button.classList.toggle('btn-success', !isActive);
+                    button.classList.toggle('btn-danger', isActive);
+                    // Update data attribute in database
+                    button.setAttribute('data-active', !isActive);
+                },
+                error: function (xhr, status, error) {
+                    console.error('Failed to update status:', error);
+                }
+            });
+        }
+
+
+    </script>
+
 
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
     <script th:src="@{/js/jquery.js}"></script>
@@ -116,14 +152,6 @@
     <script th:src="@{/js/mixitup.js}"></script>
     <script th:src="@{/js/knob.js}"></script>
     <script th:src="@{/js/mmenu.js}"></script>
-    <script th:src="@{/js/main.copy1.js}"></script>
-
-
-
-    <script th:src="@{/src/main/resources/static/js/jquery.min.js}"></script>
-    <script th:src="@{/src/main/resources/static/js/popper.js}"></script>
-    <script th:src="@{/src/main/resources/static/js/bootstrap.min.js}"></script>
-    <script th:src="@{/src/main/resources/static/js/main.js}"></script>
 </body>
 
 </html>
