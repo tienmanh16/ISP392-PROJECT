@@ -26,10 +26,10 @@ public class RoomServiceImpl implements RoomService{
         this.roomRepository = roomRepository;
     }
 
-    @Override
-    public List<RoomDetailDTO> getAllRoomsWithDetails() {
-        return roomRepository.findAllRoomsWithDetails();
-    }
+    // @Override
+    // public List<RoomDetailDTO> getAllRoomsWithDetails() {
+    //     return roomRepository.findAllRoomsWithDetails();
+    // }
 
     @Override
     public List<RoomDetailDTO> getAllRoomsWithDetailsByRoomTypeId(Integer id) {
