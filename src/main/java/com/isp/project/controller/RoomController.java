@@ -144,6 +144,7 @@ public class RoomController {
 
     @PostMapping("/api/availableRooms")
     @ResponseBody
+
     public List<RoomDetailDTO> getAvailableRooms(@RequestBody Map<String, String> dates) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

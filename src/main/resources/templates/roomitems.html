@@ -42,19 +42,20 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-md-6 text-center mb-5">
-            <h2 class="heading-section">Customer Management</h2>
+            <h2 class="heading-section">RoomItem Management</h2>
           </div>
         </div>
         <div class="box">
           <div class="box-header d-flex justify-content-between align-items-center">
 
             <div>
-              <button class="btn js-buy-ticket">+ Customer</button>
+              <button class="btn js-buy-ticket">+ RoomItem</button>
             </div>
-            <form th:action="@{/customer}" method="get" class="form-inline ml-auto">
+            <form th:action="@{/roomitems}" method="get" class="form-inline ml-auto">
               <div class="input-group" style="width: 200px">
-                <input type="text" name="table_search" class="form-control form-control-sm" placeholder="Search"
-                  th:value="${queryCustomerName}" />
+                <input type="text" name="table_search_roomitems" class="form-control form-control-sm"
+                  placeholder="Search" th:value="${queryItemName}" />
+
                 <div class="input-group-append">
                   <button type="submit" class="btn btn-default btn-sm">
                     <i class="fa fa-search"></i>
@@ -71,27 +72,26 @@
               <table class="table table-striped">
                 <thead class="thead-dark">
                   <tr>
-                    <th>Customer ID</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Address</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                    <th>Identification ID</th>
-                    <th>Sửa</th>
+                    <th>Item ID</th>
+                    <th>Item Name</th>
+                    <th>Update</th>
+                    <th>Delete</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr th:each="customer : ${customerList}">
-                    <td th:text="${customer.customerID}"></td>
-                    <td th:text="${customer.customerName}"></td>
-                    <td th:text="${customer.customerGender}"></td>
-                    <td th:text="${customer.customerAddress}"></td>
-                    <td th:text="${customer.customerPhone}"></td>
-                    <td th:text="${customer.customerEmail}"></td>
-                    <td th:text="${customer.customerIdentificationID}"></td>
+                  <tr th:each="roomitem : ${roomItemList}">
+                    <td th:text="${roomitem.ItemID}"></td>
+                    <td th:text="${roomitem.ItemName}"></td>
                     <td>
-                      <a th:href="@{'updateCustomer?idcus=' + ${customer.customerID}}" class="ti-pencil-alt"></a>
+                      <a th:href="@{'updateRoomitem?idRoomItem=' + ${roomitem.ItemID}}" style="font-size: 24px;">
+                        <i class="ti-pencil-alt"></i>
+                      </a>
+                    </td>
+                    <td>
+                      <a href="javascript:void(0);" th:onclick="'confirmDelete1(' + ${roomitem.ItemID} + ');'">
+                        <i class="material-icons"
+                          style="color: red;font-size: 40px; vertical-align: middle;">delete_forever</i>
+                      </a>
                     </td>
                   </tr>
                 </tbody>
@@ -108,35 +108,15 @@
 
   <!-- modal chứa cả các giao diện phủ lên -->
   <div class="modal js-modal">
-    <div class="windowcustomer js-modal-window">
-      <div class="title">ADD CUSTOMER</div>
-      <form th:action="@{/addcustomer}" th:object="${addCustomer}" method="post">
+    <div class="windowroomitem js-modal-window">
+      <div class="title">ADD ROOM ITEMS</div>
+      <form th:action="@{/addroomitem}" th:object="${addRoomItem}" method="post">
         <div class="maincustomer">
-          <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Customer Information</h3>
-          <span class="material-icons" style="vertical-align: middle;">account_box</span>
-          <input type="text" th:field="*{customerName}"  style="vertical-align: middle; width: 400px;" placeholder="Nhập tên khách hàng..."
-            required>
+          <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Room Item Information</h3>
+          <span class="material-icons" style="vertical-align: middle;">other_houses</span>
+          <input type="text" th:field="*{ItemName}" style="vertical-align: middle; width: 400px;"
+            placeholder="Enter room Item..." required>
           <br><br>
-          <span class="material-icons" style="vertical-align: middle;">badge</span>
-          <input type="text" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 400px;" placeholder="Nhập số CMND..." required>
-          <br><br>
-          <span class="material-icons" style="vertical-align: middle;">call</span>
-          <input type="text" th:field="*{customerPhone}" style="vertical-align: middle; width: 400px;" placeholder="Nhập số điện thoại..." required>
-          <br><br>
-          <span class="material-icons" style="vertical-align: middle;">mail</span>
-          <input type="email" th:field="*{customerEmail}" style="vertical-align: middle; width: 400px;" placeholder="Nhập địa chỉ email..."
-            required>           
-          <br><br>
-          <span class="material-icons" style="vertical-align: middle;">location_on</span>
-          <input type="text" th:field="*{customerAddress}" style="vertical-align: middle; width: 400px;" placeholder="Nhập địa chỉ..." required>        
-          <br><br>
-          <span class="material-icons" style="vertical-align: middle;">transgender</span>
-          <label for="male" style="vertical-align: middle; margin-right: 10px;">Male</label>
-          <input type="radio" th:field="*{customerGender}" value="male" style="vertical-align: middle; margin-right: 20px;" required>
-          <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
-          <input type="radio" th:field="*{customerGender}"value="female" style="vertical-align: middle;" required>
-          <!-- </div> -->
-         
         </div>
         <div class="footer">
           <button type="submit" class="button green-button">ADD</button>
@@ -186,6 +166,33 @@
 
 
 
+  <script>
+    function confirmDelete1(roomItemId) {
+      if (confirm("Are you sure you want to delete it?")) {
+        deleteBooking(roomItemId);
+      }
+    }
+
+    function deleteBooking(roomItemId) {
+      fetch(`/deleteRoomItem/${roomItemId}`, { // Chỉnh sửa đường dẫn và sử dụng template literal
+        method: "POST",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to delete item");
+          }
+          return response.text();
+        })
+        .then((message) => {
+          alert(message);
+          location.reload();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred: " + error.message);
+        });
+    }
+  </script>
 
   <!-- thư viện để add header và footer  -->
 
