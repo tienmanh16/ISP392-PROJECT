@@ -10,10 +10,13 @@ import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Register;
+import com.isp.project.model.RoomItem;
 import com.isp.project.model.Service;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
+import com.isp.project.repositories.CustomerRepository;
 import com.isp.project.repositories.EmployeeRepository;
+import com.isp.project.repositories.RoomItemRepository;
 import com.isp.project.service.BookingService;
 import com.isp.project.service.EmployeeService;
 import com.isp.project.service.InvoiceService;
@@ -52,6 +55,9 @@ public class test {
     @Autowired 
     RoomService roomService;
 
+    @Autowired 
+    RoomItemRepository roomItemRepository;
+
     @GetMapping("/{id}")
     public ResponseEntity<BookingMapping> deleteBooking(@PathVariable Integer id) {
         Booking booking = bookingRepository.getReferenceById(id);
@@ -65,10 +71,10 @@ public class test {
         }
     }
 
-//     @PostMapping("/roomtest")
-//     public List<RoomDetailDTO> testPostMan() {
-//         return roomService.getAvailableRooms("2024-05-31", "2024-06-02");
-//     // return roomService.getAllRoomsWithDetails();
-// }
+    @PostMapping("/roomtest")
+    public List<RoomItem> testPostMan() {
+        // return roomService.getAvailableRooms("2024-05-31", "2024-06-02");
+    return roomItemRepository.findAll();
+    }
 
 }

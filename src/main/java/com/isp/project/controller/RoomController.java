@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.isp.project.dto.BookingInfoDTO;
@@ -19,8 +20,8 @@ import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Room;
 import com.isp.project.service.RoomService;
 
-// @Controller
-@RestController
+@Controller
+// @RestController
 public class RoomController {
     @Autowired
     private RoomService roomService;
@@ -36,6 +37,7 @@ public class RoomController {
     }
 
     @PostMapping("/api/availableRooms")
+    @ResponseBody
     public List<RoomDetailDTO> getAvailableRooms(@RequestBody Map<String, String> dates) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 

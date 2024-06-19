@@ -76,7 +76,6 @@
                     <th>Ngày lập phiếu</th>
                     <th>Tên nhân viên</th>
                     <th>Chi tiết</th>
-                    <th>Sửa</th>
                     <th>Xoá</th>
                   </tr>
                 </thead>
@@ -91,9 +90,9 @@
                     <td>
                       <a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-list"></a>
                     </td>
-                    <td>
+                    <!-- <td>
                       <a th:href="@{'#?id=' + ${booking.bookingID}}" class="ti-pencil-alt"></a>
-                    </td>
+                    </td> -->
                     <td>
                       <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'"
                         class="btn btn-danger ti-close"></a>
@@ -264,6 +263,107 @@
 <!-- ========== lắng nghe sự thay đổi checkIn - checkOut để hiển thị ra phòng trống============ -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('checkin-date').addEventListener('change', updateAvailableRooms);
+      document.getElementById('checkout-date').addEventListener('change', updateAvailableRooms);
+  });
+  
+  function updateAvailableRooms() {
+      const checkinDate = document.getElementById('checkin-date').value;
+      const checkoutDate = document.getElementById('checkout-date').value;
+  
+      if (checkinDate && checkoutDate) {
+          fetch('/api/availableRooms', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ checkinDate, checkoutDate })
+          })
+          .then(response => response.json())
+          .then(data => {
+              const availableRoomsTable = document.getElementById('available-rooms');
+              availableRoomsTable.innerHTML = '';
+              data.forEach(room => {
+                  const row = document.createElement('tr');
+                  row.innerHTML = `
+                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomNum}</td>
+                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomTypeName}</td>
+                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
+                          <a href="javascript:void(0);" class="add-room-link" data-room-id="${room.id}" data-room-num="${room.roomNum}" data-room-type="${room.roomTypeName}">
+                              <span class="material-icons" style="color: green;">add_circle</span>
+                          </a>
+                      </td>
+                  `;
+                  availableRoomsTable.appendChild(row);
+              });
+          })
+          .catch(error => console.error('Error fetching available rooms:', error));
+      }
+  }
+  
+  document.addEventListener('click', function(event) {
+    console.log('Clicked:', event.target);
+
+    if (event.target.classList.contains('material-icons')) {
+        const materialIcon = event.target;
+        console.log('Material icon text:', materialIcon.textContent.trim());
+        
+        if (materialIcon.textContent.trim() === 'add_circle') {
+            const addRoomLink = materialIcon.closest('.add-room-link');
+            console.log('Add room link:', addRoomLink);
+            
+            const roomId = addRoomLink.getAttribute('data-room-id');
+            const roomNum = addRoomLink.getAttribute('data-room-num');
+            const roomType = addRoomLink.getAttribute('data-room-type');
+            
+            // Add room to selected rooms table
+            const selectedRoomsTable = document.getElementById('selected-rooms');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomNum}</td>
+                <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomType}</td>
+                <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
+                    <a href="javascript:void(0);" class="remove-room-link" data-room-id="${roomId}" data-room-num="${roomNum}" data-room-type="${roomType}">
+                        <span class="material-icons" style="color: red;">remove_circle</span>
+                    </a>
+                </td>
+            `;
+            selectedRoomsTable.appendChild(row);
+            
+            // Remove room from available rooms table
+            addRoomLink.closest('tr').remove();
+        } else if (materialIcon.textContent.trim() === 'remove_circle') {
+            const removeRoomLink = materialIcon.closest('.remove-room-link');
+            console.log('Remove room link:', removeRoomLink);
+            
+            const roomId = removeRoomLink.getAttribute('data-room-id');
+            const roomNum = removeRoomLink.getAttribute('data-room-num');
+            const roomType = removeRoomLink.getAttribute('data-room-type');
+            
+            // Add room back to available rooms table
+            const availableRoomsTable = document.getElementById('available-rooms');
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomNum}</td>
+                <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomType}</td>
+                <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
+                    <a href="javascript:void(0);" class="add-room-link" data-room-id="${roomId}" data-room-num="${roomNum}" data-room-type="${roomType}">
+                        <span class="material-icons" style="color: green;">add_circle</span>
+                    </a>
+                </td>
+            `;
+            availableRoomsTable.appendChild(row);
+            
+            // Remove room from selected rooms table
+            removeRoomLink.closest('tr').remove();
+        }
+    }
+});
+  
+  </script>
+  
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('checkin-date').addEventListener('change', updateAvailableRooms);
     document.getElementById('checkout-date').addEventListener('change', updateAvailableRooms);
 });
@@ -331,7 +431,7 @@ function updateAvailableRooms() {
       }
   });
   
-  </script>
+  </script> -->
 
   <!-- thư viện để add header và footer  -->
 

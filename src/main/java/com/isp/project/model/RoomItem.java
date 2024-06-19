@@ -21,7 +21,7 @@ import lombok.Data;
 
 public class RoomItem {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ItemID")
     private int ItemID;
 

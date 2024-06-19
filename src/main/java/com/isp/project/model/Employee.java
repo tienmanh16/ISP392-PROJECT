@@ -40,7 +40,7 @@ private int gender;
     private int salary;
     @Column(name = "Role")
     private String role;
-    @Column(name = "IsActive")
+    @Column(name = "active")
     private Boolean isActive;
     @DateTimeFormat(pattern ="yyyy-MM-dd")
     private Date dob;

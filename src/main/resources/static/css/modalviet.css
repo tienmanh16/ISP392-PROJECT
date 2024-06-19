@@ -58,6 +58,18 @@
     overflow: hidden;
     animation: modalFaceIn ease .5s;
 }
+
+.windowroomitem {
+    width: 600px;
+    height: 400px;
+    border-radius: 10px;
+    background: white;
+    border: 5px solid #28a730;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalFaceIn ease .5s;
+}
 .title {
     font-size: 30px;
     color: black;
