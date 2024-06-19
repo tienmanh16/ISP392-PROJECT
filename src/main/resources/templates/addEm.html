@@ -84,6 +84,7 @@
                     <div class="form-group">
                         <label>User Name</label>
                         <input type="text" th:field="*{username}" class="form-control" placeholder="Enter username" required>
+                        <div id="errorMessageUser" class="alert alert-danger" style="display: none;" role="alert"></div>
                     </div>
                     <div class="form-group">
                         <label class="passBox">Password</label>
@@ -120,17 +121,24 @@
 			var input = this.value; // Lấy ngày được chọn từ trường nhập ngày sinh
 			var inputDate = new Date(input); 
 			var currentDate = new Date(maxDate); 
+            var date18YearsAgo = new Date();
+            date18YearsAgo.setFullYear(date18YearsAgo.getFullYear() - 18);
 
 			if (inputDate > currentDate) { 
                 dobText.innerHTML = 'Dob can not be in the future.';
 				this.value = ""; // Xóa giá trị ngày được chọn từ trường nhập ngày sinh
-			} else {
+			} else if(inputDate > date18YearsAgo) {
+                dobText.innerHTML = 'Dob must be more than 18';
+				this.value = "";
+            }
+            else{
                 dobText.innerHTML = '';// Xóa thông báo lỗi nếu không có lỗi
 			}
 		});
 
         const form = document.querySelector('form');
         const email = document.getElementById('email');
+        const username = document.getElementById('username');
         const password = document.getElementById('password');
         const passText = document.querySelector('.passText');
         const emailText = document.querySelector('.emailText');
@@ -138,6 +146,8 @@
         const salaryText = document.querySelector('.salaryText');
         const emailError = document.getElementById('emailError');
         const errorMessage = document.getElementById('errorMessage');
+        const errorMessageUser = document.getElementById('errorMessageUser');
+
 
         password.addEventListener('input', checkPassword);
         email.addEventListener('input', checkEmail);
@@ -157,18 +167,16 @@
             const isValidPass = checkPassword();
             const isValidEmail = checkEmail();
 
-            return isValidEmail && isValidPass && !checkDuplicateEmail();
+            return isValidEmail && isValidPass && !checkDuplicateEmail() && !checkDuplicateUsername();
         }
 
         function checkEmail() {
             const emailPattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
             if (email.value.match(emailPattern)) {
                 emailText.innerHTML = '';
-                errorMessage.style.display = 'none';
                 return true;
             } else {
                 emailText.innerHTML = 'Must be a valid email address.';
-                errorMessage.style.display = 'none';
                 return false;
             }
         }
@@ -188,6 +196,32 @@
                         isDuplicate = true;
                     } else {
                         errorMessage.style.display = 'none';
+                        isDuplicate = false;
+                    }
+                },
+                error: function () {
+                    isDuplicate = true;
+                }
+            });
+
+            return isDuplicate;
+        }
+
+        function checkDuplicateUsername() {
+            let isDuplicate = false;
+
+            $.ajax({
+                url: '/admin/employee_check-username',
+                type: 'GET',
+                data: { username: username.value },
+                async: false,
+                success: function (response) {
+                    if (response) {
+                        errorMessageUser.innerText = 'Username already exists.';
+                        errorMessageUser.style.display = 'block';
+                        isDuplicate = true;
+                    } else {
+                        errorMessageUser.style.display = 'none';
                         isDuplicate = false;
                     }
                 },

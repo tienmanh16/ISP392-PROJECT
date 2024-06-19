@@ -39,7 +39,7 @@
 			<div class="col-sm-12">
 
 				<h2 class="myclass">Edit Employee</h2>
-				<form th:action="@{/admin/employee_edit}" th:object="${employee}" method="post"
+				<form th:action="@{/admin/employee_edit}" th:object="${employee}" method="post" onsubmit="return checkFormSubmission()"
 					enctype="multipart/form-data">
 
 					<div class="form-group">
@@ -102,6 +102,7 @@
 						<label>User Name</label>
 						<input type="text" th:field="*{username}" class="form-control" name="username"
 							placeholder="Enter username" id="username" required>
+						<div id="errorMessageUser" class="alert alert-danger" style="display: none;" role="alert"></div>
 					</div>
 
 					<div class="form-group">
@@ -118,7 +119,7 @@
 							<span class="salaryText"></span>
 					</div>
 
-					<button type="submit" class="btn custom-button" onclick="checkDuplicateEmail()">Save</button>
+					<button type="submit" class="btn custom-button">Save</button>
 					<a class="btn custom-button" href="/admin/employee_list">Display List Employee</a>
 				</form>
 			</div>
@@ -151,12 +152,15 @@
 
         const form = document.querySelector('form');
         const email = document.getElementById('email');
+        const username = document.getElementById('username');
         const password = document.getElementById('password');
         const passText = document.querySelector('.passText');
         const emailText = document.querySelector('.emailText');
         const dobText = document.querySelector('.dobText');
         const salaryText = document.querySelector('.salaryText');
         const emailError = document.getElementById('emailError');
+        const errorMessageUser = document.getElementById('errorMessageUser');
+
 
         password.addEventListener('input', checkPassword);
         email.addEventListener('input', checkEmail);
@@ -176,6 +180,7 @@
             return  checkPassword() && checkEmail();
         }
 
+	
         function checkEmail() {
             const emailPattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
             if (email.value.match(emailPattern)) {

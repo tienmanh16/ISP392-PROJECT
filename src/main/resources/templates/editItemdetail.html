@@ -32,7 +32,7 @@
         <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; padding: 20px;">
             <div class="col-sm-12">
                 <h2>Edit Item Detail</h2>
-                <form th:action="@{/admin/itemdetail_add}" th:object="${itemdetail}" method="post" enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
+                <form th:action="@{/admin/itemdetail_edit}" th:object="${itemdetail}" method="post" enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
                     <div class="form-group">
 						<label>Room Item ID</label>
 						<input type="text" th:field="*{RoomItemID}" class="form-control" name="RoomItemID" id="RoomItemID" readonly>

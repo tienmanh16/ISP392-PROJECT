@@ -86,6 +86,11 @@ public class EmployeeServiceImpl implements EmployeeService{
     public boolean existsByEmail(String email) {
         return employeeRepository.existsByEmail(email);
     }
+    
+    @Override
+    public boolean existsByUsername(String email) {
+        return employeeRepository.existsByUsername(email);
+    }
 
     @Override
     public boolean toggleEmployeeStatus(int employeeId, boolean currentStatus) {

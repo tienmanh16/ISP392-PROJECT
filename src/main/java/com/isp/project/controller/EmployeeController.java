@@ -62,20 +62,22 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee_edit")
-    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
+    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, @RequestParam("password") String password,  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "editEm";
         }
 
         Employee existingEmployee = employeeService.findById(employee.getId());
         if (existingEmployee != null) {
+            // String encodedPassword = passwordEncoder.encode(password);
+            // existingEmployee.setPassword(encodedPassword);
             existingEmployee.setFullName(employee.getFullName());
             existingEmployee.setGender(employee.getGender());
             existingEmployee.setAddress(employee.getAddress());
             existingEmployee.setEmail(employee.getEmail());
             existingEmployee.setIdenId(employee.getIdenId());
             existingEmployee.setUsername(employee.getUsername());
-            // existingEmployee.setPassword(employee.getPassword());
+            existingEmployee.setPassword(employee.getPassword());
             existingEmployee.setPhone(employee.getPhone());
             existingEmployee.setDob(employee.getDob());
             existingEmployee.setSalary(employee.getSalary());
@@ -110,6 +112,12 @@ public class EmployeeController {
     @GetMapping("/employee_check-email")
     public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
         boolean exists = employeeService.existsByEmail(email);
+        return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/employee_check-username")
+    public ResponseEntity<Boolean> checkNameExists(@RequestParam String username) {
+        boolean exists = employeeService.existsByUsername(username);
         return ResponseEntity.ok(exists);
     }
 

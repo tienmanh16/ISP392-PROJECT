@@ -12,20 +12,20 @@ import com.isp.project.model.Room;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer>{
-    // @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
-    //        + "r.id, "
-    //        + "r.roomNum, "
-    //        + "rt.id, "
-    //        + "rt.name, "
-    //        + "rt.des, "
-    //        + "rt.priceHour, "
-    //        + "rt.priceDay, "
-    //        + "r.status "
-    //        + "r.status "
-    //        + ") "
-    //        + "FROM Room r "
-    //        + "JOIN r.roomType rt ")
-    // List<RoomDetailDTO> findAllRoomsWithDetails();
+   //  @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
+   //         + "r.id, "
+   //         + "r.roomNum, "
+   //         + "rt.id, "
+   //         + "rt.name, "
+   //         + "rt.des, "
+   //         + "rt.priceHour, "
+   //         + "rt.priceDay, "
+   //         + "r.status "
+   //         + "r.status "
+   //         + ") "
+   //         + "FROM Room r "
+   //         + "JOIN r.roomType rt ")
+   //  List<RoomDetailDTO> findAllRoomsWithDetails();
 
     @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
        + "r.id, "
