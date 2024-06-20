@@ -3,6 +3,7 @@ package com.isp.project.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,9 +34,11 @@ public class ContactController {
 
     }
     @GetMapping("/listInfo")
-    public String listGuestInfo(Model model ) {
-        List<GuestInformation> guestInformations = this.guestInformationService.getAll();
+    public String listGuestInfo(Model model, @RequestParam(name ="pageNo", defaultValue = "1") Integer pageNo ) {
+        Page<GuestInformation> guestInformations = this.guestInformationService.pageInvoice(pageNo);
         model.addAttribute("listInfo", guestInformations);
+        model.addAttribute("totalPage", guestInformations.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
         return "listGuestInfo";
     }
     
