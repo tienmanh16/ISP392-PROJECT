@@ -52,9 +52,21 @@ public class RoomController {
     @Autowired
     private RoomTypeService roomTypeService;
 
+//    @GetMapping("/listRooms")
+//    public String listRooms(Model model) {
+//        List<Room> rooms = roomService.findAll();
+//        model.addAttribute("rooms", rooms);
+//        return "RoomList";
+//    }
+
     @GetMapping("/listRooms")
-    public String listRooms(Model model) {
-        List<RoomDetailDTO> rooms = roomService.getAllRoomsWithDetails();
+    public String RoomList(Model model, @Param("name") String name) {
+        List<Room> rooms;
+        if (name != null ) {
+            rooms = this.roomService.searchRoom(name);
+        } else {
+            rooms = this.roomService.findAll();
+        }
         model.addAttribute("rooms", rooms);
         return "RoomList";
     }
@@ -80,6 +92,12 @@ public class RoomController {
         }
     }
 
+    @GetMapping("/room_check-roomNum")
+    public ResponseEntity<Boolean> checkRoomNumExists(@RequestParam String roomNum) {
+        boolean exists = roomService.existsByRoomNum(roomNum);
+        return ResponseEntity.ok(exists);
+    }
+
     @GetMapping("/listRooms/{id}/update")
     public String editRoom(@PathVariable("id") int id, Model model) {
         Room room = roomService.findById(id);
@@ -87,7 +105,8 @@ public class RoomController {
             return "redirect:/admin/listRooms";
         }
         model.addAttribute("room", room);
-        model.addAttribute("roomType", room.getRoomType());
+        List<RoomType> roomTypes = roomTypeService.getAll();
+        model.addAttribute("roomTypes", roomTypes);
         return "updateRoom";
     }
 
@@ -103,6 +122,29 @@ public class RoomController {
             return "redirect:/admin/add-room";
         }
     }
+
+
+    @GetMapping("/inactiveRoom/{id}")
+    public ResponseEntity<String> inactiveRoom(@PathVariable("id") int id) {
+        try {
+            roomService.updateRoomActiveStatus(id, 0);
+            return ResponseEntity.ok("Room inactive successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
+        }
+    }
+
+    @GetMapping("/activeRoom/{id}")
+    public ResponseEntity<String> activeRoom(@PathVariable("id") int id) {
+        try {
+            roomService.updateRoomActiveStatus(id, 1);
+            return ResponseEntity.ok("Room active successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active room");
+        }
+    }
+
+
 
     @GetMapping("/managerbooking")
     public String ManagerBooking() {

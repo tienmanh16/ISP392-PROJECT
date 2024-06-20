@@ -147,4 +147,9 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
                ") AND r.RoomActive = 1", nativeQuery = true)
 List<Object[]> findAvailableRooms(@Param("checkinDate") Date checkinDate,
                                   @Param("checkoutDate") Date checkoutDate);
+
+    boolean existsByRoomNum(String roomNum);
+
+    @Query("Select c FROM Room c WHERE c.roomNum LIKE %?1%")
+    List<Room> searchRoom(String name);
 }

@@ -3,8 +3,8 @@ package com.isp.project.service;
 import java.sql.Date;
 import java.util.List;
 
+import com.isp.project.model.RoomType;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomCustomerDTO;
@@ -31,13 +31,13 @@ public interface RoomService {
 
     Room findById(int id);
 
-    void updateRoomStatus(int id, String status);
+    void updateRoomActiveStatus(int id, int status);
 
     Page<RoomDetailDTO> getAll(Integer pageNo);
 
     List<RoomDetailDTO> getRoomFromFilter(String status, Integer id);
 
     void updateRoomStatusByRoomId(Integer roomId);
-
-
+    boolean existsByRoomNum(String roomNum);
+    List<Room> searchRoom(String name);
 }
