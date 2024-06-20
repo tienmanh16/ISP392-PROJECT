@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.model.Room;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
@@ -36,7 +37,11 @@ public class RoomServiceImpl implements RoomService {
         this.roomRepository = roomRepository;
     }
 
- 
+
+    @Override
+    public List<RoomDetailDTO> getAllRoomsWithDetails() {
+        return roomRepository.findAllRoomsWithDetails();
+    }
 
     @Override
     public Page<RoomDetailDTO> getAllRoomsWithDetailsByRoomTypeId(Integer id, Integer pageNo) {
@@ -54,6 +59,40 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomDetailDTO> getAllRoomsByStatus(String status) {
         return roomRepository.findAllRoomsByStatus(status);
+    }
+
+    @Override
+    public Boolean create(Room room) {
+        try {
+            this.roomRepository.save(room);
+            return true;
+
+        } catch (Exception e) {
+            // Ghi log chi tiết hơn để dễ dàng chẩn đoán lỗi
+            System.err.println("Failed to save Room: " + room);
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    @Override
+    public void save(Room room) {
+        roomRepository.save(room);
+    }
+
+    @Override
+    public Room findById(int id) {
+        return roomRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void updateRoomStatus(int id, String status) {
+        Room room = roomRepository.findById(id).orElse(null);
+        if (room != null) {
+            room.setStatus(status);
+            roomRepository.save(room);
+        }
     }
 
     public Customer test(int id) {
@@ -123,7 +162,7 @@ public class RoomServiceImpl implements RoomService {
                     priceDay, status);
             findRoom.add(newRoom);
         }
-        
+
         return findRoom;
     }
 

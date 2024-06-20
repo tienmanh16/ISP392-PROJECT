@@ -13,17 +13,25 @@ import com.isp.project.model.Room;
 
 @Service
 public interface RoomService {
-    //List<RoomDetailDTO> getAllRoomsWithDetails();
+    List<RoomDetailDTO> getAllRoomsWithDetails();
 
     Page<RoomDetailDTO> getAllRoomsWithDetailsByRoomTypeId(Integer id, Integer pageNo);
 
     List<RoomDetailDTO> getAllRoomsByStatus(String status);
-    
+
     List<RoomDetailDTO> getAvailableRooms(Date checkinDate, Date checkoutDate);
     // Room findByRoomNum(String roomNum);
-    
+
     List<Room> findAll();
     RoomCustomerDTO getAllRoomCusWithDetailsByRoomId(Integer id);
+
+    Boolean create(Room room);
+
+    void save(Room room);
+
+    Room findById(int id);
+
+    void updateRoomStatus(int id, String status);
 
     Page<RoomDetailDTO> getAll(Integer pageNo);
 
@@ -31,5 +39,5 @@ public interface RoomService {
 
     void updateRoomStatusByRoomId(Integer roomId);
 
-    
+
 }

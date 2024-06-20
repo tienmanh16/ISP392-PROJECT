@@ -50,8 +50,8 @@ public class InvoiceServiceImpl implements InvoiceService {
         return this.invoiceRepository.findAll();
     }
 
-   
-   
+
+
     @Override
     public String htmlToPdf(String processedHtml, String name) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -111,30 +111,30 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Map<String, Double> getTotalServiceByYear(int year) {
         Map<String, Double> data = new LinkedHashMap<>();
-    
+
         for (int month = 1; month <= 12; month++) {
-            double totalServiceByMonth = 0; 
+            double totalServiceByMonth = 0;
             double totalInvoiceByMonth = 0;
             double totalBookingByMonth = 0;
-    
+
             List<Invoice> invoiceList = this.invoiceRepository.getInvoicesForMonth(month, year);
             for (Invoice invoice : invoiceList) {
                 totalInvoiceByMonth += invoice.getTotalAmount();
             }
-    
+
             List<BookingMapping> bookingList = this.bookingMappingRepository.revenueBooking(month, year);
             for (BookingMapping booking : bookingList) {
                 totalBookingByMonth += booking.getBookingTotalAmount();
             }
-    
+
             totalServiceByMonth = totalInvoiceByMonth - totalBookingByMonth;
-    
+
             data.put("Tháng " + month, totalServiceByMonth);
         }
-    
+
         return data;
     }
-    
+
 
 
 

@@ -24,7 +24,7 @@ public class GuestInformation {
     @Column(name = "Name")  
     private String name;
 
-    @Column(name = "Phone")
+    @Column(name = "Phone") 
     private String phone;
 
     @Column(name = "Email")

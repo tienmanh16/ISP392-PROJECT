@@ -47,6 +47,20 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
     List<RoomDetailDTO> findAllRoomsWithDetails1();
 
     @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
+            + "r.id, "
+            + "r.roomNum, "
+            + "rt.id, "
+            + "rt.name, "
+            + "rt.des, "
+            + "rt.priceHour, "
+            + "rt.priceDay, "
+            + "r.status "
+            + ") "
+            + "FROM Room r "
+            + "JOIN r.roomType rt ")
+    List<RoomDetailDTO> findAllRoomsWithDetails();
+
+    @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
        + "r.id, "
        + "r.roomNum, "
        + "rt.id, "
@@ -114,7 +128,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
       + "WHERE r.id = :roomId")
     RoomCustomerDTO findAllRoomCusWithDetailsByRoomId(@Param("roomId") Integer roomId);
 
-    
+
     Page<Room> findAll(Pageable pageable);
 
 

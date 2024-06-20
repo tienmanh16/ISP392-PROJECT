@@ -46,7 +46,7 @@ public class Booking {
 
     @Column(name = "IsCancelled", nullable = false)
     private int isCancelled;
-    
+
     @OneToMany(mappedBy = "bookingID")
     @JsonManagedReference
     private List<Register> register;
@@ -60,5 +60,5 @@ public class Booking {
     private List<Invoice> invoice;
 
 
-   
+
 }

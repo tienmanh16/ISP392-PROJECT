@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Room Category</title>
+	<title>Service Category</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -101,72 +101,54 @@
 		<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
 			<div th:replace="~{fragments/header :: header}"></div>
 		</header>
-				<!-- thêm class layout-radius để fix header  -->
-				<section class="ftco-section layout-radius">
-					<div class="row">
-						<div class="row justify-content-center">
-							<div class="col-md-6 text-center mb-5">
-								<h2 class="heading-section">Room Category Management</h2>
-							</div>
-						</div>
+		<!-- thêm class layout-radius để fix header  -->
+		<section class="ftco-section layout-radius">
+			<div class="row">
+				<div class="row justify-content-center">
+					<div class="col-md-6 text-center mb-5">
+						<h2 class="heading-section">Service Category Management</h2>
 					</div>
+				</div>
+			</div>
 
-					<div class="action-buttons">
-						<form class="search-container">
-							<input type="text" id="searchbar" class="form-control search-input" name="name" placeholder="Search Room Type Name...">
-							<button class="btn search-button" type="submit" id="search-button" >
-								Search
-							</button>
-						</form>
+			<div class="action-buttons">
+				<form class="search-container">
+					<input type="text" id="searchbar" class="form-control search-input" name="name" placeholder="Search Service Type Name...">
+					<button class="btn search-button" type="submit" id="search-button" >
+						Search
+					</button>
+				</form>
 
-						<button class="btn custom-button" onclick="window.location.href='/add-cate'">
-							Add Room Type
-						</button>
-					</div>
+				<button class="btn custom-button" onclick="window.location.href='/admin/add-secate'">
+					Add Service Type
+				</button>
+			</div>
 
 				<div class="container">
 					<div class="col-lg-12">
 						<div class="table-wrap">
-							<table class="table table-striped" id="emp-table">
+							<table class="table table-striped">
 								<thead>
 									<tr>
-										<th col-index="1">Category ID</th>
-										<th col-index="2">Name</th>
-										<th col-index="3">Description</th>
-										<th col-index="4">Per Hour
-											<select class="table-filter" onchange="filter_rows()">
-												<option value="all">All</option>
-											</select>
-										</th>
-										<th col-index="5">Per Day
-											<select class="table-filter" onchange="filter_rows()">
-												<option value="all">All</option>
-											</select>
-										</th>
-										<th col-index="6">Update</th>
+										<th>Category ID</th>
+										<th>Name</th>
+										<th>Update</th>
 										<th>Status</th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr th:each="list : ${listRoomType}">
-										<th scope="row" th:text="${list.id}"></th>
-										<td th:text="${list.name}"></td>
-										<td th:text="${list.des}"></td>
-										<td th:text="${list.priceHour}"></td>
-										<td th:text="${list.priceDay}"></td>
-										<td><a th:href="@{/list/{id}/update(id=${list.id})}" class="ti-menu"></a></td>
-										<!-- <td><a th:href="@{/list/{id}/delete(id=${list.id})}" class="btn btn-danger ti-close"></a></td> -->
-										<!-- <td><a href="javascript:void(0);"
-												th:onclick="'confirmDelete(' + ${list.id} + ');'"
-												class="btn btn-danger ti-close"></a>
-										</td> -->
-										<!-- <td><a href="javascript:void(0);" th:onclick="'confirmHide(' + ${list.id} + ');'" class="btn btn-danger ti-close"></a></td> -->
+									<tr th:each="list : ${listServiceType}">
+										<th scope="row" th:text="${list.SeTypeID}"></th>
+										<td th:text="${list.SeTypeName}"></td>
+										<td><a th:href="@{/admin/listSe/editservice/{SeTypeID}(SeTypeID=${list.SeTypeID})}"
+												class="ti-menu"></a></td>
+									
 										<td>
-											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 1}"
-												th:onclick="'confirmInactiveRoomType(' + ${list.id} + ');'"
+											<a href="javascript:void(0);" th:if="${list.serviceTypeActive == 1}"
+												th:onclick="'confirmInactiveServiceType(' + ${list.SeTypeID} + ');'"
 												class="btn btn-success" style="width: 85px; height: 40px;"> Active</a>
-											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 0}"
-												th:onclick="'confirmActiveRoomType(' + ${list.id} + ');'"
+											<a href="javascript:void(0);" th:if="${list.serviceTypeActive == 0}"
+												th:onclick="'confirmActiveServiceType(' + ${list.SeTypeID} + ');'"
 												class="btn btn-danger" style="width: 85px; height: 40px;"> Inactive</a>
 										</td>
 									</tr>
@@ -175,16 +157,16 @@
 						</div>
 					</div>
 				</div>
-			</section>
+		</section>
 		<script>
-			function confirmInactiveRoomType(RoomTypeID) {
+			function confirmInactiveServiceType(ServiceTypeID) {
 				if (confirm('Are you sure you want to inactive it?')) {
-					inactiveRoomType(RoomTypeID);
+					inactiveServiceType(ServiceTypeID);
 				}
 			}
 
-			function inactiveRoomType(RoomTypeID) {
-				fetch(`/inactiveRoomType/${RoomTypeID}`, {
+			function inactiveServiceType(ServiceTypeID) {
+				fetch(`/admin/inactiveServiceType/${ServiceTypeID}`, {
 					method: 'GET'
 				})
 					.then(response => response.text().then(text => ({ status: response.status, text })))
@@ -203,14 +185,14 @@
 			}
 		</script>
 		<script>
-			function confirmActiveRoomType(RoomTypeID) {
+			function confirmActiveServiceType(ServiceTypeID) {
 				if (confirm('Are you sure you want to active it?')) {
-					activeRoomType(RoomTypeID);
+					activeServiceType(ServiceTypeID);
 				}
 			}
 
-			function activeRoomType(RoomTypeID) {
-				fetch(`/activeRoomType/${RoomTypeID}`, {
+			function activeServiceType(ServiceTypeID) {
+				fetch(`/admin/activeServiceType/${ServiceTypeID}`, {
 					method: 'GET'
 				})
 					.then(response => response.text().then(text => ({ status: response.status, text })))
@@ -228,22 +210,46 @@
 					});
 			}
 		</script>
+
+		<!-- <script>
+		function confirmDelete(SeTypeID) {
+			if (confirm('Are you sure you want to delete it?')) {
+				deleteBooking(SeTypeID);
+			}
+		}
+  
+		function deleteBooking(SeTypeID) {
+	  fetch(`/deleteSe/${SeTypeID}`, { // Ensure the endpoint matches the controller endpoint
+		  method: 'GET'
+	  })
+	  .then(response => {
+		  if (!response.ok) {
+			  throw new Error("Failed to delete service category");
+		  }
+		  return response.text(); // Read the response text
+	  })
+	  .then(message => {
+		  if (message === "Service category deleted successfully") {
+			  alert(message);
+			  location.reload(); // Reload the page to reflect the deletion
+		  } else {
+			  throw new Error(message); // If the message is not expected, throw an error
+		  }
+	  })
+	  .catch(error => {
+		  console.error('Error:', error);
+		  alert("An error occurred: " + error.message);
+	  });
+  }
+  
+  
+	</script> -->
 
 
 
 	</div>
 	<div th:replace="~{fragments/footer :: footer}"></div>
 	<!-- thư viện để add header và footer  -->
-	<!-- Include filter.js at the end of the body -->
-	<script th:src="@{/js/filter.js}"></script>
-	<script>
-		// Call getUniqueValuesFromColumn after the script is loaded
-		window.onload = function () {
-			getUniqueValuesFromColumn();
-		};
-	</script>
-
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 	<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
 	<script th:src="@{/js/jquery.js}"></script>

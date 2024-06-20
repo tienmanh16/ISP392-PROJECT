@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.data.repository.query.Param;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isp.project.dto.RoomCustomerDTO;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.dto.ServiceDetailDTO;
 import com.isp.project.model.Customer;
@@ -33,7 +37,11 @@ import com.isp.project.service.RoomServiceImpl;
 import com.isp.project.service.RoomTypeService;
 import com.isp.project.service.SeService;
 
+
+import jakarta.validation.Valid;
+
 @Controller
+// @RequestMapping("/admin")
 public class RoomController {
     @Autowired
     private RoomServiceImpl roomServiceImpl;
@@ -50,13 +58,109 @@ public class RoomController {
     @Autowired
     private RoomTypeService roomTypeService;
 
+    @GetMapping("/listRooms")
+    public String listRooms(Model model) {
+        List<RoomDetailDTO> rooms = roomService.getAllRoomsWithDetails();
+        model.addAttribute("rooms", rooms);
+        return "RoomList";
+    }
+
+    @GetMapping("/add-room")
+    public String addRoom(Model model) {
+        Room room = new Room();
+        List<RoomType> roomTypes = roomTypeService.getAll();
+        model.addAttribute("room", room);
+        model.addAttribute("roomTypes", roomTypes);
+        return "addRoom";
+    }
+
+    @PostMapping("/addRoom")
+    public String saveRoom(@Valid @ModelAttribute("room") Room room, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "addRoom";
+        }
+        if (this.roomService.create(room)) {
+            return "redirect:/listRooms";
+        } else {
+            return "redirect:/add-room";
+        }
+    }
+
+    @GetMapping("/listRooms/{id}/update")
+    public String editRoom(@PathVariable("id") int id, Model model) {
+        Room room = roomService.findById(id);
+        if (room == null) {
+            return "redirect:/listRooms";
+        }
+        model.addAttribute("room", room);
+        model.addAttribute("roomType", room.getRoomType());
+        return "updateRoom";
+    }
+
+    @PostMapping("/saveRoom")
+    public String updateRoom(@Valid @ModelAttribute("room") Room room, BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            return "updateRoom"; // Trả về lại trang hiện tại nếu có lỗi
+        }
+        if (this.roomService.create(room)) {
+            return "redirect:/listRooms";
+        } else {
+            return "redirect:/add-room";
+        }
+    }
+
     @GetMapping("/managerbooking")
     public String ManagerBooking() {
         return "ManagerBooking";
     }
 
-    @GetMapping("/roomcategory")
-    public String RoomCategory() {
+    @GetMapping("/listRoomType")
+    public String RoomCategory(Model model, @Param("name") String name) {
+        List<RoomType> listRoomType;
+        if (name != null) {
+            listRoomType = this.roomTypeService.searchRoomType(name);
+        } else {
+            listRoomType = this.roomTypeService.getAll();
+        }
+        model.addAttribute("listRoomType", listRoomType);
+        return "RoomCategory";
+    }
+
+    @GetMapping("/add-cate")
+    public String add1(Model model) {
+        RoomType roomType = new RoomType();
+        model.addAttribute("roomType", roomType);
+        return "addRoomType";
+    }
+
+    @PostMapping("/addRoomType")
+    public String save(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "addRoomType";
+        }
+        if (roomType.getPriceHour() <= 0 || roomType.getPriceDay() <= 0) {
+            bindingResult.rejectValue("priceHour", "PositiveValue");
+            bindingResult.rejectValue("priceDay", "PositiveValue");
+            return "addRoomType";
+        }
+        if (this.roomTypeService.create(roomType)) {
+            return "redirect:/listRoomType";
+        } else {
+            return "redirect:/add-cate";
+        }
+    }
+
+    @GetMapping("/list/{id}/update")
+    public String update(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("roomType", roomTypeService.findByID(id));
+        return "updateRoomType";
+    }
+
+    @GetMapping("/listRoomTypeActive")
+    public String listRoomTypeActive(Model model) {
+        List<RoomType> roomType = roomTypeService.findAllActive();
+        model.addAttribute("listRoomType", roomType);
         return "RoomCategory";
     }
 
@@ -115,13 +219,13 @@ public class RoomController {
     }
 
     @GetMapping("/getServiceBySeTypeId")
-    public ResponseEntity<List<ServiceDetailDTO>> getService1(@RequestParam("serviceTypeId") Integer serviceTypeId) { 
+    public ResponseEntity<List<ServiceDetailDTO>> getService1(@RequestParam("serviceTypeId") Integer serviceTypeId) {
         List<ServiceDetailDTO> services = null;
         services = seService.findAllServiceDetailByServiceTypeId(serviceTypeId);
         if (serviceTypeId == 0) {
             services = seService.getAllServiceDetail();
         }
-        
+
         return ResponseEntity.ok(services);
     }
 
@@ -140,11 +244,10 @@ public class RoomController {
         List<ServiceDetailDTO> services = seService.getAllServiceDetail();
         return ResponseEntity.ok(services);
     }
-    
+
 
     @PostMapping("/api/availableRooms")
     @ResponseBody
-
     public List<RoomDetailDTO> getAvailableRooms(@RequestBody Map<String, String> dates) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -171,4 +274,48 @@ public class RoomController {
     }
 
      
+    @GetMapping("/listRoomTypeInactive")
+    public String listRoomTypeInactive(Model model) {
+        List<RoomType> roomType = roomTypeService.findAllInactive();
+        model.addAttribute("listRoomType", roomType);
+        return "RoomCategory";
+    }
+
+    @GetMapping("/inactiveRoomType/{id}")
+    public ResponseEntity<String> inactiveRoomType(@PathVariable("id") int id) {
+        try {
+            roomTypeService.updateRoomTypeActiveStatus(id, 0);
+            return ResponseEntity.ok("Room category inactive successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room type");
+        }
+    }
+
+    @GetMapping("/activeRoomType/{id}")
+    public ResponseEntity<String> activeRoomType(@PathVariable("id") int id) {
+        try {
+            roomTypeService.updateRoomTypeActiveStatus(id, 1);
+            return ResponseEntity.ok("Room category active successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active room type");
+        }
+    }
+
+    @PostMapping("/saveRoomType")
+    public String updateRoomType(@Valid @ModelAttribute("roomType") RoomType roomType, BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            return "updateRoomType"; // Trả về lại trang hiện tại nếu có lỗi
+        }
+        if (roomType.getPriceHour() <= 0 || roomType.getPriceDay() <= 0) {
+            bindingResult.rejectValue("priceHour", "PositiveValue");
+            bindingResult.rejectValue("priceDay", "PositiveValue");
+            return "updateRoomType";
+        }
+        if (this.roomTypeService.create(roomType)) {
+            return "redirect:/listRoomType";
+        } else {
+            return "redirect:/add-cate";
+        }
+    }
 }

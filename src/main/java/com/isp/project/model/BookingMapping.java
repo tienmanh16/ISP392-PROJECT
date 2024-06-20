@@ -56,5 +56,5 @@ public class BookingMapping {
     private int bookingMappingActive;
 
     
-    
+
 }

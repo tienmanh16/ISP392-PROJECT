@@ -25,5 +25,5 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer>{
     @Query("SELECT i FROM Invoice i JOIN i.booking b WHERE MONTH(i.InvoiceDate) = :month AND YEAR(i.InvoiceDate) = :year")
     List<Invoice> getReportRevenue(@Param("month") int month, @Param("year") int year);
 
-  
+
 }
