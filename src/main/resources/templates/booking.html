@@ -319,214 +319,114 @@
 
   <!-- ================== Bắt Click thêm phòng đã chọn-START=================================================================== -->
   <script>
-//     const availableRoom = document.getElementById('available-rooms');
-//     availableRoom.addEventListener('click', (event) => {
-//       if (event.target.closest('.add-room-link')) {
-//         addRoomToSelectedTable(event);
-//       }
-//     });
-
-//     function addRoomToSelectedTable(event) {
-//       const row = event.target.closest('tr');
-      
-//       const roomID = row.querySelector('#roomID, .roomID').textContent;   
-//       const roomNum = row.querySelector('#roomNum, .roomNum').textContent;
-//       const roomTypeId = row.querySelector('#roomTypeId, .roomTypeId').textContent;
-//       const roomTypeName = row.querySelector('#roomTypeName, .roomTypeName').textContent;
-//       const roomTypeDescription = row.querySelector('#roomTypeDescription, .roomTypeDescription').textContent;
-//       const priceHour = row.querySelector('#priceHour, .priceHour').textContent; 
-//       const priceDay = row.querySelector('#priceDay, .priceDay').textContent; 
-//       const status = row.querySelector('#status, .status').textContent; 
-      
-//       // Check if the room number already exists in the "Selected Rooms" table
-//       const selectedRoomsTable = document.getElementById('selected-rooms');
-//       const existingRows = selectedRoomsTable.getElementsByTagName('tr');
-//       for (let i = 0; i < existingRows.length; i++) {
-//         const existingRoomNum = existingRows[i].querySelector('.roomNum').textContent;
-//         if (existingRoomNum === roomNum) {
-//           // Room number already exists, do not add the row
-//           return;
-//         }
-//       }
-//       // If the room number does not exist, add a new row to the "Selected Rooms" table
-//       const newRow = document.createElement('tr');
-//       newRow.innerHTML = `
-
-//        <td class="roomID" style="display:none;">${roomID}</td>
-//         <td class="roomNum">${roomNum}</td>
-//         <td class="roomTypeId" style="display:none;">${roomTypeId}</td>
-//         <td class="roomTypeName">${roomTypeName}</td>
-//         <td class="roomTypeDescription" style="display:none;">${roomTypeDescription}</td>
-//         <td class="priceHour" style="display:none;">${priceHour}</td>
-//         <td class="priceDay" style="display:none;">${priceDay}</td>
-//         <td class="status" style="display:none;">${status}</td>
-//         <td><a href="javascript:void(0)" class="remove-room-link">
-//             <span class="material-icons" style="color: red;">cancel</span>
-//         </a></td>
-//     `;
-//       selectedRoomsTable.appendChild(newRow);
-//       console.log("Row", newRow);
-//     }
-
-//     const selectedRooms = document.getElementById('selected-rooms');
-//     selectedRooms.addEventListener('click', (event) => {
-//       if (event.target.closest('.remove-room-link')) {
-//         removeRoomFromSelectedTable(event);
-//       }
-//     });
-
-//     function removeRoomFromSelectedTable(event) {
-//       const row = event.target.closest('tr');
-//       console.log("Row", row);
-//       row.remove();
-//     }
-// // ================================================================================================================
-// function getSelectedRooms() {
-//     const selectedRoomsTable = document.getElementById('selected-rooms').querySelector('tbody');
-//     const rows = selectedRoomsTable.getElementsByTagName('tr');
-//     const selectedRooms = [];
-
-//     for (let i = 0; i < rows.length; i++) {
-//       const roomID = rows[i].querySelector('.roomID').textContent;
-//       const roomNum = rows[i].querySelector('.roomNum').textContent;
-//       const roomTypeId = rows[i].querySelector('.roomTypeId').textContent;
-//       const roomTypeName = rows[i].querySelector('.roomTypeName').textContent;
-//       const roomTypeDescription = rows[i].querySelector('.roomTypeDescription').textContent;
-//       const priceHour = rows[i].querySelector('.priceHour').textContent;
-//       const priceDay = rows[i].querySelector('.priceDay').textContent;
-//       const status = rows[i].querySelector('.status').textContent;
-
-//       selectedRooms.push({
-//         roomID,
-//         roomNum,
-//         roomTypeId,
-//         roomTypeName,
-//         roomTypeDescription,
-//         priceHour,
-//         priceDay,
-//         status
-//       });
-//     }
-
-//     return selectedRooms;
-//     console.log("selectedRooms", selectedRooms);
-//   }
-
-//   function updateSelectedRoomsInput() {
-//     const selectedRooms = getSelectedRooms();
-//     document.getElementById('selectedRoomsInput').value = JSON.stringify(selectedRooms);
-
-//     // Automatically submit the form
-//     document.getElementById('booking-form').submit();
-//   }
-document.addEventListener('DOMContentLoaded', (event) => {
-  const availableRoom = document.getElementById('available-rooms');
-  availableRoom.addEventListener('click', (event) => {
-    if (event.target.closest('.add-room-link')) {
-      addRoomToSelectedTable(event);
-    }
-  });
-
-  function addRoomToSelectedTable(event) {
-    const row = event.target.closest('tr');
-    
-    const roomID = row.querySelector('#roomID, .roomID').textContent;   
-    const roomNum = row.querySelector('#roomNum, .roomNum').textContent;
-    const roomTypeId = row.querySelector('#roomTypeId, .roomTypeId').textContent;
-    const roomTypeName = row.querySelector('#roomTypeName, .roomTypeName').textContent;
-    const roomTypeDescription = row.querySelector('#roomTypeDescription, .roomTypeDescription').textContent;
-    const priceHour = row.querySelector('#priceHour, .priceHour').textContent; 
-    const priceDay = row.querySelector('#priceDay, .priceDay').textContent; 
-    const status = row.querySelector('#status, .status').textContent; 
-    
-    const selectedRoomsTableBody = document.getElementById('selected-rooms');
-    if (!selectedRoomsTableBody) {
-      console.error('selected-rooms element not found');
-      return;
-    }
-
-    const existingRows = selectedRoomsTableBody.getElementsByTagName('tr');
-    for (let i = 0; i < existingRows.length; i++) {
-      const existingRoomNum = existingRows[i].querySelector('.roomNum').textContent;
-      if (existingRoomNum === roomNum) {
-        return;
-      }
-    }
-
-    const newRow = document.createElement('tr');
-    newRow.innerHTML = `
-      <td class="roomID" style="display:none;">${roomID}</td>
-      <td class="roomNum">${roomNum}</td>
-      <td class="roomTypeId" style="display:none;">${roomTypeId}</td>
-      <td class="roomTypeName">${roomTypeName}</td>
-      <td class="roomTypeDescription" style="display:none;">${roomTypeDescription}</td>
-      <td class="priceHour" style="display:none;">${priceHour}</td>
-      <td class="priceDay" style="display:none;">${priceDay}</td>
-      <td class="status" style="display:none;">${status}</td>
-      <td><a href="javascript:void(0)" class="remove-room-link">
-          <span class="material-icons" style="color: red;">cancel</span>
-      </a></td>
-    `;
-    selectedRoomsTableBody.appendChild(newRow);
-    console.log("Row", row);
-    updateSelectedRoomsInput();
-  }
-
-  const selectedRoomsTableBody = document.getElementById('selected-rooms');
-  selectedRoomsTableBody.addEventListener('click', (event) => {
-    if (event.target.closest('.remove-room-link')) {
-      removeRoomFromSelectedTable(event);
-    }
-  });
-
-  function removeRoomFromSelectedTable(event) {
-    const row = event.target.closest('tr');
-    row.remove();
-    console.log("Row", row);
-    updateSelectedRoomsInput();
-  }
-
-  function getSelectedRooms() {
-    const rows = selectedRoomsTableBody.getElementsByTagName('tr');
-    const selectedRooms = [];
-
-    for (let i = 0; i < rows.length; i++) {
-      const roomID = rows[i].querySelector('.roomID').textContent;
-      const roomNum = rows[i].querySelector('.roomNum').textContent;
-      const roomTypeId = rows[i].querySelector('.roomTypeId').textContent;
-      const roomTypeName = rows[i].querySelector('.roomTypeName').textContent;
-      const roomTypeDescription = rows[i].querySelector('.roomTypeDescription').textContent;
-      const priceHour = rows[i].querySelector('.priceHour').textContent;
-      const priceDay = rows[i].querySelector('.priceDay').textContent;
-      const status = rows[i].querySelector('.status').textContent;
-
-      selectedRooms.push({
-        id: roomID,
-        roomNum,
-        roomTypeId,
-        roomTypeName,
-        roomTypeDescription,
-        priceHour,
-        priceDay,
-        status
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const availableRoom = document.getElementById('available-rooms');
+      availableRoom.addEventListener('click', (event) => {
+        if (event.target.closest('.add-room-link')) {
+          addRoomToSelectedTable(event);
+        }
       });
-    }
 
-    return selectedRooms;
-  }
+      function addRoomToSelectedTable(event) {
+        const row = event.target.closest('tr');
 
-  function updateSelectedRoomsInput() {
-    const selectedRooms = getSelectedRooms();
-    const selectedRoomsInput = document.getElementById('selected-rooms-input');
-    if (!selectedRoomsInput) {
-      console.error('selected-rooms-input element not found');
-      return;
-    }
-    selectedRoomsInput.value = JSON.stringify(selectedRooms);
-  }
-});
+        const roomID = row.querySelector('#roomID, .roomID').textContent;
+        const roomNum = row.querySelector('#roomNum, .roomNum').textContent;
+        const roomTypeId = row.querySelector('#roomTypeId, .roomTypeId').textContent;
+        const roomTypeName = row.querySelector('#roomTypeName, .roomTypeName').textContent;
+        const roomTypeDescription = row.querySelector('#roomTypeDescription, .roomTypeDescription').textContent;
+        const priceHour = row.querySelector('#priceHour, .priceHour').textContent;
+        const priceDay = row.querySelector('#priceDay, .priceDay').textContent;
+        const status = row.querySelector('#status, .status').textContent;
 
-//=======================================================================================================================
+        const selectedRoomsTableBody = document.getElementById('selected-rooms');
+        if (!selectedRoomsTableBody) {
+          console.error('selected-rooms element not found');
+          return;
+        }
+
+        const existingRows = selectedRoomsTableBody.getElementsByTagName('tr');
+        for (let i = 0; i < existingRows.length; i++) {
+          const existingRoomNum = existingRows[i].querySelector('.roomNum').textContent;
+          if (existingRoomNum === roomNum) {
+            return;
+          }
+        }
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td class="roomID" style="display:none;">${roomID}</td>
+          <td class="roomNum">${roomNum}</td>
+          <td class="roomTypeId" style="display:none;">${roomTypeId}</td>
+          <td class="roomTypeName">${roomTypeName}</td>
+          <td class="roomTypeDescription" style="display:none;">${roomTypeDescription}</td>
+          <td class="priceHour" style="display:none;">${priceHour}</td>
+          <td class="priceDay" style="display:none;">${priceDay}</td>
+          <td class="status" style="display:none;">${status}</td>
+          <td><a href="javascript:void(0)" class="remove-room-link">
+              <span class="material-icons" style="color: red;">cancel</span>
+          </a></td>
+    `;
+        selectedRoomsTableBody.appendChild(newRow);
+        console.log("Row", row);
+        updateSelectedRoomsInput();
+      }
+
+      const selectedRoomsTableBody = document.getElementById('selected-rooms');
+      selectedRoomsTableBody.addEventListener('click', (event) => {
+        if (event.target.closest('.remove-room-link')) {
+          removeRoomFromSelectedTable(event);
+        }
+      });
+
+      function removeRoomFromSelectedTable(event) {
+        const row = event.target.closest('tr');
+        row.remove();
+        console.log("Row", row);
+        updateSelectedRoomsInput();
+      }
+
+      function getSelectedRooms() {
+        const rows = selectedRoomsTableBody.getElementsByTagName('tr');
+        const selectedRooms = [];
+
+        for (let i = 0; i < rows.length; i++) {
+          const roomID = rows[i].querySelector('.roomID').textContent;
+          const roomNum = rows[i].querySelector('.roomNum').textContent;
+          const roomTypeId = rows[i].querySelector('.roomTypeId').textContent;
+          const roomTypeName = rows[i].querySelector('.roomTypeName').textContent;
+          const roomTypeDescription = rows[i].querySelector('.roomTypeDescription').textContent;
+          const priceHour = rows[i].querySelector('.priceHour').textContent;
+          const priceDay = rows[i].querySelector('.priceDay').textContent;
+          const status = rows[i].querySelector('.status').textContent;
+
+          selectedRooms.push({
+            id: roomID,
+            roomNum,
+            roomTypeId,
+            roomTypeName,
+            roomTypeDescription,
+            priceHour,
+            priceDay,
+            status
+          });
+        }
+
+        return selectedRooms;
+      }
+
+      function updateSelectedRoomsInput() {
+        const selectedRooms = getSelectedRooms();
+        const selectedRoomsInput = document.getElementById('selected-rooms-input');
+        if (!selectedRoomsInput) {
+          console.error('selected-rooms-input element not found');
+          return;
+        }
+        selectedRoomsInput.value = JSON.stringify(selectedRooms);
+      }
+    });
+
+    //=======================================================================================================================
   </script>
   <!-- ================== Bắt Click thêm phòng đã chọn-END =================================================================== -->
 
