@@ -15,5 +15,7 @@ void testPostMan(Integer id);
 List<BookingRoomDTO> findBookingRoomByBookingID(Integer bookingID);
 List<BookingRoomDTO> getAllBookingByName(String customer_name);
 List<Booking> getCustomerForDate(int month, int year);
-    
+
+
+List<Booking> getAllBookingNew();
 }

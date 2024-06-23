@@ -53,6 +53,10 @@ public class BookingServiceImpl implements BookingService {
         return bookingRoomDTOs;
     }
 
+    @Override
+    public List<Booking> getAllBookingNew() {
+        return bookingRepository.findAll();
+    }
     
     @Override
     // public boolean deleteBookingRoom(Integer id) {

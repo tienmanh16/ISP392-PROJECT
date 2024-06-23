@@ -68,23 +68,36 @@ public class BookingController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    // @Bean
-    // public ObjectMapper objectMapper() {
-    // return new ObjectMapper();
-    // }
 
+
+    // @GetMapping("/booking")
+    // public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
+    //     List<BookingRoomDTO> listBooking;
+    //     if (query != null && !query.isEmpty()) {
+    //         listBooking = bookingService.getAllBookingByName(query.toLowerCase());
+    //     } else {
+    //         listBooking = bookingService.getAllBooking();
+    //     }
+    //     model.addAttribute("listBooking", listBooking);
+    //     model.addAttribute("query", query);
+    //     model.addAttribute("bookingInfo", new BookingInfoDTO());
+    //     return "booking";
+    // }
+   
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
-        List<BookingRoomDTO> listBooking;
+        // List<BookingRoomDTO> listBooking;
+        List<Booking> listBooking;
+        
         if (query != null && !query.isEmpty()) {
-            listBooking = bookingService.getAllBookingByName(query.toLowerCase());
+            listBooking = bookingService.getAllBookingNew();
         } else {
-            listBooking = bookingService.getAllBooking();
+            listBooking = bookingService.getAllBookingNew();
         }
         model.addAttribute("listBooking", listBooking);
         model.addAttribute("query", query);
         model.addAttribute("bookingInfo", new BookingInfoDTO());
-        return "booking";
+        return "bookingtest";
 
     }
 

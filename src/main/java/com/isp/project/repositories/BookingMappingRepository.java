@@ -12,6 +12,7 @@ import com.isp.project.model.BookingMapping;
 
 @Repository
 public interface BookingMappingRepository extends JpaRepository<BookingMapping, Integer> {
+    
     @Query("SELECT b FROM BookingMapping b WHERE MONTH(b.checkInDate) = :month AND YEAR(b.checkInDate) = :year")
     List<BookingMapping> revenueBooking(@Param("month") int month,  @Param("year") int year);
 }

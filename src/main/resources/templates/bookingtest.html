@@ -82,18 +82,19 @@
                 <tbody>
                   <tr th:each="booking : ${listBooking}">
                     <td th:text="${booking.bookingID}"></td>
-                    <td th:text="${booking.customerName}"></td>
+                    <td th:text="${booking.customerID.customerName}"></td>
                     <!-- <td th:text="${listBooking.customer.customerName}"></td> -->
                     <td>
                       <span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span>
                     </td>
-                    <td th:text="${booking.employeeName}"></td>
+                    <td>
+                      <span th:each="register : ${booking.register}">
+                          <span th:text="${register.employeeID.fullName}"></span>
+                          <br/>
+                      </span>
                     <td>
                       <a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-list"></a>
                     </td>
-                    <!-- <td>
-                      <a th:href="@{'#?id=' + ${booking.bookingID}}" class="ti-pencil-alt"></a>
-                    </td> -->
                     <td>
                       <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'"
                         class="btn btn-danger ti-close"></a>
@@ -119,7 +120,7 @@
           <div class="lefttt" style="background-color: #F2F1F1;">
             <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin khách hàng</h6>
             <span class="material-icons" style="vertical-align: middle;">account_box</span>
-            <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;"
+            <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;" name =àdđ
               placeholder="Nhập tên khách hàng..." required>
             <br><br>
             <span class="material-icons" style="vertical-align: middle;">badge</span>
@@ -386,7 +387,7 @@
         console.log("Row", row);
         updateSelectedRoomsInput();
       }
-
+// ======================================= Lấy danh sách phòng đã chọn ====================================================================================
       function getSelectedRooms() {
         const rows = selectedRoomsTableBody.getElementsByTagName('tr');
         const selectedRooms = [];
@@ -412,10 +413,10 @@
             status
           });
         }
-
+        console.log("invoiceLineData", JSON.stringify(selectedRooms));
         return selectedRooms;
       }
-
+   // ========================= Update danh sách phòng đã chọn =====================================
       function updateSelectedRoomsInput() {
         const selectedRooms = getSelectedRooms();
         const selectedRoomsInput = document.getElementById('selected-rooms-input');
@@ -424,6 +425,7 @@
           return;
         }
         selectedRoomsInput.value = JSON.stringify(selectedRooms);
+        console.log("invoiceLineData", JSON.stringify(selectedRooms));
       }
     });
 
