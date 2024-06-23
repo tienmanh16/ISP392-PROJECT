@@ -1,5 +1,8 @@
 package com.isp.project.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,27 +17,53 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.dto.ServiceDetailDTO;
+import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
+import com.isp.project.model.Invoice;
+import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Room;
 import com.isp.project.model.RoomType;
+import com.isp.project.model.Service;
+import com.isp.project.repositories.InvoiceLineRepository;
+import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.repositories.RoomRepository;
+import com.isp.project.repositories.ServiceRepository;
+import com.isp.project.service.InvoiceLineService;
 import com.isp.project.service.RoomService;
 import com.isp.project.service.RoomServiceImpl;
 import com.isp.project.service.RoomTypeService;
 import com.isp.project.service.SeService;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+// @RequestMapping("api/room")
+
 public class RoomController {
     @Autowired
     private RoomServiceImpl roomServiceImpl;
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private InvoiceLineRepository invoiceLineRepository;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
+
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Autowired
     private SeService seService;
@@ -44,6 +73,9 @@ public class RoomController {
 
     @Autowired
     private RoomTypeService roomTypeService;
+
+    @Autowired
+    private InvoiceLineService invoiceLineService;
 
     @GetMapping("/managerbooking")
     public String ManagerBooking() {
@@ -62,19 +94,21 @@ public class RoomController {
     }
 
     @GetMapping("/filterRoom")
-    public String getRoomFromFilter(@RequestParam("statusFilter") String statusFilter, @RequestParam(required = false) Integer selectedRoomTypeId, Model model) {
-
+    public String getRoomFromFilter(@RequestParam("statusFilter") String statusFilter,
+            @RequestParam(required = false) Integer selectedRoomTypeId, Model model) {
 
         model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
         model.addAttribute("rooms", roomService.getAllRoomsByStatus(statusFilter));
         model.addAttribute("services", seService.getAllServiceDetail());
-        //model.addAttribute("services", seService.findAllServiceDetailByServiceTypeId(1));
+        // model.addAttribute("services",
+        // seService.findAllServiceDetailByServiceTypeId(1));
         model.addAttribute("serviceTypes", seService.getAllServiceTypes());
         return "room";
     }
 
     @GetMapping("/filterRoomType")
-    public String filter(@RequestParam("selectedRoomTypeId") Integer id, Model model, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo){
+    public String filter(@RequestParam("selectedRoomTypeId") Integer id, Model model,
+            @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
 
         Page<RoomDetailDTO> list = this.roomService.getAllRoomsWithDetailsByRoomTypeId(id, pageNo);
 
@@ -89,28 +123,31 @@ public class RoomController {
     }
 
     @PostMapping("/filter-status")
-    public String filterStatus(@RequestParam("statusFilter") String status, Model model){
+    public String filterStatus(@RequestParam("statusFilter") String status, Model model) {
         model.addAttribute("roomTypes", roomTypeService.getAllRoomTypesWithDetails());
         model.addAttribute("rooms", roomServiceImpl.getAllRoomsByStatus(status));
         return "filterRoomType";
     }
 
     // @GetMapping("/editRoom")
-    // public ResponseEntity<Map<Object, Object>> getRoom(@RequestParam("roomId") Integer roomId) {
-    //     Customer customer = roomServiceImpl.test(roomId);
-    //     Room room = roomServiceImpl.testR(roomId);
+    // public ResponseEntity<Map<Object, Object>> getRoom(@RequestParam("roomId")
+    // Integer roomId) {
+    // Customer customer = roomServiceImpl.test(roomId);
+    // Room room = roomServiceImpl.testR(roomId);
 
-    //     Map<Object, Object> response = new HashMap<>();
-    //     response.put("customer", customer);
-    //     response.put("room", room);
+    // Map<Object, Object> response = new HashMap<>();
+    // response.put("customer", customer);
+    // response.put("room", room);
 
-    //     return ResponseEntity.ok(response);
+    // return ResponseEntity.ok(response);
     // }
 
     // @GetMapping("/editRoom")
-    // public ResponseEntity<RoomCustomerDTO> getRoom(@RequestParam("roomId") Integer roomId) {
-    //     RoomCustomerDTO roomCustomerDTO = roomServiceImpl.getAllRoomCusWithDetailsByRoomId(roomId);
-    //     return ResponseEntity.ok(roomCustomerDTO);
+    // public ResponseEntity<RoomCustomerDTO> getRoom(@RequestParam("roomId")
+    // Integer roomId) {
+    // RoomCustomerDTO roomCustomerDTO =
+    // roomServiceImpl.getAllRoomCusWithDetailsByRoomId(roomId);
+    // return ResponseEntity.ok(roomCustomerDTO);
     // }
 
     @GetMapping("/editRoom2")
@@ -127,18 +164,18 @@ public class RoomController {
     }
 
     @GetMapping("/getServiceBySeTypeId")
-    public ResponseEntity<List<ServiceDetailDTO>> getService1(@RequestParam("serviceTypeId") Integer serviceTypeId) { 
+    public ResponseEntity<List<ServiceDetailDTO>> getService1(@RequestParam("serviceTypeId") Integer serviceTypeId) {
         List<ServiceDetailDTO> services = null;
         services = seService.findAllServiceDetailByServiceTypeId(serviceTypeId);
         if (serviceTypeId == 0) {
             services = seService.getAllServiceDetail();
         }
-        
+
         return ResponseEntity.ok(services);
     }
 
     @GetMapping("/getServiceBySeName")
-    public ResponseEntity<List<ServiceDetailDTO>> getService2(@RequestParam("seName") String seName){
+    public ResponseEntity<List<ServiceDetailDTO>> getService2(@RequestParam("seName") String seName) {
         List<ServiceDetailDTO> services = null;
         services = seService.findAllServiceDetailBySeName(seName);
         if (seName == null) {
@@ -153,5 +190,122 @@ public class RoomController {
         return ResponseEntity.ok(services);
     }
 
-     
+    // @PostMapping("/addInvoiceLine")
+    // public ResponseEntity<String> createInvoiceLine(@RequestBody InvoiceLine[]
+    // invoiceLineData) {
+    // try {
+    // // Lặp qua danh sách InvoiceLine và lưu vào cơ sở dữ liệu
+    // for (InvoiceLine invoiceLine : invoiceLineData) {
+    // invoiceLineService.createInvoiceLine(invoiceLine);
+    // }
+    // return ResponseEntity.ok("Dữ liệu đã được lưu thành công!");
+    // } catch (Exception e) {
+    // e.printStackTrace(); // In ra lỗi chi tiết
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    // .body("Có lỗi xảy ra khi lưu dữ liệu: " + e.getMessage());
+    // }
+    // }
+
+    // @PostMapping("/addInvoiceLine")
+    // public @ResponseBody
+    // String addPersons(@RequestBody InvoiceLine[] invoiceLineData) {
+    // try {
+
+    // // perform add operation
+    // for (InvoiceLine invoiceLine : invoiceLineData) {
+    // invoiceLineService.createInvoiceLine(invoiceLine);
+    // }
+    // return "Successfully added stock.";
+    // } catch (Exception ex) {
+    // System.out.println(ex.getMessage());
+    // }
+    // return "Error";
+    // }
+
+    // @GetMapping("/addInvoiceLine2")
+    // public void addLoctest(){
+    // invoiceLineRepository.insertInvoiceLine(4.00, 1, 2, 1);
+    // }
+
+    // @PostMapping("/addInvoiceLine")
+    // public ResponseEntity<String> addInvoiceLines(@RequestBody List<InvoiceLine>
+    // invoiceLineData) {
+    // try {
+    // for (InvoiceLine invoiceLine : invoiceLineData) {
+    // invoiceLineService.createInvoiceLine(invoiceLine);
+    // }
+    // return ResponseEntity.ok("Successfully added invoice lines.");
+    // } catch (Exception ex) {
+    // ex.printStackTrace();
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error
+    // adding invoice lines: " + ex.getMessage());
+    // }
+    // }
+
+    // @PostMapping("/addInvoiceLine")
+    // public String addInvoiceLines(@RequestParam("selectedInvoiceLine1") String
+    // selectedInvoiceLine1JSON) {
+    // List<InvoiceLine> selectedInvoiceLines =
+    // convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
+    // for (InvoiceLine invoiceLine : selectedInvoiceLines) {
+    // Service service =
+    // serviceRepository.findById(invoiceLine.getService().getSeID()).orElse(null);
+    // Invoice invoice =
+    // invoiceRepository.findById(invoiceLine.getInvoice().getInvoiceID()).orElse(null);
+    // if (service != null && invoice != null) {
+    // InvoiceLine invoiceLine2 = new InvoiceLine();
+    // invoiceLine2.setInvoiceTotalAmount(invoiceLine.getInvoiceTotalAmount());
+    // invoiceLine2.setService(service);
+    // invoiceLine2.setQuantity(invoiceLine.getQuantity());
+    // invoiceLine2.setInvoice(invoice);
+
+    // invoiceLineRepository.save(invoiceLine2);
+    // }
+    // }
+    // return "redirect:/room"; // Redirect to booking result page
+    // }
+
+    // private List<InvoiceLine> convertJsonToInvoiceLineList(String json) {
+    // ObjectMapper objectMapper = new ObjectMapper();
+    // try {
+    // return objectMapper.readValue(json, new TypeReference<List<InvoiceLine>>()
+    // {});
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // return Collections.emptyList();
+    // }
+    // }
+
+    @PostMapping("/addInvoiceLine")
+    public ResponseEntity<String> addInvoiceLines(@RequestBody String selectedInvoiceLine1JSON) {
+        List<InvoiceLine> selectedInvoiceLines = convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
+        for (InvoiceLine invoiceLine : selectedInvoiceLines) {
+            Service service = serviceRepository.findById(invoiceLine.getService().getSeID()).orElse(null);
+            Invoice invoice = invoiceRepository.findById(invoiceLine.getInvoice().getInvoiceID()).orElse(null);
+            if (service != null && invoice != null) {
+                InvoiceLine invoiceLine2 = new InvoiceLine();
+                invoiceLine2.setInvoiceTotalAmount(invoiceLine.getInvoiceTotalAmount());
+                invoiceLine2.setService(service);
+                invoiceLine2.setQuantity(invoiceLine.getQuantity());
+                invoiceLine2.setInvoice(invoice);
+
+                invoiceLineRepository.save(invoiceLine2);
+            }
+        }
+        return ResponseEntity.ok("Saved successfully");
+    }
+
+
+    private List<InvoiceLine> convertJsonToInvoiceLineList(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<InvoiceLine> invoiceLines = new ArrayList<>();
+        try {
+            InvoiceLine[] invoiceLineArray = objectMapper.readValue(json, InvoiceLine[].class);
+            invoiceLines = Arrays.asList(invoiceLineArray);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return invoiceLines;
+    }
+
 }

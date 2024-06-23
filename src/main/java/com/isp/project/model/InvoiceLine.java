@@ -21,12 +21,13 @@ import lombok.Data;
 
 public class InvoiceLine {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "InvoidLineID")
     private int InvoiceLineID;
 
     @Column(name = "TotalAmount")
     private double InvoiceTotalAmount;
+    
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SeID")
@@ -37,11 +38,13 @@ public class InvoiceLine {
     @Column(name = "Quantity")
     private int Quantity;
 
+    
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "InvoiceID")
     @JsonBackReference
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Invoice invoice;
+
     
 }
