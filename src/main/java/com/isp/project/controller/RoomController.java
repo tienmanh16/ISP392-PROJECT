@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -275,37 +276,94 @@ public class RoomController {
     // return Collections.emptyList();
     // }
     // }
+    // =======================================================
+    // @PostMapping("/addInvoiceLine")
+    // public ResponseEntity<String> addInvoiceLines(@RequestBody String
+    // selectedInvoiceLine1JSON) {
+    // List<Map<String, Object>> selectedInvoiceLines =
+    // convertJsonToList(selectedInvoiceLine1JSON);
+
+    // for (Map<String, Object> lineData : selectedInvoiceLines) {
+    // Double invoiceTotalAmount = (Double) lineData.get("InvoiceTotalAmount");
+    // Integer seId = (Integer) lineData.get("seId");
+    // Optional<Service> newService_raw = serviceRepository.findById(seId);
+    // Service newService = newService_raw.get();
+    // Integer quantity = (Integer) lineData.get("quantity");
+    // Integer invoiceId = (Integer) lineData.get("invoiceId");
+    // Optional<Invoice> newInvoice_raw = invoiceRepository.findById(invoiceId);
+    // Invoice newInvoice = newInvoice_raw.get();
+
+    // InvoiceLine newInvoiceLine = new InvoiceLine(invoiceTotalAmount, newService,
+    // quantity, newInvoice);
+    // invoiceLineRepository.save(newInvoiceLine);
+
+    // }
+    // return ResponseEntity.ok("Saved successfully");
+    // }
+
+    // List<InvoiceLine> selectedInvoiceLines =
+    // convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
+    // for (InvoiceLine invoiceLine : selectedInvoiceLines) {
+    // Service service =
+    // serviceRepository.findById(invoiceLine.getService().getSeID()).orElse(null);
+    // Invoice invoice =
+    // invoiceRepository.findById(invoiceLine.getInvoice().getInvoiceID()).orElse(null);
 
     @PostMapping("/addInvoiceLine")
-    public ResponseEntity<String> addInvoiceLines(@RequestBody String selectedInvoiceLine1JSON) {
-        List<InvoiceLine> selectedInvoiceLines = convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
-        for (InvoiceLine invoiceLine : selectedInvoiceLines) {
-            Service service = serviceRepository.findById(invoiceLine.getService().getSeID()).orElse(null);
-            Invoice invoice = invoiceRepository.findById(invoiceLine.getInvoice().getInvoiceID()).orElse(null);
-            if (service != null && invoice != null) {
-                InvoiceLine invoiceLine2 = new InvoiceLine();
-                invoiceLine2.setInvoiceTotalAmount(invoiceLine.getInvoiceTotalAmount());
-                invoiceLine2.setService(service);
-                invoiceLine2.setQuantity(invoiceLine.getQuantity());
-                invoiceLine2.setInvoice(invoice);
+    @ResponseBody
+    public ResponseEntity<String> addInvoiceLines(@RequestBody String invoiceLineData) {
+        System.out.println("Received POST request to /addInvoiceLine");
 
-                invoiceLineRepository.save(invoiceLine2);
+        List<Map<String, Object>> selectedInvoiceLines = convertJsonToList(invoiceLineData);
+
+        for (Map<String, Object> lineData : selectedInvoiceLines) {
+            try {
+                Double invoiceTotalAmount = Double.valueOf(lineData.get("InvoiceTotalAmount").toString());
+                Integer seId = Integer.valueOf(lineData.get("SeID").toString());
+                Integer quantity = Integer.valueOf(lineData.get("Quantity").toString());
+                Integer invoiceId = Integer.valueOf(lineData.get("InvoiceID").toString());
+
+                Optional<Service> newServiceOptional = serviceRepository.findById(seId);
+                Optional<Invoice> newInvoiceOptional = invoiceRepository.findById(invoiceId);
+
+                if (newServiceOptional.isPresent() && newInvoiceOptional.isPresent()) {
+                    Service newService = newServiceOptional.get();
+                    Invoice newInvoice = newInvoiceOptional.get();
+
+                    // Create and save the InvoiceLine
+                    InvoiceLine invoiceLine = new InvoiceLine();
+                    invoiceLine.setInvoiceTotalAmount(invoiceTotalAmount);
+                    invoiceLine.setService(newService);
+                    invoiceLine.setQuantity(quantity);
+                    invoiceLine.setInvoice(newInvoice);
+
+                    invoiceLineRepository.save(invoiceLine);
+                } else {
+                    // Handle case where service or invoice is not found
+                    System.out.println("Service or Invoice not found for IDs: " + seId + ", " + invoiceId);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("Service or Invoice not found for IDs: " + seId + ", " + invoiceId);
+                }
+            } catch (NumberFormatException e) {
+                // Handle parsing errors if necessary
+                System.out.println("Error parsing numbers from JSON data: " + e.getMessage());
+                return ResponseEntity.badRequest().body("Error parsing numbers from JSON data: " + e.getMessage());
             }
         }
+
         return ResponseEntity.ok("Saved successfully");
     }
 
-
-    private List<InvoiceLine> convertJsonToInvoiceLineList(String json) {
+    private List<Map<String, Object>> convertJsonToList(String json) {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<InvoiceLine> invoiceLines = new ArrayList<>();
+        List<Map<String, Object>> list = null;
         try {
-            InvoiceLine[] invoiceLineArray = objectMapper.readValue(json, InvoiceLine[].class);
-            invoiceLines = Arrays.asList(invoiceLineArray);
-        } catch (JsonProcessingException e) {
+            list = objectMapper.readValue(json, new TypeReference<List<Map<String, Object>>>() {
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return invoiceLines;
+        return list;
     }
 
 }

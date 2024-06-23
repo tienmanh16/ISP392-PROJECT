@@ -46,5 +46,19 @@ public class InvoiceLine {
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Invoice invoice;
 
+
+
+    public InvoiceLine() {
+    }
+
+
+
+    public InvoiceLine(double invoiceTotalAmount, Service service, int quantity, Invoice invoice) {
+        InvoiceTotalAmount = invoiceTotalAmount;
+        this.service = service;
+        Quantity = quantity;
+        this.invoice = invoice;
+    }
+
     
 }
