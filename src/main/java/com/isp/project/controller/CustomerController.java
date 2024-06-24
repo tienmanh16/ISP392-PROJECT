@@ -17,7 +17,6 @@ import com.isp.project.service.CustomerService;
 
 @Controller
 public class CustomerController {
-   
 
     @Autowired
     private CustomerService customerService;
@@ -54,7 +53,6 @@ public class CustomerController {
         customerRepository.save(customer);
         return "redirect:/customer"; // Assuming customerList is a page showing list of customers
     }
-
 
     @PostMapping("/addcustomer")
     public String addCustomer(@ModelAttribute("addCustomer") Customer addCustomer) {

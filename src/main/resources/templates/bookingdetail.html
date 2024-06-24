@@ -60,19 +60,23 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Loop through each booking detail and display its information -->
-        <tr th:each="detail : ${bookdetail}">
-          <td th:text="${detail.bookingID}"></td>
-          <td th:text="${detail.customerName}"></td>
-          <td th:text="${#dates.format(detail.checkInDate, 'dd-MM-yyyy')}"></td>
-          <td th:text="${#dates.format(detail.checkOutDate, 'dd-MM-yyyy')}"></td>
-          <td th:text="${#dates.format(detail.bookingDate, 'dd-MM-yyyy')}"></td>
-          <td th:text="${detail.customerQuantity}"></td>
-          <td th:text="${detail.roomID}"></td>
-          <td th:text="${detail.employeeName}"></td>
-          <td><a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${detail.roomID} + ');'"
-              class="btn btn-danger ti-close"></a>
+        <tr th:each="mapping : ${bookdetail.bookingMapping}">
+          <td th:text="${bookdetail.bookingID}"></td>
+          <td th:text="${bookdetail.customerID.customerName}"></td>
+          <td th:text="${mapping.checkInDate}"></td>
+          <td th:text="${mapping.checkOutDate}"></td>
+          <td th:text="${#dates.format(bookdetail.bookingDate, 'dd-MM-yyyy')}"></td>
+          <td th:text="${bookdetail.customerQuantity}"></td>
+          <td th:text="${mapping.roomID.roomNum}"></td>
+          <td>
+            <span th:each="register : ${bookdetail.register}">
+              <span th:text="${register.employeeID.fullName}"></span>
+              <br />
+            </span>
           </td>
+          <td><a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${mapping.roomID.id} + ');'"
+            class="btn btn-danger ti-close"></a>
+        </td>
         </tr>
       </tbody>
     </table>
@@ -110,6 +114,23 @@
 
 
   </script>
+
+  <!-- <div th:each="bookingMapping : ${bookingMappings}">
+  <h2>Booking Mapping ID: <span th:text="${bookingMapping.bookingMappingID}"></span></h2>
+  <p>Check-in Date: <span th:text="${bookingMapping.checkInDate}"></span></p>
+  <p>Check-out Date: <span th:text="${bookingMapping.checkOutDate}"></span></p>
+  <p>Booking Total Amount: <span th:text="${bookingMapping.bookingTotalAmount}"></span></p>
+  <p>Room ID: <span th:text="${bookingMapping.room.roomID}"></span></p>
+  <h3>Customer Information</h3>
+  <p>Name: <span th:text="${bookingMapping.booking.customer.customerName}"></span></p>
+  <p>Address: <span th:text="${bookingMapping.booking.customer.customerAddress}"></span></p>
+  <p>Phone: <span th:text="${bookingMapping.booking.customer.customerPhone}"></span></p>
+  <h3>Employee Information</h3>
+  <div th:each="register : ${bookingMapping.booking.register}">
+      <p>Name: <span th:text="${register.employee.name}"></span></p>
+  </div>
+</div> -->
+
 </body>
 
 </html>

@@ -1,14 +1,10 @@
 package com.isp.project.controller;
 
-import java.io.IOException;
 import java.sql.Date;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,14 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isp.project.dto.BookingInfoDTO;
-import com.isp.project.dto.BookingRoomDTO;
+
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
@@ -36,7 +29,6 @@ import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.CustomerRepository;
 import com.isp.project.repositories.EmployeeRepository;
-import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.repositories.RegisterRepository;
 import com.isp.project.repositories.RoomRepository;
 import com.isp.project.service.BookingService;
@@ -65,32 +57,13 @@ public class BookingController {
     @Autowired
     private RoomRepository roomRepository;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-
-
-    // @GetMapping("/booking")
-    // public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
-    //     List<BookingRoomDTO> listBooking;
-    //     if (query != null && !query.isEmpty()) {
-    //         listBooking = bookingService.getAllBookingByName(query.toLowerCase());
-    //     } else {
-    //         listBooking = bookingService.getAllBooking();
-    //     }
-    //     model.addAttribute("listBooking", listBooking);
-    //     model.addAttribute("query", query);
-    //     model.addAttribute("bookingInfo", new BookingInfoDTO());
-    //     return "booking";
-    // }
-   
+    // ============================== GET ALL BOOKING ================================================================================
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
-        // List<BookingRoomDTO> listBooking;
+
         List<Booking> listBooking;
-        
         if (query != null && !query.isEmpty()) {
-            listBooking = bookingService.getAllBookingNew();
+            listBooking = bookingService.getAllBookingByName(query);
         } else {
             listBooking = bookingService.getAllBookingNew();
         }
@@ -101,13 +74,15 @@ public class BookingController {
 
     }
 
+    // ================================== Booking Detail =========================================================================
     @GetMapping("bookingdetail")
     public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
-        List<BookingRoomDTO> bookingDetail = bookingService.findBookingRoomByBookingID(id);
+        Booking bookingDetail = bookingService.getBookingByBookingID(id);
         model.addAttribute("bookdetail", bookingDetail);
         return "bookingdetail";
     }
 
+    // ============================= Delete Booking ===============================================================================
     @PostMapping("/delete/{id}")
     public ResponseEntity<String> deleteBooking(@PathVariable("id") Integer id) {
         try {
@@ -122,7 +97,7 @@ public class BookingController {
         }
     }
 
-    // ======================Đặt phòng ==========================
+    // ====================== Đặt phòng ============================================================================================
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute("bookingInfo") BookingInfoDTO bookingInfo) {
         // Create and save customer information
@@ -163,6 +138,7 @@ public class BookingController {
                 BookingMapping bookingMapping = new BookingMapping();
                 bookingMapping.setBookingID(booking);
                 bookingMapping.setRoomID(room);
+                room.setStatus("Booked Room");
                 bookingMapping.setCheckInDate(bookingInfo.getCheckinDate());
                 bookingMapping.setCheckOutDate(bookingInfo.getCheckoutDate());
                 bookingMapping.setBookingTotalAmount(roomDetail.getPriceDay()); // Set appropriate amount
@@ -173,31 +149,15 @@ public class BookingController {
         return "redirect:/booking"; // Redirect to booking result page
     }
 
-    private List<RoomDetailDTO> convertJsonToRoomDetailDTOList( String json) {
+    private List<RoomDetailDTO> convertJsonToRoomDetailDTOList(String json) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(json, new TypeReference<List<RoomDetailDTO>>() {});
+            return objectMapper.readValue(json, new TypeReference<List<RoomDetailDTO>>() {
+            });
         } catch (Exception e) {
             e.printStackTrace();
             return Collections.emptyList();
         }
     }
 
-
-    // ========= mergeDateAndTime=================
-    private Date mergeDateAndTime(Date date, String time) {
-        Calendar calDate = Calendar.getInstance();
-        calDate.setTime(date);
-
-        Calendar calTime = Calendar.getInstance();
-        String[] timeParts = time.split(":");
-        calTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeParts[0]));
-        calTime.set(Calendar.MINUTE, Integer.parseInt(timeParts[1]));
-
-        calDate.set(Calendar.HOUR_OF_DAY, calTime.get(Calendar.HOUR_OF_DAY));
-        calDate.set(Calendar.MINUTE, calTime.get(Calendar.MINUTE));
-        calDate.set(Calendar.SECOND, 0);
-
-        return (Date) calDate.getTime();
-    }
 }
