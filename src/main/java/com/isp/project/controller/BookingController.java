@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,7 +58,8 @@ public class BookingController {
     @Autowired
     private RoomRepository roomRepository;
 
-    // ============================== GET ALL BOOKING ================================================================================
+    // ============================== GET ALL BOOKING
+    // ================================================================================
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
 
@@ -74,7 +76,8 @@ public class BookingController {
 
     }
 
-    // ================================== Booking Detail =========================================================================
+    // ================================== Booking Detail
+    // =========================================================================
     @GetMapping("bookingdetail")
     public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
         Booking bookingDetail = bookingService.getBookingByBookingID(id);
@@ -82,7 +85,8 @@ public class BookingController {
         return "bookingdetail";
     }
 
-    // ============================= Delete Booking ===============================================================================
+    // ============================= Delete Booking
+    // ===============================================================================
     @PostMapping("/delete/{id}")
     public ResponseEntity<String> deleteBooking(@PathVariable("id") Integer id) {
         try {
@@ -97,7 +101,8 @@ public class BookingController {
         }
     }
 
-    // ====================== Đặt phòng ============================================================================================
+    // ====================== Đặt phòng
+    // ============================================================================================
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute("bookingInfo") BookingInfoDTO bookingInfo) {
         // Create and save customer information
@@ -160,4 +165,23 @@ public class BookingController {
         }
     }
 
+    //======================== Delete BookingMapping of Booking ========================================================================
+    @DeleteMapping("/bookingMappings")
+    public ResponseEntity<String> deleteBookingMappingsByRoomAndBooking(@RequestParam Integer roomId, @RequestParam Integer bookingId) {
+        Room room = new Room();
+        room.setId(roomId);
+        Booking booking = new Booking();
+        booking.setBookingID(bookingId);
+        try {
+            boolean deleted = bookingService.deleteBookingMappingByRoomAndBooking(booking, room);
+            if (deleted) {
+                return ResponseEntity.ok("BookingMapping deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete BookingMapping");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+
+    }
 }

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 
 import com.isp.project.model.Booking;
+import com.isp.project.model.Room;
 
 import jakarta.transaction.Transactional;
 
@@ -36,10 +37,10 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     void deleteFromBookingMapping(@Param("bookingID") Integer bookingID);
 
 
-    @Modifying
+   @Modifying
     @Transactional
-    @Query("DELETE FROM BookingMapping b WHERE b.roomID = :roomID")
-    void deleteByRoomID(@Param("roomID") Integer roomID);
+    @Query("DELETE FROM BookingMapping bm WHERE bm.bookingID = :booking AND bm.roomID = :room")
+    void deleteByRoomAndBooking(@Param("booking") Booking booking, @Param("room") Room room);
 
 
     @Query("SELECT i FROM Booking i RIGHT JOIN i.customerID b WHERE MONTH(i.bookingDate) = :month AND YEAR(i.bookingDate) = :year")

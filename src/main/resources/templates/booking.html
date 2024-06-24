@@ -89,8 +89,8 @@
                     </td>
                     <td>
                       <span th:each="register : ${booking.register}">
-                          <span th:text="${register.employeeID.fullName}"></span>
-                          <br/>
+                        <span th:text="${register.employeeID.fullName}"></span>
+                        <br />
                       </span>
                     <td>
                       <a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-list"></a>
@@ -120,7 +120,7 @@
           <div class="lefttt" style="background-color: #F2F1F1;">
             <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin khách hàng</h6>
             <span class="material-icons" style="vertical-align: middle;">account_box</span>
-            <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;" name =àdđ
+            <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;" name=àdđ
               placeholder="Nhập tên khách hàng..." required>
             <br><br>
             <span class="material-icons" style="vertical-align: middle;">badge</span>
@@ -387,7 +387,7 @@
         console.log("Row", row);
         updateSelectedRoomsInput();
       }
-// ======================================= Lấy danh sách phòng đã chọn ====================================================================================
+      // ======================================= Lấy danh sách phòng đã chọn ====================================================================================
       function getSelectedRooms() {
         const rows = selectedRoomsTableBody.getElementsByTagName('tr');
         const selectedRooms = [];
@@ -416,7 +416,7 @@
         console.log("invoiceLineData", JSON.stringify(selectedRooms));
         return selectedRooms;
       }
-   // ========================= Update danh sách phòng đã chọn =====================================
+      // ========================= Update danh sách phòng đã chọn =====================================
       function updateSelectedRoomsInput() {
         const selectedRooms = getSelectedRooms();
         const selectedRoomsInput = document.getElementById('selected-rooms-input');

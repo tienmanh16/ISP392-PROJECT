@@ -11,6 +11,7 @@ import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Register;
+import com.isp.project.model.Room;
 import com.isp.project.model.Service;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
@@ -31,9 +32,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
-
 //class này test postman thui
 
 @RestController
@@ -49,23 +47,26 @@ public class test {
     private BookingService bookingService;
     @Autowired
     private InvoiceServiceImpl invoiceService;
-  
+
     @Autowired
-    private BookingMappingService bookingMappingService; 
+    private BookingMappingService bookingMappingService;
 
     // @GetMapping("/{id}")
     // public List<Booking> getMethodName(@PathVariable int id ) {
-    //     return bookingMappingRepository.testPostMan(id);
+    // return bookingMappingRepository.testPostMan(id);
     // }
 
- @GetMapping("/viet")
-    public List<Booking> getMethodName() {
-        return bookingRepository.findBookingByCustomerName("Emily");
-    } 
+    @GetMapping("/viet")
+    public void getMethodName() {
+        Room room = new Room();
+        room.setId(2);
+        Booking booking = new Booking();
+        booking.setBookingID(16);
+        bookingRepository.deleteByRoomAndBooking(booking, room);
+    }
     // @GetMapping("/tien")
     // public Employee revenueBooking() {
-    //     return invoiceService.testReport();
+    // return invoiceService.testReport();
     // }
-    
-    
+
 }

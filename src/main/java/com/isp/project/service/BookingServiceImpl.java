@@ -4,8 +4,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.isp.project.model.Booking;
+import com.isp.project.model.Room;
 import com.isp.project.repositories.BookingRepository;
-
 
 @Service
 
@@ -35,11 +35,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public boolean deleteBookingByRoomID(Integer id) {
+    public boolean deleteBookingMappingByRoomAndBooking(Booking booking, Room room) {
         try {
-
-            bookingRepository.deleteByRoomID(id);
-
+            bookingRepository.deleteByRoomAndBooking(booking, room);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,4 +60,5 @@ public class BookingServiceImpl implements BookingService {
     public List<Booking> getAllBookingByName(String customerName) {
         return bookingRepository.findBookingByCustomerName(customerName);
     }
+
 }

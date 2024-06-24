@@ -54,7 +54,7 @@
           <th>Check-Out Date</th>
           <th>Booking Date</th>
           <th>Customer Quantity</th>
-          <th>Room ID</th>
+          <th>Room Number</th>
           <th>Employee Name</th>
           <th>Delete</th>
         </tr>
@@ -74,63 +74,41 @@
               <br />
             </span>
           </td>
-          <td><a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${mapping.roomID.id} + ');'"
-            class="btn btn-danger ti-close"></a>
-        </td>
+          <td>
+            <a href="javascript:void(0);"
+              th:onclick="'confirmDelete(' + ${bookdetail.bookingID} + ',' + ${mapping.roomID.id} + ');'"
+              class="btn btn-danger ti-close"></a>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
   <script>
-    function confirmDelete(id) {
-      if (confirm('Are you sure you want to delete it?')) {
-        deleteBooking(id);
+    function confirmDelete(bookingID, roomID) {
+      if (confirm("Are you sure you want to delete this booking mapping?")) {
+        // Make an AJAX request to delete the booking mapping
+        fetch(`/bookingMappings?bookingId=${bookingID}&roomId=${roomID}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+          .then(response => {
+            if (response.ok) {
+              alert("BookingMapping deleted successfully");
+              // Reload the page or remove the row from the table
+              location.reload();
+            } else {
+              alert("Failed to delete BookingMapping");
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert("Error deleting booking mapping.");
+          });
       }
     }
-
-    function deleteBooking(id) {
-      fetch(`/delete/${id}`, { // Ensure the endpoint matches the controller endpoint
-        method: 'GET'
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error("Failed to delete booking");
-          }
-          return response.text(); // Read the response text
-        })
-        .then(message => {
-          if (message === "Booking deleted successfully") {
-            alert(message);
-            location.reload(); // Reload the page to reflect the deletion
-          } else {
-            throw new Error(message); // If the message is not expected, throw an error
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert("An error occurred: " + error.message);
-        });
-    }
-
-
   </script>
-
-  <!-- <div th:each="bookingMapping : ${bookingMappings}">
-  <h2>Booking Mapping ID: <span th:text="${bookingMapping.bookingMappingID}"></span></h2>
-  <p>Check-in Date: <span th:text="${bookingMapping.checkInDate}"></span></p>
-  <p>Check-out Date: <span th:text="${bookingMapping.checkOutDate}"></span></p>
-  <p>Booking Total Amount: <span th:text="${bookingMapping.bookingTotalAmount}"></span></p>
-  <p>Room ID: <span th:text="${bookingMapping.room.roomID}"></span></p>
-  <h3>Customer Information</h3>
-  <p>Name: <span th:text="${bookingMapping.booking.customer.customerName}"></span></p>
-  <p>Address: <span th:text="${bookingMapping.booking.customer.customerAddress}"></span></p>
-  <p>Phone: <span th:text="${bookingMapping.booking.customer.customerPhone}"></span></p>
-  <h3>Employee Information</h3>
-  <div th:each="register : ${bookingMapping.booking.register}">
-      <p>Name: <span th:text="${register.employee.name}"></span></p>
-  </div>
-</div> -->
-
 </body>
 
 </html>

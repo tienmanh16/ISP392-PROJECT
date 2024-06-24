@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Room;
-import com.isp.project.model.RoomType;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer>{
