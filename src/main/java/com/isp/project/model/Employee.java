@@ -32,7 +32,7 @@ public class Employee {
 
     @Column(name="Name")
     private String fullName;
-private int gender;
+    private int gender;
     private String email;
     private String phone;
     private String address;
@@ -67,9 +67,6 @@ private int gender;
         this.username = username;
     }
 
-
-    
-
     public String getIdenId() {
         return idenId;
     }
@@ -77,18 +74,7 @@ private int gender;
     public void setIdenId(String idenId) {
         this.idenId = idenId;
     }
-
    
-   
-
-    public String getPassWord() {
-        return password;
-    }
-
-    public void setPassWord(String passWord) {
-        this.password = passWord;
-    }
-
     public String getFullName() {
         return fullName;
     }

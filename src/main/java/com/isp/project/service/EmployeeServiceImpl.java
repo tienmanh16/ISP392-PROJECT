@@ -3,10 +3,15 @@ package com.isp.project.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.isp.project.model.Employee;
 import com.isp.project.repositories.EmployeeRepository;
+
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -108,4 +113,24 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
 
+    @Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
+	@Override
+	public Employee saveUser(Employee user) {
+
+		String password=passwordEncoder.encode(user.getPassword());
+		user.setPassword(password);
+		// user.setRole("ROLE_RECEPTIONIST");
+		Employee newuser = employeeRepository.save(user);
+		return newuser;
+	}
+
+	@Override
+	public void removeSessionMessage() {
+
+		HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.getRequestAttributes())).getRequest()
+				.getSession();
+		session.removeAttribute("msg");
+	}
 }

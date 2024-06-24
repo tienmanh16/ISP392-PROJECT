@@ -29,4 +29,8 @@ public interface EmployeeService {
 
     boolean toggleEmployeeStatus(int employeeId, boolean currentStatus);
 
+    public Employee saveUser(Employee user);
+
+	public void removeSessionMessage();
+
 }
