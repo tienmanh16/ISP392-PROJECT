@@ -70,7 +70,7 @@ public class BookingController {
         model.addAttribute("listBooking", listBooking);
         model.addAttribute("query", query);
         model.addAttribute("bookingInfo", new BookingInfoDTO());
-        return "bookingtest";
+        return "booking";
 
     }
 
