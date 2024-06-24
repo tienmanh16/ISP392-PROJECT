@@ -26,7 +26,7 @@ import lombok.Data;
 
 public class Room {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RoomID", nullable = false)
     private int id;
 

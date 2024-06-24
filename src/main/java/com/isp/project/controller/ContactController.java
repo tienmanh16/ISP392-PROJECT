@@ -14,8 +14,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.isp.project.model.Email;
 import com.isp.project.model.GuestInformation;
 import com.isp.project.service.GuestInformationService;
+
+import jakarta.mail.MessagingException;
+
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -24,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ContactController {
     @Autowired
     private GuestInformationService guestInformationService;
+
+    @Autowired
+    Email emailService;
 
     @GetMapping("/leaveInfo")
      public String leaveInfo(Model model) {
@@ -44,10 +51,11 @@ public class ContactController {
     
 
     @PostMapping("/addInfo")
-    public String addInfo(@ModelAttribute("guestInformation") GuestInformation guestInformation) {
+    public String addInfo(@ModelAttribute("guestInformation") GuestInformation guestInformation) throws MessagingException {
 
         if (this.guestInformationService.create(guestInformation)) {
-            return "redirect:/guest/listInfo";
+            emailService.sendEmailLeaveInfo(guestInformation.getEmail(), guestInformation.getName());
+            return "redirect:/guest/leaveInfo";
         } else {
             return "redirect:/guest/leaveInfo";
         }

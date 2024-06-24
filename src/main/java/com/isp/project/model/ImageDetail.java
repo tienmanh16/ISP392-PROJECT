@@ -21,7 +21,7 @@ import lombok.Data;
 
 public class ImageDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ImageID", nullable = false)
     private int id;
 

@@ -28,7 +28,7 @@ import lombok.Getter;
 public class Invoice {
     @Id
     @Column(name = "InvoiceID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int InvoiceID;
     
     @Column(name="TotalAmount")
