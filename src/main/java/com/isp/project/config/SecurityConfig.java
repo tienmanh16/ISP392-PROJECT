@@ -37,14 +37,14 @@ public class SecurityConfig {
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		return daoAuthenticationProvider;
 	}
-	// ,"/home", "/contact", "/forgotpass/**", "/detail", "/css/**", "/images/**", "/scss/**", "/fonts/**", "/js/**", "/login/**")
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/receptionist/**").hasAnyRole("RECEPTIONIST", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/**").permitAll()
+                .requestMatchers("/home", "/contact", "/forgotpass/**", "/detail", "/css/**", "/images/**", "/scss/**", "/fonts/**", "/js/**", "/login/**").permitAll()
             )
             .formLogin(form -> form
                 .loginPage("/login")
