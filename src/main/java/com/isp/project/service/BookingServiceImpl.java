@@ -8,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.BookingRoomDTO;
+import com.isp.project.model.Booking;
+import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
+import com.isp.project.repositories.RegisterRepository;
 
 @Service
 
@@ -16,6 +19,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+
+    @Autowired
+    private BookingMappingRepository bookingMappingRepository;
+
+    @Autowired
+    private RegisterRepository registerRepository;
 
     @Override
     public List<BookingRoomDTO> getAllBooking() {
@@ -44,19 +53,34 @@ public class BookingServiceImpl implements BookingService {
         return bookingRoomDTOs;
     }
 
+    
     @Override
-    public boolean deleteBookingRoom(Integer id) {
+    // public boolean deleteBookingRoom(Integer id) {
+    //     try {
+    //         bookingRepository.deleteFromRegister(id);
+    //         bookingRepository.deleteFromBookingMapping(id);
+    //         bookingRepository.deleteFromBooking(id);
+    //         return true;
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return false;
+    //     }
+    // }
+    public boolean deleteBookingRoom(Integer bookingID) {
         try {
-            bookingRepository.deleteFromRegister(id);
-            bookingRepository.deleteFromBookingMapping(id);
-            bookingRepository.deleteFromBooking(id);
+            bookingRepository.deleteFromRegister(bookingID);
+            bookingRepository.deleteFromBookingMapping(bookingID);
+            
+            bookingRepository.deleteById(bookingID);
+           
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-    
+
+
 
     @Override
     public List<BookingRoomDTO> getAllBookingByName(String name) {
@@ -103,7 +127,7 @@ public class BookingServiceImpl implements BookingService {
             // Create a new BookingRoomDTO with the extracted data
             BookingRoomDTO dto = new BookingRoomDTO(bookingId, customerName, checkInDate, checkOutDate, bookingDate,
                     customerQuantity, roomId, employeeName);
-                    findbyID.add(dto);
+            findbyID.add(dto);
         }
 
         return findbyID;
@@ -114,12 +138,31 @@ public class BookingServiceImpl implements BookingService {
         try {
 
             bookingRepository.deleteByRoomID(id);
-            
+
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-    
+
+
+
+
+    // @Override
+    // public List<Booking> testPostManlist() {
+    //     return bookingRepository.findAll();
+    // }
+
+
+    @Override
+    public void testPostMan(Integer id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'testPostMan'");
+    }
+    @Override
+    public List<Booking> getCustomerForDate(int month, int year) {
+       return this.bookingRepository.getCustomerForDate(month, year);
+    }
+
 }

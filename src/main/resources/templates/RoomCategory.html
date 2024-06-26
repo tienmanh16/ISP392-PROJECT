@@ -1,182 +1,271 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
-  <head>
-  	<title>Table 09</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Room Category</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" href="@https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+
 	<link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
-	<link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all" href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
+	<link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+		href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
 	<!-- thư viện để add header và footer  -->
 
 	<link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
-    <link th:href="@{/css/mmenu.css}" rel="stylesheet">
-    <link th:href="@{/css/style.copy.css}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+	<link th:href="@{/css/mmenu.css}" rel="stylesheet">
+	<link th:href="@{/css/style.copy.css}" rel="stylesheet">
 
-    <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
-    <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
-	
-    <!-- Responsive -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	
-	
-	</head>
-	<body>
-		<div class="boxcar-wrapper">
-			<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-				<div th:replace="~{fragments/header :: header}"></div>
-			</header>
-	<section class="ftco-section layout-radius">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Room Category Management</h2>
-				</div>
-			</div>
+	<link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+	<link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
 
-			<div class="InputContainer" style="margin-bottom: 20px;">
-				<input placeholder="Search.." id="input" class="input" name="text" type="text">
-				
-			  </div>
+	<!-- Responsive -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 
-			  <div class="InputContainer" style="position: absolute; top: 210px; right: 280px;">
-				<input id="input" class="input" name="text" type="date">
-				
-			  </div>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="table-wrap">
-						<table class="table table-striped">
-						  <thead>
-						    <tr>
-						      <th>Category ID</th>
-						      <th>Name</th>
-						      <th>Price Per Hour</th>
-						      <th>Price Per Day</th>
-						      <th>Edit</th>
-						      <th>Delete</th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						    <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a th:href="@{/invoid}" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
+	<style>
+		.custom-button {
+			background-color: #05073e;
+			color: #fff;
+		}
 
-						    <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a href="#" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
+		.custom-button:hover {
+			background-color: #333;
+			color: #fff;
+		}
 
-						    <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a href="#" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
+		.search-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
-						    <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a href="#" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
+		.search-input {
+			border: 2px solid #05073e;
+			border-radius: 5px 0 0 5px;
+			border-right: none;
+			height: 38px;
+			width: 250px;
+		}
 
-						     <tr>
-						      <th scope="row">1001</th>
-						      <td>Mark Otto</td>
-						      <td>10/03/2023</td>
-						      <td>A</td>
-						      <td><a href="#" class="ti-menu"></a></td>
-						      <td><a href="#" class="btn btn-danger ti-close"></a></td>
-						    </tr>
-							<tr>
-								<th scope="row">1001</th>
-								<td>Mark Otto</td>
-								<td>10/03/2023</td>
-								<td>A</td>
-								<td><a href="#" class="ti-menu"></a></td>
-								<td><a href="#" class="btn btn-danger ti-close"></a></td>
-							  </tr>
-							  <tr>
-								<th scope="row">1001</th>
-								<td>Mark Otto</td>
-								<td>10/03/2023</td>
-								<td>A</td>
-								<td><a href="#" class="ti-menu"></a></td>
-								<td><a href="#" class="btn btn-danger ti-close"></a></td>
-							  </tr>
-							  <tr>
-								<th scope="row">1001</th>
-								<td>Mark Otto</td>
-								<td>10/03/2023</td>
-								<td>A</td>
-								<td><a href="#" class="ti-menu"></a></td>
-								<td><a href="#" class="btn btn-danger ti-close"></a></td>
-							  </tr>
-							  <tr>
-								<th scope="row">1001</th>
-								<td>Mark Otto</td>
-								<td>10/03/2023</td>
-								<td>A</td>
-								<td><a href="#" class="ti-menu"></a></td>
-								<td><a href="#" class="btn btn-danger ti-close"></a></td>
-							  </tr>
+		.search-button {
+			border: 2px solid #05073e;
+			border-radius: 0 5px 5px 0;
+			height: 38px;
+			width: 120px;
+		}
 
-						    
-						  </tbody>
-						</table>
+		.action-buttons {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 20px;
+		}
+	</style>
+	<style>
+		.table-filter {
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			padding: 5px;
+			background-color: #f8f9fa;
+			color: #333;
+		}
+
+		.table-filter:hover {
+			border-color: #007bff;
+			/* Đổi màu viền khi hover */
+			background-color: #e9ecef;
+			/* Đổi màu nền khi hover */
+		}
+
+		.custom-button {
+			background-color: #05073e;
+			color: #fff;
+		}
+
+		.custom-button:hover {
+			background-color: #333;
+			color: #fff;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div class="boxcar-wrapper">
+		<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+			<div th:replace="~{fragments/header :: header}"></div>
+		</header>
+				<!-- thêm class layout-radius để fix header  -->
+				<section class="ftco-section layout-radius">
+					<div class="row">
+						<div class="row justify-content-center">
+							<div class="col-md-6 text-center mb-5">
+								<h2 class="heading-section">Room Category Management</h2>
+							</div>
+						</div>
+					</div>
+
+					<div class="action-buttons">
+						<form class="search-container">
+							<input type="text" id="searchbar" class="form-control search-input" name="name" placeholder="Search Room Type Name...">
+							<button class="btn search-button" type="submit" id="search-button" >
+								Search
+							</button>
+						</form>
+
+						<button class="btn custom-button" onclick="window.location.href='/add-cate'">
+							Add Room Type
+						</button>
+					</div>
+
+				<div class="container">
+					<div class="col-lg-12">
+						<div class="table-wrap">
+							<table class="table table-striped" id="emp-table">
+								<thead>
+									<tr>
+										<th col-index="1">Category ID</th>
+										<th col-index="2">Name</th>
+										<th col-index="3">Description</th>
+										<th col-index="4">Per Hour
+											<select class="table-filter" onchange="filter_rows()">
+												<option value="all">All</option>
+											</select>
+										</th>
+										<th col-index="5">Per Day
+											<select class="table-filter" onchange="filter_rows()">
+												<option value="all">All</option>
+											</select>
+										</th>
+										<th col-index="6">Update</th>
+										<th>Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="list : ${listRoomType}">
+										<th scope="row" th:text="${list.id}"></th>
+										<td th:text="${list.name}"></td>
+										<td th:text="${list.des}"></td>
+										<td th:text="${list.priceHour}"></td>
+										<td th:text="${list.priceDay}"></td>
+										<td><a th:href="@{/list/{id}/update(id=${list.id})}" class="ti-menu"></a></td>
+										<!-- <td><a th:href="@{/list/{id}/delete(id=${list.id})}" class="btn btn-danger ti-close"></a></td> -->
+										<!-- <td><a href="javascript:void(0);"
+												th:onclick="'confirmDelete(' + ${list.id} + ');'"
+												class="btn btn-danger ti-close"></a>
+										</td> -->
+										<!-- <td><a href="javascript:void(0);" th:onclick="'confirmHide(' + ${list.id} + ');'" class="btn btn-danger ti-close"></a></td> -->
+										<td>
+											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 1}"
+												th:onclick="'confirmInactiveRoomType(' + ${list.id} + ');'"
+												class="btn btn-success" style="width: 85px; height: 40px;"> Active</a>
+											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 0}"
+												th:onclick="'confirmActiveRoomType(' + ${list.id} + ');'"
+												class="btn btn-danger" style="width: 85px; height: 40px;"> Inactive</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</section>
+			</section>
+		<script>
+			function confirmInactiveRoomType(RoomTypeID) {
+				if (confirm('Are you sure you want to inactive it?')) {
+					inactiveRoomType(RoomTypeID);
+				}
+			}
 
-	
-</div>
-<div th:replace="~{fragments/footer :: footer}"></div>
+			function inactiveRoomType(RoomTypeID) {
+				fetch(`/inactiveRoomType/${RoomTypeID}`, {
+					method: 'GET'
+				})
+					.then(response => response.text().then(text => ({ status: response.status, text })))
+					.then(({ status, text }) => {
+						alert(text);
+						if (status === 200) { // HTTP OK status
+							location.reload(); // Reload the page to reflect the change
+						} else {
+							throw new Error(text); // If the message is not expected, throw an error
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("An error occurred: " + error.message);
+					});
+			}
+		</script>
+		<script>
+			function confirmActiveRoomType(RoomTypeID) {
+				if (confirm('Are you sure you want to active it?')) {
+					activeRoomType(RoomTypeID);
+				}
+			}
+
+			function activeRoomType(RoomTypeID) {
+				fetch(`/activeRoomType/${RoomTypeID}`, {
+					method: 'GET'
+				})
+					.then(response => response.text().then(text => ({ status: response.status, text })))
+					.then(({ status, text }) => {
+						alert(text);
+						if (status === 200) { // HTTP OK status
+							location.reload(); // Reload the page to reflect the change
+						} else {
+							throw new Error(text); // If the message is not expected, throw an error
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("An error occurred: " + error.message);
+					});
+			}
+		</script>
+
+
+
+	</div>
+	<div th:replace="~{fragments/footer :: footer}"></div>
 	<!-- thư viện để add header và footer  -->
+	<!-- Include filter.js at the end of the body -->
+	<script th:src="@{/js/filter.js}"></script>
+	<script>
+		// Call getUniqueValuesFromColumn after the script is loaded
+		window.onload = function () {
+			getUniqueValuesFromColumn();
+		};
+	</script>
 
-  <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
-    <script th:src="@{/js/jquery.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
-    <script th:src="@{/js/slick.min.js}"></script>
-    <script th:src="@{/js/slick-animation.min.js}"></script>
-    <script th:src="@{/js/jquery.fancybox.js}"></script>
-    <script th:src="@{/js/wow.js}"></script>
-    <script th:src="@{/js/appear.js}"></script>
-    <script th:src="@{/js/mixitup.js}"></script>
-    <script th:src="@{/js/knob.js}"></script>
-    <script th:src="@{/js/mmenu.js}"></script>
-    <script th:src="@{/js/main.copy1.js}"></script>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+	<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+	<script th:src="@{/js/slick.min.js}"></script>
+	<script th:src="@{/js/slick-animation.min.js}"></script>
+	<script th:src="@{/js/jquery.fancybox.js}"></script>
+	<script th:src="@{/js/wow.js}"></script>
+	<script th:src="@{/js/appear.js}"></script>
+	<script th:src="@{/js/mixitup.js}"></script>
+	<script th:src="@{/js/knob.js}"></script>
+	<script th:src="@{/js/mmenu.js}"></script>
+	<script th:src="@{/js/main.copy1.js}"></script>
 
 
 
 	<script th:src="@{/src/main/resources/static/js/jquery.min.js}"></script>
-  <script th:src="@{/src/main/resources/static/js/popper.js}"></script>
-  <script th:src="@{/src/main/resources/static/js/bootstrap.min.js}"></script>
-  <script th:src="@{/src/main/resources/static/js/main.js}"></script>
+	<script th:src="@{/src/main/resources/static/js/popper.js}"></script>
+	<script th:src="@{/src/main/resources/static/js/bootstrap.min.js}"></script>
+	<script th:src="@{/src/main/resources/static/js/main.js}"></script>
 
-	</body>
+</body>
+
 </html>
-

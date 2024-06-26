@@ -1,5 +1,6 @@
 package com.isp.project.repositories;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Room;
+import com.isp.project.model.RoomType;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Integer>{
@@ -43,6 +45,20 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "FROM Room r "
            + "JOIN r.roomType rt ")
     List<RoomDetailDTO> findAllRoomsWithDetails1();
+
+    @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
+            + "r.id, "
+            + "r.roomNum, "
+            + "rt.id, "
+            + "rt.name, "
+            + "rt.des, "
+            + "rt.priceHour, "
+            + "rt.priceDay, "
+            + "r.status "
+            + ") "
+            + "FROM Room r "
+            + "JOIN r.roomType rt ")
+    List<RoomDetailDTO> findAllRoomsWithDetails();
 
     @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
        + "r.id, "
@@ -112,7 +128,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
       + "WHERE r.id = :roomId")
     RoomCustomerDTO findAllRoomCusWithDetailsByRoomId(@Param("roomId") Integer roomId);
 
-    
+
     Page<Room> findAll(Pageable pageable);
 
 
@@ -120,4 +136,15 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
     @Query("UPDATE Room SET status = 'Rented Room' WHERE id = :roomId")
     void updateRoomStatusByRoomId(@Param("roomId") Integer roomId);
 
+    @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus " +
+               "FROM Room r " +
+               "INNER JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID " +
+               "WHERE r.RoomID NOT IN ( " +
+               "   SELECT bm.RoomID " +
+               "   FROM BookingMapping bm " +
+               "   WHERE bm.CheckInDate < :checkoutDate " +
+               "   AND bm.CheckOutDate > :checkinDate " +
+               ") AND r.RoomActive = 1", nativeQuery = true)
+List<Object[]> findAvailableRooms(@Param("checkinDate") Date checkinDate,
+                                  @Param("checkoutDate") Date checkoutDate);
 }

@@ -2,9 +2,11 @@ package com.isp.project.service;
 
 import java.util.List;
 
+import com.isp.project.model.Booking;
 import com.isp.project.model.Employee;
 
 public interface EmployeeService {
+
     //controller goi den service, ko goi den repo
     Employee findByEmail(String email);
     
@@ -16,22 +18,15 @@ public interface EmployeeService {
 
     Employee findById(int id);
 
-    void delete(Employee entity);
-
-    void deleteAll();
-
-    void deleteAll(List<Employee> entities);
-
-    void deleteAllById(Iterable<? extends Integer> ids);
-
     void deleteById(Integer id);
 
     List<Employee> findAll();
 
-    List<Employee> findAllById(List<Integer> ids);
-
+    // List<Employee> findActiveEmployees();
     Employee save(Employee entity);
+    
+    boolean existsByEmail(String email);
+    boolean toggleEmployeeStatus(int employeeId, boolean currentStatus);
 
-    List<Employee> saveAll(List<Employee> entities);
 
 }

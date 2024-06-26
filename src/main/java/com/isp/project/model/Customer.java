@@ -18,37 +18,37 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name="Customer")
+@Table(name = "Customer")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 
 public class Customer {
 
-    @Id
-    @Column(name = "CustomerID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int customerID;
+  @Id
+  @Column(name = "CustomerID")
+  // @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int customerID;
 
-    @Column(name = "CustomerName")
-    private String customerName;
+  @Column(name = "CustomerName")
+  private String customerName;
 
-    @Column(name="CustomerAddress")
- private String customerAddress;
+  @Column(name = "CustomerGender")
+  private String customerGender;
 
- @Column(name = "CustomerPhone")
- private String customerPhone;
+  @Column(name = "CustomerAddress")
+  private String customerAddress;
 
- @Column(name = "CustomerEmail")
- private String customerEmail;
+  @Column(name = "CustomerPhone")
+  private String customerPhone;
 
- @Column(name = "CustomerIdentificationID")
- private String customerIdentificationID;
+  @Column(name = "CustomerEmail")
+  private String customerEmail;
 
- @Column(name = "CustomerGender")
- private String customerGender;
+  @Column(name = "CustomerIdentificationID")
+  private String customerIdentificationID;
 
   @OneToMany(mappedBy = "customerID")
-   @JsonManagedReference
+  @JsonManagedReference
   private List<Booking> booking;
-
 
 }

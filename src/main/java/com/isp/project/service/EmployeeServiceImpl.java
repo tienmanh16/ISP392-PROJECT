@@ -2,9 +2,7 @@ package com.isp.project.service;
 
 import java.util.List;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Service;
 
 import com.isp.project.model.Employee;
@@ -13,9 +11,8 @@ import com.isp.project.repositories.EmployeeRepository;
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
 
-@Autowired
-private EmployeeRepository employeeRepository;
-
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Override
     public Employee findByUserName(String username) {
@@ -60,42 +57,50 @@ private EmployeeRepository employeeRepository;
         return employeeRepository.findById(id);
     }
 
-    public void delete(Employee entity) {
-        employeeRepository.delete(entity);
-    }
 
-    public void deleteAll() {
-        employeeRepository.deleteAll();
-    }
-
-    public void deleteAll(List<Employee> entities) {
-        employeeRepository.deleteAll(entities);
-    }
-
-    public void deleteAllById(Iterable<? extends Integer> ids) {
-        employeeRepository.deleteAllById(ids);
-    }
-
+    @Override
     public void deleteById(Integer id) {
-        employeeRepository.deleteById(id);
+        Employee employee = findById(id);
+        if (employee != null) {
+            employee.setIsActive(false);
+            save(employee);
+        }
     }
 
+    @Override
     public List<Employee> findAll() {
         return employeeRepository.findAll();
     }
 
-    public List<Employee> findAllById(List<Integer> ids) {
-        return (List<Employee>) employeeRepository.findAllById(ids);
-    }
+    // @Override
+    // public List<Employee> findActiveEmployees() {
+    //     return employeeRepository.findByIsActiveTrue();
+    // }
 
+    @Override
     public Employee save(Employee entity) {
         return employeeRepository.save(entity);
     }
 
-    public List<Employee> saveAll(List<Employee> entities) {
-        return (List<Employee>) employeeRepository.saveAll(entities);
+    @Override
+    public boolean existsByEmail(String email) {
+        return employeeRepository.existsByEmail(email);
     }
-   
+
+    @Override
+    public boolean toggleEmployeeStatus(int employeeId, boolean currentStatus) {
+        Employee employee = employeeRepository.findById(employeeId);
+        if (employee == null) {
+            throw new IllegalArgumentException("Employee not found with ID: " + employeeId);
+        }
+        
+        // Update the status
+        employee.setIsActive(!currentStatus);
+        employeeRepository.save(employee);
+
+        // Return the new status
+        return !currentStatus;
+    }
 
 
 }

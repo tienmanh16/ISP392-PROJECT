@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <!-- Custom Style -->
     <!-- <link rel="stylesheet" th:href="@{css/style1.css}"> -->
-
+    <link rel="stylesheet" th:href="@{fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+        href="static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
     <title>Invoice..!</title>
 
     <style>
@@ -210,6 +211,14 @@
             background-color: var(--white);
             display: inline-block;
         }
+
+        .print-text {
+            color: white;
+            background-color: rgb(41, 166, 168);
+            padding: 5px 10px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -217,29 +226,28 @@
     <div class="my-5 page" size="A4">
         <div class="p-5">
             <section class="top-content bb d-flex justify-content-between">
-                <div class="logo">
-                    <img src="logo.png" alt="" class="img-fluid">
-                </div>
+              
             </section>
 
             <section class="store-user mt-5">
                 <div class="col-10">
                     <div class="row bb pb-3">
                         <div class="col-7">
-                            <h2 th:text="${InvoiceDetailDTO[0].CustomerName}"></h2>
-                            <p class="address"> Invoice Date: <span th:text="${InvoiceDetailDTO[0].InvoiceDate}"></span>
+                            <h2 th:text="${booking.invoice[0].customerName}"></h2>
+                            <p class="address"> Invoice Date: <span th:text="${booking.Invoice[0].InvoiceDate}"></span>
                             </p>
-                            <p class="address">Invoice Number: <span th:text="${InvoiceDetailDTO[0].InvoiceID}"></span>
+                            <p class="address">Invoice Number: <span th:text="${booking.Invoice[0].InvoiceID}"></span>
                             </p>
                         </div>
                         <div class="col-5 ">
                             <h2></h2>
-                            <p class="address">Room Number: <span th:text="${InvoiceDetailDTO[0].RoomNumber}"></span>
+                            <p class="address">Room Number: <span
+                                    th:text="${booking.BookingMapping[0].RoomID.RoomNum}"></span>
                             </p>
-                            <p class="address">Check-in Date: <span th:text="${InvoiceDetailDTO[0].CheckInDate}"></span>
+                            <p class="address">Check-in Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
                             </p>
-                            <p class="address">Check-out Date: <span
-                                    th:text="${InvoiceDetailDTO[0].CheckOutDate}"></span></p>
+                            <p class="address">Check-out Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -256,12 +264,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="detail : ${InvoiceDetailDTO}">
+                        <tr th:each="service : ${listService}">
+                            <td th:text="${service.seName}"></td>
+                            <td th:text="${service.sePrice}">$</td>
+                            <td>
+                                <span th:each="line : ${service.invoiceLine}">
+                                    <span th:text="${line.quantity}"></span><br />
 
-                            <td th:text="${detail.SeName}">$</td>
-                            <td th:text="${detail.SePrice}">$</td>
-                            <td th:text="${detail.Quantity}"></td>
-                            <td th:text="${totalSePrice}">$</td>
+                                </span>
+                            </td>
+                            <td>
+                                <span th:each="line : ${service.invoiceLine}">
+                                    <span th:text="${line.invoiceTotalAmount}"></span><br />
+
+                                </span>
+                            </td>
+
+
+
+
                         </tr>
                     </tbody>
                 </table>
@@ -278,17 +299,17 @@
                         <table class="table border-0 table-hover">
                             <tr>
                                 <td>Service:</td>
-                                <td th:text="${totalSePrice} + ' $'">$</td>
+                                <td th:text="${totalSePrice}">$</td>
                             </tr>
                             <tr>
                                 <td>Room:</td>
-                                <td th:text="${InvoiceDetailDTO[0].InvoiceTotalAmount}">$</td>
+                                <td th:text="${totalAmountRoom}">$</td>
                             </tr>
 
                             <tfoot>
                                 <tr>
                                     <td>Total:</td>
-                                    <td th:text="${InvoiceDetailDTO[0].InvoiceTotalAmount} + ${totalSePrice} + ' $'">$
+                                    <td th:text="${totalAmountRoom} + ${totalSePrice}">$
                                     </td>
                                 </tr>
                             </tfoot>

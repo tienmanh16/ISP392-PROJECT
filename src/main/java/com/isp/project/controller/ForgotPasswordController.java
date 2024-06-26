@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isp.project.dto.UserDTO;
 import com.isp.project.dto.UserResetPasswordDto;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("/forgotpass")
 public class ForgotPasswordController {
 
     @Autowired
@@ -31,7 +33,7 @@ public class ForgotPasswordController {
     @Autowired
     Email emailService;
 
-    @GetMapping("/forgotpass")
+    @GetMapping("")
     public String forgotPassword() {
         // Check if the user is logged in or not
         UserDTO user = (UserDTO) session.getAttribute("user_sess");
@@ -42,7 +44,7 @@ public class ForgotPasswordController {
         }
     }
 
-    @PostMapping("/forgotPassword")
+    @PostMapping("")
     public String forgotPasswordProcess(@ModelAttribute UserDTO userDTO, Model model) {
         // Check for email
         Employee checkEmail = userService.findByEmail(userDTO.getEmail());
@@ -59,11 +61,10 @@ public class ForgotPasswordController {
             }
         }
         model.addAttribute("error", "Email not found. Please try again later.");
-        // If no user found with the provided email, return error
         return "forgotpass";
     }
 
-    @GetMapping("/forgotPassword/resetpassword")
+    @GetMapping("/resetpassword")
     public String ShowPage(Model model) {
         Employee user = (Employee) session.getAttribute("rawUser");
         if (user == null) {
@@ -74,7 +75,7 @@ public class ForgotPasswordController {
         }
     }
 
-    @PostMapping("/forgotPassword/resetpassword")
+    @PostMapping("/resetpassword")
     public String changePassword(@Valid @ModelAttribute("employee") UserResetPasswordDto userResetPasswordDto,
             BindingResult bindingResult, Model model) {
         Employee rawUser = (Employee) session.getAttribute("rawUser");
@@ -85,20 +86,9 @@ public class ForgotPasswordController {
 
         Employee userId = userService.findById(rawUser.getId());
     
-        // Check if the old password input from resetpassword.html matches the one in
-        // the database
+        // Check if the old password input matches the one in the database
         if (!userId.getPassword().equals(userResetPasswordDto.getOldPassword())) {
             bindingResult.addError(new FieldError("employee", "oldPassword", "Old password is incorrect!"));
-            return "/resetpassword";
-        }
-
-        // Check if new passwords match
-        if (!userResetPasswordDto.getNewPassword().equals(userResetPasswordDto.getConfirmPassword())) {
-            bindingResult.addError(new FieldError("employee", "confirmPassword", "Confirm password does not match!"));
-            return "/resetpassword";
-        }
-
-        if (bindingResult.hasErrors()) {
             return "/resetpassword";
         }
 

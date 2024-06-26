@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Booking Room</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <link href="https://themify.me/themify-icons" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}" />
+
+  <link rel="stylesheet" th:href="@{/css/style.css}" />
+  <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" />
+  <link rel="stylesheet" th:href="@{/css/AdminLTE.css}" />
+  <!-- thư viện để add header và footer  -->
+  <link th:href="@{/css/modalviet.css}" rel="stylesheet" />
+  <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}" />
+  <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}" />
+  <link th:href="@{/css/mmenu.css}" rel="stylesheet" />
+  <link th:href="@{/css/style.copy.css}" rel="stylesheet" />
+
+  <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon" />
+  <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon" />
+
+  <!-- Responsive -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+</head>
+
+<body>
+  <div class="boxcar-wrapper">
+    <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+      <div th:replace="~{fragments/header :: header}"></div>
+    </header>
+
+    <!-- thêm class layout-radius để fix header  -->
+    <section class="ftco-section layout-radius">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-md-6 text-center mb-5">
+            <h2 class="heading-section">RoomItem Management</h2>
+          </div>
+        </div>
+        <div class="box">
+          <div class="box-header d-flex justify-content-between align-items-center">
+
+            <div>
+              <button class="btn js-buy-ticket">+ RoomItem</button>
+            </div>
+            <form th:action="@{/roomitems}" method="get" class="form-inline ml-auto">
+              <div class="input-group" style="width: 200px">
+                <input type="text" name="table_search_roomitems" class="form-control form-control-sm"
+                  placeholder="Search" th:value="${queryItemName}" />
+
+                <div class="input-group-append">
+                  <button type="submit" class="btn btn-default btn-sm">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <div class="table-wrap">
+              <table class="table table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Item ID</th>
+                    <th>Item Name</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="roomitem : ${roomItemList}">
+                    <td th:text="${roomitem.ItemID}"></td>
+                    <td th:text="${roomitem.ItemName}"></td>
+                    <td>
+                      <a th:href="@{'updateRoomitem?idRoomItem=' + ${roomitem.ItemID}}" style="font-size: 24px;">
+                        <i class="ti-pencil-alt"></i>
+                      </a>
+                    </td>
+                    <td>
+                      <a href="javascript:void(0);" th:onclick="'confirmDelete1(' + ${roomitem.ItemID} + ');'">
+                        <i class="material-icons"
+                          style="color: red;font-size: 40px; vertical-align: middle;">delete_forever</i>
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <div th:replace="~{fragments/footer :: footer}"></div>
+
+
+
+  <!-- modal chứa cả các giao diện phủ lên -->
+  <div class="modal js-modal">
+    <div class="windowroomitem js-modal-window">
+      <div class="title">ADD ROOM ITEMS</div>
+      <form th:action="@{/addroomitem}" th:object="${addRoomItem}" method="post">
+        <div class="maincustomer">
+          <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Room Item Information</h3>
+          <span class="material-icons" style="vertical-align: middle;">other_houses</span>
+          <input type="text" th:field="*{ItemName}" style="vertical-align: middle; width: 400px;"
+            placeholder="Enter room Item..." required>
+          <br><br>
+        </div>
+        <div class="footer">
+          <button type="submit" class="button green-button">ADD</button>
+          <button type="button" class="button gray-button js-modal-close">EXIT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- hiệu ứng js trượt vào  -->
+  <script>
+    const buyBtns = document.querySelectorAll(".js-buy-ticket");
+    // 3 nút có class js.. lưu vào biến buyBtns
+    const modal = document.querySelector(".js-modal");
+    // lấy tất cả các thằng có class .js-modal
+    const modalClose = document.querySelector(".js-modal-close");
+
+    const modalWindow = document.querySelector(".js-modal-window");
+
+    // hàm hiện modal mua vé (thêm class open cả modal)
+    function showByTickets() {
+      modal.classList.add("open");
+      // alert('ok')
+    }
+
+    // hàm ẩn modal mua vé (xóa class open ở modal)
+    function hideByTickets() {
+      modal.classList.remove("open");
+    }
+    // lặp qua từng thẻ button và nghe hành vi click
+    for (const buyBtn of buyBtns) {
+      // từng thằng trong buyBtns
+      buyBtn.addEventListener("click", showByTickets);
+    }
+    // nghe hành vi click vaof button close
+    modalClose.addEventListener("click", hideByTickets);
+    // khi click vào tất cả các khoảng modal
+    modal.addEventListener("click", hideByTickets);
+    // vì khi click vào tất cả các khoảng modal thì nó
+    // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
+    modalWindow.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+  </script>
+
+
+
+  <script>
+    function confirmDelete1(roomItemId) {
+      if (confirm("Are you sure you want to delete it?")) {
+        deleteBooking(roomItemId);
+      }
+    }
+
+    function deleteBooking(roomItemId) {
+      fetch(`/deleteRoomItem/${roomItemId}`, { // Chỉnh sửa đường dẫn và sử dụng template literal
+        method: "POST",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to delete item");
+          }
+          return response.text();
+        })
+        .then((message) => {
+          alert(message);
+          location.reload();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred: " + error.message);
+        });
+    }
+  </script>
+
+  <!-- thư viện để add header và footer  -->
+
+  <div class="scroll-to-top scroll-to-target" data-target="html">
+    <span class="fa fa-angle-up"></span>
+  </div>
+
+
+  <style>
+    .btn.js-buy-ticket {
+      background-color: green;
+      color: white;
+      /* Để đảm bảo văn bản trên nút có thể đọc được */
+      border: none;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+  </style>
+  <div class="scroll-to-top scroll-to-target" data-target="html">
+    <span class="fa fa-angle-up"></span>
+  </div>
+  <script th:src="@{/js/jquery.min.js}"></script>
+  <script th:src="@{/js/popper.js}"></script>
+  <script th:src="@{/js/bootstrap.min.js}"></script>
+  <script th:src="@{/js/main.js}"></script>
+  <script th:src="@{/js/jquery.js}"></script>
+  <script th:src="@{/js/popper.min.js}"></script>
+  <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+  <script th:src="@{/js/slick.min.js}"></script>
+  <script th:src="@{/js/slick-animation.min.js}"></script>
+  <script th:src="@{/js/jquery.fancybox.js}"></script>
+  <script th:src="@{/js/wow.js}"></script>
+  <script th:src="@{/js/appear.js}"></script>
+  <script th:src="@{/js/mixitup.js}"></script>
+  <script th:src="@{/js/knob.js}"></script>
+  <script th:src="@{/js/mmenu.js}"></script>
+  <script th:src="@{/js/main.copy1.js}"></script>
+</body>
+
+</html>
