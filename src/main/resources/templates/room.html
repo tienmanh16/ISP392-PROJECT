@@ -472,11 +472,12 @@
 
                         console.log("invoiceLineData", JSON.stringify(invoiceLineData)); // Thêm log để kiểm tra dữ liệu
 
-
+                       
                         // Gọi hàm sendSelectedServices() để gửi dữ liệu đến controller
                         sendSelectedServices();
                     }
                     );
+
                     function sendSelectedServices() {
                         fetch('/addInvoiceLine', {
                             method: 'POST', // Ensure method is POST
@@ -495,7 +496,19 @@
                             })
                             .catch(error => console.error('Error:', error));
                     }
-                    
+ //========================= Update danh sách dich vu đã chọn =====================================
+                        // function updateSelectedInvoiceLinesInput() {
+                        //     const selectedInvoiceLines = invoiceLineData;
+                        //     console.log('selectedInvoiceLines', selectedInvoiceLines);
+                        //     const selectedInvoiceLinesInput = document.getElementById('selected-invoiceLines-input');
+                        //     if (!selectedInvoiceLinesInput) {
+                        //         console.error('selected-rooms-input element not found');
+                        //         return;
+                        //     }
+                        //     selectedInvoiceLinesInput.value = JSON.stringify(selectedInvoiceLines);
+                        // }
+
+
 
                 })
                 .catch(error => {
@@ -629,14 +642,14 @@
                 const invoiceId = document.getElementById('invoiceId').textContent;
 
                 // Gửi HTTP request lên server
-                const response = await fetch(`/invoiceDetail/${invoiceId}`, {
+                const response = await fetch(`/receptionist/invoiceDetail/${invoiceId}`, {
                 method: 'GET'
                 });
 
                 // Kiểm tra nếu request thành công
                 if (response.ok) {
                 // Chuyển hướng sang trang invoice1
-                window.location.href = `/invoiceDetail/${invoiceId}`;
+                window.location.href = `/receptionist/invoiceDetail/${invoiceId}`;
                 } else {
                 console.error('Có lỗi xảy ra khi gửi invoiceID lên server');
                 }

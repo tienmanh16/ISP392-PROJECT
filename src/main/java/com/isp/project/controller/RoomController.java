@@ -276,7 +276,7 @@ public class RoomController {
     }
 
     @GetMapping("/getServiceBySeTypeId")
-    public ResponseEntity<List<ServiceDetailDTO>> getService1(@RequestParam("serviceTypeId") Integer serviceTypeId) {
+
     public ResponseEntity<List<ServiceDetailDTO>> getService1(@RequestParam("serviceTypeId") Integer serviceTypeId) {
         List<ServiceDetailDTO> services = null;
         services = seService.findAllServiceDetailByServiceTypeId(serviceTypeId);
