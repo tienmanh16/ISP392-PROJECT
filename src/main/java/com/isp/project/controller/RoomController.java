@@ -233,6 +233,38 @@ public class RoomController {
     //     }
     //     return invoiceLines;
     // }
+    // =======================================================
+    // @PostMapping("/addInvoiceLine")
+    // public ResponseEntity<String> addInvoiceLines(@RequestBody String
+    // selectedInvoiceLine1JSON) {
+    // List<Map<String, Object>> selectedInvoiceLines =
+    // convertJsonToList(selectedInvoiceLine1JSON);
+
+    // for (Map<String, Object> lineData : selectedInvoiceLines) {
+    // Double invoiceTotalAmount = (Double) lineData.get("InvoiceTotalAmount");
+    // Integer seId = (Integer) lineData.get("seId");
+    // Optional<Service> newService_raw = serviceRepository.findById(seId);
+    // Service newService = newService_raw.get();
+    // Integer quantity = (Integer) lineData.get("quantity");
+    // Integer invoiceId = (Integer) lineData.get("invoiceId");
+    // Optional<Invoice> newInvoice_raw = invoiceRepository.findById(invoiceId);
+    // Invoice newInvoice = newInvoice_raw.get();
+
+    // InvoiceLine newInvoiceLine = new InvoiceLine(invoiceTotalAmount, newService,
+    // quantity, newInvoice);
+    // invoiceLineRepository.save(newInvoiceLine);
+
+    // }
+    // return ResponseEntity.ok("Saved successfully");
+    // }
+
+    // List<InvoiceLine> selectedInvoiceLines =
+    // convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
+    // for (InvoiceLine invoiceLine : selectedInvoiceLines) {
+    // Service service =
+    // serviceRepository.findById(invoiceLine.getService().getSeID()).orElse(null);
+    // Invoice invoice =
+    // invoiceRepository.findById(invoiceLine.getInvoice().getInvoiceID()).orElse(null);
 
     @PostMapping("/addInvoiceLine")
     @ResponseBody

@@ -338,18 +338,18 @@
                 <div class="rightttDV">
                     <p>Dịch vụ đã chọn</p>
                     <div class="list-view-DVDaChon">
-                      
-                            <table border="1">
-                                <thead>
-                                    <tr>
-                                        <th>Dịch Vụ</th>
-                                        <th>Số Lượng</th>
-                                        <th>Thành Tiền</th>
-                                        <th>Xóa</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="lvDichVuDaChon">
-                                    <!-- <tr>
+
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>Dịch Vụ</th>
+                                    <th>Số Lượng</th>
+                                    <th>Thành Tiền</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lvDichVuDaChon">
+                                <!-- <tr>
                                 <td>1</td>
                                 <td>alo</td>
                                 <td>123</td>
@@ -357,8 +357,8 @@
                                     <span class="material-icons" style="color: red;">cancel</span>
                                 </a></td>
                             </tr> -->
-                                </tbody>
-                            </table>
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
@@ -472,12 +472,11 @@
 
                         console.log("invoiceLineData", JSON.stringify(invoiceLineData)); // Thêm log để kiểm tra dữ liệu
 
-                       
+
                         // Gọi hàm sendSelectedServices() để gửi dữ liệu đến controller
                         sendSelectedServices();
                     }
                     );
-
                     function sendSelectedServices() {
                         fetch('/addInvoiceLine', {
                             method: 'POST', // Ensure method is POST
@@ -496,19 +495,7 @@
                             })
                             .catch(error => console.error('Error:', error));
                     }
- //========================= Update danh sách dich vu đã chọn =====================================
-                        // function updateSelectedInvoiceLinesInput() {
-                        //     const selectedInvoiceLines = invoiceLineData;
-                        //     console.log('selectedInvoiceLines', selectedInvoiceLines);
-                        //     const selectedInvoiceLinesInput = document.getElementById('selected-invoiceLines-input');
-                        //     if (!selectedInvoiceLinesInput) {
-                        //         console.error('selected-rooms-input element not found');
-                        //         return;
-                        //     }
-                        //     selectedInvoiceLinesInput.value = JSON.stringify(selectedInvoiceLines);
-                        // }
-
-
+                    
 
                 })
                 .catch(error => {
