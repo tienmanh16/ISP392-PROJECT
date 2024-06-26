@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -42,7 +42,8 @@
                             <div class="title">
                                 <h3>Login</h3>
                             </div>
-                            <form th:action="@{userLogin}" th:object="${employee}" method="post" onsubmit="return checkFormSubmission()">
+                            <form th:action="@{userLogin}" th:object="${employee}" method="post"
+                                onsubmit="return checkFormSubmission()">
                                 <div th:if="${loginError}" class="alert alert-danger" role="alert">
                                     <p th:text="${loginError}"></p>
                                 </div>

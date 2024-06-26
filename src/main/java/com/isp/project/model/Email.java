@@ -18,16 +18,16 @@ public class Email {
     @Autowired
     private TemplateEngine templateEngine;
 
-    public void sendEmail(String to, String password) throws MessagingException {
+    public void sendEmail(String to, String code) throws MessagingException {
         session.setMaxInactiveInterval(5 * 60);
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         helper.setTo(to);
-        helper.setSubject("Mật khẩu tài khoản của bạn từ Sarine");
+        helper.setSubject("Code xác nhận tài khoản của bạn từ Sarine");
         Context context = new Context();
-        context.setVariable("password", password);
+        context.setVariable("verifyCode", code);
         String htmlMsg = templateEngine.process("sendEmail", context);
         helper.setText(htmlMsg, true);
 

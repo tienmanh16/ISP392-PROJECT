@@ -17,6 +17,9 @@ public class SecurityConfig {
 	@Autowired
 	public CustomAuthSuccessHandler successHandler;
 
+	@Autowired
+	public CustomFailureHandler failureHandler;
+
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -34,19 +37,20 @@ public class SecurityConfig {
 		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
 		return daoAuthenticationProvider;
 	}
-
+	// ,"/home", "/contact", "/forgotpass/**", "/detail", "/css/**", "/images/**", "/scss/**", "/fonts/**", "/js/**", "/login/**")
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/receptionist/**").hasRole("RECEPTIONIST")
+                .requestMatchers("/receptionist/**").hasAnyRole("RECEPTIONIST", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
-                .requestMatchers("/home", "/contact", "/forgotpass","/detail", "/css/**", "/images/**", "/scss/**", "/fonts/**", "/js/**").permitAll()
+                .requestMatchers("/**").permitAll()
             )
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/userLogin")
-                .successHandler(successHandler)
+                .failureHandler(failureHandler)
+				.successHandler(successHandler)
                 .permitAll()
             )
             .exceptionHandling(exception -> exception

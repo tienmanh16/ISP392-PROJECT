@@ -27,6 +27,7 @@ public class CustomUser implements UserDetails {
 		return Arrays.asList(authority);
 	}
 
+	
 	@Override
 	public String getPassword() {
 		return user.getPassword();
@@ -44,7 +45,7 @@ public class CustomUser implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
+		return user.isAccountNonLocked();
 	}
 
 	@Override
@@ -54,7 +55,15 @@ public class CustomUser implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		return true;
+		return user.getIsActive();
+	}
+
+	public Employee getUser() {
+		return user;
+	}
+
+	public void setUser(Employee user) {
+		this.user = user;
 	}
 
 }

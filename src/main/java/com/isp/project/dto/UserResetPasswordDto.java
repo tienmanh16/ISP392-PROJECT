@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UserResetPasswordDto {
     @NotNull
-    @Size(min = 6, message = "password must be at least 6 characters")
-    private String oldPassword;
+    private String verifyCode;
     @NotNull
     @Size(min = 6, message = "password must be at least 6 characters")
     private String newPassword;
