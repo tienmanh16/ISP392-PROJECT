@@ -423,14 +423,28 @@
                 .then(data => {
                     // Cập nhật thông tin phòng vào modal
                     // Ví dụ:
-                    document.getElementById('txblTenKH').textContent = data.customerName;
-                    document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
-                    document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
-                    document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
-                    document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
-                    console.log(document.getElementById('invoiceId').textContent);
+                    // document.getElementById('txblTenKH').textContent = data.customerName;
+                    // document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
+                    // document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
+                    // document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
+                    // document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
+                    // console.log(document.getElementById('invoiceId').textContent);
                     //document.getElementById('idPhong').textContent = data.roomNumber;
                     // Cập nhật các thông tin khác tương tự
+
+                    if (document.getElementById('statusPhong').value === "Empty Room") {
+                        document.getElementById('txblTenKH').textContent = "";
+                        document.getElementById('txblNgayDen').textContent = "Chưa có";
+                        document.getElementById('txblSoNgay').textContent = "Chưa có";
+                        document.getElementById('txblSoNguoi').textContent = "0 người";
+                        document.getElementById('invoiceId').textContent = "Chưa có";
+                    } else {
+                        document.getElementById('txblTenKH').textContent = data.customerName;
+                        document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
+                        document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
+                        document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
+                        document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
+                    }
 
 
 
@@ -466,21 +480,21 @@
 
                     function sendSelectedServices() {
                         fetch('/addInvoiceLine', {
-                            method: 'POST',
+                            method: 'POST', // Ensure method is POST
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(invoiceLineData)
                         })
-                        .then(response => {
-                            if (response.ok) {
-                                // window.location.href = '/room'; // Redirect to booking result page
-                                console.log("invoiceLineData", JSON.stringify(invoiceLineData));
-                            } else {
-                                console.error('Failed to save selected services');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log("Invoice lines saved successfully");
+                                    // Redirect or handle success as needed
+                                } else {
+                                    console.error('Failed to save selected services');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
                     }
  //========================= Update danh sách dich vu đã chọn =====================================
                         // function updateSelectedInvoiceLinesInput() {
@@ -511,12 +525,12 @@
                     document.getElementById('idPhong').textContent = data.roomNum;
                     document.getElementById('statusPhong').value = data.status;
                     // Cập nhật các thông tin khác tương tự
-                    if (data.status === "Empty Room") {
-                        document.getElementById('txblTenKH').textContent = "";
-                        document.getElementById('txblNgayDen').textContent = "Chưa có";
-                        document.getElementById('txblSoNgay').textContent = "Chưa có";
-                        document.getElementById('txblSoNguoi').textContent = "0 người";
-                    }
+                    // if (data.status === "Empty Room") {
+                    //     document.getElementById('txblTenKH').textContent = "";
+                    //     document.getElementById('txblNgayDen').textContent = "Chưa có";
+                    //     document.getElementById('txblSoNgay').textContent = "Chưa có";
+                    //     document.getElementById('txblSoNguoi').textContent = "0 người";
+                    // }
 
                     // Kiểm tra trạng thái phòng
                     if (data.status === "Booked Room") {
@@ -614,7 +628,35 @@
                 .catch(error => {
                     console.error('Lỗi khi lấy thông tin phòng:', error);
                 }
-                );
+            );
+
+
+
+            // Lấy nút "Thanh toán"
+            const btnThanhToan = document.getElementById('btnThanhToan');
+
+            // Thêm sự kiện click cho nút "Thanh toán"
+            btnThanhToan.addEventListener('click', async () => {
+            try {
+                // Lấy giá trị của phần tử <p id="invoiceId">
+                const invoiceId = document.getElementById('invoiceId').textContent;
+
+                // Gửi HTTP request lên server
+                const response = await fetch(`/invoiceDetail/${invoiceId}`, {
+                method: 'GET'
+                });
+
+                // Kiểm tra nếu request thành công
+                if (response.ok) {
+                // Chuyển hướng sang trang invoice1
+                window.location.href = `/invoiceDetail/${invoiceId}`;
+                } else {
+                console.error('Có lỗi xảy ra khi gửi invoiceID lên server');
+                }
+            } catch (error) {
+                console.error('Lỗi khi gửi HTTP request:', error);
+            }
+            });
 
 
 

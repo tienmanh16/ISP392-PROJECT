@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.isp.project.dto.InvoiceLineDTO;
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.dto.ServiceDetailDTO;
@@ -190,122 +192,103 @@ public class RoomController {
         return ResponseEntity.ok(services);
     }
 
-    // @PostMapping("/addInvoiceLine")
-    // public ResponseEntity<String> createInvoiceLine(@RequestBody InvoiceLine[]
-    // invoiceLineData) {
-    // try {
-    // // Lặp qua danh sách InvoiceLine và lưu vào cơ sở dữ liệu
-    // for (InvoiceLine invoiceLine : invoiceLineData) {
-    // invoiceLineService.createInvoiceLine(invoiceLine);
-    // }
-    // return ResponseEntity.ok("Dữ liệu đã được lưu thành công!");
-    // } catch (Exception e) {
-    // e.printStackTrace(); // In ra lỗi chi tiết
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-    // .body("Có lỗi xảy ra khi lưu dữ liệu: " + e.getMessage());
-    // }
-    // }
+    
 
     // @PostMapping("/addInvoiceLine")
-    // public @ResponseBody
-    // String addPersons(@RequestBody InvoiceLine[] invoiceLineData) {
-    // try {
+    // @ResponseBody
+    // public ResponseEntity<String> addInvoiceLines(@RequestBody String selectedInvoiceLine1JSON) {
+    //     try {
+    //         List<InvoiceLineDTO> selectedInvoiceLines = convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
+    //         for (InvoiceLineDTO invoiceLine : selectedInvoiceLines) {
+    //             Service service = serviceRepository.findById(invoiceLine.getSeID()).orElse(null);
+    //             Invoice invoice = invoiceRepository.findById(invoiceLine.getInvoiceID()).orElse(null);
+    //             if (service != null && invoice != null) {
+    //                 InvoiceLine invoiceLine2 = new InvoiceLine();
+    //                 invoiceLine2.setInvoiceTotalAmount(invoiceLine.getInvoiceTotalAmount());
+    //                 invoiceLine2.setService(service);
+    //                 invoiceLine2.setQuantity(invoiceLine.getQuantity());
+    //                 invoiceLine2.setInvoice(invoice);
 
-    // // perform add operation
-    // for (InvoiceLine invoiceLine : invoiceLineData) {
-    // invoiceLineService.createInvoiceLine(invoiceLine);
-    // }
-    // return "Successfully added stock.";
-    // } catch (Exception ex) {
-    // System.out.println(ex.getMessage());
-    // }
-    // return "Error";
-    // }
-
-    // @GetMapping("/addInvoiceLine2")
-    // public void addLoctest(){
-    // invoiceLineRepository.insertInvoiceLine(4.00, 1, 2, 1);
-    // }
-
-    // @PostMapping("/addInvoiceLine")
-    // public ResponseEntity<String> addInvoiceLines(@RequestBody List<InvoiceLine>
-    // invoiceLineData) {
-    // try {
-    // for (InvoiceLine invoiceLine : invoiceLineData) {
-    // invoiceLineService.createInvoiceLine(invoiceLine);
-    // }
-    // return ResponseEntity.ok("Successfully added invoice lines.");
-    // } catch (Exception ex) {
-    // ex.printStackTrace();
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error
-    // adding invoice lines: " + ex.getMessage());
-    // }
+    //                 invoiceLineRepository.save(invoiceLine2);
+    //             }
+    //         }
+    //         return ResponseEntity.ok("Saved successfully");
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    //                 .body("Error saving invoice lines: " + e.getMessage());
+    //     }
     // }
 
-    // @PostMapping("/addInvoiceLine")
-    // public String addInvoiceLines(@RequestParam("selectedInvoiceLine1") String
-    // selectedInvoiceLine1JSON) {
-    // List<InvoiceLine> selectedInvoiceLines =
-    // convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
-    // for (InvoiceLine invoiceLine : selectedInvoiceLines) {
-    // Service service =
-    // serviceRepository.findById(invoiceLine.getService().getSeID()).orElse(null);
-    // Invoice invoice =
-    // invoiceRepository.findById(invoiceLine.getInvoice().getInvoiceID()).orElse(null);
-    // if (service != null && invoice != null) {
-    // InvoiceLine invoiceLine2 = new InvoiceLine();
-    // invoiceLine2.setInvoiceTotalAmount(invoiceLine.getInvoiceTotalAmount());
-    // invoiceLine2.setService(service);
-    // invoiceLine2.setQuantity(invoiceLine.getQuantity());
-    // invoiceLine2.setInvoice(invoice);
 
-    // invoiceLineRepository.save(invoiceLine2);
-    // }
-    // }
-    // return "redirect:/room"; // Redirect to booking result page
-    // }
 
-    // private List<InvoiceLine> convertJsonToInvoiceLineList(String json) {
-    // ObjectMapper objectMapper = new ObjectMapper();
-    // try {
-    // return objectMapper.readValue(json, new TypeReference<List<InvoiceLine>>()
-    // {});
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // return Collections.emptyList();
-    // }
+    // private List<InvoiceLineDTO> convertJsonToInvoiceLineList(String json) {
+    //     ObjectMapper objectMapper = new ObjectMapper();
+    //     List<InvoiceLineDTO> invoiceLines = new ArrayList<>();
+    //     try {
+    //         InvoiceLineDTO[] invoiceLineArray = objectMapper.readValue(json, InvoiceLineDTO[].class);
+    //         invoiceLines = Arrays.asList(invoiceLineArray);
+    //     } catch (JsonProcessingException e) {
+    //         e.printStackTrace();
+    //     }
+    //     return invoiceLines;
     // }
 
     @PostMapping("/addInvoiceLine")
-    public ResponseEntity<String> addInvoiceLines(@RequestBody String selectedInvoiceLine1JSON) {
-        List<InvoiceLine> selectedInvoiceLines = convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
-        for (InvoiceLine invoiceLine : selectedInvoiceLines) {
-            Service service = serviceRepository.findById(invoiceLine.getService().getSeID()).orElse(null);
-            Invoice invoice = invoiceRepository.findById(invoiceLine.getInvoice().getInvoiceID()).orElse(null);
-            if (service != null && invoice != null) {
-                InvoiceLine invoiceLine2 = new InvoiceLine();
-                invoiceLine2.setInvoiceTotalAmount(invoiceLine.getInvoiceTotalAmount());
-                invoiceLine2.setService(service);
-                invoiceLine2.setQuantity(invoiceLine.getQuantity());
-                invoiceLine2.setInvoice(invoice);
+    @ResponseBody
+    public ResponseEntity<String> addInvoiceLines(@RequestBody String invoiceLineData) {
+        System.out.println("Received POST request to /addInvoiceLine");
 
-                invoiceLineRepository.save(invoiceLine2);
+        List<Map<String, Object>> selectedInvoiceLines = convertJsonToList(invoiceLineData);
+
+        for (Map<String, Object> lineData : selectedInvoiceLines) {
+            try {
+                Double invoiceTotalAmount = Double.valueOf(lineData.get("InvoiceTotalAmount").toString());
+                Integer seId = Integer.valueOf(lineData.get("SeID").toString());
+                Integer quantity = Integer.valueOf(lineData.get("Quantity").toString());
+                Integer invoiceId = Integer.valueOf(lineData.get("InvoiceID").toString());
+
+                Optional<Service> newServiceOptional = serviceRepository.findById(seId);
+                Optional<Invoice> newInvoiceOptional = invoiceRepository.findById(invoiceId);
+
+                if (newServiceOptional.isPresent() && newInvoiceOptional.isPresent()) {
+                    Service newService = newServiceOptional.get();
+                    Invoice newInvoice = newInvoiceOptional.get();
+
+                    // Create and save the InvoiceLine
+                    InvoiceLine invoiceLine = new InvoiceLine();
+                    invoiceLine.setInvoiceTotalAmount(invoiceTotalAmount);
+                    invoiceLine.setService(newService);
+                    invoiceLine.setQuantity(quantity);
+                    invoiceLine.setInvoice(newInvoice);
+
+                    invoiceLineRepository.save(invoiceLine);
+                } else {
+                    // Handle case where service or invoice is not found
+                    System.out.println("Service or Invoice not found for IDs: " + seId + ", " + invoiceId);
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                            .body("Service or Invoice not found for IDs: " + seId + ", " + invoiceId);
+                }
+            } catch (NumberFormatException e) {
+                // Handle parsing errors if necessary
+                System.out.println("Error parsing numbers from JSON data: " + e.getMessage());
+                return ResponseEntity.badRequest().body("Error parsing numbers from JSON data: " + e.getMessage());
             }
         }
+
         return ResponseEntity.ok("Saved successfully");
     }
 
-
-    private List<InvoiceLine> convertJsonToInvoiceLineList(String json) {
+    private List<Map<String, Object>> convertJsonToList(String json) {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<InvoiceLine> invoiceLines = new ArrayList<>();
+        List<Map<String, Object>> list = null;
         try {
-            InvoiceLine[] invoiceLineArray = objectMapper.readValue(json, InvoiceLine[].class);
-            invoiceLines = Arrays.asList(invoiceLineArray);
-        } catch (JsonProcessingException e) {
+            list = objectMapper.readValue(json, new TypeReference<List<Map<String, Object>>>() {
+            });
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return invoiceLines;
+        return list;
     }
 
 }
