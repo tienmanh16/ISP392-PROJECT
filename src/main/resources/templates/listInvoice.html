@@ -1,238 +1,311 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
-  <head>
-  	<title>Table 09</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Table 09</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	<link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
 
 	<link rel="stylesheet" href="@https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	
+
 	<link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
-	<link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all" href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
-	
+	<link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+		href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
+
 	<!-- thư viện để add header và footer  -->
 
 	<link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
-    <link th:href="@{/css/mmenu.css}" rel="stylesheet">
-    <link th:href="@{/css/style.copy.css}" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+	<link th:href="@{/css/mmenu.css}" rel="stylesheet">
+	<link th:href="@{/css/style.copy.css}" rel="stylesheet">
 
-    <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
-    <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+	<link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+	<link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+
+	<!-- Responsive -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	
-    <!-- Responsive -->
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-	
-	</head>
-	<body>
-		<div class="boxcar-wrapper">
+</head>
+
+<body>
+	<div class="boxcar-wrapper">
 		<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
 			<div th:replace="~{fragments/header :: header}"></div>
 		</header>
-	
+
 		<!-- thêm class layout-radius để fix header  -->
-	<section class="ftco-section layout-radius">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-md-6 text-center mb-5">
-					<h2 class="heading-section">Envoice management</h2>
-				</div>
-			</div>
-
-			<div class="InputContainer" style="margin-bottom: 20px;">
-				<form>
-				<input placeholder="Search.." id="input" name="key"  class="input" type="text">
-				
-
-			</form>
-			  </div>
-			  <form >
-			  <div class="InputContainer" style="position: absolute; top: 190px; right: 150px;">
-				
-				<input id="input" class="input" name="keyDate" type="date">
-				<button type="submit" class="submit-button"></button>
-			</form>
-				
-			  </div>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="table-wrap">
-						<table class="table table-striped">
-						  <thead>
-						    <tr>
-						      <th>Invoce</th>
-							  <th>Invoice Date</th>
-						      <th>Customer</th>
-						      <th>Total Amount</th>
-						      
-						      <th>Details</th>
-						      
-						    </tr>
-						  </thead>
-						  <tbody>
-						    <tr th:each="list : ${listInvoice}">
-						      <th scope="row" th:text="${list.InvoiceID}"></th>
-							  <td th:text="${list.InvoiceDate}"></td>
-						      <td th:text="${list.CustomerName}"></td>
-						      <td th:text="${list.TotalAmount}"></td>
-						      
-						      
-						      <td ><a th:href="@{/receptionist/invoiceDetail/{invoiceID}(invoiceID=${list.InvoiceID})}" class="ti-menu"></a></td>
-						      
-						    </tr>
-
-						    
-
-						    
-						  </tbody>
-						</table>
-
+		<section class="ftco-section layout-radius">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-md-6 text-center mb-5">
+						<h2 class="heading-section">Envoice management</h2>
 					</div>
-					<!-- phân trang -->
-					<div class="pagination-sec">
-						<nav aria-label="Page navigation example">
-							<ul class="pagination">
-								<li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-									<a class="page-link" th:if="${key != null}" 
-									   th:href="@{'?pageNo=' + ${currentPage - 1} + '&key=' + ${key}}" 
-									   aria-label="Previous">
-										<span aria-hidden="true">
-											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z" fill="#050B20"/>
-											</svg>
-										</span>
-										<span class="sr-only">Previous</span>
-									</a>
-									
-									<a class="page-link" th:if="${keyDate != null}" 
-									   th:href="@{'?pageNo=' + ${currentPage - 1} + '&keyDate=' + ${keyDate}}" 
-									   aria-label="Previous">
-										<span aria-hidden="true">
-											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z" fill="#050B20"/>
-											</svg>
-										</span>
-										<span class="sr-only">Previous</span>
-									</a>
-									
-									<a class="page-link" th:if="${key == null && keyDate == null}" 
-									   th:href="@{'?pageNo=' + ${currentPage - 1}}" 
-									   aria-label="Previous">
-										<span aria-hidden="true">
-											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<path d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z" fill="#050B20"/>
-											</svg>
-										</span>
-										<span class="sr-only">Previous</span>
-									</a>
-								</li>
-								
-								<th:block th:each="i : ${#numbers.sequence(1, totalPage)}">
-									<li class="page-item" th:classappend="${currentPage == i ? 'active' : ''}">
-										<a class="page-link" th:if="${key != null}" 
-										   th:href="@{'?pageNo=' + ${i} + '&key=' + ${key}}" 
-										   th:text="${i}"></a>
-										
-										<a class="page-link" th:if="${keyDate != null}" 
-										   th:href="@{'?pageNo=' + ${i} + '&keyDate=' + ${keyDate}}" 
-										   th:text="${i}"></a>
-										
-										<a class="page-link" th:if="${key == null && keyDate == null}" 
-										   th:href="@{'?pageNo=' + ${i}}" 
-										   th:text="${i}"></a>
+				</div>
+
+				<div class="InputContainer" style="position: absolute; top: 190px; right: 740px;">
+
+					<input placeholder="Search by Customer.." id="searchbar" name="key" class="input" type="text">
+
+
+
+				</div>
+				<div class="InputContainer" style="margin-bottom: 20px;">
+					<input placeholder="Search by Invoice ID.." id="invoiceIdInput" name="invoiceId" class="input"
+						type="text">
+				</div>
+
+				<div class="InputContainer" style="position: absolute; top: 190px; right: 150px;">
+
+					<input id="dateInput" class="input" name="keyDate" type="date">
+
+
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="table-wrap">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th>Invoce</th>
+										<th>Invoice Date</th>
+										<th>Customer</th>
+										<th>Total Amount</th>
+
+										<th>Details</th>
+
+									</tr>
+								</thead>
+								<tbody id="body">
+									<tr th:each="list : ${listInvoice}">
+										<th scope="row" th:text="${list.InvoiceID}"></th>
+										<td th:text="${list.InvoiceDate}"></td>
+										<td th:text="${list.CustomerName}"></td>
+										<td th:text="${list.TotalAmount}"></td>
+
+
+										<td><a th:href="@{/receptionist/invoiceDetail/{invoiceID}(invoiceID=${list.InvoiceID})}"
+												class="ti-menu"></a></td>
+
+									</tr>
+
+
+
+
+								</tbody>
+							</table>
+
+						</div>
+						<!-- phân trang -->
+						<div class="pagination-sec">
+							<nav aria-label="Page navigation example">
+								<ul class="pagination">
+									<li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+										<a class="page-link" th:if="${key != null}"
+											th:href="@{'?pageNo=' + ${currentPage - 1} + '&key=' + ${key}}"
+											aria-label="Previous">
+											<span aria-hidden="true">
+												<svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<path
+														d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z"
+														fill="#050B20" />
+												</svg>
+											</span>
+											<span class="sr-only">Previous</span>
+										</a>
+
+										<a class="page-link" th:if="${keyDate != null}"
+											th:href="@{'?pageNo=' + ${currentPage - 1} + '&keyDate=' + ${keyDate}}"
+											aria-label="Previous">
+											<span aria-hidden="true">
+												<svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<path
+														d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z"
+														fill="#050B20" />
+												</svg>
+											</span>
+											<span class="sr-only">Previous</span>
+										</a>
+
+										<a class="page-link" th:if="${key == null && keyDate == null}"
+											th:href="@{'?pageNo=' + ${currentPage - 1}}" aria-label="Previous">
+											<span aria-hidden="true">
+												<svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<path
+														d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z"
+														fill="#050B20" />
+												</svg>
+											</span>
+											<span class="sr-only">Previous</span>
+										</a>
 									</li>
-								</th:block>
-								
-								<li class="page-item" th:classappend="${currentPage == totalPage ? 'disabled' : ''}">
-									<a class="page-link" th:if="${key != null}" 
-									   th:href="@{'?pageNo=' + ${currentPage + 1} + '&key=' + ${key}}" 
-									   aria-label="Next">
-										<span aria-hidden="true">
-											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<g clip-path="url(#clip0_2880_6407)">
-													<path d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z" fill="#050B20"/>
-												</g>
-												<defs>
-													<clipPath id="clip0_2880_6407">
-														<rect width="12" height="12" fill="white" transform="translate(12 12) rotate(-180)"/>
-													</clipPath>
-												</defs>
-											</svg>
-										</span>
-										<span class="sr-only">Next</span>
-									</a>
-									
-									<a class="page-link" th:if="${keyDate != null}" 
-									   th:href="@{'?pageNo=' + ${currentPage + 1} + '&keyDate=' + ${keyDate}}" 
-									   aria-label="Next">
-										<span aria-hidden="true">
-											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<g clip-path="url(#clip0_2880_6407)">
-													<path d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z" fill="#050B20"/>
-												</g>
-												<defs>
-													<clipPath id="clip0_2880_6407">
-														<rect width="12" height="12" fill="white" transform="translate(12 12) rotate(-180)"/>
-													</clipPath>
-												</defs>
-											</svg>
-										</span>
-										<span class="sr-only">Next</span>
-									</a>
-									
-									<a class="page-link" th:if="${key == null && keyDate == null}" 
-									   th:href="@{'?pageNo=' + ${currentPage + 1}}" 
-									   aria-label="Next">
-										<span aria-hidden="true">
-											<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-												<g clip-path="url(#clip0_2880_6407)">
-													<path d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z" fill="#050B20"/>
-												</g>
-												<defs>
-													<clipPath id="clip0_2880_6407">
-														<rect width="12" height="12" fill="white" transform="translate(12 12) rotate(-180)"/>
-													</clipPath>
-												</defs>
-											</svg>
-										</span>
-										<span class="sr-only">Next</span>
-									</a>
-								</li>
-							</ul>
-						</nav>
-					</div>
-					
 
-					
+									<th:block th:each="i : ${#numbers.sequence(1, totalPage)}">
+										<li class="page-item" th:classappend="${currentPage == i ? 'active' : ''}">
+											<a class="page-link" th:if="${key != null}"
+												th:href="@{'?pageNo=' + ${i} + '&key=' + ${key}}" th:text="${i}"></a>
+
+											<a class="page-link" th:if="${keyDate != null}"
+												th:href="@{'?pageNo=' + ${i} + '&keyDate=' + ${keyDate}}"
+												th:text="${i}"></a>
+
+											<a class="page-link" th:if="${key == null && keyDate == null}"
+												th:href="@{'?pageNo=' + ${i}}" th:text="${i}"></a>
+										</li>
+									</th:block>
+
+									<li class="page-item"
+										th:classappend="${currentPage == totalPage ? 'disabled' : ''}">
+										<a class="page-link" th:if="${key != null}"
+											th:href="@{'?pageNo=' + ${currentPage + 1} + '&key=' + ${key}}"
+											aria-label="Next">
+											<span aria-hidden="true">
+												<svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<g clip-path="url(#clip0_2880_6407)">
+														<path
+															d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z"
+															fill="#050B20" />
+													</g>
+													<defs>
+														<clipPath id="clip0_2880_6407">
+															<rect width="12" height="12" fill="white"
+																transform="translate(12 12) rotate(-180)" />
+														</clipPath>
+													</defs>
+												</svg>
+											</span>
+											<span class="sr-only">Next</span>
+										</a>
+
+										<a class="page-link" th:if="${keyDate != null}"
+											th:href="@{'?pageNo=' + ${currentPage + 1} + '&keyDate=' + ${keyDate}}"
+											aria-label="Next">
+											<span aria-hidden="true">
+												<svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<g clip-path="url(#clip0_2880_6407)">
+														<path
+															d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z"
+															fill="#050B20" />
+													</g>
+													<defs>
+														<clipPath id="clip0_2880_6407">
+															<rect width="12" height="12" fill="white"
+																transform="translate(12 12) rotate(-180)" />
+														</clipPath>
+													</defs>
+												</svg>
+											</span>
+											<span class="sr-only">Next</span>
+										</a>
+
+										<a class="page-link" th:if="${key == null && keyDate == null}"
+											th:href="@{'?pageNo=' + ${currentPage + 1}}" aria-label="Next">
+											<span aria-hidden="true">
+												<svg width="12" height="12" viewBox="0 0 12 12" fill="none"
+													xmlns="http://www.w3.org/2000/svg">
+													<g clip-path="url(#clip0_2880_6407)">
+														<path
+															d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z"
+															fill="#050B20" />
+													</g>
+													<defs>
+														<clipPath id="clip0_2880_6407">
+															<rect width="12" height="12" fill="white"
+																transform="translate(12 12) rotate(-180)" />
+														</clipPath>
+													</defs>
+												</svg>
+											</span>
+											<span class="sr-only">Next</span>
+										</a>
+									</li>
+								</ul>
+							</nav>
+						</div>
+
+
+
+					</div>
 				</div>
 			</div>
-		</div>
-	</section>
+		</section>
 
 
 
-	
-</div>
-<div th:replace="~{fragments/footer :: footer}"></div>
+
+	</div>
+	<div th:replace="~{fragments/footer :: footer}"></div>
 	<!-- thư viện để add header và footer  -->
 
-  <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
-    <script th:src="@{/js/jquery.js}"></script>
-    <script th:src="@{/js/popper.min.js}"></script>
-    <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
-    <script th:src="@{/js/slick.min.js}"></script>
-    <script th:src="@{/js/slick-animation.min.js}"></script>
-    <script th:src="@{/js/jquery.fancybox.js}"></script>
-    <script th:src="@{/js/wow.js}"></script>
-    <script th:src="@{/js/appear.js}"></script>
-    <script th:src="@{/js/mixitup.js}"></script>
-    <script th:src="@{/js/knob.js}"></script>
-    <script th:src="@{/js/mmenu.js}"></script>
-    <script th:src="@{/js/main.copy1.js}"></script>
+	<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+	<script>
+		var searchbar = document.getElementById('searchbar');
+		var dateInput = document.getElementById('dateInput');
+		var invoiceIdInput = document.getElementById('invoiceIdInput');
+		var tbody = document.getElementById('body');
+		var orignaltabledata = tbody.innerHTML;
+
+		function Search() {
+			tbody.innerHTML = orignaltabledata;
+			let rows = tbody.getElementsByTagName('tr');
+			let searchtext = searchbar.value.toLowerCase();
+			let searchdate = dateInput.value;
+			let searchInvoiceId = invoiceIdInput.value.toLowerCase();
+
+			// không lọc dữ liệu nếu tất cả các ô tìm kiếm đều trống
+			if (searchtext == '' && searchdate == '' && searchInvoiceId == '') {
+				tbody.innerHTML = orignaltabledata;
+				return;
+			}
+
+			let filteredrows = '';
+
+			for (let i = 0; i < rows.length; i++) {
+				let rowtext = rows[i].innerText.toLowerCase();
+				let rowdate = rows[i].querySelector('td:nth-child(2)').innerText;
+				let invoiceId = rows[i].querySelector('th').innerText.toLowerCase();
+
+				let textMatch = rowtext.indexOf(searchtext) > -1;
+				let dateMatch = searchdate == '' || rowdate.startsWith(searchdate);
+				let invoiceIdMatch = searchInvoiceId == '' || invoiceId.indexOf(searchInvoiceId) > -1;
+
+				if (textMatch && dateMatch && invoiceIdMatch) {
+					filteredrows += rows[i].outerHTML;
+				}
+			}
+
+			tbody.innerHTML = filteredrows;
+		}
+
+		searchbar.addEventListener('input', Search);
+		dateInput.addEventListener('input', Search);
+		invoiceIdInput.addEventListener('input', Search);
+	</script>
+
+
+
+
+
+	<script th:src="@{/js/jquery.js}"></script>
+	<script th:src="@{/js/popper.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+	<script th:src="@{/js/slick.min.js}"></script>
+	<script th:src="@{/js/slick-animation.min.js}"></script>
+	<script th:src="@{/js/jquery.fancybox.js}"></script>
+	<script th:src="@{/js/wow.js}"></script>
+	<script th:src="@{/js/appear.js}"></script>
+	<script th:src="@{/js/mixitup.js}"></script>
+	<script th:src="@{/js/knob.js}"></script>
+	<script th:src="@{/js/mmenu.js}"></script>
+	<script th:src="@{/js/main.copy1.js}"></script>
 
 
 
@@ -240,5 +313,6 @@
 	<script th:src="@{/src/main/resources/static/js/popper.js}"></script>
 	<script th:src="@{/src/main/resources/static/js/bootstrap.min.js}"></script>
 	<script th:src="@{/src/main/resources/static/js/main.js}"></script>
-	</body>
+</body>
+
 </html>

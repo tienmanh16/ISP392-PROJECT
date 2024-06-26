@@ -87,13 +87,8 @@
             </tr>
 
             <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-
-
-                
-                <td th:text="'Total: ' + ${totalAmount}"></td>
+                <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                <td th:text="${totalAmount}"></td>
                 
             </tr>
         </tbody>
@@ -101,8 +96,11 @@
     <div id="footer">
         <div id="prepared-by">
             <p>Người lập biểu</p>
-        
+            <p>(Nguyễn Văn A)</p>
+        </div>
+        <div id="accountant">
             <p>Kế toán</p>
+            <p>(Trần Thị B)</p>
         </div>
     </div>
 </body>

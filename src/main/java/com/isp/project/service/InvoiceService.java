@@ -1,5 +1,6 @@
 package com.isp.project.service;
 
+import java.io.InputStream;
 import java.sql.Date;
 import java.util.List;
 import java.util.Map;
@@ -21,4 +22,5 @@ public interface InvoiceService {
     double getTotalInvoiceForMonth(int month, int year);
     Map<String, Double> getTotalServiceByYear(int year);
     Page<Invoice> pageInvoice(Integer pageNo);
+    void htmlToWord(String html, String filePath);
 }
