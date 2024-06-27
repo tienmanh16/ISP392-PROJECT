@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<!-- Mirrored from creativelayers.net/themes/boxcar-html/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 May 2024 03:28:16 GMT -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -44,20 +42,24 @@
                             <div class="title">
                                 <h3>Login</h3>
                             </div>
-
-                            <form th:action="@{/login}" th:object="${employee}" method="post" onsubmit="return checkFormSubmission()">
+                            <form th:action="@{userLogin}" th:object="${employee}" method="post"
+                                onsubmit="return checkFormSubmission()">
                                 <div th:if="${loginError}" class="alert alert-danger" role="alert">
                                     <p th:text="${loginError}"></p>
                                 </div>
+                                <th:block th:if="${param.error}">
+                                    <p class="text-center text-danger fs-5">
+                                        [[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                                </th:block>
                                 <div class="form_boxes">
-                                    <label>Username</label>
+                                    <label>Gmail</label>
                                     <input type="text" name="username" placeholder="enter" required />
                                 </div>
                                 <div class="form_boxes">
                                     <label>Password</label>
                                     <input type="password" name="password" placeholder="at least 6 character"
-                                        id= "password" required />
-						<span class="passText"></span>
+                                        id="password" required />
+                                    <span class="passText"></span>
 
                                 </div>
 
@@ -80,15 +82,9 @@
     </div>
     </div>
     </section>
-    <!-- End login-section -->
 
-    <!-- main footer -->
-
-    <!-- End boxcar-footer -->
-
-    </div><!-- End Page Wrapper -->
+    </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
-    <!-- Scroll To Top -->
     <script>
         const form = document.querySelector('form');
         const password = document.getElementById('password');
@@ -113,7 +109,6 @@
         }
 
     </script>
-    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
 
     <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>

@@ -1,5 +1,7 @@
 package com.isp.project.controller;
 
+import java.security.Principal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,21 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+    @ModelAttribute
+	public void commonUser(Principal p, Model m) {
+		if (p != null) {
+			String email = p.getName();
+			Employee user = employeeService.findByEmail(email);
+			m.addAttribute("user", user);
+		}
+	}
+
+	@GetMapping("/home")
+	public String profile() {
+		return "home_admin";
+	}
+
+
     @GetMapping("/employee_list")
     public String listEmployee(Model model) {
         model.addAttribute("emList", employeeService.findAll());
@@ -46,7 +63,7 @@ public class EmployeeController {
             return "addEm";
         }
         employee.setIsActive(true);
-        employeeService.save(employee);
+        employeeService.saveUser(employee);
         return "redirect:/admin/employee_list";
     }
     
@@ -62,26 +79,26 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee_edit")
-    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
+    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, @RequestParam("password") String password,  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "editEm";
         }
 
         Employee existingEmployee = employeeService.findById(employee.getId());
         if (existingEmployee != null) {
+            existingEmployee.setPassword(employee.getPassword());
             existingEmployee.setFullName(employee.getFullName());
             existingEmployee.setGender(employee.getGender());
             existingEmployee.setAddress(employee.getAddress());
             existingEmployee.setEmail(employee.getEmail());
             existingEmployee.setIdenId(employee.getIdenId());
             existingEmployee.setUsername(employee.getUsername());
-            // existingEmployee.setPassword(employee.getPassword());
+            existingEmployee.setPassword(employee.getPassword());
             existingEmployee.setPhone(employee.getPhone());
             existingEmployee.setDob(employee.getDob());
             existingEmployee.setSalary(employee.getSalary());
             existingEmployee.setRole(employee.getRole());
-            existingEmployee.setIsActive(true); 
-            employeeService.save(existingEmployee);
+            employeeService.saveUser(existingEmployee);
         }
         return "redirect:/admin/employee_list";
         
@@ -110,6 +127,12 @@ public class EmployeeController {
     @GetMapping("/employee_check-email")
     public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
         boolean exists = employeeService.existsByEmail(email);
+        return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/employee_check-username")
+    public ResponseEntity<Boolean> checkNameExists(@RequestParam String username) {
+        boolean exists = employeeService.existsByUsername(username);
         return ResponseEntity.ok(exists);
     }
 

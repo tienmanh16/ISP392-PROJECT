@@ -1,10 +1,10 @@
 package com.isp.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +31,10 @@ public class ForgotPasswordController {
     private EmployeeService userService;
 
     @Autowired
-    Email emailService;
+    private Email emailService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @GetMapping("")
     public String forgotPassword() {
@@ -50,51 +53,56 @@ public class ForgotPasswordController {
         Employee checkEmail = userService.findByEmail(userDTO.getEmail());
         if (checkEmail != null) {
             try {
-                emailService.sendEmail(checkEmail.getEmail(), checkEmail.getPassword());
+                emailService.sendEmail(checkEmail.getEmail(), checkEmail.getVerifyCode());
                 session.setAttribute("rawUser", checkEmail);
-                model.addAttribute("message", "Password of your account has been sent to Gmail");
-                return "forgotpass"; // Redirect to success page
+                model.addAttribute("message", "Password reset instructions have been sent to your email.");
+                return "forgotpass"; // Consider redirecting to a confirmation page
             } catch (MessagingException e) {
                 // Handle email sending failure
                 model.addAttribute("error", "Failed to send email. Please try again later.");
                 return "forgotpass";
             }
         }
-        model.addAttribute("error", "Email not found. Please try again later.");
+        model.addAttribute("error", "Email not found. Please try again.");
         return "forgotpass";
     }
 
     @GetMapping("/resetpassword")
-    public String ShowPage(Model model) {
+    public String showResetPasswordPage(Model model) {
         Employee user = (Employee) session.getAttribute("rawUser");
         if (user == null) {
             return "redirect:/home";
         } else {
             model.addAttribute("employee", new UserResetPasswordDto());
-            return "/resetpassword";
+            return "resetpassword";
         }
     }
 
     @PostMapping("/resetpassword")
     public String changePassword(@Valid @ModelAttribute("employee") UserResetPasswordDto userResetPasswordDto,
-            BindingResult bindingResult, Model model) {
+                                 BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "resetpassword";
+        }
+
         Employee rawUser = (Employee) session.getAttribute("rawUser");
-        
         if (rawUser == null) {
             return "redirect:/home";
         }
 
         Employee userId = userService.findById(rawUser.getId());
-    
-        // Check if the old password input matches the one in the database
-        if (!userId.getPassword().equals(userResetPasswordDto.getOldPassword())) {
-            bindingResult.addError(new FieldError("employee", "oldPassword", "Old password is incorrect!"));
-            return "/resetpassword";
+
+        // Check if the verification code input matches the one in the database
+        if (!userId.getVerifyCode().equals(userResetPasswordDto.getVerifyCode())) {
+            model.addAttribute("error", "Verification code incorrect!");
+            return "resetpassword";
         }
 
         // Change the user's password
-        userService.changePassword(rawUser.getId(), userResetPasswordDto.getNewPassword());
+        userService.changePassword(rawUser.getId(), userResetPasswordDto);
         model.addAttribute("successMessage", "Password has been successfully changed.");
-        return "/resetpassword";
+        
+        // Stay on the same page and display success message
+        return "resetpassword";
     }
 }

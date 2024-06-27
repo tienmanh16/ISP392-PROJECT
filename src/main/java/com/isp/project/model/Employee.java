@@ -15,13 +15,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 
 @Entity
 @Table(name = "Employee")
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
-
+@AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
     @Id
@@ -32,7 +33,7 @@ public class Employee {
 
     @Column(name="Name")
     private String fullName;
-private int gender;
+    private int gender;
     private String email;
     private String phone;
     private String address;
@@ -47,28 +48,45 @@ private int gender;
     private Date dob;
     private String username;
     private String password;
+    private boolean isAccountNonLocked;
 
+	private int failedAttempt;
 
-    
-    public Employee(String address, Date dob, String email, String fullName, int gender, int id, String idenId, Boolean isActive, String password, String phone, List<Register> register, String role, int salary, String username) {
-        this.address = address;
-        this.dob = dob;
-        this.email = email;
-        this.fullName = fullName;
-        this.gender = gender;
-        this.id = id;
-        this.idenId = idenId;
-        this.isActive = isActive;
-        this.password = password;
-        this.phone = phone;
-        this.register = register;
-        this.role = role;
-        this.salary = salary;
-        this.username = username;
+	private Date lockTime;
+
+    private String verifyCode;
+
+	public String getVerifyCode() {
+        return verifyCode;
     }
 
+    public void setVerifyCode(String verifyCode) {
+        this.verifyCode = verifyCode;
+    }
 
-    
+    public boolean isAccountNonLocked() {
+		return isAccountNonLocked;
+	}
+
+	public void setAccountNonLocked(boolean isAccountNonLocked) {
+		this.isAccountNonLocked = isAccountNonLocked;
+	}
+
+	public int getFailedAttempt() {
+		return failedAttempt;
+	}
+
+	public void setFailedAttempt(int failedAttempt) {
+		this.failedAttempt = failedAttempt;
+	}
+
+	public Date getLockTime() {
+		return lockTime;
+	}
+
+	public void setLockTime(Date lockTime) {
+		this.lockTime = lockTime;
+	}
 
     public String getIdenId() {
         return idenId;
@@ -77,18 +95,7 @@ private int gender;
     public void setIdenId(String idenId) {
         this.idenId = idenId;
     }
-
    
-   
-
-    public String getPassWord() {
-        return password;
-    }
-
-    public void setPassWord(String passWord) {
-        this.password = passWord;
-    }
-
     public String getFullName() {
         return fullName;
     }

@@ -69,7 +69,7 @@
 <body>
     <div class="boxcar-wrapper">
         <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-            <div th:replace="~{fragments/header :: header}"></div>
+            <div th:replace="~{fragments/header_admin :: header}"></div>
         </header>
 
         <!-- thêm class layout-radius để fix header  -->
@@ -114,7 +114,6 @@
                                     <th>Email</th>
                                     <th>Salary</th>
                                     <th>UserName</th>
-                                    <th>Password</th>
                                     <th>Status</th>
                                     <th>Edit</th>
                                 </tr>
@@ -132,8 +131,6 @@
                                     <td th:text="${list.email}"></td>
                                     <td th:text="${list.salary}"></td>
                                     <td th:text="${list.username}"></td>
-                                    <td th:text="${list.password}"></td>
-                                    <!-- <td th:text="${list.isActive}"></td> -->
                                     <td>
                                         <button type="button" class="btn statusButton"
                                             th:classappend="${list.isActive == true ? 'btn-success' : 'btn-danger'}"

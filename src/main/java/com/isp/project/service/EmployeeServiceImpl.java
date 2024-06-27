@@ -1,15 +1,25 @@
 package com.isp.project.service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.isp.project.dto.UserResetPasswordDto;
 import com.isp.project.model.Employee;
 import com.isp.project.repositories.EmployeeRepository;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
+
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+@Transactional
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -38,25 +48,24 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Object changePassword(int id, String newPassword) {
-            // Kiểm tra xem người dùng có tồn tại không
-            Employee user = findById(id);
-            if (user == null) {
-                return null; // Người dùng không tồn tại
-            } else {
-                // Cập nhật mật khẩu mới cho người dùng, có thể mã hóa security.encode(newPassword)
-                user.setPassword(newPassword);
-                employeeRepository.save(user);
-            }
-    
-            return user;
+    public Object changePassword(int id, UserResetPasswordDto dto) {
+        // Kiểm tra xem người dùng có tồn tại không
+        Employee user = findById(id);
+        if (user == null) {
+            return null; // Người dùng không tồn tại
+        } else {
+            String password = passwordEncoder.encode(dto.getNewPassword());
+            user.setPassword(password);
+            employeeRepository.save(user);
+        }
+
+        return user;
     }
 
     @Override
     public Employee findById(int id) {
         return employeeRepository.findById(id);
     }
-
 
     @Override
     public void deleteById(Integer id) {
@@ -74,7 +83,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 
     // @Override
     // public List<Employee> findActiveEmployees() {
-    //     return employeeRepository.findByIsActiveTrue();
+    // return employeeRepository.findByIsActiveTrue();
     // }
 
     @Override
@@ -88,12 +97,17 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
+    public boolean existsByUsername(String email) {
+        return employeeRepository.existsByUsername(email);
+    }
+
+    @Override
     public boolean toggleEmployeeStatus(int employeeId, boolean currentStatus) {
         Employee employee = employeeRepository.findById(employeeId);
         if (employee == null) {
             throw new IllegalArgumentException("Employee not found with ID: " + employeeId);
         }
-        
+
         // Update the status
         employee.setIsActive(!currentStatus);
         employeeRepository.save(employee);
@@ -102,5 +116,72 @@ public class EmployeeServiceImpl implements EmployeeService{
         return !currentStatus;
     }
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
+    @Override
+    public Employee saveUser(Employee user) {
+
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
+        // user.setRole("ROLE_RECEPTIONIST");
+        user.setAccountNonLocked(true);
+        user.setFailedAttempt(0);
+        user.setLockTime(null);
+        user.setVerifyCode(UUID.randomUUID().toString());
+        Employee newuser = employeeRepository.save(user);
+        return newuser;
+    }
+
+    @Override
+    public void removeSessionMessage() {
+
+        HttpSession session = ((ServletRequestAttributes) (RequestContextHolder.getRequestAttributes())).getRequest()
+                .getSession();
+        session.removeAttribute("msg");
+    }
+
+    @Override
+    public void increaseFailedAttempt(Employee user) {
+
+        int attempt = user.getFailedAttempt() + 1;
+
+        employeeRepository.updateFailedAttempt(attempt, user.getEmail());
+
+    }
+
+    private static final long lock_time = 24 * 60 * 60 * 1000;
+    // private static final long lock_duration_time = 30000;
+
+    public static final long ATTEMPT_TIME = 3;
+
+    @Override
+    public void resetAttempt(String email) {
+        employeeRepository.updateFailedAttempt(0, email);
+    }
+
+    @Override
+    public void lock(Employee user) {
+        user.setAccountNonLocked(false);
+        user.setLockTime(new Date());
+        employeeRepository.save(user);
+    }
+
+    @Override
+    public boolean unlockAccountTimeExpired(Employee user) {
+        if (user.getLockTime() == null) {
+            return false;
+        }
+        long lockTimeInMills = user.getLockTime().getTime();
+        long currentTimeMillis = System.currentTimeMillis();
+
+        if (lockTimeInMills + lock_time < currentTimeMillis) {
+            user.setAccountNonLocked(true);
+            user.setLockTime(null);
+            user.setFailedAttempt(0);
+            employeeRepository.save(user);
+            return true;
+        }
+        return false;
+    }
 }

@@ -2,7 +2,7 @@ package com.isp.project.service;
 
 import java.util.List;
 
-import com.isp.project.model.Booking;
+import com.isp.project.dto.UserResetPasswordDto;
 import com.isp.project.model.Employee;
 
 public interface EmployeeService {
@@ -14,7 +14,7 @@ public interface EmployeeService {
 
     Employee authenticateUser(String username, String password);
  
-    Object changePassword(int id, String newPassword);
+    Object changePassword(int id, UserResetPasswordDto dto);
 
     Employee findById(int id);
 
@@ -26,7 +26,20 @@ public interface EmployeeService {
     Employee save(Employee entity);
     
     boolean existsByEmail(String email);
+    boolean existsByUsername(String username);
+
     boolean toggleEmployeeStatus(int employeeId, boolean currentStatus);
 
+    public Employee saveUser(Employee employee);
+
+	public void removeSessionMessage();
+
+    public void increaseFailedAttempt(Employee employee);
+
+	public void resetAttempt(String email);
+
+	public void lock(Employee employee);
+
+	public boolean unlockAccountTimeExpired(Employee employee);
 
 }
