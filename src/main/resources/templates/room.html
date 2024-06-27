@@ -418,7 +418,7 @@
             modal.classList.add('open');
 
             // Gửi request đến controller để lấy thông tin phòng
-            fetch(`/editRoom?roomId=${roomId}`)
+            fetch(`/receptionist/editRoom?roomId=${roomId}`)
                 .then(response => response.json())
                 .then(data => {
                     // Cập nhật thông tin phòng vào modal
@@ -479,7 +479,7 @@
                     );
 
                     function sendSelectedServices() {
-                        fetch('/addInvoiceLine', {
+                        fetch('/receptionist/addInvoiceLine', {
                             method: 'POST', // Ensure method is POST
                             headers: {
                                 'Content-Type': 'application/json'
@@ -489,6 +489,7 @@
                             .then(response => {
                                 if (response.ok) {
                                     console.log("Invoice lines saved successfully");
+                                    window.location.href = `/room`;
                                     // Redirect or handle success as needed
                                 } else {
                                     console.error('Failed to save selected services');
@@ -517,7 +518,7 @@
                 }
                 );
 
-            fetch(`/editRoom2?roomId=${roomId}`)
+            fetch(`/receptionist/editRoom2?roomId=${roomId}`)
                 .then(response => response.json())
                 .then(data => {
                     // Cập nhật thông tin phòng vào modal
@@ -584,7 +585,7 @@
 
 
                             // Gửi request đến controller để cập nhật trạng thái phòng
-                            fetch(`/updateStatusRoom?roomId=${roomId}`)
+                            fetch(`/receptionist/updateStatusRoom?roomId=${roomId}`)
                                 .then(response => response.json())
                                 .then(data => {
                                     // Cập nhật thông tin phòng vào modal
@@ -714,7 +715,7 @@
 
             // Hiển thị modal
             // Gửi request đến controller để lấy thông tin dịch vụ
-            fetch(`/getServiceBySeTypeId?serviceTypeId=${serviceTypeId}`)
+            fetch(`/receptionist/getServiceBySeTypeId?serviceTypeId=${serviceTypeId}`)
                 .then(response => response.json())
                 .then(data => {
                     // Lấy reference tới tbody của bảng
@@ -799,7 +800,7 @@
 
             // Hiển thị modal
             // Gửi request đến controller để lấy thông tin dịch vụ
-            fetch(`/getServiceBySeName?seName=${seName}`)
+            fetch(`/receptionist/getServiceBySeName?seName=${seName}`)
                 .then(response => response.json())
                 .then(data => {
                     // Lấy reference tới tbody của bảng

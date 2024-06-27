@@ -14,8 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.isp.project.model.Room;
+import com.isp.project.model.RoomType;
+import com.isp.project.model.Service;
 import com.isp.project.model.ServiceType;
+import com.isp.project.repositories.ServiceRepository;
+import com.isp.project.service.SeService;
 import com.isp.project.service.ServiceTypeService;
 
 import jakarta.validation.Valid;
@@ -26,6 +32,12 @@ public class ServiceController {
 
     @Autowired
     private ServiceTypeService serviceTypeService;
+
+    @Autowired
+    private SeService seService;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
 
     @GetMapping("/listServiceType")
     public String ServiceType(Model model, @Param("name") String name) {
@@ -130,5 +142,97 @@ public class ServiceController {
     // occurred: " + e.getMessage());
     // }
     // }
+
+
+
+    //Service
+    @GetMapping("/listServices")
+    public String ServiceList(Model model, @Param("name") String name) {
+        List<Service> services;
+        if (name != null ) {
+            services = this.seService.searchService(name);
+        } else {
+            services = this.seService.findAll();
+            //services = serviceRepository.findAll();
+        }
+        //services = serviceRepository.findAll();
+        model.addAttribute("services", services);
+        return "serviceList";
+    }
+
+
+
+    @GetMapping("/add-service")
+    public String addService(Model model) {
+        Service service = new Service();
+        List<ServiceType> serviceTypes = serviceTypeService.getAll();
+        model.addAttribute("service", service);
+        model.addAttribute("serviceTypes", serviceTypes);
+        return "addService";
+    }
+
+    @PostMapping("/addService")
+    public String saveRoom(@Valid @ModelAttribute("service") Service service, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "addService";
+        }
+        if (this.seService.create(service)) {
+            return "redirect:/admin/listServices";
+        } else {
+            return "redirect:/admin/add-service";
+        }
+    }
+
+    // @GetMapping("/service_check-serviceName")
+    // public ResponseEntity<Boolean> checkRoomNumExists(@RequestParam String seName) {
+    //     boolean exists = seService.existsByServiceName(seName);
+    //     return ResponseEntity.ok(exists);
+    // }
+
+    @GetMapping("/listServices/{id}/update")
+    public String editService(@PathVariable("id") int id, Model model) {
+        Service service = seService.findBySeId(id);
+        if (service == null) {
+            return "redirect:/admin/listServices";
+        }
+        model.addAttribute("service", service);
+        List<ServiceType> serviceTypes = serviceTypeService.getAll();
+        model.addAttribute("serviceTypes", serviceTypes);
+        return "updateService";
+    }
+
+    @PostMapping("/saveService")
+    public String updateService(@Valid @ModelAttribute("service") Service service, BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            return "updateService"; // Trả về lại trang hiện tại nếu có lỗi
+        }
+        if (this.seService.create(service)) {
+            return "redirect:/admin/listServices";
+        } else {
+            return "redirect:/admin/add-service";
+        }
+    }
+
+
+    @GetMapping("/inactiveService/{SeID}")
+    public ResponseEntity<String> inactiveService(@PathVariable("SeID") int id) {
+        try {
+            seService.updateServiceActiveStatus(id, 0);
+            return ResponseEntity.ok("Service inactive successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive service");
+        }
+    }
+
+    @GetMapping("/activeService/{SeID}")
+    public ResponseEntity<String> activeService(@PathVariable("SeID") int id) {
+        try {
+            seService.updateServiceActiveStatus(id, 1);
+            return ResponseEntity.ok("Service active successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to active service");
+        }
+    }
 
 }

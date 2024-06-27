@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.isp.project.dto.ServiceDetailDTO;
+import com.isp.project.model.Room;
 import com.isp.project.model.Service;
 
 @Repository
@@ -53,5 +54,11 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
        + "JOIN s.serviceType st "
        + "WHERE s.SeName LIKE %:seName%")
     List<ServiceDetailDTO> findAllServiceDetailBySeName(@Param("seName") String seName);
+
+
+    //boolean existsBySeName(String SeName);
+
+    @Query("Select c FROM Service c WHERE c.SeName LIKE %?1%")
+    List<Service> searchService(String name);
 
 }
