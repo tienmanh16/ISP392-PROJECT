@@ -10,6 +10,7 @@ import com.isp.project.model.Employee;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+    
     Employee findByUsername(String username);
 
     Employee findByEmail(String email);

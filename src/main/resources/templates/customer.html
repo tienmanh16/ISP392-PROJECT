@@ -110,33 +110,39 @@
   <div class="modal js-modal">
     <div class="windowcustomer js-modal-window">
       <div class="title">ADD CUSTOMER</div>
-      <form th:action="@{/addcustomer}" th:object="${addCustomer}" method="post">
+      <form th:action="@{/addcustomer}" th:object="${addCustomer}" method="post"
+        onsubmit="return checkFormSubmission()">
         <div class="maincustomer">
           <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Customer Information</h3>
           <span class="material-icons" style="vertical-align: middle;">account_box</span>
-          <input type="text" th:field="*{customerName}"  style="vertical-align: middle; width: 400px;" placeholder="Nhập tên khách hàng..."
-            required>
-          <br><br>
+          <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 400px;"
+            name="customerName" placeholder="Nhập tên khách hàng..." required>
+          <br><span class="customerNameText" style="display: block;text-align: center; margin-top: 5px; margin-left: 30px;"></span>
+
           <span class="material-icons" style="vertical-align: middle;">badge</span>
-          <input type="text" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 400px;" placeholder="Nhập số CMND..." required>
+          <input type="text" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 400px;"
+            placeholder="Nhập số CMND..." required>
           <br><br>
           <span class="material-icons" style="vertical-align: middle;">call</span>
-          <input type="text" th:field="*{customerPhone}" style="vertical-align: middle; width: 400px;" placeholder="Nhập số điện thoại..." required>
+          <input type="text" th:field="*{customerPhone}" style="vertical-align: middle; width: 400px;"
+            placeholder="Nhập số điện thoại..." required>
           <br><br>
           <span class="material-icons" style="vertical-align: middle;">mail</span>
-          <input type="email" th:field="*{customerEmail}" style="vertical-align: middle; width: 400px;" placeholder="Nhập địa chỉ email..."
-            required>           
+          <input type="email" th:field="*{customerEmail}" style="vertical-align: middle; width: 400px;"
+            placeholder="Nhập địa chỉ email..." required>
           <br><br>
           <span class="material-icons" style="vertical-align: middle;">location_on</span>
-          <input type="text" th:field="*{customerAddress}" style="vertical-align: middle; width: 400px;" placeholder="Nhập địa chỉ..." required>        
+          <input type="text" th:field="*{customerAddress}" style="vertical-align: middle; width: 400px;"
+            placeholder="Nhập địa chỉ..." required>
           <br><br>
           <span class="material-icons" style="vertical-align: middle;">transgender</span>
           <label for="male" style="vertical-align: middle; margin-right: 10px;">Male</label>
-          <input type="radio" th:field="*{customerGender}" value="male" style="vertical-align: middle; margin-right: 20px;" required>
+          <input type="radio" th:field="*{customerGender}" value="male"
+            style="vertical-align: middle; margin-right: 20px;" required>
           <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
-          <input type="radio" th:field="*{customerGender}"value="female" style="vertical-align: middle;" required>
+          <input type="radio" th:field="*{customerGender}" value="female" style="vertical-align: middle;" required>
           <!-- </div> -->
-         
+
         </div>
         <div class="footer">
           <button type="submit" class="button green-button">ADD</button>
@@ -184,6 +190,27 @@
     });
   </script>
 
+  <script>
+    const customerNameText = document.querySelector('.customerNameText');
+
+
+    function checkRoomTypeName() {
+      const customerNamePattern = /^[\p{L}\p{N} ]+$/u;
+      const customerName = document.getElementById('customerName').value;
+      if (customerName.match(customerNamePattern)) {
+        customerNameText.innerHTML = '';
+        return true;
+      } else {
+        customerNameText.innerHTML = 'Customer Name must not contain special characters.';
+        return false;
+      }
+    }
+
+    function checkFormSubmission() {
+      return checkRoomTypeName();
+    }
+  </script>
+
 
 
 
@@ -208,6 +235,12 @@
       margin: 4px 2px;
       cursor: pointer;
       border-radius: 4px;
+    }
+
+    .customerNameText,
+    .pricePerHourText,
+    .pricePerDayText {
+      color: red;
     }
   </style>
   <div class="scroll-to-top scroll-to-target" data-target="html">
