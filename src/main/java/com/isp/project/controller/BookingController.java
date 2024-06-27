@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +36,8 @@ import com.isp.project.repositories.RoomRepository;
 import com.isp.project.service.BookingService;
 
 @Controller
+//=========================
+@RequestMapping("/receptionist")
 public class BookingController {
 
     @Autowired
@@ -72,6 +75,7 @@ public class BookingController {
         model.addAttribute("listBooking", listBooking);
         model.addAttribute("query", query);
         model.addAttribute("bookingInfo", new BookingInfoDTO());
+        // return "booking";
         return "booking";
 
     }
@@ -82,7 +86,9 @@ public class BookingController {
     public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
         Booking bookingDetail = bookingService.getBookingByBookingID(id);
         model.addAttribute("bookdetail", bookingDetail);
+        // return "bookingdetail";
         return "bookingdetail";
+
     }
 
     // ============================= Delete Booking
@@ -151,7 +157,8 @@ public class BookingController {
                 bookingMappingRepository.save(bookingMapping);
             }
         }
-        return "redirect:/booking"; // Redirect to booking result page
+        // return "redirect:/booking"; // Redirect to booking result page
+        return "redirect:/receptionist/booking";
     }
 
     private List<RoomDetailDTO> convertJsonToRoomDetailDTOList(String json) {
