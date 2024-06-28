@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 
 import com.isp.project.model.Booking;
 import com.isp.project.model.Invoice;
+import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Service;
 
 public interface InvoiceService {
@@ -19,6 +20,7 @@ public interface InvoiceService {
     String htmlToPdf(String processedHtml, String name);
     Booking getInfoInvoice(int invoiceID);
     List<Service> listService(int invoiceID); 
+    List<InvoiceLine> listInvoiceLine(int invoiceID); 
     double getTotalInvoiceForMonth(int month, int year);
     Map<String, Double> getTotalServiceByYear(int year);
     Page<Invoice> pageInvoice(Integer pageNo);

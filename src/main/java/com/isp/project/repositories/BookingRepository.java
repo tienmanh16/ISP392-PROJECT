@@ -10,65 +10,22 @@ import org.springframework.stereotype.Repository;
 
 
 import com.isp.project.model.Booking;
+import com.isp.project.model.Room;
 
 import jakarta.transaction.Transactional;
 
 @Repository
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
-// List Booking
-    @Query(value = "WITH NumberedBookings AS ( " +
-            "    SELECT b.BookingID, c.CustomerName, bm.CheckInDate, bm.CheckOutDate, b.BookingDate, " +
-            "           b.CustomerQuantity, bm.RoomID, e.Name AS employeeName, " +
-            "           ROW_NUMBER() OVER (PARTITION BY b.BookingID ORDER BY bm.CheckInDate) AS RowNum " +
-            "    FROM Booking b " +
-            "    JOIN Customer c ON b.CustomerID = c.CustomerID " +
-            "    JOIN Register rg ON b.BookingID = rg.BookingID " +
-            "    JOIN Employee e ON rg.EmployeeID = e.EmployeeID " +
-            "    JOIN BookingMapping bm ON b.BookingID = bm.BookingID " +
-            "    JOIN Room r ON bm.RoomID = r.RoomID " +
-            ") " +
-            "SELECT nb.BookingID, nb.CustomerName, nb.CheckInDate, nb.CheckOutDate, nb.BookingDate, " +
-            "       nb.CustomerQuantity, nb.RoomID, nb.employeeName " +
-            "FROM NumberedBookings nb " +
-            "WHERE nb.RowNum = 1", nativeQuery = true)
-    List<Object[]> findAllBookingRoom();
+    //===============================Search Booking By Customer Name =========================================
+    @Query("SELECT b FROM Booking b JOIN b.customerID c WHERE c.customerName LIKE %:name%")
+    List<Booking> findBookingByCustomerName(@Param("name") String name);
 
+    //==================Search Booking Room By BookingID========================= 
+    @Query("SELECT b FROM Booking b WHERE b.bookingID = :bookingID")
+    Booking findByBookingID(@Param("bookingID") int bookingID);
 
-
-
-    //Search Booking By Customer Name
-    @Query(value = "WITH NumberedBookings AS ( " +
-            "    SELECT b.BookingID, c.CustomerName, bm.CheckInDate, bm.CheckOutDate, b.BookingDate, " +
-            "           b.CustomerQuantity, bm.RoomID, e.Name AS employeeName, " +
-            "           ROW_NUMBER() OVER (PARTITION BY b.BookingID ORDER BY bm.CheckInDate) AS RowNum " +
-            "    FROM Booking b " +
-            "    JOIN Customer c ON b.CustomerID = c.CustomerID " +
-            "    JOIN Register rg ON b.BookingID = rg.BookingID " +
-            "    JOIN Employee e ON rg.EmployeeID = e.EmployeeID " +
-            "    JOIN BookingMapping bm ON b.BookingID = bm.BookingID " +
-            "    JOIN Room r ON bm.RoomID = r.RoomID " +
-            "    WHERE c.CustomerName LIKE %:customerName% " +
-            ") " +
-            "SELECT nb.BookingID, nb.CustomerName, nb.CheckInDate, nb.CheckOutDate, nb.BookingDate, " +
-            "       nb.CustomerQuantity, nb.RoomID, nb.employeeName " +
-            "FROM NumberedBookings nb " +
-            "WHERE nb.RowNum = 1", nativeQuery = true)
-    List<Object[]> findBookingRoomByCustomerName(@Param("customerName") String customerName);
-
-
-    //Search Booking Room By BookingID
-    @Query(value = "SELECT b.BookingID, c.CustomerName, bm.CheckInDate, bm.CheckOutDate, b.BookingDate, b.CustomerQuantity, bm.RoomID, e.Name "
-            +
-            "FROM Booking b " +
-            "JOIN Customer c ON b.CustomerID = c.CustomerID " +
-            "JOIN BookingMapping bm ON b.BookingID = bm.BookingID " +
-            "JOIN Register r ON b.BookingID = r.BookingID " +
-            "JOIN Employee e ON r.EmployeeID = e.EmployeeID " +
-            "WHERE b.BookingID = :bookingID", nativeQuery = true)
-    List<Object[]> findBookingRoomByBookingID(@Param("bookingID") Integer bookingID);
-
-    //Delete Booking
+    //====================================Delete Booking======================================= 
     @Modifying
     @Transactional
     @Query(value = "DELETE FROM Register WHERE BookingID = :bookingID", nativeQuery = true)
@@ -79,17 +36,19 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query(value = "DELETE FROM BookingMapping WHERE BookingID = :bookingID", nativeQuery = true)
     void deleteFromBookingMapping(@Param("bookingID") Integer bookingID);
 
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM Booking WHERE bookingID = :bookingID", nativeQuery = true)
-    void deleteFromBooking(@Param("bookingID") Integer bookingID);
 
-    @Modifying
+   @Modifying
     @Transactional
-    @Query("DELETE FROM BookingMapping b WHERE b.roomID = :roomID")
-    void deleteByRoomID(@Param("roomID") Integer roomID);
+    @Query("DELETE FROM BookingMapping bm WHERE bm.bookingID = :booking AND bm.roomID = :room")
+    void deleteByRoomAndBooking(@Param("booking") Booking booking, @Param("room") Room room);
 
 
     @Query("SELECT i FROM Booking i RIGHT JOIN i.customerID b WHERE MONTH(i.bookingDate) = :month AND YEAR(i.bookingDate) = :year")
     List<Booking> getCustomerForDate(@Param("month") int month, @Param("year") int year);
+
+
+    //=========================================================================================
+
+    
+
 }

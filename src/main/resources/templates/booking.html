@@ -71,28 +71,30 @@
               <table class="table table-striped">
                 <thead class="thead-dark">
                   <tr>
-                    <th>Số phiếu thuê</th>
-                    <th>Tên khách hàng</th>
-                    <th>Ngày lập phiếu</th>
-                    <th>Tên nhân viên</th>
-                    <th>Chi tiết</th>
-                    <th>Xoá</th>
+                    <th>Booking ID</th>
+                    <th>Customer Name</th>
+                    <th>Booking Date</th>
+                    <th>Employee Name</th>
+                    <th>Detail</th>
+                    <th>Delete</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr th:each="booking : ${listBooking}">
                     <td th:text="${booking.bookingID}"></td>
-                    <td th:text="${booking.customerName}"></td>
+                    <td th:text="${booking.customerID.customerName}"></td>
+                    <!-- <td th:text="${listBooking.customer.customerName}"></td> -->
                     <td>
                       <span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span>
                     </td>
-                    <td th:text="${booking.employeeName}"></td>
+                    <td>
+                      <span th:each="register : ${booking.register}">
+                        <span th:text="${register.employeeID.fullName}"></span>
+                        <br />
+                      </span>
                     <td>
                       <a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-list"></a>
                     </td>
-                    <!-- <td>
-                      <a th:href="@{'#?id=' + ${booking.bookingID}}" class="ti-pencil-alt"></a>
-                    </td> -->
                     <td>
                       <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'"
                         class="btn btn-danger ti-close"></a>
@@ -113,11 +115,12 @@
     <div class="window js-modal-window">
       <div class="title">ĐẶT PHÒNG</div>
       <form th:action="@{/saveBooking}" th:object="${bookingInfo}" method="post">
+        <input type="hidden" id="selected-rooms-input" th:field="*{selectedRoomsJson}">
         <div class="main">
           <div class="lefttt" style="background-color: #F2F1F1;">
             <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin khách hàng</h6>
             <span class="material-icons" style="vertical-align: middle;">account_box</span>
-            <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;"
+            <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;" name=àdđ
               placeholder="Nhập tên khách hàng..." required>
             <br><br>
             <span class="material-icons" style="vertical-align: middle;">badge</span>
@@ -148,16 +151,22 @@
           <div class="container" style="margin-left: 320px;">
             <div style="margin-bottom: 10px;">
               <label for="checkin-date" style="display: inline-block; width: 150px;">Ngày bắt đầu</label>
-              <input type="date" id="checkin-date" th:field="*{checkinDate}" style="display: inline-block;margin-left: -40px;" required>
-              <label for="checkin-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ bắt đầu</label>
-              <input type="time" id="checkin-time" th:field="*{checkinTime}" style="display: inline-block; margin-left: -50px;" required>
-          </div>
-          <div>
+              <input type="date" id="checkin-date" th:field="*{checkinDate}"
+                style="display: inline-block;margin-left: -40px;" required>
+              <label for="checkin-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ bắt
+                đầu</label>
+              <input type="time" id="checkin-time" th:field="*{checkinTime}"
+                style="display: inline-block; margin-left: -50px;" required>
+            </div>
+            <div>
               <label for="checkout-date" style="display: inline-block; width: 150px;">Ngày kết thúc</label>
-              <input type="date" id="checkout-date" th:field="*{checkoutDate}" style="display: inline-block; margin-left: -40px;" required>
-              <label for="checkout-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ kết thúc</label>
-              <input type="time" id="checkout-time" th:field="*{checkoutTime}" style="display: inline-block; margin-left: -50px;" required>
-          </div>
+              <input type="date" id="checkout-date" th:field="*{checkoutDate}"
+                style="display: inline-block; margin-left: -40px;" required>
+              <label for="checkout-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ kết
+                thúc</label>
+              <input type="time" id="checkout-time" th:field="*{checkoutTime}"
+                style="display: inline-block; margin-left: -50px;" required>
+            </div>
             <div style="margin-top: 10px;">
               <label for="employee-id" style="display: inline-block; width: 150px;">Mã nhân viên</label>
               <input type="number" th:field="*{employeeId}"
@@ -181,16 +190,16 @@
               style="max-height: 170px; margin-top: 0; margin-left: 290px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; padding: 10px;">
               <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
                 <thead>
-                    <tr>
-                        <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Số Phòng</th>
-                        <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Loại phòng</th>
-                        <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Thêm</th>
-                    </tr>
+                  <tr>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Số Phòng</th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Loại phòng</th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Thêm</th>
+                  </tr>
                 </thead>
                 <tbody id="available-rooms">
-                    <!-- Các phòng trống sẽ được thêm vào đây dưới dạng các hàng của bảng -->
+                  <!-- Các phòng trống sẽ được thêm vào đây dưới dạng các hàng của bảng -->
                 </tbody>
-            </table>
+              </table>
             </div>
           </div>
 
@@ -201,16 +210,16 @@
               style="max-height: 170px; margin-top: 0; margin-left: 300px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; overflow-x: auto; padding: 10px;">
               <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
                 <thead>
-                    <tr>
-                        <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Số Phòng</th>
-                        <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Loại phòng</th>
-                        <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Xóa</th>
-                    </tr>
+                  <tr>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Số Phòng</th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Loại phòng</th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Xóa</th>
+                  </tr>
                 </thead>
                 <tbody id="selected-rooms">
-                    <!-- Các phòng đã chọn sẽ được thêm vào đây dưới dạng các hàng của bảng -->
+                  <!-- Các phòng đã chọn sẽ được thêm vào đây dưới dạng các hàng của bảng -->
                 </tbody>
-            </table>
+              </table>
             </div>
           </div>
         </div>
@@ -260,178 +269,170 @@
   </script>
 
 
-<!-- ========== lắng nghe sự thay đổi checkIn - checkOut để hiển thị ra phòng trống============ -->
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
+  <!-- ========== lắng nghe sự thay đổi checkIn - checkOut để hiển thị ra phòng trống============ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('checkin-date').addEventListener('change', updateAvailableRooms);
       document.getElementById('checkout-date').addEventListener('change', updateAvailableRooms);
-  });
-  
-  function updateAvailableRooms() {
+    });
+
+    function updateAvailableRooms() {
       const checkinDate = document.getElementById('checkin-date').value;
       const checkoutDate = document.getElementById('checkout-date').value;
-  
+
       if (checkinDate && checkoutDate) {
-          fetch('/api/availableRooms', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ checkinDate, checkoutDate })
-          })
+        fetch('/api/availableRooms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ checkinDate, checkoutDate })
+        })
           .then(response => response.json())
           .then(data => {
-              const availableRoomsTable = document.getElementById('available-rooms');
-              availableRoomsTable.innerHTML = '';
-              data.forEach(room => {
-                  const row = document.createElement('tr');
-                  row.innerHTML = `
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomNum}</td>
-                      <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomTypeName}</td>
+            const availableRoomsTable = document.getElementById('available-rooms');
+            availableRoomsTable.innerHTML = '';
+            data.forEach(room => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                      <td id="roomID" style="display:none;">${room.id}</td>
+                      <td id="roomNum" style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomNum}</td>
+                      <td id="roomTypeId" style="display:none;">${room.roomTypeId}</td>
+                      <td id ="roomTypeName" style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomTypeName}</td>
+                      <td id="roomTypeDescription" style="display:none;">${room.roomTypeDescription}</td>
+                      <td id="priceHour" style="display:none;">${room.priceHour}</td>
+                      <td id="priceDay" style="display:none;">${room.priceDay}</td>
+                      <td id="status" style="display:none;">${room.status}</td>
                       <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
-                          <a href="javascript:void(0);" class="add-room-link" data-room-id="${room.id}" data-room-num="${room.roomNum}" data-room-type="${room.roomTypeName}">
+                          <a href="javascript:void(0);" class="add-room-link">
                               <span class="material-icons" style="color: green;">add_circle</span>
                           </a>
                       </td>
                   `;
-                  availableRoomsTable.appendChild(row);
-              });
+              availableRoomsTable.appendChild(row);
+              console.log("row", row);
+            });
           })
           .catch(error => console.error('Error fetching available rooms:', error));
       }
-  }
-  
-  document.addEventListener('click', function(event) {
-    console.log('Clicked:', event.target);
-
-    if (event.target.classList.contains('material-icons')) {
-        const materialIcon = event.target;
-        console.log('Material icon text:', materialIcon.textContent.trim());
-        
-        if (materialIcon.textContent.trim() === 'add_circle') {
-            const addRoomLink = materialIcon.closest('.add-room-link');
-            console.log('Add room link:', addRoomLink);
-            
-            const roomId = addRoomLink.getAttribute('data-room-id');
-            const roomNum = addRoomLink.getAttribute('data-room-num');
-            const roomType = addRoomLink.getAttribute('data-room-type');
-            
-            // Add room to selected rooms table
-            const selectedRoomsTable = document.getElementById('selected-rooms');
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomNum}</td>
-                <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomType}</td>
-                <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
-                    <a href="javascript:void(0);" class="remove-room-link" data-room-id="${roomId}" data-room-num="${roomNum}" data-room-type="${roomType}">
-                        <span class="material-icons" style="color: red;">remove_circle</span>
-                    </a>
-                </td>
-            `;
-            selectedRoomsTable.appendChild(row);
-            
-            // Remove room from available rooms table
-            addRoomLink.closest('tr').remove();
-        } else if (materialIcon.textContent.trim() === 'remove_circle') {
-            const removeRoomLink = materialIcon.closest('.remove-room-link');
-            console.log('Remove room link:', removeRoomLink);
-            
-            const roomId = removeRoomLink.getAttribute('data-room-id');
-            const roomNum = removeRoomLink.getAttribute('data-room-num');
-            const roomType = removeRoomLink.getAttribute('data-room-type');
-            
-            // Add room back to available rooms table
-            const availableRoomsTable = document.getElementById('available-rooms');
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomNum}</td>
-                <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomType}</td>
-                <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
-                    <a href="javascript:void(0);" class="add-room-link" data-room-id="${roomId}" data-room-num="${roomNum}" data-room-type="${roomType}">
-                        <span class="material-icons" style="color: green;">add_circle</span>
-                    </a>
-                </td>
-            `;
-            availableRoomsTable.appendChild(row);
-            
-            // Remove room from selected rooms table
-            removeRoomLink.closest('tr').remove();
-        }
     }
-});
-  
   </script>
-  
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('checkin-date').addEventListener('change', updateAvailableRooms);
-    document.getElementById('checkout-date').addEventListener('change', updateAvailableRooms);
-});
 
-function updateAvailableRooms() {
-    const checkinDate = document.getElementById('checkin-date').value;
-    const checkoutDate = document.getElementById('checkout-date').value;
 
-    console.log("Check-in Date:", checkinDate);
-    console.log("Check-out Date:", checkoutDate);
+  <!-- ================== Bắt Click thêm phòng đã chọn-START=================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const availableRoom = document.getElementById('available-rooms');
+      availableRoom.addEventListener('click', (event) => {
+        if (event.target.closest('.add-room-link')) {
+          addRoomToSelectedTable(event);
+        }
+      });
 
-    if (checkinDate && checkoutDate) {
-        fetch('/api/availableRooms', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ checkinDate, checkoutDate })
-        })
-        .then(response => response.json())
-        .then(data => {
-            const availableRoomsTable = document.getElementById('available-rooms');
-            availableRoomsTable.innerHTML = '';
-            data.forEach(room => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomNum}</td>
+      function addRoomToSelectedTable(event) {
+        const row = event.target.closest('tr');
 
-                    <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomTypeName}</td>
-                    <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
-                        <a href="javascript:void(0);" class="add-room-link" data-room-number="${room.id}">
-                            <span class="material-icons" style="color: green;">add_circle</span>
-                        </a>
-                    </td>
-                `;
-                availableRoomsTable.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching available rooms:', error));
-    }
-}
-  
-  // Bắt sự kiện click để thêm phòng đã chọn vào danh sách phòng
-  document.addEventListener('click', function(event) {
-      if (event.target.classList.contains('add-room-link')) {
-          const roomNumber = event.target.getAttribute('data-room-number');
-          const roomType = event.target.parentNode.previousElementSibling.textContent;
-  
-          // Thêm phòng vào bảng 'phòng đã chọn'
-          const selectedRoomsTable = document.getElementById('selected-rooms');
-          const row = document.createElement('tr');
-          row.innerHTML = `
-              <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomNumber}</td>
-              <td style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomType}</td>
-              <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
-                  <a href="javascript:void(0);" class="remove-room-link">
-                      <span class="material-icons" style="color: red;">remove_circle</span>
-                  </a>
-              </td>
-          `;
-          selectedRoomsTable.appendChild(row);
-  
-          // Xóa phòng đã chọn khỏi danh sách phòng trống
-          event.target.parentNode.parentNode.remove();
+        const roomID = row.querySelector('#roomID, .roomID').textContent;
+        const roomNum = row.querySelector('#roomNum, .roomNum').textContent;
+        const roomTypeId = row.querySelector('#roomTypeId, .roomTypeId').textContent;
+        const roomTypeName = row.querySelector('#roomTypeName, .roomTypeName').textContent;
+        const roomTypeDescription = row.querySelector('#roomTypeDescription, .roomTypeDescription').textContent;
+        const priceHour = row.querySelector('#priceHour, .priceHour').textContent;
+        const priceDay = row.querySelector('#priceDay, .priceDay').textContent;
+        const status = row.querySelector('#status, .status').textContent;
+
+        const selectedRoomsTableBody = document.getElementById('selected-rooms');
+        if (!selectedRoomsTableBody) {
+          console.error('selected-rooms element not found');
+          return;
+        }
+
+        const existingRows = selectedRoomsTableBody.getElementsByTagName('tr');
+        for (let i = 0; i < existingRows.length; i++) {
+          const existingRoomNum = existingRows[i].querySelector('.roomNum').textContent;
+          if (existingRoomNum === roomNum) {
+            return;
+          }
+        }
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td class="roomID" style="display:none;">${roomID}</td>
+          <td class="roomNum">${roomNum}</td>
+          <td class="roomTypeId" style="display:none;">${roomTypeId}</td>
+          <td class="roomTypeName">${roomTypeName}</td>
+          <td class="roomTypeDescription" style="display:none;">${roomTypeDescription}</td>
+          <td class="priceHour" style="display:none;">${priceHour}</td>
+          <td class="priceDay" style="display:none;">${priceDay}</td>
+          <td class="status" style="display:none;">${status}</td>
+          <td><a href="javascript:void(0)" class="remove-room-link">
+              <span class="material-icons" style="color: red;">cancel</span>
+          </a></td>
+    `;
+        selectedRoomsTableBody.appendChild(newRow);
+        console.log("Row", row);
+        updateSelectedRoomsInput();
       }
-  });
-  
-  </script> -->
+
+      const selectedRoomsTableBody = document.getElementById('selected-rooms');
+      selectedRoomsTableBody.addEventListener('click', (event) => {
+        if (event.target.closest('.remove-room-link')) {
+          removeRoomFromSelectedTable(event);
+        }
+      });
+
+      function removeRoomFromSelectedTable(event) {
+        const row = event.target.closest('tr');
+        row.remove();
+        console.log("Row", row);
+        updateSelectedRoomsInput();
+      }
+      // ======================================= Lấy danh sách phòng đã chọn ====================================================================================
+      function getSelectedRooms() {
+        const rows = selectedRoomsTableBody.getElementsByTagName('tr');
+        const selectedRooms = [];
+
+        for (let i = 0; i < rows.length; i++) {
+          const roomID = rows[i].querySelector('.roomID').textContent;
+          const roomNum = rows[i].querySelector('.roomNum').textContent;
+          const roomTypeId = rows[i].querySelector('.roomTypeId').textContent;
+          const roomTypeName = rows[i].querySelector('.roomTypeName').textContent;
+          const roomTypeDescription = rows[i].querySelector('.roomTypeDescription').textContent;
+          const priceHour = rows[i].querySelector('.priceHour').textContent;
+          const priceDay = rows[i].querySelector('.priceDay').textContent;
+          const status = rows[i].querySelector('.status').textContent;
+
+          selectedRooms.push({
+            id: roomID,
+            roomNum,
+            roomTypeId,
+            roomTypeName,
+            roomTypeDescription,
+            priceHour,
+            priceDay,
+            status
+          });
+        }
+        console.log("invoiceLineData", JSON.stringify(selectedRooms));
+        return selectedRooms;
+      }
+      // ========================= Update danh sách phòng đã chọn =====================================
+      function updateSelectedRoomsInput() {
+        const selectedRooms = getSelectedRooms();
+        const selectedRoomsInput = document.getElementById('selected-rooms-input');
+        if (!selectedRoomsInput) {
+          console.error('selected-rooms-input element not found');
+          return;
+        }
+        selectedRoomsInput.value = JSON.stringify(selectedRooms);
+        console.log("invoiceLineData", JSON.stringify(selectedRooms));
+      }
+    });
+
+    //=======================================================================================================================
+  </script>
+  <!-- ================== Bắt Click thêm phòng đã chọn-END =================================================================== -->
+
 
   <!-- thư viện để add header và footer  -->
 
@@ -486,252 +487,6 @@ function updateAvailableRooms() {
   <div class="scroll-to-top scroll-to-target" data-target="html">
     <span class="fa fa-angle-up"></span>
   </div>
-
-  <!-- <script>
-    const themDVs = document.querySelectorAll('.js-themDV')
-    // 3 nút có class js.. lưu vào biến buyBtns
-    const modal2 = document.querySelector('.js-modal-2')
-    // lấy tất cả các thằng có class .js-modal
-    const modalClose2 = document.querySelector('.js-modal-close-2')
-
-    const modalWindow2 = document.querySelector('.js-modal-window-2')
-
-    // hàm hiện modal mua vé (thêm class open cả modal)
-    function showByTickets2() {
-        modal2.classList.add('open')
-        // alert('ok')
-    }
-    
-    // hàm ẩn modal mua vé (xóa class open ở modal)
-    function hideByTickets2() {
-        modal2.classList.remove('open')
-        
-    }
-    // lặp qua từng thẻ button và nghe hành vi click
-    for(const themDV of themDVs){
-        // từng thằng trong buyBtns
-        themDV.addEventListener('click',showByTickets2)
-
-
-
-        
-
-    }
-    // nghe hành vi click vaof button close
-    modalClose2.addEventListener('click',hideByTickets2)
-    // khi click vào tất cả các khoảng modal 
-    modal2.addEventListener('click',hideByTickets2)
-    // vì khi click vào tất cả các khoảng modal thì nó
-    // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
-    modalWindow2.addEventListener('click', function(event){
-        event.stopPropagation()
-    })
-
-    function sendServiceTypeId(serviceTypeId) {
-        if (!serviceTypeId) {
-             return; // Không làm gì nếu không có giá trị được chọn
-        }
-        
-        // Hiển thị modal
-        // Gửi request đến controller để lấy thông tin dịch vụ
-        fetch(/getServiceBySeTypeId?serviceTypeId=${serviceTypeId})
-                .then(response => response.json())
-                .then(data => {
-                    // Lấy reference tới tbody của bảng
-                    const tbodyElement = document.getElementById('lvDanhSachDV');
-
-                    // Xóa các dòng hiện có trong tbody
-                    while (tbodyElement.firstChild) {
-                        tbodyElement.removeChild(tbodyElement.firstChild);
-                    }
-
-                    // Lặp qua từng ServiceDetailDTO trong data     
-                    data.forEach(serviceDetail => {
-                        // Tạo và cấu hình các element cho dòng mới
-                        const newRow = document.createElement('tr');
-                        newRow.id = 'serviceDS';
-
-                        const serviceTypeNameCell = document.createElement('td');
-                        serviceTypeNameCell.id = 'serviceTypeName';
-                        serviceTypeNameCell.textContent = serviceDetail.seTypeName;
-
-                        const serviceNameCell = document.createElement('td');
-                        serviceNameCell.id = 'serviceName';
-                        serviceNameCell.textContent = serviceDetail.seName;
-
-                        const servicePriceCell = document.createElement('td');
-                        servicePriceCell.id = 'servicePrice';
-                        servicePriceCell.textContent = serviceDetail.sePrice;
-
-                        const addServiceCell = document.createElement('td');
-                        addServiceCell.id = 'addService';
-                        const addServiceLink = document.createElement('a');
-                        addServiceLink.href = 'javascript:void(0)';
-                        addServiceLink.classList.add('wait-link');
-                        const addServiceIcon = document.createElement('span');
-                        addServiceIcon.classList.add('material-icons');
-                        addServiceIcon.style.color = 'green';
-                        addServiceIcon.textContent = 'add_circle';
-                        addServiceLink.appendChild(addServiceIcon);
-                        addServiceCell.appendChild(addServiceLink);
-
-                        // Thêm các cell vào dòng mới
-                        newRow.appendChild(serviceTypeNameCell);
-                        newRow.appendChild(serviceNameCell);
-                        newRow.appendChild(servicePriceCell);
-                        newRow.appendChild(addServiceCell);
-
-                        // Thêm dòng mới vào tbody
-                        tbodyElement.appendChild(newRow);
-                    });
-                })
-            .catch(error => {
-                console.error('Lỗi khi lấy danh sách dịch vụ:', error);
-            }
-        );
-    }
-
-
-
-    // Lấy tham chiếu đến ô input
-    const inputElement = document.getElementById('input');
-
-    // Lắng nghe sự kiện "keyup" trên ô input
-    inputElement.addEventListener('keyup', function(event) {
-        // Kiểm tra xem người dùng có nhấn phím Enter hay không
-        if (event.key === 'Enter') {
-            // Lấy giá trị của ô input
-            const seName = inputElement.value;
-            // Gọi hàm sendServiceName với giá trị seName
-            sendServiceName(seName);
-        }
-    });
-    
-    
-    function sendServiceName(seName) {
-        
-        // Hiển thị modal
-        // Gửi request đến controller để lấy thông tin dịch vụ
-        fetch(/getServiceBySeName?seName=${seName})
-                .then(response => response.json())
-                .then(data => {
-                    // Lấy reference tới tbody của bảng
-                    const tbodyElement = document.getElementById('lvDanhSachDV');
-
-                    // Xóa các dòng hiện có trong tbody
-                    while (tbodyElement.firstChild) {
-                        tbodyElement.removeChild(tbodyElement.firstChild);
-                    }
-
-                    // Lặp qua từng ServiceDetailDTO trong data     
-                    data.forEach(serviceDetail => {
-                        // Tạo và cấu hình các element cho dòng mới
-                        const newRow = document.createElement('tr');
-                        newRow.id = 'serviceDS';
-
-                        const serviceTypeNameCell = document.createElement('td');
-                        serviceTypeNameCell.id = 'serviceTypeName';
-                        serviceTypeNameCell.textContent = serviceDetail.seTypeName;
-
-                        const serviceNameCell = document.createElement('td');
-                        serviceNameCell.id = 'serviceName';
-                        serviceNameCell.textContent = serviceDetail.seName;
-
-                        const servicePriceCell = document.createElement('td');
-                        servicePriceCell.id = 'servicePrice';
-                        servicePriceCell.textContent = serviceDetail.sePrice;
-
-                        const addServiceCell = document.createElement('td');
-                        addServiceCell.id = 'addService';
-                        const addServiceLink = document.createElement('a');
-                        addServiceLink.href = 'javascript:void(0)';
-                        addServiceLink.classList.add('wait-link');
-                        const addServiceIcon = document.createElement('span');
-                        addServiceIcon.classList.add('material-icons');
-                        addServiceIcon.style.color = 'green';
-                        addServiceIcon.textContent = 'add_circle';
-                        addServiceLink.appendChild(addServiceIcon);
-                        addServiceCell.appendChild(addServiceLink);
-
-                        // Thêm các cell vào dòng mới
-                        newRow.appendChild(serviceTypeNameCell);
-                        newRow.appendChild(serviceNameCell);
-                        newRow.appendChild(servicePriceCell);
-                        newRow.appendChild(addServiceCell);
-
-                        // Thêm dòng mới vào tbody
-                        tbodyElement.appendChild(newRow);
-                    });
-                })
-            .catch(error => {
-                console.error('Lỗi khi lấy danh sách dịch vụ:', error);
-            }
-        );
-    }
-
-
-    
-    // Sử dụng event delegation
-    const lvDanhSachDV = document.getElementById('lvDanhSachDV');
-    lvDanhSachDV.addEventListener('click', (event) => {
-    if (event.target.closest('.wait-link')) {
-        addServiceToSelectedTable(event);
-    }
-    });
-
-    function addServiceToSelectedTable(event) {
-        const row = event.target.closest('tr');
-        const serviceName = row.querySelector('#serviceName, .serviceName').textContent;
-        const servicePrice = parseFloat(row.querySelector('#servicePrice, .servicePrice').textContent);
-
-        // Kiểm tra xem dịch vụ đã tồn tại trong bảng "Dịch vụ đã chọn"
-        const existingRows = document.querySelectorAll('#lvDichVuDaChon tr');
-        let existingRow = null;
-        for (let i = 0; i < existingRows.length; i++) {
-            if (existingRows[i].querySelector('td:first-child').textContent === serviceName) {
-            existingRow = existingRows[i];
-            break;
-            }
-        }
-
-        if (existingRow) {
-            // Nếu dịch vụ đã tồn tại, cập nhật số lượng và thành tiền
-            const qtyCell = existingRow.querySelector('td:nth-child(2)');
-            const priceCell = existingRow.querySelector('td:nth-child(3)');
-            let qty = parseInt(qtyCell.textContent);
-            qty++;
-            qtyCell.textContent = qty.toString();
-            priceCell.textContent = (qty * servicePrice).toFixed(2);
-        } else {
-            // Nếu dịch vụ chưa tồn tại, thêm hàng mới vào bảng "Dịch vụ đã chọn"
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-            <td class="serviceName">${serviceName}</td>
-            <td>1</td>
-            <td class="servicePrice">${servicePrice.toFixed(2)}</td>
-            <td><a href="javascript:void(0)" class="wait-link-1">
-                <span class="material-icons" style="color: red;">cancel</span>
-            </a></td>
-            `;
-            document.getElementById('lvDichVuDaChon').appendChild(newRow);
-        }
-    }
-
-
-    const lvDichVuDaChon = document.getElementById('lvDichVuDaChon');
-    lvDichVuDaChon.addEventListener('click', (event) => {
-        if (event.target.closest('.wait-link-1')) {
-            removeServiceFromSelectedTable(event);
-        }
-    });
-
-    function removeServiceFromSelectedTable(event) {
-        const row = event.target.closest('tr');
-        row.remove();
-    }
-
-
-</script> -->
 
   <script th:src="@{/js/jquery.min.js}"></script>
   <script th:src="@{/js/popper.js}"></script>

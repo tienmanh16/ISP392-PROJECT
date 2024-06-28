@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
-@RequestMapping("/guest")
+
 public class ContactController {
     @Autowired
     private GuestInformationService guestInformationService;
@@ -40,7 +40,7 @@ public class ContactController {
         return "contact";
 
     }
-    @GetMapping("/listInfo")
+    @GetMapping("/receptionist/listInfo")
     public String listGuestInfo(Model model, @RequestParam(name ="pageNo", defaultValue = "1") Integer pageNo ) {
         Page<GuestInformation> guestInformations = this.guestInformationService.pageInvoice(pageNo);
         model.addAttribute("listInfo", guestInformations);
@@ -50,7 +50,7 @@ public class ContactController {
     }
     
 
-    @PostMapping("/addInfo")
+    @PostMapping("/receptionist/addInfo")
     public String addInfo(@ModelAttribute("guestInformation") GuestInformation guestInformation) throws MessagingException {
 
         if (this.guestInformationService.create(guestInformation)) {
@@ -61,7 +61,7 @@ public class ContactController {
         }
     }
 
-     @PostMapping("/contact_status/{id}")
+     @PostMapping("/receptionist/contact_status/{id}")
     public ResponseEntity<?> toggleStatus(@PathVariable("id") int id, @RequestParam("isContacted") boolean isContacted) {
         try {
             boolean newStatus = this.guestInformationService.contactStatus(id, isContacted);

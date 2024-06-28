@@ -108,6 +108,15 @@ public class InvoiceServiceImpl implements InvoiceService {
         return serviceList;
     }
 
+    //collect quantity of service
+    @Override
+    public List<InvoiceLine> listInvoiceLine(int invoiceID) {
+        return invoiceRepository.getReferenceById(invoiceID).getInvoiceLine();
+    }
+    
+
+    
+
     @Override
     public double getTotalInvoiceForMonth(int month, int year) {
         double total = 0.0;
@@ -244,7 +253,8 @@ public class InvoiceServiceImpl implements InvoiceService {
             // Xử lý ngoại lệ tại đây nếu cần thiết
         }
     }
-    
+
+   
 
     
     

@@ -75,11 +75,11 @@ public class InvoidController {
         double totalSePrice = 0.0;
         double totalAmountRoom = 0.0;
         List<Service> serviceList = invoiceServiceImpl.listService(invoiceID);
-
-        for (Service service : serviceList) {
-            for (InvoiceLine invoiceLine : service.getInvoiceLine()) {
+        List<InvoiceLine> invoiceLineList = invoiceServiceImpl.listInvoiceLine(invoiceID);
+        for (InvoiceLine invoiceLine : invoiceLineList) {
+           
                 totalSePrice += invoiceLine.getInvoiceTotalAmount();
-            }
+            
         }
         for (BookingMapping ls : booking.getBookingMapping()) {
             totalAmountRoom += ls.getBookingTotalAmount();
@@ -91,6 +91,7 @@ public class InvoidController {
         context.setVariable("listService", serviceList);
 
         context.setVariable("totalSePrice", totalSePrice);
+        context.setVariable("invoiceLineList", invoiceLineList);
 
 
         // Render HTML template as a string
@@ -108,11 +109,11 @@ public class InvoidController {
         double totalSePrice = 0.0;
         double totalAmountRoom = 0.0;
         List<Service> serviceList = invoiceServiceImpl.listService(invoiceID);
-
-        for (Service service : serviceList) {
-            for (InvoiceLine invoiceLine : service.getInvoiceLine()) {
+        List<InvoiceLine> invoiceLineList = invoiceServiceImpl.listInvoiceLine(invoiceID);
+        for (InvoiceLine invoiceLine : invoiceLineList) {
+           
                 totalSePrice += invoiceLine.getInvoiceTotalAmount();
-            }
+            
         }
         for (BookingMapping ls : booking.getBookingMapping()) {
             totalAmountRoom += ls.getBookingTotalAmount();
@@ -121,6 +122,7 @@ public class InvoidController {
         model.addAttribute("totalAmountRoom", totalAmountRoom);
         model.addAttribute("listService", serviceList);
         model.addAttribute("totalSePrice", totalSePrice);
+        model.addAttribute("invoiceLineList", invoiceLineList);
         return "invoice1";
     }
 }

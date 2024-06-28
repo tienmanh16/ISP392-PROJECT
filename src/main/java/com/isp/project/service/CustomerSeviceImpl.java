@@ -22,7 +22,7 @@ public class CustomerSeviceImpl implements CustomerService {
     @Override
     public boolean deleteCustomers(Integer id) {
         try {
-            customerRepository.deleteById(id);          
+            customerRepository.deleteById(id);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -34,12 +34,5 @@ public class CustomerSeviceImpl implements CustomerService {
     public List<Customer> findCustomersByNameContaining(String keyword) {
         return customerRepository.findCustomersByNameContaining(keyword);
     }
-
-   
-
-    // @Override
-    // public List<Customer> getAllCustomersByName(String customerName) {
-    //     return customerRepository.findAll();
-    // }
 
 }

@@ -264,20 +264,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="service : ${listService}">
-                            <td th:text="${service.seName}"></td>
-                            <td th:text="${service.sePrice}">$</td>
-                            <td>
-                                <span th:each="line : ${service.invoiceLine}">
-                                    <span th:text="${line.quantity}"></span><br />
+                        <tr th:each="invoiceLineList : ${invoiceLineList}">
+                            <td th:text="${invoiceLineList.service.seName}"></td>
+                            <td th:text="${invoiceLineList.service.sePrice}">$</td>
+                            <td th:text="${invoiceLineList.quantity}">
 
-                                </span>
+
                             </td>
-                            <td>
-                                <span th:each="line : ${service.invoiceLine}">
-                                    <span th:text="${line.invoiceTotalAmount}"></span><br />
-
-                                </span>
+                            <td th:text="${invoiceLineList.InvoiceTotalAmount}">
+                                
                             </td>
 
 

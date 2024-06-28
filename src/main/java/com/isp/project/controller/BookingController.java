@@ -1,23 +1,25 @@
 package com.isp.project.controller;
 
 import java.sql.Date;
-import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isp.project.dto.BookingInfoDTO;
-import com.isp.project.dto.BookingRoomDTO;
+
+import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
@@ -28,7 +30,6 @@ import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.CustomerRepository;
 import com.isp.project.repositories.EmployeeRepository;
-import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.repositories.RegisterRepository;
 import com.isp.project.repositories.RoomRepository;
 import com.isp.project.service.BookingService;
@@ -57,15 +58,16 @@ public class BookingController {
     @Autowired
     private RoomRepository roomRepository;
 
-
-
+    // ============================== GET ALL BOOKING
+    // ================================================================================
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
-        List<BookingRoomDTO> listBooking;
+
+        List<Booking> listBooking;
         if (query != null && !query.isEmpty()) {
-            listBooking = bookingService.getAllBookingByName(query.toLowerCase());
+            listBooking = bookingService.getAllBookingByName(query);
         } else {
-            listBooking = bookingService.getAllBooking();
+            listBooking = bookingService.getAllBookingNew();
         }
         model.addAttribute("listBooking", listBooking);
         model.addAttribute("query", query);
@@ -74,13 +76,17 @@ public class BookingController {
 
     }
 
+    // ================================== Booking Detail
+    // =========================================================================
     @GetMapping("bookingdetail")
     public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
-        List<BookingRoomDTO> bookingDetail = bookingService.findBookingRoomByBookingID(id);
+        Booking bookingDetail = bookingService.getBookingByBookingID(id);
         model.addAttribute("bookdetail", bookingDetail);
         return "bookingdetail";
     }
 
+    // ============================= Delete Booking
+    // ===============================================================================
     @PostMapping("/delete/{id}")
     public ResponseEntity<String> deleteBooking(@PathVariable("id") Integer id) {
         try {
@@ -95,11 +101,11 @@ public class BookingController {
         }
     }
 
-    // ======================Đặt phòng ==========================
+    // ====================== Đặt phòng
+    // ============================================================================================
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute("bookingInfo") BookingInfoDTO bookingInfo) {
-
-        // Tạo và lưu thông tin của khách hàng
+        // Create and save customer information
         Customer customer = new Customer();
         customer.setCustomerName(bookingInfo.getCustomerName());
         customer.setCustomerGender(bookingInfo.getGender());
@@ -109,14 +115,13 @@ public class BookingController {
         customer.setCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
         customerRepository.save(customer);
 
-        // Tạo và lưu thông tin đặt phòng
+        // Create and save booking information
         Booking booking = new Booking();
         booking.setCustomerID(customer);
-        // Đặt ngày hiện tại cho bookingDate
         Date bookingDate = new Date(System.currentTimeMillis());
         booking.setBookingDate(bookingDate);
         booking.setCustomerQuantity(bookingInfo.getCustomerQuantity());
-        booking.setIsCancelled(1); // Mặc định không hủy
+        booking.setIsCancelled(1); // Default to not cancelled
         bookingRepository.save(booking);
 
         // Add to register
@@ -130,35 +135,53 @@ public class BookingController {
             ex.printStackTrace();
         }
 
-        // Tạo và lưu thông tin ánh xạ đặt phòng
-        BookingMapping bookingMapping = new BookingMapping();
-        Optional<Room> roomMapping = roomRepository.findById(1);
-        Room roomMapping_new = roomMapping.get();
-        bookingMapping.setRoomID(roomMapping_new);
-        bookingMapping.setBookingID(booking); // Lấy ID của đặt phòng mới tạo
-        bookingMapping.setCheckInDate(bookingInfo.getCheckinDate());
-        bookingMapping.setCheckOutDate(bookingInfo.getCheckoutDate());
-        bookingMapping.setBookingTotalAmount(100);
-        // trường phòng, vì vậy tạm thời bỏ qua
-        bookingMappingRepository.save(bookingMapping);
+        // Parse selectedRoomsJson to List<RoomDetailDTO>
+        List<RoomDetailDTO> selectedRooms = convertJsonToRoomDetailDTOList(bookingInfo.getSelectedRoomsJson());
+        for (RoomDetailDTO roomDetail : selectedRooms) {
+            Room room = roomRepository.findById(roomDetail.getId()).orElse(null);
+            if (room != null) {
+                BookingMapping bookingMapping = new BookingMapping();
+                bookingMapping.setBookingID(booking);
+                bookingMapping.setRoomID(room);
+                room.setStatus("Booked Room");
+                bookingMapping.setCheckInDate(bookingInfo.getCheckinDate());
+                bookingMapping.setCheckOutDate(bookingInfo.getCheckoutDate());
+                bookingMapping.setBookingTotalAmount(roomDetail.getPriceDay()); // Set appropriate amount
 
-        return "redirect:/booking"; // Chuyển hướng đến trang kết quả đặt phòng
+                bookingMappingRepository.save(bookingMapping);
+            }
+        }
+        return "redirect:/booking"; // Redirect to booking result page
     }
 
-    // ========= mergeDateAndTime=================
-    private Date mergeDateAndTime(Date date, String time) {
-        Calendar calDate = Calendar.getInstance();
-        calDate.setTime(date);
+    private List<RoomDetailDTO> convertJsonToRoomDetailDTOList(String json) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.readValue(json, new TypeReference<List<RoomDetailDTO>>() {
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Collections.emptyList();
+        }
+    }
 
-        Calendar calTime = Calendar.getInstance();
-        String[] timeParts = time.split(":");
-        calTime.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeParts[0]));
-        calTime.set(Calendar.MINUTE, Integer.parseInt(timeParts[1]));
+    //======================== Delete BookingMapping of Booking ========================================================================
+    @DeleteMapping("/bookingMappings")
+    public ResponseEntity<String> deleteBookingMappingsByRoomAndBooking(@RequestParam Integer roomId, @RequestParam Integer bookingId) {
+        Room room = new Room();
+        room.setId(roomId);
+        Booking booking = new Booking();
+        booking.setBookingID(bookingId);
+        try {
+            boolean deleted = bookingService.deleteBookingMappingByRoomAndBooking(booking, room);
+            if (deleted) {
+                return ResponseEntity.ok("BookingMapping deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete BookingMapping");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
 
-        calDate.set(Calendar.HOUR_OF_DAY, calTime.get(Calendar.HOUR_OF_DAY));
-        calDate.set(Calendar.MINUTE, calTime.get(Calendar.MINUTE));
-        calDate.set(Calendar.SECOND, 0);
-
-        return (Date) calDate.getTime();
     }
 }
