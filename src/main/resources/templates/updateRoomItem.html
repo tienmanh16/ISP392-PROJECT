@@ -58,7 +58,7 @@
 <body>
     <div class="form-wrapper">
         <h2 style="color: maroon;text-align: center;margin-top: -10px;">Update RoomItem Information</h2>
-        <form th:action="@{/updateRoomitem}" th:object="${roomitem}" method="post">
+        <form th:action="@{/admin/updateRoomitem}" th:object="${roomitem}" method="post">
             <input type="hidden" th:field="*{ItemID}">
             <div class="form-group">
                 <label>Name:</label>

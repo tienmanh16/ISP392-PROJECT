@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.isp.project.model.Customer;
 import com.isp.project.repositories.CustomerRepository;
@@ -16,6 +16,7 @@ import com.isp.project.service.BookingService;
 import com.isp.project.service.CustomerService;
 
 @Controller
+@RequestMapping("/receptionist")
 public class CustomerController {
 
     @Autowired
@@ -51,13 +52,13 @@ public class CustomerController {
     @PostMapping("/updateCustomer")
     public String updateCustomer(@ModelAttribute("customer") Customer customer) {
         customerRepository.save(customer);
-        return "redirect:/customer"; // Assuming customerList is a page showing list of customers
+        return "redirect:/receptionist/customer"; // Assuming customerList is a page showing list of customers
     }
 
     @PostMapping("/addcustomer")
     public String addCustomer(@ModelAttribute("addCustomer") Customer addCustomer) {
         customerRepository.save(addCustomer);
-        return "redirect:/customer";
+        return "redirect:/receptionist/customer";
     }
 
 }

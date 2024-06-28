@@ -51,7 +51,7 @@
             <div>
               <button class="btn js-buy-ticket">+ RoomItem</button>
             </div>
-            <form th:action="@{/roomitems}" method="get" class="form-inline ml-auto">
+            <form th:action="@{/admin/roomitems}" method="get" class="form-inline ml-auto">
               <div class="input-group" style="width: 200px">
                 <input type="text" name="table_search_roomitems" class="form-control form-control-sm"
                   placeholder="Search" th:value="${queryItemName}" />
@@ -110,7 +110,7 @@
   <div class="modal js-modal">
     <div class="windowroomitem js-modal-window">
       <div class="title">ADD ROOM ITEMS</div>
-      <form th:action="@{/addroomitem}" th:object="${addRoomItem}" method="post">
+      <form th:action="@{/admin/addroomitem}" th:object="${addRoomItem}" method="post">
         <div class="maincustomer">
           <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Room Item Information</h3>
           <span class="material-icons" style="vertical-align: middle;">other_houses</span>
@@ -174,7 +174,7 @@
     }
 
     function deleteBooking(roomItemId) {
-      fetch(`/deleteRoomItem/${roomItemId}`, { // Chỉnh sửa đường dẫn và sử dụng template literal
+      fetch(`/admin/deleteRoomItem/${roomItemId}`, { // Chỉnh sửa đường dẫn và sử dụng template literal
         method: "POST",
       })
         .then((response) => {

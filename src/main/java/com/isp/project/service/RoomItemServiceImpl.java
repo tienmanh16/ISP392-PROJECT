@@ -10,8 +10,8 @@ import com.isp.project.model.RoomItem;
 import com.isp.project.repositories.RoomItemRepository;
 
 @Service
-public class RoomItemServiceImpl implements RoomItemService{
-    
+public class RoomItemServiceImpl implements RoomItemService {
+
     @Autowired
     RoomItemRepository roomItemRepository;
 
@@ -24,7 +24,7 @@ public class RoomItemServiceImpl implements RoomItemService{
     public boolean deleteRoomItem(Integer roomItemId) {
         try {
             roomItemRepository.deleteByItemId(roomItemId);
-            roomItemRepository.deleteById(roomItemId); 
+            roomItemRepository.deleteById(roomItemId);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,15 +37,9 @@ public class RoomItemServiceImpl implements RoomItemService{
         return roomItemRepository.findRoomItemByNameContaining(keyword);
     }
 
-
-    // @Override
-    // public RoomItem findByItemName(String itemName) {
-    //     return roomItemRepository.findByItemName(itemName);
-    // }
-
     @Override
     public List<RoomItem> findAll() {
         return roomItemRepository.findAll();
     }
-    
+
 }

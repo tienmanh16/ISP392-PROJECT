@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
+@RequestMapping("/admin")
 public class RoomItemController {
 
     @Autowired
@@ -56,14 +58,14 @@ public class RoomItemController {
     @PostMapping("/updateRoomitem")
     public String updateRoomItem(@ModelAttribute("roomitem") RoomItem roomitem) {
         roomItemRepository.save(roomitem);
-        return "redirect:/roomitems"; // Assuming customerList is a page showing list of customers
+        return "redirect:/admin/roomitems"; // Assuming customerList is a page showing list of customers
     }
 
 
     @PostMapping("/addroomitem")
     public String addRoomItem(@ModelAttribute("addRoomItem") RoomItem roomitem) {
         roomItemRepository.save(roomitem);
-        return "redirect:/roomitems";
+        return "redirect:/admin/roomitems";
     }
     
     @PostMapping("/deleteRoomItem/{roomItemId}")
