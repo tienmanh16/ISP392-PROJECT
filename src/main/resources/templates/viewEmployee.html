@@ -91,6 +91,18 @@
                         <option value="3">Gender</option>
                         <option value="5">Role</option>
                         <option value="10">Salary</option>
+
+                    </select>
+                </form>
+                <form action="/admin/employee_list" method="get">
+                    <select id="statusFilter" class="form-select search-button" name="status"
+                        onchange="this.form.submit()" th:value="${status}">
+                        <option value="all" th:selected="${status == null || status == 'all'}">
+                            All</option>
+                        <option value="active" th:selected="${status == 'active'}">Active
+                        </option>
+                        <option value="inactive" th:selected="${status == 'inactive'}">Inactive
+                        </option>
                     </select>
                 </form>
                 <button class="btn custom-button" onclick="window.location.href='/admin/employee_add'">
@@ -114,7 +126,14 @@
                                     <th>Email</th>
                                     <th>Salary</th>
                                     <th>UserName</th>
-                                    <th>Status</th>
+                                    <th>Status
+                                        
+                                    </th>
+
+                                    <th>Fail Attempt</th>
+                                    <th>Lock Time</th>
+                                    <th>Lock Account</th>
+                                    <th>Pass Key</th>
                                     <th>Edit</th>
                                 </tr>
                             </thead>
@@ -139,6 +158,19 @@
                                             onclick="toggleStatus(this)" style="width: 85px; height: 40px;">
                                         </button>
                                     </td>
+                                    <td th:text="${list.failedAttempt}"></td>
+                                    <td th:text="${list.lockTime != null ? list.lockTime : 0}"></td>
+
+                                    <td>
+                                        <button type="button" class="btn statusButton"
+                                            th:classappend="${list.isAccountNonLocked == true ? 'btn-success' : 'btn-danger'}"
+                                            th:text="${list.isAccountNonLocked == true ? 'NonLock' : 'Lock'}"
+                                            th:data-id="${list.id}" th:data-active="${list.isAccountNonLocked}"
+                                            onclick="toggleLock(this)" style="width: 95px; height: 40px;">
+                                        </button>
+                                    </td>
+                                    <td th:text="${list.verifyCode}"></td>
+
                                     <td><a th:href="@{'/admin/employee_edit/'+${list.id}}" class="ti-menu"></a></td>
                                 </tr>
                             </tbody>
@@ -152,23 +184,58 @@
 
     <!-- thư viện để add header và footer  -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    
+
     <script>
+
+
         function toggleStatus(button) {
             const employeeId = button.getAttribute('data-id');
             const isActive = button.getAttribute('data-active') === 'true';
+
+            const confirmation = confirm(`Are you sure you want to ${isActive ? 'deactivate' : 'activate'} this account?`);
+            if (!confirmation) {
+                return;
+            }
 
             $.ajax({
                 url: '/admin/employee_toggleStatus/' + employeeId,
                 type: 'POST',
                 data: { isActive: isActive },
                 success: function (data) {
+                    const newActiveState = !isActive;
                     // Update button text and style
-                    button.textContent = !isActive ? 'Active' : 'InActive';
-                    button.classList.toggle('btn-success', !isActive);
-                    button.classList.toggle('btn-danger', isActive);
+                    button.textContent = newActiveState ? 'Active' : 'InActive';
+                    button.classList.toggle('btn-success', newActiveState);
+                    button.classList.toggle('btn-danger', !newActiveState);
                     // Update data attribute in database
-                    button.setAttribute('data-active', !isActive);
+                    button.setAttribute('data-active', newActiveState);
+                },
+                error: function (error) {
+                    alert(`Failed to ${isActive ? 'deactivate' : 'activate'} the account. Please try again.`);
+                }
+            });
+        }
+
+        function toggleLock(button) {
+            const employeeId = button.getAttribute('data-id');
+            const isAccountNonLocked = button.getAttribute('data-active') === 'true';
+            const action = isAccountNonLocked ? 'lock' : 'unlock';
+
+            const confirmation = confirm(`Are you sure you want to ${action} this account?`);
+            if (!confirmation) {
+                return;
+            }
+
+            $.ajax({
+                url: '/admin/employee_toggleLock/' + employeeId,
+                type: 'POST',
+                data: { isAccountNonLocked: isAccountNonLocked },
+                success: function (data) {
+                    alert(`Account has been successfully ${action}ed.`);
+                    location.reload();
+                },
+                error: function (error) {
+                    alert(`Failed to ${action} the account. Please try again.`);
                 }
             });
         }
@@ -196,6 +263,8 @@
             }
             tbody.innerHTML = filteredrows;
         }
+
+
 
         searchbar.addEventListener('input', Search);
         category.addEventListener('change', Search);

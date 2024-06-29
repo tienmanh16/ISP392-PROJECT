@@ -81,10 +81,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findAll();
     }
 
-    // @Override
-    // public List<Employee> findActiveEmployees() {
-    // return employeeRepository.findByIsActiveTrue();
-    // }
+    @Override
+    public List<Employee> findActiveEmployees() {
+    return employeeRepository.findByIsActiveTrue();
+    }
+
+    @Override
+    public List<Employee> findInActiveEmployees() {
+    return employeeRepository.findByIsActiveFalse();
+    }
 
     @Override
     public Employee save(Employee entity) {
@@ -183,5 +188,29 @@ public class EmployeeServiceImpl implements EmployeeService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean toggleEmployeeLock(int employeeId, boolean currentLock) {
+         Employee employee = employeeRepository.findById(employeeId);
+    if (employee == null) {
+        throw new IllegalArgumentException("Employee not found with ID: " + employeeId);
+    }
+
+    // Update the lock status
+    boolean newLockStatus = !currentLock;
+    employee.setAccountNonLocked(newLockStatus);
+
+    // Set lockTime to null if the account is unlocked
+    if (newLockStatus) {
+        employee.setLockTime(null);
+    } else {
+        employee.setLockTime(new Date());
+    }
+
+    employeeRepository.save(employee);
+
+    // Return the new lock status
+    return newLockStatus;
     }
 }

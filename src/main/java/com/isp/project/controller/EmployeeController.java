@@ -1,6 +1,7 @@
 package com.isp.project.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,8 +44,18 @@ public class EmployeeController {
 
 
     @GetMapping("/employee_list")
-    public String listEmployee(Model model) {
-        model.addAttribute("emList", employeeService.findAll());
+    public String listEmployee(@RequestParam(name = "status", required = false) String status, Model model) {
+        List<Employee> emList;
+        
+        if (null == status) {
+            emList = employeeService.findAll();
+        } else emList = switch (status) {
+            case "all" -> employeeService.findAll();
+            case "active" -> employeeService.findActiveEmployees();
+            case "inactive" -> employeeService.findInActiveEmployees();
+            default -> employeeService.findAll();
+        };
+        model.addAttribute("emList", emList);
         return "viewEmployee";
     }
 
@@ -121,6 +132,16 @@ public class EmployeeController {
             return ResponseEntity.ok().body(newStatus);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to toggle employee status.");
+        }
+    }
+
+    @PostMapping("/employee_toggleLock/{employeeId}")
+    public ResponseEntity<?> toggleLock(@PathVariable("employeeId") int employeeId, @RequestParam("isAccountNonLocked") boolean isAccountNonLocked) {
+        try {
+            boolean newLock = employeeService.toggleEmployeeLock(employeeId, isAccountNonLocked);
+            return ResponseEntity.ok().body(newLock);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to toggle employee Lock.");
         }
     }
 

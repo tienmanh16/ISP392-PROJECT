@@ -22,6 +22,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     boolean existsByUsername(String username);
 
     List<Employee> findByIsActiveTrue();
+    List<Employee> findByIsActiveFalse();
 
     @Query("update Employee u set u.failedAttempt=?1 where email=?2 ")
 	@Modifying
