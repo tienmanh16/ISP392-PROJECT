@@ -39,5 +39,7 @@ public interface RoomService {
 
     void updateRoomStatusByRoomId(Integer roomId);
 
+    void updateRoomStatusByRoomId2(Integer roomId);
+
 
 }

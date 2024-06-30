@@ -27,6 +27,7 @@ public class InvoiceLine {
 
     @Column(name = "TotalAmount")
     private double InvoiceTotalAmount;
+    
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "SeID")
@@ -37,11 +38,27 @@ public class InvoiceLine {
     @Column(name = "Quantity")
     private int Quantity;
 
+    
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "InvoiceID")
     @JsonBackReference
     @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Invoice invoice;
+
+
+
+    public InvoiceLine() {
+    }
+
+
+
+    public InvoiceLine(double invoiceTotalAmount, Service service, int quantity, Invoice invoice) {
+        InvoiceTotalAmount = invoiceTotalAmount;
+        this.service = service;
+        Quantity = quantity;
+        this.invoice = invoice;
+    }
+
     
 }

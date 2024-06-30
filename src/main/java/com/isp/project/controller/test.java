@@ -11,7 +11,6 @@ import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Register;
-import com.isp.project.model.Room;
 import com.isp.project.model.Service;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
@@ -20,17 +19,21 @@ import com.isp.project.service.BookingService;
 import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
 import com.isp.project.service.RoomService;
+import com.isp.project.service.SeService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+
+
 
 //class này test postman thui
 
@@ -48,25 +51,37 @@ public class test {
     @Autowired
     private InvoiceServiceImpl invoiceService;
 
+    
     @Autowired
-    private BookingMappingService bookingMappingService;
+    private BookingMappingService bookingMappingService; 
 
-    // @GetMapping("/{id}")
-    // public List<Booking> getMethodName(@PathVariable int id ) {
-    // return bookingMappingRepository.testPostMan(id);
-    // }
-
-    @GetMapping("/viet")
-    public void getMethodName() {
-        Room room = new Room();
-        room.setId(2);
-        Booking booking = new Booking();
-        booking.setBookingID(16);
-        bookingRepository.deleteByRoomAndBooking(booking, room);
+    @GetMapping("/{id}")
+    public List<Booking> getMethodName(@PathVariable int id ) {
+        return invoiceService.testPostMan(id);
     }
+
+
     // @GetMapping("/tien")
     // public Employee revenueBooking() {
-    // return invoiceService.testReport();
+    //     return invoiceService.testReport();
     // }
 
+    @Autowired
+    private SeService seService;
+
+    @GetMapping("/listServices2")
+    public List<Service> ServiceList2(Model model, @Param("name") String name) {
+        List<Service> services;
+        if (name != null ) {
+            services = this.seService.searchService(name);
+        } else {
+            services = this.seService.findAll();
+            //services = serviceRepository.findAll();
+        }
+        //services = serviceRepository.findAll();
+        model.addAttribute("services", services);
+        return services;
+    }
+    
+    
 }

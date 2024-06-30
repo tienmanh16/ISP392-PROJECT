@@ -84,7 +84,7 @@ public class HomeController {
     @Autowired
     private SeService seService;
 
-    @GetMapping("/room")
+    @GetMapping("/receptionist/room")
     public String listRoom(Model model, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
         Page<RoomDetailDTO> list = this.roomService.getAll(pageNo);
 

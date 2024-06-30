@@ -96,7 +96,18 @@ public class RoomServiceImpl implements RoomService {
     }
 
     public Customer test(int id) {
-        return roomRepository.getReferenceById(id).getBookingMapping().get(0).getBookingID().getCustomerID();
+        Customer customer = new Customer();
+        for(int i = 0; i < roomRepository.getReferenceById(id).getBookingMapping().size(); i++) {
+            if (roomRepository.getReferenceById(id).getBookingMapping().get(i).getBookingMappingActive() == 0) {
+                customer = null;
+            }
+            customer = roomRepository.getReferenceById(id).getBookingMapping().get(i).getBookingID().getCustomerID();
+        }
+        // if (roomRepository.getReferenceById(id).getBookingMapping().get(0).getBookingMappingActive() == 0) {
+        //     return null;
+        // }
+        //return roomRepository.getReferenceById(id).getBookingMapping().get(0).getBookingID().getCustomerID();
+        return customer;
     }
 
     public Room testR(int id) {
@@ -164,6 +175,14 @@ public class RoomServiceImpl implements RoomService {
         }
 
         return findRoom;
+    }
+
+
+
+    @Override
+    @Transactional
+    public void updateRoomStatusByRoomId2(Integer roomId) {
+        roomRepository.updateRoomStatusByRoomId2(roomId);
     }
 
 }
