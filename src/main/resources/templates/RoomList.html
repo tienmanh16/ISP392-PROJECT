@@ -112,8 +112,9 @@
                     </div>
                     <div class="action-buttons">
                         <form class="search-container">
+                            <label for="searchbar"></label>
                             <input type="text" id="searchbar" class="form-control search-input" name="name" placeholder="Search Room Number...">
-                            <button class="btn search-button" type="submit" id="search-button" >
+                            <button class="btn search-button" type="submit" id="search-button">
                                 Search
                             </button>
                         </form>
@@ -152,30 +153,28 @@
                                             </select>
                                         </th>
                                         <th>Update</th>
-                                        <!-- <th>Change</th> -->
+                                        <th>Change</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr th:each="room : ${rooms}">
                                         <td th:text="${room.id}"></td>
                                         <td th:text="${room.roomNum}"></td>
-                                        <td th:text="${room.roomTypeName}"></td>
-                                        <td th:text="${room.roomTypeDescription}"></td>
-                                        <td th:text="${room.priceHour}"></td>
-                                        <td th:text="${room.priceDay}"></td>
+                                        <td th:text="${room.RoomType.name}"></td>
+                                        <td th:text="${room.RoomType.des}"></td>
+                                        <td th:text="${room.RoomType.priceHour}"></td>
+                                        <td th:text="${room.RoomType.priceDay}"></td>
                                         <td th:text="${room.status}"></td>
                                         <td><a th:href="@{/listRooms/{id}/update(id=${room.id})}"
                                                 class="ti-menu"></a></td>
-                                        <!-- <td>
-                                                <a th:href="@{/admin/listRooms/{id}/edit(id=${room.id})}"
-                                                    class="btn btn-primary">Edit</a>
-                                                <a th:if="${room.status == 'active'}"
-                                                    th:href="@{/admin/inactiveRoom/{id}(id=${room.id})}"
-                                                    class="btn btn-warning">Inactive</a>
-                                                <a th:if="${room.status == 'inactive'}"
-                                                    th:href="@{/admin/activeRoom/{id}(id=${room.id})}"
-                                                    class="btn btn-success">Active</a>
-                                            </td> -->
+                                        <td>
+                                                <a href="javascript:void(0);" th:if="${room.roomActive == 0}"
+                                                   th:onclick="'confirmActiveRoom(' + ${room.id} + ');'"
+                                                    class="btn btn-danger" style="width: 85px; height: 40px;">Inactive</a>
+                                                <a href="javascript:void(0);" th:if="${room.roomActive == 1}"
+                                                   th:onclick="'confirmInactiveRoom(' + ${room.id} + ');'"
+                                                    class="btn btn-success" style="width: 85px; height: 40px;">Active</a>
+                                            </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -183,15 +182,41 @@
                     </div>
                 </div>
         </section>
-        <!-- <script>
-			function confirmInactiveRoomType(RoomTypeID) {
+        <script>
+        function confirmActiveRoom(RoomID) {
+            if (confirm('Are you sure you want to active it?')) {
+                activeRoom(RoomID);
+            }
+        }
+
+        function activeRoom(RoomID) {
+            fetch(`/admin/activeRoom/${RoomID}`, {
+                method: 'GET'
+            })
+                .then(response => response.text().then(text => ({ status: response.status, text })))
+                .then(({ status, text }) => {
+                    alert(text);
+                    if (status === 200) { // HTTP OK status
+                        location.reload(); // Reload the page to reflect the change
+                    } else {
+                        throw new Error(text); // If the message is not expected, throw an error
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("An error occurred: " + error.message);
+                });
+        }
+    </script>
+        <script>
+			function confirmInactiveRoom(RoomID) {
 				if (confirm('Are you sure you want to inactive it?')) {
-					inactiveRoomType(RoomTypeID);
+					inactiveRoom(RoomID);
 				}
 			}
 
-			function inactiveRoomType(RoomTypeID) {
-				fetch(`/admin/inactiveRoomType/${RoomTypeID}`, {
+			function inactiveRoom(RoomID) {
+				fetch(`/admin/inactiveRoom/${RoomID}`, {
 					method: 'GET'
 				})
 					.then(response => response.text().then(text => ({ status: response.status, text })))
@@ -209,32 +234,7 @@
 					});
 			}
 		</script>
-		<script>
-			function confirmActiveRoomType(RoomTypeID) {
-				if (confirm('Are you sure you want to active it?')) {
-					activeRoomType(RoomTypeID);
-				}
-			}
 
-			function activeRoomType(RoomTypeID) {
-				fetch(`/admin/activeRoomType/${RoomTypeID}`, {
-					method: 'GET'
-				})
-					.then(response => response.text().then(text => ({ status: response.status, text })))
-					.then(({ status, text }) => {
-						alert(text);
-						if (status === 200) { // HTTP OK status
-							location.reload(); // Reload the page to reflect the change
-						} else {
-							throw new Error(text); // If the message is not expected, throw an error
-						}
-					})
-					.catch(error => {
-						console.error('Error:', error);
-						alert("An error occurred: " + error.message);
-					});
-			}
-		</script> -->
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
     <!-- thư viện để add header và footer  -->

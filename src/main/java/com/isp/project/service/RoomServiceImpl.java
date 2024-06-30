@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.isp.project.model.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -13,10 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
-import com.isp.project.model.Room;
-import com.isp.project.model.Booking;
-import com.isp.project.model.BookingMapping;
-import com.isp.project.model.Customer;
 import com.isp.project.model.Room;
 import com.isp.project.repositories.RoomRepository;
 
@@ -87,12 +84,10 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void updateRoomStatus(int id, String status) {
-        Room room = roomRepository.findById(id).orElse(null);
-        if (room != null) {
-            room.setStatus(status);
-            roomRepository.save(room);
-        }
+    public void updateRoomActiveStatus(int id, int status) {
+        Room room = roomRepository.findById(id).orElseThrow(() -> new RuntimeException("Room not found"));
+        room.setRoomActive(status);
+        roomRepository.save(room);
     }
 
     public Customer test(int id) {
@@ -151,6 +146,16 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public boolean existsByRoomNum(String roomNum) {
+        return roomRepository.existsByRoomNum(roomNum);
+    }
+
+    @Override
+    public List<Room> searchRoom(String name) {
+        return this.roomRepository.searchRoom(name);
+    }
+
+    @Override
 
     // public List<Object[]> findAvailableRooms(Date checkinDate, Date checkoutDate)
     public List<RoomDetailDTO> getAvailableRooms(Date checkinDate, Date checkoutDate) {
@@ -173,7 +178,6 @@ public class RoomServiceImpl implements RoomService {
                     priceDay, status);
             findRoom.add(newRoom);
         }
-
         return findRoom;
     }
 
