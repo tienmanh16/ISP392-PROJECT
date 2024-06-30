@@ -136,6 +136,10 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
     @Query("UPDATE Room SET status = 'Rented Room' WHERE id = :roomId")
     void updateRoomStatusByRoomId(@Param("roomId") Integer roomId);
 
+    @Modifying
+    @Query("UPDATE Room SET status = 'Empty Room' WHERE id = :roomId")
+    void updateRoomStatusByRoomId2(@Param("roomId") Integer roomId);
+
     @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus " +
                "FROM Room r " +
                "INNER JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID " +

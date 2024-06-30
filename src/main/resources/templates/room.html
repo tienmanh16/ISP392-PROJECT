@@ -472,7 +472,7 @@
 
                         console.log("invoiceLineData", JSON.stringify(invoiceLineData)); // Thêm log để kiểm tra dữ liệu
 
-                       
+
                         // Gọi hàm sendSelectedServices() để gửi dữ liệu đến controller
                         sendSelectedServices();
                     }
@@ -497,17 +497,17 @@
                             })
                             .catch(error => console.error('Error:', error));
                     }
- //========================= Update danh sách dich vu đã chọn =====================================
-                        // function updateSelectedInvoiceLinesInput() {
-                        //     const selectedInvoiceLines = invoiceLineData;
-                        //     console.log('selectedInvoiceLines', selectedInvoiceLines);
-                        //     const selectedInvoiceLinesInput = document.getElementById('selected-invoiceLines-input');
-                        //     if (!selectedInvoiceLinesInput) {
-                        //         console.error('selected-rooms-input element not found');
-                        //         return;
-                        //     }
-                        //     selectedInvoiceLinesInput.value = JSON.stringify(selectedInvoiceLines);
-                        // }
+                    //========================= Update danh sách dich vu đã chọn =====================================
+                    // function updateSelectedInvoiceLinesInput() {
+                    //     const selectedInvoiceLines = invoiceLineData;
+                    //     console.log('selectedInvoiceLines', selectedInvoiceLines);
+                    //     const selectedInvoiceLinesInput = document.getElementById('selected-invoiceLines-input');
+                    //     if (!selectedInvoiceLinesInput) {
+                    //         console.error('selected-rooms-input element not found');
+                    //         return;
+                    //     }
+                    //     selectedInvoiceLinesInput.value = JSON.stringify(selectedInvoiceLines);
+                    // }
 
 
 
@@ -629,7 +629,7 @@
                 .catch(error => {
                     console.error('Lỗi khi lấy thông tin phòng:', error);
                 }
-            );
+                );
 
 
 
@@ -638,26 +638,67 @@
 
             // Thêm sự kiện click cho nút "Thanh toán"
             btnThanhToan.addEventListener('click', async () => {
-            try {
-                // Lấy giá trị của phần tử <p id="invoiceId">
-                const invoiceId = document.getElementById('invoiceId').textContent;
+                try {
+                    // Hiển thị confirm dialog
+                    const confirmed = await confirmPayment();
+                    if (confirmed) {
+                        // Lấy giá trị của phần tử <p id="invoiceId">
+                        const invoiceId = document.getElementById('invoiceId').textContent;
 
-                // Gửi HTTP request lên server
-                const response = await fetch(`/receptionist/invoiceDetail/${invoiceId}`, {
-                method: 'GET'
-                });
+                        // Gửi HTTP request lên server để cập nhật trạng thái phòng
+                        const roomId = await updateRoomStatus2();
 
-                // Kiểm tra nếu request thành công
-                if (response.ok) {
-                // Chuyển hướng sang trang invoice1
-                window.location.href = `/receptionist/invoiceDetail/${invoiceId}`;
-                } else {
-                console.error('Có lỗi xảy ra khi gửi invoiceID lên server');
+                        // Gửi HTTP request lên server
+                        const response = await fetch(`/receptionist/invoiceDetail/${invoiceId}`, {
+                            method: 'GET'
+                        });
+
+                        // Kiểm tra nếu request thành công
+                        if (response.ok) {
+                            // Chuyển hướng sang trang invoice1
+                            window.location.href = `/receptionist/invoiceDetail/${invoiceId}`;
+                        } else {
+                            console.error('Có lỗi xảy ra khi gửi invoiceID lên server');
+                        }
+                    } else {
+                        console.log('Thanh toán đã bị hủy');
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gửi HTTP request:', error);
                 }
-            } catch (error) {
-                console.error('Lỗi khi gửi HTTP request:', error);
-            }
             });
+
+            async function confirmPayment() {
+                return new Promise((resolve) => {
+                    const confirmed = window.confirm('Bạn có muốn thanh toán không?');
+                    resolve(confirmed);
+                });
+            }
+
+            async function updateRoomStatus2() {
+                try {
+                    // Lấy giá trị của phần tử <p id="roomId">
+                    //const roomId = document.getElementById('idPhong').textContent;
+
+                    // Gửi HTTP request lên server để cập nhật trạng thái phòng
+                    const response = await fetch(`/receptionist/updateStatusRoom2?roomId=${roomId}`, {
+                        method: 'GET'
+                    });
+
+                    if (response.ok) {
+                        // Lấy dữ liệu từ response
+                        const room = await response.json();
+                        console.log('Room updated:', room);
+                        return room.id;
+                    } else {
+                        console.error('Có lỗi xảy ra khi cập nhật trạng thái phòng');
+                        return null;
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gửi HTTP request:', error);
+                    return null;
+                }
+            }
 
 
 

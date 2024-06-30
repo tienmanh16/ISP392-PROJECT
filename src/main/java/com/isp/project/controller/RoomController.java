@@ -275,6 +275,13 @@ public class RoomController {
         return ResponseEntity.ok(room);
     }
 
+    @GetMapping("/updateStatusRoom2")
+    public ResponseEntity<Room> updateRoom2(@RequestParam("roomId") Integer roomId) {
+        roomService.updateRoomStatusByRoomId2(roomId);
+        Room room = roomServiceImpl.testR(roomId);
+        return ResponseEntity.ok(room);
+    }
+
     @GetMapping("/getServiceBySeTypeId")
 
     public ResponseEntity<List<ServiceDetailDTO>> getService1(@RequestParam("serviceTypeId") Integer serviceTypeId) {
