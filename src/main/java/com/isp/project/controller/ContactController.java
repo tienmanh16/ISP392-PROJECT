@@ -55,9 +55,9 @@ public class ContactController {
 
         if (this.guestInformationService.create(guestInformation)) {
             emailService.sendEmailLeaveInfo(guestInformation.getEmail(), guestInformation.getName());
-            return "redirect:/guest/leaveInfo";
+            return "redirect:/leaveInfo";
         } else {
-            return "redirect:/guest/leaveInfo";
+            return "redirect:/leaveInfo";
         }
     }
 
