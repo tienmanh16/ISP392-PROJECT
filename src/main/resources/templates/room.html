@@ -489,7 +489,7 @@
                             .then(response => {
                                 if (response.ok) {
                                     console.log("Invoice lines saved successfully");
-                                    window.location.href = `/room`;
+                                    window.location.href = `/receptionist/room`;
                                     // Redirect or handle success as needed
                                 } else {
                                     console.error('Failed to save selected services');
@@ -526,12 +526,12 @@
                     document.getElementById('idPhong').textContent = data.roomNum;
                     document.getElementById('statusPhong').value = data.status;
                     // Cập nhật các thông tin khác tương tự
-                    // if (data.status === "Empty Room") {
-                    //     document.getElementById('txblTenKH').textContent = "";
-                    //     document.getElementById('txblNgayDen').textContent = "Chưa có";
-                    //     document.getElementById('txblSoNgay').textContent = "Chưa có";
-                    //     document.getElementById('txblSoNguoi').textContent = "0 người";
-                    // }
+                    if (data.status === "Empty Room") {
+                        document.getElementById('txblTenKH').textContent = "";
+                        document.getElementById('txblNgayDen').textContent = "Chưa có";
+                        document.getElementById('txblSoNgay').textContent = "Chưa có";
+                        document.getElementById('txblSoNguoi').textContent = "0 người";
+                    }
 
                     // Kiểm tra trạng thái phòng
                     if (data.status === "Booked Room") {

@@ -119,7 +119,7 @@
                             </button>
                         </form>
 
-                        <button class="btn custom-button" onclick="window.location.href='/add-room'">
+                        <button class="btn custom-button" onclick="window.location.href='/admin/add-room'">
                             Add Room
                         </button>
                     </div>
@@ -152,6 +152,11 @@
                                                 <option value="all">All</option>
                                             </select>
                                         </th>
+                                        <th col-index="8">Cleaning
+                                            <select class="table-filter" onchange="filter_rows()">
+                                                <option value="all">All</option>
+                                            </select>
+                                        </th>
                                         <th>Update</th>
                                         <th>Change</th>
                                     </tr>
@@ -165,6 +170,7 @@
                                         <td th:text="${room.RoomType.priceHour}"></td>
                                         <td th:text="${room.RoomType.priceDay}"></td>
                                         <td th:text="${room.status}"></td>
+                                        <td th:text="${room.cleaning}"></td>
                                         <td><a th:href="@{/listRooms/{id}/update(id=${room.id})}"
                                                 class="ti-menu"></a></td>
                                         <td>

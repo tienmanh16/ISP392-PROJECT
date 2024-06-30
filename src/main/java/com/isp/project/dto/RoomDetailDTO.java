@@ -14,6 +14,7 @@ public class RoomDetailDTO {
     private int priceHour;
     private int priceDay;
     private String status;
+    private String cleaning;
 
     public RoomDetailDTO() {
     }

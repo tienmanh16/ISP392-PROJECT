@@ -171,11 +171,12 @@ public class RoomServiceImpl implements RoomService {
             Integer priceHour = (rawResult[5] instanceof Number) ? ((Number) rawResult[5]).intValue() : null;
             Integer priceDay = (rawResult[6] instanceof Number) ? ((Number) rawResult[6]).intValue() : null;
             String status = (rawResult[7] instanceof String) ? (String) rawResult[7] : null;
+            String cleaning = (rawResult[8] instanceof String) ? (String) rawResult[8] : null;
 
             // Create a new BookingRoomDTO with the extracted data
             RoomDetailDTO newRoom = new RoomDetailDTO(id, roomNum, roomTypeId, roomTypeName, roomTypeDescription,
                     priceHour,
-                    priceDay, status);
+                    priceDay, status, cleaning);
             findRoom.add(newRoom);
         }
         return findRoom;
