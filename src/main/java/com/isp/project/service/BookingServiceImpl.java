@@ -61,4 +61,9 @@ public class BookingServiceImpl implements BookingService {
         return bookingRepository.findBookingByCustomerName(customerName);
     }
 
+    @Override
+    public int totalBooking(int month, int year) {
+        return this.bookingRepository.totalBooking(month, year).size();
+    }
+
 }

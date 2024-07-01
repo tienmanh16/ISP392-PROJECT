@@ -59,7 +59,7 @@ public class ReportController {
 
         double revenueBooking = bookingMappingService.revenueBooking(month, year);
 
-        int totalBooking = bookingMappingService.totalBooking(month, year);
+        int totalBooking = bookingService.totalBooking(month, year);
 
         double revenueService = invoiceService.getTotalInvoiceForMonth(month, year) - revenueBooking;
         model.addAttribute("revenueBooking", revenueBooking);

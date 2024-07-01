@@ -19,4 +19,5 @@ public interface BookingService {
 
     List<Booking> getAllBookingNew();
 
+    int totalBooking(int month, int year);
 }

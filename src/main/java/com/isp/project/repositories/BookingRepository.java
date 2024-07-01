@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 
 import com.isp.project.model.Booking;
+import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Room;
 
 import jakarta.transaction.Transactional;
@@ -49,6 +50,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     //=========================================================================================
 
-    
+    @Query("SELECT b FROM Booking b WHERE MONTH(b.bookingDate) = :month AND YEAR(b.bookingDate) = :year and b.isCancelled = 0")
+    List<Booking> totalBooking(@Param("month") int month, @Param("year") int year);
 
 }
