@@ -166,13 +166,16 @@
                 thúc</label>
               <input type="time" id="checkout-time" th:field="*{checkoutTime}"
                 style="display: inline-block; margin-left: -50px;" required>
+                
             </div>
             <div style="margin-top: 10px;">
               <label for="employee-id" style="display: inline-block; width: 150px;">Mã nhân viên</label>
               <input type="number" th:field="*{employeeId}"
-                style="display: inline-block; margin-left: -40px; width: 147px;" placeholder="Nhập mã nhân viên..."
+                style="display: inline-block; margin-left: -40px; width: 147px;" placeholder="Nhập mã nhân viên..." value=""
                 required>
             </div>
+
+
             <div style="margin-top: -40px; margin-left: 280px;">
               <label for="customer-quantity"
                 style="display: inline-block; margin-left: 5px; width: 150px;">C.Quantity</label>

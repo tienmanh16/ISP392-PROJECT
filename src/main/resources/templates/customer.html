@@ -110,37 +110,62 @@
   <div class="modal js-modal">
     <div class="windowcustomer js-modal-window">
       <div class="title">ADD CUSTOMER</div>
-      <form th:action="@{/receptionist/addcustomer}" th:object="${addCustomer}" method="post"
-        onsubmit="return checkFormSubmission()">
+          <form th:action="@{/receptionist/addcustomer}" th:object="${addCustomer}" method="post" onsubmit="return checkFormSubmissionSync(event)">
+            <!-- Các trường input của form -->
         <div class="maincustomer">
           <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Customer Information</h3>
-          <span class="material-icons" style="vertical-align: middle;">account_box</span>
-          <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 400px;"
-            name="customerName" placeholder="Nhập tên khách hàng..." required>
-          <br><span class="customerNameText" style="display: block;text-align: center; margin-top: 5px; margin-left: 30px;"></span>
 
-          <span class="material-icons" style="vertical-align: middle;">badge</span>
-          <input type="text" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 400px;"
-            placeholder="Nhập số CMND..." required>
-          <br><br>
-          <span class="material-icons" style="vertical-align: middle;">call</span>
-          <input type="text" th:field="*{customerPhone}" style="vertical-align: middle; width: 400px;"
-            placeholder="Nhập số điện thoại..." required>
-          <br><br>
-          <span class="material-icons" style="vertical-align: middle;">mail</span>
-          <input type="email" th:field="*{customerEmail}" style="vertical-align: middle; width: 400px;"
-            placeholder="Nhập địa chỉ email..." required>
-          <br><br>
-          <span class="material-icons" style="vertical-align: middle;">location_on</span>
-          <input type="text" th:field="*{customerAddress}" style="vertical-align: middle; width: 400px;"
-            placeholder="Nhập địa chỉ..." required>
-          <br><br>
+          <div style="margin-bottom: 20px; position: relative;">
+            <span class="material-icons" style="vertical-align: middle;">account_box</span>
+            <input type="text" th:field="*{customerName}" style=" width: 400px; vertical-align: middle;"
+              name="customerName" id="customerName" placeholder="Nhập tên khách hàng..." required>
+            <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+              <span class="customerNameText" style="font-size: 13px;"></span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px; position: relative;">
+            <span class="material-icons" style="vertical-align: middle;">badge</span>
+            <input type="number" th:field="*{customerIdentificationID}" style=" width: 400px; vertical-align: middle;"
+              name="customerIdentificationID" id="customerIdentificationID" placeholder="Nhập số CMND..." required>
+            <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+              <span class="customerIdentificationIDText" style="font-size: 13px"></span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px; position: relative;">
+            <span class="material-icons" style="vertical-align: middle;">call</span>
+            <input type="number" th:field="*{customerPhone}" style=" width: 400px; vertical-align: middle;"
+              name="customerPhone" id="customerPhone" placeholder="Nhập số điện thoại..." required>
+            <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+              <span class="customerPhoneText" style="font-size: 13px"></span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px; position: relative;">
+            <span class="material-icons" style="vertical-align: middle;">mail</span>
+            <input type="email" th:field="*{customerEmail}" style=" width: 400px; vertical-align: middle;"
+              name="customerEmail" id="customerEmail" placeholder="Nhập địa chỉ email..." required>
+            <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+              <span class="customerEmailText" style="font-size: 13px;margin-left: -15px;"></span>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px; position: relative;">
+            <span class="material-icons" style="vertical-align: middle;">location_on</span>
+            <input type="text" th:field="*{customerAddress}" style=" width: 400px; vertical-align: middle;"
+              name="customerAddress" id="customerAddress" placeholder="Nhập địa chỉ..." required>
+            <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+              <span class="customerAddressText" style="font-size: 13px;margin-left: 10px;"></span>
+            </div>
+          </div>
+
           <span class="material-icons" style="vertical-align: middle;">transgender</span>
-          <label for="male" style="vertical-align: middle; margin-right: 10px;">Male</label>
+          <label for="Male" style="vertical-align: middle; margin-right: 10px;">Male</label>
           <input type="radio" th:field="*{customerGender}" value="male"
             style="vertical-align: middle; margin-right: 20px;" required>
           <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
-          <input type="radio" th:field="*{customerGender}" value="female" style="vertical-align: middle;" required>
+          <input type="radio" th:field="*{customerGender}" value="Female" style="vertical-align: middle;" required>
           <!-- </div> -->
 
         </div>
@@ -192,26 +217,136 @@
 
   <script>
     const customerNameText = document.querySelector('.customerNameText');
-
-
-    function checkRoomTypeName() {
-      const customerNamePattern = /^[\p{L}\p{N} ]+$/u;
-      const customerName = document.getElementById('customerName').value;
-      if (customerName.match(customerNamePattern)) {
-        customerNameText.innerHTML = '';
-        return true;
-      } else {
-        customerNameText.innerHTML = 'Customer Name must not contain special characters.';
-        return false;
-      }
+    const customerIdentificationIDText = document.querySelector('.customerIdentificationIDText');
+    const customerPhoneText = document.querySelector('.customerPhoneText');
+    const customerEmailText = document.querySelector('.customerEmailText');
+    const customerAddressText = document.querySelector('.customerAddressText');
+  
+    function checkCustomerName() {
+      return new Promise((resolve, reject) => {
+        const customerNamePattern = /^[\p{L}\p{N} ]+$/u;
+        const customerName = document.getElementById('customerName').value;
+        if (customerName.match(customerNamePattern)) {
+          customerNameText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerNameText.innerHTML = 'Customer Name must not contain special characters.';
+          resolve(false);
+        }
+      });
     }
-
-    function checkFormSubmission() {
-      return checkRoomTypeName();
+  
+    function checkCustomerIdentificationIDText() {
+      return new Promise((resolve, reject) => {
+        const customerIdentificationIDPattern = /^\d+$/;
+        const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
+  
+        if (customerIdentificationID.match(customerIdentificationIDPattern) && Number(customerIdentificationID) > 0) {
+          customerIdentificationIDText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerIdentificationIDText.innerHTML = 'Customer Identification ID must be a positive number.';
+          resolve(false);
+        }
+      });
     }
+  
+    function checkPhoneNumber() {
+      return new Promise((resolve, reject) => {
+        const customerPhonePattern = /^[0-9]+$/;
+        const customerPhone = document.getElementById('customerPhone').value.trim();
+        if (customerPhone.match(customerPhonePattern) && BigInt(customerPhone) > 0n) {
+          customerPhoneText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerPhoneText.innerHTML = 'Customer phone must be a positive number.';
+          resolve(false);
+        }
+      });
+    }
+  
+    function checkCustomerAddress() {
+      return new Promise((resolve, reject) => {
+        const customerAddressPattern = /^[\p{L}\p{N} ]+$/u;
+        const customerAddress = document.getElementById('customerAddress').value;
+        if (customerAddress.match(customerAddressPattern)) {
+          customerAddressText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerAddressText.innerHTML = 'Customer Address must not contain special characters.';
+          resolve(false);
+        }
+      });
+    }
+  
+    function checkDuplicateEmail() {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          url: '/receptionist/customer_check-email',
+          type: 'GET',
+          data: { customerEmail: document.getElementById('customerEmail').value },
+          async: true,
+          success: function (response) {
+            if (response && response != null) {
+              customerEmailText.innerHTML = 'Email already exists.';
+              resolve(false);
+            } else {
+              customerEmailText.innerHTML = '';
+              resolve(true);
+            }
+          },
+          error: function () {
+            customerEmailText.innerHTML = 'Error checking email.';
+            resolve(false);
+          }
+        });
+      });
+    }
+  
+    function checkEmail() {
+      return new Promise((resolve, reject) => {
+        const customerEmailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        const forbiddenCharsPattern = /[!?#$%^*():;"',+=/\\|]/;
+        const emailValue = document.getElementById('customerEmail').value.trim();
+        if (!emailValue.match(customerEmailPattern)) {
+          customerEmailText.innerHTML = 'Must be a valid email address.';
+          resolve(false);
+        } else if (emailValue.match(forbiddenCharsPattern)) {
+          customerEmailText.innerHTML = 'Email must not contain special characters such as !?#$%^*():;"\',+=/\\|.';
+          resolve(false);
+        } else {
+          customerEmailText.innerHTML = '';
+          resolve(true);
+        }
+      });
+    }
+  
+    async function checkFormSubmission() {
+      const results = await Promise.all([
+        checkDuplicateEmail(),
+        checkEmail(),
+        checkCustomerName(),
+        checkCustomerIdentificationIDText(),
+        checkPhoneNumber(),
+        checkCustomerAddress()
+      ]);
+      return results.every(result => result === true);
+    }
+  
+    document.querySelector('form').addEventListener('submit', handleSubmit);
+    
+    async function checkFormSubmissionSync(event) {
+  event.preventDefault();
+  const isFormValid = await checkFormSubmission();
+  if (isFormValid) {
+    event.target.submit();
+  } else {
+    console.log('Form validation failed.');
+  }
+  return false; // Ngăn form gửi nếu không hợp lệ
+}
   </script>
-
-
+  
 
 
   <!-- thư viện để add header và footer  -->
@@ -238,8 +373,10 @@
     }
 
     .customerNameText,
-    .pricePerHourText,
-    .pricePerDayText {
+    .customerIdentificationIDText,
+    .customerPhoneText,
+    .customerEmailText,
+    .customerAddressText {
       color: red;
     }
   </style>

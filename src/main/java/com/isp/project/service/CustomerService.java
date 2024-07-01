@@ -11,4 +11,6 @@ public interface CustomerService {
     boolean deleteCustomers(Integer id);
 
     List<Customer> findCustomersByNameContaining(String keyword);
+
+    boolean existsByCustomerEmail(String customerEmail);
 }
