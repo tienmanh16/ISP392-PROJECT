@@ -57,12 +57,10 @@ public class test {
     // }
 
     @GetMapping("/viet")
-    public void getMethodName() {
-        Room room = new Room();
-        room.setId(2);
-        Booking booking = new Booking();
-        booking.setBookingID(16);
-        bookingRepository.deleteByRoomAndBooking(booking, room);
+    public Booking getMethodName() {
+ 
+        return bookingRepository.findByBookingID(6);
+        
     }
     // @GetMapping("/tien")
     // public Employee revenueBooking() {
