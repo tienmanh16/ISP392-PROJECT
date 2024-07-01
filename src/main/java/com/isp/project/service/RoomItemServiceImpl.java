@@ -43,7 +43,7 @@ public class RoomItemServiceImpl implements RoomItemService {
 
     // @Override
     // public boolean existsByItemName(String ItemName) {
-    //    return roomItemRepository.existsByItemName(ItemName);
+    // return roomItemRepository.existsByItemName(ItemName);
     // }
 
 }

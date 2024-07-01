@@ -83,7 +83,6 @@
                   <tr th:each="booking : ${listBooking}">
                     <td th:text="${booking.bookingID}"></td>
                     <td th:text="${booking.customerID.customerName}"></td>
-                    <!-- <td th:text="${listBooking.customer.customerName}"></td> -->
                     <td>
                       <span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span>
                     </td>
@@ -140,11 +139,6 @@
                 <span class="customerIdentificationIDText" style="font-size: 13px; word-wrap: break-word;"></span>
               </div>
             </div>
-
-            <!-- <span class="material-icons" style="vertical-align: middle;">badge</span>
-            <input type="text" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 200px;"
-              placeholder="Nhập số CMND..." required>
-            <br><br> -->
 
             <div style="margin-bottom: 30px; position: relative;">
               <span class="material-icons" style="vertical-align: middle;">call</span>
@@ -214,7 +208,6 @@
                 value="" required min="1">
             </div>
 
-
             <div style="margin-top: -40px; margin-left: 280px;">
               <label for="customer-quantity"
                 style="display: inline-block; margin-left: 5px; width: 150px;">C.Quantity</label>
@@ -273,28 +266,28 @@
     </div>
   </div>
 
-<!-- =======================check-checkInDate-CheckOutDate============================================================== -->
+  <!-- =======================check-checkInDate-CheckOutDate============================================================== -->
   <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Lấy ngày hiện tại theo múi giờ Việt Nam
-            const now = new Date();
-            const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
-            const year = vietnamTime.getFullYear();
-            const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
-            const day = String(vietnamTime.getDate()).padStart(2, '0');
-            const today = `${year}-${month}-${day}`;
+    document.addEventListener("DOMContentLoaded", function () {
+      // Lấy ngày hiện tại theo múi giờ Việt Nam
+      const now = new Date();
+      const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+      const year = vietnamTime.getFullYear();
+      const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+      const day = String(vietnamTime.getDate()).padStart(2, '0');
+      const today = `${year}-${month}-${day}`;
 
-            // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
-            const checkinDateInput = document.getElementById("checkin-date");
-            checkinDateInput.setAttribute("min", today);
+      // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
+      const checkinDateInput = document.getElementById("checkin-date");
+      checkinDateInput.setAttribute("min", today);
 
-            checkinDateInput.addEventListener("change", function () {
-                // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
-                const checkoutDateInput = document.getElementById("checkout-date");
-                checkoutDateInput.setAttribute("min", checkinDateInput.value);
-            });
-        });
-    </script>
+      checkinDateInput.addEventListener("change", function () {
+        // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
+        const checkoutDateInput = document.getElementById("checkout-date");
+        checkoutDateInput.setAttribute("min", checkinDateInput.value);
+      });
+    });
+  </script>
 
   <!-- ====================================check-validation========================================================== -->
   <script>
@@ -466,7 +459,6 @@
     });
   </script>
 
-
   <!-- ========== lắng nghe sự thay đổi checkIn - checkOut để hiển thị ra phòng trống============ -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -515,7 +507,6 @@
       }
     }
   </script>
-
 
   <!-- ================== Bắt Click thêm phòng đã chọn-START=================================================================== -->
   <script>
@@ -630,7 +621,6 @@
     //=======================================================================================================================
   </script>
   <!-- ================== Bắt Click thêm phòng đã chọn-END =================================================================== -->
-
 
   <!-- thư viện để add header và footer  -->
 

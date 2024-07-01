@@ -118,7 +118,8 @@ public class BookingController {
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute("bookingInfo") BookingInfoDTO bookingInfo) {
 
-        Optional<Customer> existingCustomer = customerRepository.findByCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
+        Optional<Customer> existingCustomer = customerRepository
+                .findByCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
 
         Customer customer;
         if (existingCustomer.isPresent()) {
@@ -154,14 +155,14 @@ public class BookingController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-         
+
         double total_room = 0;
         // Parse selectedRoomsJson to List<RoomDetailDTO>
         List<RoomDetailDTO> selectedRooms = convertJsonToRoomDetailDTOList(bookingInfo.getSelectedRoomsJson());
         for (RoomDetailDTO roomDetail : selectedRooms) {
             Room room = roomRepository.findById(roomDetail.getId()).orElse(null);
             if (room != null) {
-                total_room += room.getRoomType().getPriceDay();              
+                total_room += room.getRoomType().getPriceDay();
                 BookingMapping bookingMapping = new BookingMapping();
                 bookingMapping.setBookingID(booking);
                 bookingMapping.setRoomID(room);
@@ -174,14 +175,14 @@ public class BookingController {
             }
         }
 
-        //create Invoice
+        // create Invoice
         Invoice newInvoice = new Invoice();
         newInvoice.setBooking(booking);
         newInvoice.setCustomerName(customer.getCustomerName());
         newInvoice.setTotalAmount(total_room);
         newInvoice.setInvoiceDate(bookingDate);
         invoiceRepository.save(newInvoice);
-        
+
         // return "redirect:/booking"; // Redirect to booking result page
         return "redirect:/receptionist/booking";
     }

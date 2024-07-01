@@ -104,14 +104,13 @@
   </div>
   <div th:replace="~{fragments/footer :: footer}"></div>
 
-
-
   <!-- modal chứa cả các giao diện phủ lên -->
   <div class="modal js-modal">
     <div class="windowcustomer js-modal-window">
       <div class="title">ADD CUSTOMER</div>
-          <form th:action="@{/receptionist/addcustomer}" th:object="${addCustomer}" method="post" onsubmit="return checkFormSubmissionSync(event)">
-            <!-- Các trường input của form -->
+      <form th:action="@{/receptionist/addcustomer}" th:object="${addCustomer}" method="post"
+        onsubmit="return checkFormSubmissionSync(event)">
+        <!-- Các trường input của form -->
         <div class="maincustomer">
           <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Customer Information</h3>
 
@@ -166,9 +165,8 @@
             style="vertical-align: middle; margin-right: 20px;" required>
           <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
           <input type="radio" th:field="*{customerGender}" value="Female" style="vertical-align: middle;" required>
-          <!-- </div> -->
-
         </div>
+
         <div class="footer">
           <button type="submit" class="button green-button">ADD</button>
           <button type="button" class="button gray-button js-modal-close">EXIT</button>
@@ -176,8 +174,6 @@
       </form>
     </div>
   </div>
-
-
 
   <!-- hiệu ứng js trượt vào  -->
   <script>
@@ -221,7 +217,7 @@
     const customerPhoneText = document.querySelector('.customerPhoneText');
     const customerEmailText = document.querySelector('.customerEmailText');
     const customerAddressText = document.querySelector('.customerAddressText');
-  
+
     function checkCustomerName() {
       return new Promise((resolve, reject) => {
         const customerNamePattern = /^[\p{L}\p{N} ]+$/u;
@@ -235,12 +231,12 @@
         }
       });
     }
-  
+
     function checkCustomerIdentificationIDText() {
       return new Promise((resolve, reject) => {
         const customerIdentificationIDPattern = /^\d+$/;
         const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
-  
+
         if (customerIdentificationID.match(customerIdentificationIDPattern) && Number(customerIdentificationID) > 0) {
           customerIdentificationIDText.innerHTML = '';
           resolve(true);
@@ -250,7 +246,7 @@
         }
       });
     }
-  
+
     function checkPhoneNumber() {
       return new Promise((resolve, reject) => {
         const customerPhonePattern = /^[0-9]+$/;
@@ -264,7 +260,7 @@
         }
       });
     }
-  
+
     function checkCustomerAddress() {
       return new Promise((resolve, reject) => {
         const customerAddressPattern = /^[\p{L}\p{N} ]+$/u;
@@ -278,7 +274,7 @@
         }
       });
     }
-  
+
     function checkDuplicateEmail() {
       return new Promise((resolve, reject) => {
         $.ajax({
@@ -302,7 +298,7 @@
         });
       });
     }
-  
+
     function checkEmail() {
       return new Promise((resolve, reject) => {
         const customerEmailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
@@ -320,7 +316,7 @@
         }
       });
     }
-  
+
     async function checkFormSubmission() {
       const results = await Promise.all([
         checkDuplicateEmail(),
@@ -332,29 +328,26 @@
       ]);
       return results.every(result => result === true);
     }
-  
-    document.querySelector('form').addEventListener('submit', handleSubmit);
-    
-    async function checkFormSubmissionSync(event) {
-  event.preventDefault();
-  const isFormValid = await checkFormSubmission();
-  if (isFormValid) {
-    event.target.submit();
-  } else {
-    console.log('Form validation failed.');
-  }
-  return false; // Ngăn form gửi nếu không hợp lệ
-}
-  </script>
-  
 
+    document.querySelector('form').addEventListener('submit', handleSubmit);
+
+    async function checkFormSubmissionSync(event) {
+      event.preventDefault();
+      const isFormValid = await checkFormSubmission();
+      if (isFormValid) {
+        event.target.submit();
+      } else {
+        console.log('Form validation failed.');
+      }
+      return false; // Ngăn form gửi nếu không hợp lệ
+    }
+  </script>
 
   <!-- thư viện để add header và footer  -->
 
   <div class="scroll-to-top scroll-to-target" data-target="html">
     <span class="fa fa-angle-up"></span>
   </div>
-
 
   <style>
     .btn.js-buy-ticket {

@@ -11,15 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 import com.isp.project.model.RoomItem;
 
 @Repository
-public interface RoomItemRepository extends JpaRepository<RoomItem,Integer> {
+public interface RoomItemRepository extends JpaRepository<RoomItem, Integer> {
 
-     @Query("SELECT r FROM RoomItem r WHERE r.ItemName LIKE CONCAT('%', :keyword, '%')")
+    @Query("SELECT r FROM RoomItem r WHERE r.ItemName LIKE CONCAT('%', :keyword, '%')")
     List<RoomItem> findRoomItemByNameContaining(@Param("keyword") String keyword);
 
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM RoomItemMapping WHERE ItemID = :ItemID", nativeQuery = true)
-    void deleteByItemId(@Param("ItemID")int ItemID);
+    void deleteByItemId(@Param("ItemID") int ItemID);
 
     // boolean existsByItemName(String itemName);
 }

@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import com.isp.project.model.Customer;
 import com.isp.project.model.RoomItem;
 import com.isp.project.repositories.RoomItemRepository;
 import com.isp.project.service.RoomItemService;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @Controller
 @RequestMapping("/admin")
 public class RoomItemController {
@@ -30,8 +28,8 @@ public class RoomItemController {
 
     @Autowired
     RoomItemService roomItemService;
-    
-     @GetMapping("/roomitems")
+
+    @GetMapping("/roomitems")
     public String listRoomItem(
             @RequestParam(value = "table_search_roomitems", required = false) String queryItemName, Model model) {
         List<RoomItem> listRoomItem;
@@ -46,8 +44,8 @@ public class RoomItemController {
         model.addAttribute("addRoomItem", new RoomItem());
         return "roomitems";
     }
-    
-     @GetMapping("/updateRoomitem")
+
+    @GetMapping("/updateRoomitem")
     public String showUpdateRoomItem(@RequestParam("idRoomItem") int roomitemId, Model model) {
         RoomItem roomItem = roomItemRepository.findById(roomitemId)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid customer ID"));
@@ -61,13 +59,12 @@ public class RoomItemController {
         return "redirect:/admin/roomitems"; // Assuming customerList is a page showing list of customers
     }
 
-
     @PostMapping("/addroomitem")
     public String addRoomItem(@ModelAttribute("addRoomItem") RoomItem roomitem) {
         roomItemRepository.save(roomitem);
         return "redirect:/admin/roomitems";
     }
-    
+
     @PostMapping("/deleteRoomItem/{roomItemId}")
     public ResponseEntity<String> deleteBooking(@PathVariable("roomItemId") Integer roomItemId) {
         try {
@@ -83,8 +80,9 @@ public class RoomItemController {
     }
 
     // @GetMapping("/roomitems_check-name")
-    // public ResponseEntity<Boolean> checkEmailExists(@RequestParam String ItemName) {
-    //     boolean exists = roomItemService.existsByItemName(ItemName);
-    //     return ResponseEntity.ok(exists);
+    // public ResponseEntity<Boolean> checkEmailExists(@RequestParam String
+    // ItemName) {
+    // boolean exists = roomItemService.existsByItemName(ItemName);
+    // return ResponseEntity.ok(exists);
     // }
 }

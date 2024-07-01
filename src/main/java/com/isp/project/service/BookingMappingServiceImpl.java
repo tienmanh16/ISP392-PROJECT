@@ -33,24 +33,24 @@ public class BookingMappingServiceImpl implements BookingMappingService {
     public int totalBooking(int month, int year) {
         return this.bookingMappingRepository.revenueBooking(month, year).size();
     }
-    
+
     @Override
     public Map<String, Double> getTotalBookingByYear(int year) {
         Map<String, Double> data = new LinkedHashMap<>();
-    
+
         for (int month = 1; month <= 12; month++) {
-            double totalBookingByMonth = 0; 
-    
+            double totalBookingByMonth = 0;
+
             List<BookingMapping> ls = this.bookingMappingRepository.revenueBooking(month, year);
-            
+
             for (BookingMapping booking : ls) {
                 totalBookingByMonth += booking.getBookingTotalAmount();
             }
-            
+
             data.put("Tháng " + month, totalBookingByMonth);
         }
-        
+
         return data;
     }
-    
+
 }

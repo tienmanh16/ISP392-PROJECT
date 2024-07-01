@@ -67,6 +67,5 @@ public class CustomerController {
         boolean exists = customerService.existsByCustomerEmail(customerEmail);
         return ResponseEntity.ok(exists);
     }
-    
 
 }
