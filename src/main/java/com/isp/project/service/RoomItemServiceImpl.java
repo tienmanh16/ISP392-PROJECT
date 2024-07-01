@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.isp.project.model.Customer;
 import com.isp.project.model.RoomItem;
 import com.isp.project.repositories.RoomItemRepository;
 
@@ -13,7 +12,7 @@ import com.isp.project.repositories.RoomItemRepository;
 public class RoomItemServiceImpl implements RoomItemService {
 
     @Autowired
-    RoomItemRepository roomItemRepository;
+    private RoomItemRepository roomItemRepository;
 
     @Override
     public List<RoomItem> getAllRoomItem() {
