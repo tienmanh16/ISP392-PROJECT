@@ -14,4 +14,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 
     @Query("SELECT c FROM Customer c WHERE c.customerName LIKE CONCAT('%', :keyword, '%')")
     List<Customer> findCustomersByNameContaining(@Param("keyword") String keyword);
+
+    boolean existsByCustomerEmail(String customerEmail);
+
 }

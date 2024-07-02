@@ -81,4 +81,10 @@ public class RoomItemController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
         }
     }
+
+    // @GetMapping("/roomitems_check-name")
+    // public ResponseEntity<Boolean> checkEmailExists(@RequestParam String ItemName) {
+    //     boolean exists = roomItemService.existsByItemName(ItemName);
+    //     return ResponseEntity.ok(exists);
+    // }
 }

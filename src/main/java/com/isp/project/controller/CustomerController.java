@@ -3,6 +3,7 @@ package com.isp.project.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,5 +61,12 @@ public class CustomerController {
         customerRepository.save(addCustomer);
         return "redirect:/receptionist/customer";
     }
+
+    @GetMapping("/customer_check-email")
+    public ResponseEntity<Boolean> checkEmailExists(@RequestParam String customerEmail) {
+        boolean exists = customerService.existsByCustomerEmail(customerEmail);
+        return ResponseEntity.ok(exists);
+    }
+    
 
 }

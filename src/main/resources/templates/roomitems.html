@@ -110,14 +110,21 @@
   <div class="modal js-modal">
     <div class="windowroomitem js-modal-window">
       <div class="title">ADD ROOM ITEMS</div>
-      <form th:action="@{/admin/addroomitem}" th:object="${addRoomItem}" method="post">
-        <div class="maincustomer">
-          <h3 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Room Item Information</h3>
-          <span class="material-icons" style="vertical-align: middle;">other_houses</span>
-          <input type="text" th:field="*{ItemName}" style="vertical-align: middle; width: 400px;"
-            placeholder="Enter room Item..." required>
-          <br><br>
+      <form th:action="@{/admin/addroomitem}" th:object="${addRoomItem}" method="post" onsubmit="return checkFormSubmissionSync(event)">      
+        <div class="main-customer" style="position: relative; display: flex; flex-direction: column; align-items: center;">
+          <h3 style="margin-bottom: 10px; color: #0077cc;">Room Item Information</h3>
+          <div style="display: flex; align-items: center;">
+            <span class="material-icons" style="vertical-align: middle;">other_houses</span>
+            <input type="text" th:field="*{ItemName}" name="ItemName" id="ItemName" placeholder="Enter room item..." required 
+                   style="vertical-align: middle; width: 400px; margin-left: 10px;">
+          </div>
+          <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); text-align: center;">
+            <span class="itemNameText" style="font-size: 13px;"></span>
+          </div>
         </div>
+<br>
+<br>
+<br>
         <div class="footer">
           <button type="submit" class="button green-button">ADD</button>
           <button type="button" class="button gray-button js-modal-close">EXIT</button>
@@ -164,7 +171,69 @@
     });
   </script>
 
+  <script>
+    const itemNameText = document.querySelector('.itemNameText');
 
+
+    function checkItemName() {
+      return new Promise((resolve, reject) => {
+        const itemNameTextPattern = /^[\p{L}\p{N} ]+$/u;
+        const itemName = document.getElementById('ItemName').value;
+        if (itemName.match(itemNameTextPattern)) {
+          itemNameText.innerHTML = '';
+          resolve(true);
+        } else {
+          itemNameText.innerHTML = 'Item Name must not contain special characters.';
+          resolve(false);
+        }
+      });
+    }
+
+    function checkDuplicateItemName() {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          url: '/admin/roomitems_check-name',
+          type: 'GET',
+          data: { ItemName: document.getElementById('ItemName').value },
+          async: true,
+          success: function (response) {
+            if (response && response != null) {
+              itemNameText.innerHTML = 'Item Name already exists.';
+              resolve(false);
+            } else {
+              itemNameText.innerHTML = '';
+              resolve(true);
+            }
+          },
+          error: function () {
+            itemNameText.innerHTML = 'Error checking email.';
+            resolve(false);
+          }
+        });
+      });
+    }
+
+    async function checkFormSubmission() {
+      const results = await Promise.all([
+      // checkDuplicateItemName(),
+        checkItemName()
+      ]);
+      return results.every(result => result === true);
+    }
+
+    document.querySelector('form').addEventListener('submit', handleSubmit);
+
+    async function checkFormSubmissionSync(event) {
+      event.preventDefault();
+      const isFormValid = await checkFormSubmission();
+      if (isFormValid) {
+        event.target.submit();
+      } else {
+        console.log('Form validation failed.');
+      }
+      return false; // Ngăn form gửi nếu không hợp lệ
+    }
+  </script>
 
   <script>
     function confirmDelete1(roomItemId) {
@@ -216,7 +285,14 @@
       cursor: pointer;
       border-radius: 4px;
     }
+
+    .itemNameText,
+    .customerEmailText {
+      color: red;
+    }
   </style>
+
+
   <div class="scroll-to-top scroll-to-target" data-target="html">
     <span class="fa fa-angle-up"></span>
   </div>

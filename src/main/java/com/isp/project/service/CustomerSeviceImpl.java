@@ -35,4 +35,9 @@ public class CustomerSeviceImpl implements CustomerService {
         return customerRepository.findCustomersByNameContaining(keyword);
     }
 
+    @Override
+    public boolean existsByCustomerEmail(String customerEmail) {
+       return customerRepository.existsByCustomerEmail(customerEmail);
+    }
+
 }
