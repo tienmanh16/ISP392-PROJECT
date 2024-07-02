@@ -45,6 +45,9 @@ public class Room {
 
     @Column(name = "RoomActive", nullable = false)
     private int roomActive;
+
+    @Column(name = "Cleaning", nullable = false)
+    private String cleaning;
     
     @OneToMany(mappedBy = "roomID")
     @JsonManagedReference

@@ -21,7 +21,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     @Query("Select c FROM Invoice c WHERE c.InvoiceDate = ?1")
     Page<Invoice> searchInvoice(Date keyDate, Pageable pageable);
 
-    @Query("SELECT i FROM Invoice i JOIN i.booking b WHERE MONTH(b.bookingDate) = :month AND YEAR(b.bookingDate) = :year")
+    @Query("SELECT i FROM Invoice i JOIN i.booking b WHERE MONTH(b.bookingDate) = :month AND YEAR(b.bookingDate) = :year and b.isCancelled = 0")
     List<Invoice> getInvoicesForMonth(@Param("month") int month, @Param("year") int year);
 
     // @Query("SELECT i FROM Invoice i JOIN i.booking b WHERE MONTH(i.InvoiceDate) =
@@ -29,7 +29,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     // List<Invoice> getReportRevenue(@Param("month") int month, @Param("year") int
     // year);
 
-    @Query("SELECT i FROM Invoice i JOIN i.booking b WHERE i.InvoiceDate BETWEEN :startDate AND :endDate")
+    @Query("SELECT i FROM Invoice i JOIN i.booking b WHERE i.InvoiceDate BETWEEN :startDate AND :endDate and b.isCancelled = 0")
     List<Invoice> getReportRevenue(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
 }
