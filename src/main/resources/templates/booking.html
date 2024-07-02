@@ -34,7 +34,7 @@
 <body>
   <div class="boxcar-wrapper">
     <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-      <div th:replace="~{fragments/header :: header}"></div>
+      <div th:replace="~{fragments/header_recep :: header}"></div>
     </header>
 
     <!-- thêm class layout-radius để fix header  -->
@@ -83,7 +83,6 @@
                   <tr th:each="booking : ${listBooking}">
                     <td th:text="${booking.bookingID}"></td>
                     <td th:text="${booking.customerID.customerName}"></td>
-                    <!-- <td th:text="${listBooking.customer.customerName}"></td> -->
                     <td>
                       <span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span>
                     </td>
@@ -114,50 +113,84 @@
   <div class="modal js-modal">
     <div class="window js-modal-window">
       <div class="title">ĐẶT PHÒNG</div>
-      <form th:action="@{/receptionist/saveBooking}" th:object="${bookingInfo}" method="post">
+      <form th:action="@{/receptionist/saveBooking}" th:object="${bookingInfo}" method="post"
+        onsubmit="return checkFormSubmissionSync(event)">
         <input type="hidden" id="selected-rooms-input" th:field="*{selectedRoomsJson}">
         <div class="main">
           <div class="lefttt" style="background-color: #F2F1F1;">
             <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin khách hàng</h6>
-            <span class="material-icons" style="vertical-align: middle;">account_box</span>
-            <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 200px;" name=àdđ
-              placeholder="Nhập tên khách hàng..." required>
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">badge</span>
-            <input type="text" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 200px;"
-              placeholder="Nhập số CMND..." required>
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">call</span>
-            <input type="text" th:field="*{customerPhone}" style="vertical-align: middle; width: 200px;"
-              placeholder="Nhập số điện thoại..." required>
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">mail</span>
-            <input type="email" th:field="*{customerEmail}" style="vertical-align: middle; width: 200px;"
-              placeholder="Nhập địa chỉ email..." required>
-            <br><br>
-            <span class="material-icons" style="vertical-align: middle;">location_on</span>
-            <input type="text" th:field="*{customerAddress}" style="vertical-align: middle; width: 200px;"
-              placeholder="Nhập địa chỉ..." required>
-            <br><br>
+
+            <div style="margin-bottom: 30px; position: relative;">
+              <span class="material-icons" style="vertical-align: middle;">account_box</span>
+              <input type="text" th:field="*{customerName}" style="vertical-align: middle; width: 220px;"
+                name="customerName" id="customerName" placeholder="Nhập tên khách hàng..." required>
+              <div
+                style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+                <span class="customerNameText" style="font-size: 13px; word-wrap: break-word;"></span>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 30px; position: relative;">
+              <span class="material-icons" style="vertical-align: middle;">badge</span>
+              <input type="number" th:field="*{customerIdentificationID}" style="vertical-align: middle; width: 220px;"
+                name="customerIdentificationID" id="customerIdentificationID" placeholder="Nhập số CMND.." required>
+              <div
+                style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+                <span class="customerIdentificationIDText" style="font-size: 13px; word-wrap: break-word;"></span>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 30px; position: relative;">
+              <span class="material-icons" style="vertical-align: middle;">call</span>
+              <input type="number" th:field="*{customerPhone}" style="vertical-align: middle; width: 220px;"
+                name="customerPhone" id="customerPhone" placeholder="Nhập số điện thoại..." required>
+              <div
+                style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+                <span class="customerPhoneText" style="font-size: 13px; word-wrap: break-word;"></span>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 30px; position: relative;">
+              <span class="material-icons" style="vertical-align: middle;">mail</span>
+              <input type="email" th:field="*{customerEmail}" style=" width: 220px; vertical-align: middle;"
+                name="customerEmail" id="customerEmail" placeholder="Nhập địa chỉ email..." required>
+              <div
+                style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+                <span class="customerEmailText" style="font-size: 13px; word-wrap: break-word;"></span>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 30px; position: relative;">
+              <span class="material-icons" style="vertical-align: middle;">location_on</span>
+              <input type="text" th:field="*{customerAddress}" style=" width: 220px; vertical-align: middle;"
+                name="customerAddress" id="customerAddress" placeholder="Nhập địa chỉ..." required>
+              <div
+                style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
+                <span class="customerAddressText" style="font-size: 13px; word-wrap: break-word;"></span>
+              </div>
+            </div>
+
             <span class="material-icons" style="vertical-align: middle;">transgender</span>
             <label for="male" style="vertical-align: middle; margin-right: 10px;">Male</label>
-            <input type="radio" th:field="*{gender}" value="male" style="vertical-align: middle; margin-right: 20px;"
+            <input type="radio" th:field="*{gender}" value="Male" style="vertical-align: middle; margin-right: 20px;"
               required>
             <label for="female" style="vertical-align: middle; margin-right: 10px;">Female</label>
-            <input type="radio" th:field="*{gender}" value="female" style="vertical-align: middle;" required>
+            <input type="radio" th:field="*{gender}" value="Female" style="vertical-align: middle;" required>
           </div>
 
           <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin phòng</h6>
           <div class="container" style="margin-left: 320px;">
+
             <div style="margin-bottom: 10px;">
               <label for="checkin-date" style="display: inline-block; width: 150px;">Ngày bắt đầu</label>
               <input type="date" id="checkin-date" th:field="*{checkinDate}"
-                style="display: inline-block;margin-left: -40px;" required>
+                style="display: inline-block; margin-left: -40px;" required>
               <label for="checkin-time" style="display: inline-block; width: 150px; margin-left: 20px;">Giờ bắt
                 đầu</label>
               <input type="time" id="checkin-time" th:field="*{checkinTime}"
                 style="display: inline-block; margin-left: -50px;" required>
             </div>
+
             <div>
               <label for="checkout-date" style="display: inline-block; width: 150px;">Ngày kết thúc</label>
               <input type="date" id="checkout-date" th:field="*{checkoutDate}"
@@ -166,22 +199,21 @@
                 thúc</label>
               <input type="time" id="checkout-time" th:field="*{checkoutTime}"
                 style="display: inline-block; margin-left: -50px;" required>
-                
             </div>
+
             <div style="margin-top: 10px;">
               <label for="employee-id" style="display: inline-block; width: 150px;">Mã nhân viên</label>
               <input type="number" th:field="*{employeeId}"
-                style="display: inline-block; margin-left: -40px; width: 147px;" placeholder="Nhập mã nhân viên..." value=""
-                required>
+                style="display: inline-block; margin-left: -40px; width: 147px;" placeholder="Nhập mã nhân viên..."
+                value="" required min="1">
             </div>
-
 
             <div style="margin-top: -40px; margin-left: 280px;">
               <label for="customer-quantity"
                 style="display: inline-block; margin-left: 5px; width: 150px;">C.Quantity</label>
               <input type="number" th:field="*{customerQuantity}"
                 style="display: inline-block; margin-left: -50px; width: 108px;" placeholder="Nhập số lượng khách..."
-                required>
+                required min="1">
             </div>
           </div>
 
@@ -234,6 +266,162 @@
     </div>
   </div>
 
+  <!-- =======================check-checkInDate-CheckOutDate============================================================== -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Lấy ngày hiện tại theo múi giờ Việt Nam
+      const now = new Date();
+      const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+      const year = vietnamTime.getFullYear();
+      const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+      const day = String(vietnamTime.getDate()).padStart(2, '0');
+      const today = `${year}-${month}-${day}`;
+
+      // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
+      const checkinDateInput = document.getElementById("checkin-date");
+      checkinDateInput.setAttribute("min", today);
+
+      checkinDateInput.addEventListener("change", function () {
+        // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
+        const checkoutDateInput = document.getElementById("checkout-date");
+        checkoutDateInput.setAttribute("min", checkinDateInput.value);
+      });
+    });
+  </script>
+
+  <!-- ====================================check-validation========================================================== -->
+  <script>
+    const customerNameText = document.querySelector('.customerNameText');
+    const customerIdentificationIDText = document.querySelector('.customerIdentificationIDText');
+    const customerPhoneText = document.querySelector('.customerPhoneText');
+    const customerEmailText = document.querySelector('.customerEmailText');
+    const customerAddressText = document.querySelector('.customerAddressText');
+
+    function checkCustomerName() {
+      return new Promise((resolve, reject) => {
+        const customerNamePattern = /^[\p{L}\p{N} ]+$/u;
+        const customerName = document.getElementById('customerName').value;
+        if (customerName.match(customerNamePattern)) {
+          customerNameText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerNameText.innerHTML = 'Not contain special characters.';
+          resolve(false);
+        }
+      });
+    }
+
+    function checkCustomerIdentificationIDText() {
+      return new Promise((resolve, reject) => {
+        const customerIdentificationIDPattern = /^\d+$/;
+        const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
+
+        if (customerIdentificationID.match(customerIdentificationIDPattern) && Number(customerIdentificationID) > 0) {
+          customerIdentificationIDText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerIdentificationIDText.innerHTML = 'Must be a positive number.';
+          resolve(false);
+        }
+      });
+    }
+
+    function checkPhoneNumber() {
+      return new Promise((resolve, reject) => {
+        const customerPhonePattern = /^[0-9]+$/;
+        const customerPhone = document.getElementById('customerPhone').value.trim();
+        if (customerPhone.match(customerPhonePattern) && BigInt(customerPhone) > 0n) {
+          customerPhoneText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerPhoneText.innerHTML = 'Must be a positive number.';
+          resolve(false);
+        }
+      });
+    }
+
+    function checkCustomerAddress() {
+      return new Promise((resolve, reject) => {
+        const customerAddressPattern = /^[\p{L}\p{N} ]+$/u;
+        const customerAddress = document.getElementById('customerAddress').value;
+        if (customerAddress.match(customerAddressPattern)) {
+          customerAddressText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerAddressText.innerHTML = ' Not contain special characters.';
+          resolve(false);
+        }
+      });
+    }
+
+    function checkDuplicateEmail() {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          url: '/receptionist/customer_check-email',
+          type: 'GET',
+          data: { customerEmail: document.getElementById('customerEmail').value },
+          async: true,
+          success: function (response) {
+            if (response && response != null) {
+              customerEmailText.innerHTML = 'Email already exists.';
+              resolve(false);
+            } else {
+              customerEmailText.innerHTML = '';
+              resolve(true);
+            }
+          },
+          error: function () {
+            customerEmailText.innerHTML = 'Error checking email.';
+            resolve(false);
+          }
+        });
+      });
+    }
+
+    function checkEmail() {
+      return new Promise((resolve, reject) => {
+        const customerEmailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+        const forbiddenCharsPattern = /[!?#$%^*():;"',+=/\\|]/;
+        const emailValue = document.getElementById('customerEmail').value.trim();
+        if (!emailValue.match(customerEmailPattern)) {
+          customerEmailText.innerHTML = 'Must be a valid email address.';
+          resolve(false);
+        } else if (emailValue.match(forbiddenCharsPattern)) {
+          customerEmailText.innerHTML = 'Email must not contain special characters such as !?#$%^*():;"\',+=/\\|.';
+          resolve(false);
+        } else {
+          customerEmailText.innerHTML = '';
+          resolve(true);
+        }
+      });
+    }
+
+    async function checkFormSubmission() {
+      const results = await Promise.all([
+        // checkDuplicateEmail(),
+        checkEmail(),
+        checkCustomerName(),
+        checkCustomerIdentificationIDText(),
+        checkPhoneNumber(),
+        checkCustomerAddress()
+      ]);
+      return results.every(result => result === true);
+    }
+
+    document.querySelector('form').addEventListener('submit', handleSubmit);
+
+    async function checkFormSubmissionSync(event) {
+      event.preventDefault();
+      const isFormValid = await checkFormSubmission();
+      if (isFormValid) {
+        event.target.submit();
+      } else {
+        console.log('Form validation failed.');
+      }
+      return false; // Ngăn form gửi nếu không hợp lệ
+    }
+  </script>
+
 
   <!-- hiệu ứng js trượt vào  -->
   <script>
@@ -271,7 +459,6 @@
     });
   </script>
 
-
   <!-- ========== lắng nghe sự thay đổi checkIn - checkOut để hiển thị ra phòng trống============ -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -284,7 +471,7 @@
       const checkoutDate = document.getElementById('checkout-date').value;
 
       if (checkinDate && checkoutDate) {
-        fetch('/api/availableRooms', {
+        fetch('/receptionist/api/availableRooms', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -306,6 +493,7 @@
                       <td id="priceHour" style="display:none;">${room.priceHour}</td>
                       <td id="priceDay" style="display:none;">${room.priceDay}</td>
                       <td id="status" style="display:none;">${room.status}</td>
+                       <td id="cleaning" style="display:none;">${room.cleaning}</td>
                       <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
                           <a href="javascript:void(0);" class="add-room-link">
                               <span class="material-icons" style="color: green;">add_circle</span>
@@ -320,7 +508,6 @@
       }
     }
   </script>
-
 
   <!-- ================== Bắt Click thêm phòng đã chọn-START=================================================================== -->
   <script>
@@ -343,6 +530,7 @@
         const priceHour = row.querySelector('#priceHour, .priceHour').textContent;
         const priceDay = row.querySelector('#priceDay, .priceDay').textContent;
         const status = row.querySelector('#status, .status').textContent;
+        const cleaning = row.querySelector('#cleaning, .cleaning').textContent;
 
         const selectedRoomsTableBody = document.getElementById('selected-rooms');
         if (!selectedRoomsTableBody) {
@@ -368,6 +556,7 @@
           <td class="priceHour" style="display:none;">${priceHour}</td>
           <td class="priceDay" style="display:none;">${priceDay}</td>
           <td class="status" style="display:none;">${status}</td>
+          <td class="cleaning" style="display:none;">${cleaning}</td>
           <td><a href="javascript:void(0)" class="remove-room-link">
               <span class="material-icons" style="color: red;">cancel</span>
           </a></td>
@@ -404,6 +593,7 @@
           const priceHour = rows[i].querySelector('.priceHour').textContent;
           const priceDay = rows[i].querySelector('.priceDay').textContent;
           const status = rows[i].querySelector('.status').textContent;
+          const cleaning = rows[i].querySelector('.cleaning').textContent;
 
           selectedRooms.push({
             id: roomID,
@@ -413,7 +603,8 @@
             roomTypeDescription,
             priceHour,
             priceDay,
-            status
+            status,
+            cleaning
           });
         }
         console.log("invoiceLineData", JSON.stringify(selectedRooms));
@@ -435,7 +626,6 @@
     //=======================================================================================================================
   </script>
   <!-- ================== Bắt Click thêm phòng đã chọn-END =================================================================== -->
-
 
   <!-- thư viện để add header và footer  -->
 
@@ -485,6 +675,14 @@
       margin: 4px 2px;
       cursor: pointer;
       border-radius: 4px;
+    }
+
+    .customerNameText,
+    .customerIdentificationIDText,
+    .customerPhoneText,
+    .customerEmailText,
+    .customerAddressText {
+      color: red;
     }
   </style>
   <div class="scroll-to-top scroll-to-target" data-target="html">

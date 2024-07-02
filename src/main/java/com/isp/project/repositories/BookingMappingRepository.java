@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.isp.project.model.BookingMapping;
 
-
 @Repository
 public interface BookingMappingRepository extends JpaRepository<BookingMapping, Integer> {
 

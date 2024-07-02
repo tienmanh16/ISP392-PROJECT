@@ -60,7 +60,12 @@ public class test {
         return invoiceService.testPostMan(id);
     }
 
-
+    @GetMapping("/viet")
+    public Booking getMethodName() {
+ 
+        return bookingRepository.findByBookingID(6);
+        
+    }
     // @GetMapping("/tien")
     // public Employee revenueBooking() {
     //     return invoiceService.testReport();

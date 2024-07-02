@@ -50,7 +50,7 @@ public class ContactController {
     }
     
 
-    @PostMapping("/receptionist/addInfo")
+    @PostMapping("/addInfo")
     public String addInfo(@ModelAttribute("guestInformation") GuestInformation guestInformation) throws MessagingException {
 
         if (this.guestInformationService.create(guestInformation)) {

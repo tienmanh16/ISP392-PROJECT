@@ -252,9 +252,9 @@
                             <p class="address">Room Number: <span
                                     th:text="${booking.BookingMapping[0].RoomID.RoomNum}"></span>
                             </p>
-                            <p class="address">Check-in Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
+                            <p class="address">Check-in Date: <span th:text="${booking.BookingMapping[0].checkInDate}"></span>
                             </p>
-                            <p class="address">Check-out Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
+                            <p class="address">Check-out Date: <span th:text="${booking.BookingMapping[0].checkOutDate}"></span>
                             </p>
                         </div>
                     </div>

@@ -4,7 +4,6 @@ import java.util.List;
 import com.isp.project.model.Booking;
 import com.isp.project.model.Room;
 
-
 public interface BookingService {
 
     boolean deleteBookingRoom(Integer id);

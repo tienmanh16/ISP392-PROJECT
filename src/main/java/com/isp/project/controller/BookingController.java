@@ -3,6 +3,7 @@ package com.isp.project.controller;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,18 +26,20 @@ import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
 import com.isp.project.model.Employee;
+import com.isp.project.model.Invoice;
 import com.isp.project.model.Register;
 import com.isp.project.model.Room;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.CustomerRepository;
 import com.isp.project.repositories.EmployeeRepository;
+import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.repositories.RegisterRepository;
 import com.isp.project.repositories.RoomRepository;
 import com.isp.project.service.BookingService;
 
 @Controller
-//=========================
+// =========================
 @RequestMapping("/receptionist")
 public class BookingController {
 
@@ -60,6 +63,9 @@ public class BookingController {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     // ============================== GET ALL BOOKING
     // ================================================================================
@@ -111,14 +117,23 @@ public class BookingController {
     // ============================================================================================
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute("bookingInfo") BookingInfoDTO bookingInfo) {
-        // Create and save customer information
-        Customer customer = new Customer();
-        customer.setCustomerName(bookingInfo.getCustomerName());
-        customer.setCustomerGender(bookingInfo.getGender());
-        customer.setCustomerAddress(bookingInfo.getCustomerAddress());
-        customer.setCustomerPhone(bookingInfo.getCustomerPhone());
-        customer.setCustomerEmail(bookingInfo.getCustomerEmail());
-        customer.setCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
+
+        Optional<Customer> existingCustomer = customerRepository
+                .findByCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
+
+        Customer customer;
+        if (existingCustomer.isPresent()) {
+            customer = existingCustomer.get();
+        } else {
+            customer = new Customer();
+            customer.setCustomerName(bookingInfo.getCustomerName());
+            customer.setCustomerGender(bookingInfo.getGender());
+            customer.setCustomerAddress(bookingInfo.getCustomerAddress());
+            customer.setCustomerPhone(bookingInfo.getCustomerPhone());
+            customer.setCustomerEmail(bookingInfo.getCustomerEmail());
+            customer.setCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
+        }
+
         customerRepository.save(customer);
 
         // Create and save booking information
@@ -127,7 +142,7 @@ public class BookingController {
         Date bookingDate = new Date(System.currentTimeMillis());
         booking.setBookingDate(bookingDate);
         booking.setCustomerQuantity(bookingInfo.getCustomerQuantity());
-        booking.setIsCancelled(1); // Default to not cancelled
+        // booking.setIsCancelled(0); // Default to not cancelled
         bookingRepository.save(booking);
 
         // Add to register
@@ -141,11 +156,13 @@ public class BookingController {
             ex.printStackTrace();
         }
 
+        double total_room = 0;
         // Parse selectedRoomsJson to List<RoomDetailDTO>
         List<RoomDetailDTO> selectedRooms = convertJsonToRoomDetailDTOList(bookingInfo.getSelectedRoomsJson());
         for (RoomDetailDTO roomDetail : selectedRooms) {
             Room room = roomRepository.findById(roomDetail.getId()).orElse(null);
             if (room != null) {
+                total_room += room.getRoomType().getPriceDay();
                 BookingMapping bookingMapping = new BookingMapping();
                 bookingMapping.setBookingID(booking);
                 bookingMapping.setRoomID(room);
@@ -157,6 +174,15 @@ public class BookingController {
                 bookingMappingRepository.save(bookingMapping);
             }
         }
+
+        // create Invoice
+        Invoice newInvoice = new Invoice();
+        newInvoice.setBooking(booking);
+        newInvoice.setCustomerName(customer.getCustomerName());
+        newInvoice.setTotalAmount(total_room);
+        newInvoice.setInvoiceDate(bookingInfo.getCheckoutDate());
+        invoiceRepository.save(newInvoice);
+
         // return "redirect:/booking"; // Redirect to booking result page
         return "redirect:/receptionist/booking";
     }
@@ -172,9 +198,11 @@ public class BookingController {
         }
     }
 
-    //======================== Delete BookingMapping of Booking ========================================================================
+    // ======================== Delete BookingMapping of Booking
+    // ========================================================================
     @DeleteMapping("/bookingMappings")
-    public ResponseEntity<String> deleteBookingMappingsByRoomAndBooking(@RequestParam Integer roomId, @RequestParam Integer bookingId) {
+    public ResponseEntity<String> deleteBookingMappingsByRoomAndBooking(@RequestParam Integer roomId,
+            @RequestParam Integer bookingId) {
         Room room = new Room();
         room.setId(roomId);
         Booking booking = new Booking();
