@@ -142,7 +142,7 @@ public class BookingController {
         Date bookingDate = new Date(System.currentTimeMillis());
         booking.setBookingDate(bookingDate);
         booking.setCustomerQuantity(bookingInfo.getCustomerQuantity());
-        booking.setIsCancelled(1); // Default to not cancelled
+        // booking.setIsCancelled(0); // Default to not cancelled
         bookingRepository.save(booking);
 
         // Add to register

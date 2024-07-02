@@ -493,6 +493,7 @@
                       <td id="priceHour" style="display:none;">${room.priceHour}</td>
                       <td id="priceDay" style="display:none;">${room.priceDay}</td>
                       <td id="status" style="display:none;">${room.status}</td>
+                       <td id="cleaning" style="display:none;">${room.cleaning}</td>
                       <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
                           <a href="javascript:void(0);" class="add-room-link">
                               <span class="material-icons" style="color: green;">add_circle</span>
@@ -529,6 +530,7 @@
         const priceHour = row.querySelector('#priceHour, .priceHour').textContent;
         const priceDay = row.querySelector('#priceDay, .priceDay').textContent;
         const status = row.querySelector('#status, .status').textContent;
+        const cleaning = row.querySelector('#cleaning, .cleaning').textContent;
 
         const selectedRoomsTableBody = document.getElementById('selected-rooms');
         if (!selectedRoomsTableBody) {
@@ -554,6 +556,7 @@
           <td class="priceHour" style="display:none;">${priceHour}</td>
           <td class="priceDay" style="display:none;">${priceDay}</td>
           <td class="status" style="display:none;">${status}</td>
+          <td class="cleaning" style="display:none;">${cleaning}</td>
           <td><a href="javascript:void(0)" class="remove-room-link">
               <span class="material-icons" style="color: red;">cancel</span>
           </a></td>
@@ -590,6 +593,7 @@
           const priceHour = rows[i].querySelector('.priceHour').textContent;
           const priceDay = rows[i].querySelector('.priceDay').textContent;
           const status = rows[i].querySelector('.status').textContent;
+          const cleaning = rows[i].querySelector('.cleaning').textContent;
 
           selectedRooms.push({
             id: roomID,
@@ -599,7 +603,8 @@
             roomTypeDescription,
             priceHour,
             priceDay,
-            status
+            status,
+            cleaning
           });
         }
         console.log("invoiceLineData", JSON.stringify(selectedRooms));

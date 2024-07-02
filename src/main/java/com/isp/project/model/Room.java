@@ -54,7 +54,8 @@ public class Room {
     @JsonManagedReference
     private List<RoomItemMapping> roomItemMapping;
 
-
+    @Column(name = "Cleaning", nullable = false)
+    private String cleaning;
     
     
 }
