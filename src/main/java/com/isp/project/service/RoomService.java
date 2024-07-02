@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.isp.project.model.RoomType;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomCustomerDTO;
@@ -42,6 +43,10 @@ public interface RoomService {
     List<Room> searchRoom(String name);
 
     void updateRoomStatusByRoomId2(Integer roomId);
+
+    void updateBookingMappingActive(Integer bookingMappingId);
+
+    void updateRoomCleaningByRoomId(Integer roomId, String cleaning);
 
 
 }

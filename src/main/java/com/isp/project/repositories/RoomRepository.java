@@ -25,7 +25,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "rt.des, "
            + "rt.priceHour, "
            + "rt.priceDay, "
-           + "r.status "
+           + "r.status, "
+           + "r.cleaning "
            + ") "
            + "FROM Room r "
            + "JOIN r.roomType rt ")
@@ -39,7 +40,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "rt.des, "
            + "rt.priceHour, "
            + "rt.priceDay, "
-           + "r.status "
+           + "r.status, "
+           + "r.cleaning "
            + ") "
            + "FROM Room r "
            + "JOIN r.roomType rt ")
@@ -53,7 +55,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
             + "rt.des, "
             + "rt.priceHour, "
             + "rt.priceDay, "
-            + "r.status "
+            + "r.status, "
+           + "r.cleaning "
             + ") "
             + "FROM Room r "
             + "JOIN r.roomType rt ")
@@ -67,7 +70,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "rt.des, "
        + "rt.priceHour, "
        + "rt.priceDay, "
-       + "r.status "
+       + "r.status, "
+       + "r.cleaning "
        + ") "
        + "FROM Room r "
        + "JOIN r.roomType rt "
@@ -82,7 +86,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "rt.des, "
        + "rt.priceHour, "
        + "rt.priceDay, "
-       + "r.status "
+       + "r.status, "
+       + "r.cleaning "
        + ") "
        + "FROM Room r "
        + "JOIN r.roomType rt "
@@ -97,7 +102,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
        + "rt.des, "
        + "rt.priceHour, "
        + "rt.priceDay, "
-       + "r.status "
+       + "r.status, "
+       + "r.cleaning "
        + ") "
        + "FROM Room r "
        + "JOIN r.roomType rt "
@@ -138,6 +144,14 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
     @Modifying
     @Query("UPDATE Room SET status = 'Empty Room' WHERE id = :roomId")
     void updateRoomStatusByRoomId2(@Param("roomId") Integer roomId);
+
+    @Modifying
+    @Query("UPDATE Room SET cleaning = :cleaning WHERE id = :roomId")
+    void updateRoomCleaningByRoomId(@Param("roomId") Integer roomId, @Param("cleaning") String cleaning);
+
+    @Modifying
+    @Query("UPDATE BookingMapping SET bookingMappingActive = 0 WHERE bookingMappingID = :bookingMappingId")
+    void updateBookingMappingActive(@Param("bookingMappingId") Integer bookingMappingId);
 
     @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus " +
                "FROM Room r " +

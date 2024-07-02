@@ -20,17 +20,8 @@ import org.springframework.data.repository.query.Param;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -58,8 +49,6 @@ import com.isp.project.service.SeService;
 
 
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("/receptionist")
@@ -280,6 +269,23 @@ public class RoomController {
         roomService.updateRoomStatusByRoomId2(roomId);
         Room room = roomServiceImpl.testR(roomId);
         return ResponseEntity.ok(room);
+    }
+
+    @PostMapping("/updateRoomCleaning")
+    public ResponseEntity<Optional<Room>> updateCleaning(@RequestBody String roomData) {
+        Room room = convertJsonToRoom(roomData);
+        
+        //roomService.updateRoomCleaningByRoomId(room.getId(), room.getCleaning());
+        Optional<Room> room1 = roomRepository.findById(room.getId());
+        room1.get().setCleaning(room.getCleaning());
+        return ResponseEntity.ok(room1);
+    }
+
+    @GetMapping("/updateBookingMapping")
+    public ResponseEntity<BookingMapping> updateBookingMappingActive(@RequestParam("bookingMappingId") Integer bookingMappingId) {
+        roomService.updateBookingMappingActive(bookingMappingId);
+        BookingMapping bookingMapping = roomServiceImpl.testBookingMapping(bookingMappingId);
+        return ResponseEntity.ok(bookingMapping);
     }
 
     @GetMapping("/getServiceBySeTypeId")
@@ -514,5 +520,17 @@ public class RoomController {
         }
         return list;
     }
+
+    private Room convertJsonToRoom(String json) {
+    ObjectMapper objectMapper = new ObjectMapper();
+    Room room = null;
+    try {
+        room = objectMapper.readValue(json, Room.class);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return room;
+}
+
 
 }

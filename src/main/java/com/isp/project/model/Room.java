@@ -43,6 +43,9 @@ public class Room {
     @Column(name = "RoomStatus", nullable = false)
     private String status;
 
+    @Column(name = "Cleaning", nullable = false)
+    private String cleaning;
+
     @Column(name = "RoomActive", nullable = false)
     private int roomActive;
     
