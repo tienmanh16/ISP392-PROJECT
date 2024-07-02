@@ -92,6 +92,7 @@ public class BookingController {
     public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
         Booking bookingDetail = bookingService.getBookingByBookingID(id);
         model.addAttribute("bookdetail", bookingDetail);
+        model.addAttribute("newBookingMapping", new BookingInfoDTO());
         // return "bookingdetail";
         return "bookingdetail";
 

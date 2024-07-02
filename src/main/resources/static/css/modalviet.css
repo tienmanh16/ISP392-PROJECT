@@ -58,7 +58,17 @@
     overflow: hidden;
     animation: modalFaceIn ease .5s;
 }
-
+.windowmapping {
+    width: 730px;
+    height: 600px;
+    border-radius: 10px;
+    background: white;
+    border: 5px solid #28a730;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: modalFaceIn ease .5s;
+}
 .windowroomitem {
     width: 600px;
     height: 400px;
