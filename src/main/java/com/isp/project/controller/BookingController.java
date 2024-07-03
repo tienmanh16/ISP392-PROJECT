@@ -71,6 +71,7 @@ public class BookingController {
 
     @Autowired
     private EmployeeService employeeService;
+    
     // ============================== GET ALL BOOKING ================================================================================
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model,
