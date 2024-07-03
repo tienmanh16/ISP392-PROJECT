@@ -11,12 +11,13 @@ public class RoomDetailDTO {
     private int roomTypeId;
     private String roomTypeName;
     private String roomTypeDescription;
-    private String priceHour;
-    private String priceDay;
+    private int priceHour;
+    private int priceDay;
     private String status;
-    // private int imageId;
-    // private String image1;
-    // private String image2;
+    private String cleaning;
+    
+    public RoomDetailDTO() {
+    }
     
     
 }

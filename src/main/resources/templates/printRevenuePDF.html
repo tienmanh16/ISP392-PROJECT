@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revenue Report</title>
+    <style>
+        /* Define styles for the table */
+        table {
+            width: 100%;
+            margin: 0 auto; /* Để căn giữa */
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        /* Define styles for the total row */
+        .total-row {
+            font-weight: bold;
+        }
+        /* Define styles for company info */
+         #company-info {
+            width: 40%;
+            margin: 20px auto; /* Để căn giữa */
+            display: inline-block; /* Hiển thị trên cùng một dòng */
+        }
+        /* #BTC-info {
+            width: 40%;
+            margin: 20px auto; 
+            display: inline-block; 
+            text-align: right; 
+        } */
+        #report-header {
+            text-align: center;
+            clear: both; /* Để clear float và đảm bảo tiêu đề ở giữa */
+        }
+        #footer {
+            clear: both;
+            margin-top: 20px;
+        }
+        #prepared-by,
+        #accountant {
+            width: 50%;
+            float: left;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="company-info">
+        <p>Công ty ABC</p>
+        <p>Địa chỉ: 123 Đường ABC, Quận XYZ, Thành phố HCM</p>
+        <p>Điện thoại: (123) 456-7890</p>
+            <p> Email: info@abc.com</p>
+    </div>
+    <!-- <div id="BTC-info">
+        <p>Mẫu số B02-DN</p>
+        <p>Ban hành theo QD số 15/2020/QD-BTC </p>
+            <p> ngày 20/03/2020 của Bộ trưởng BTC</p>
+        
+    </div> -->
+    <h1 id="report-header">Revenue Report</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>InvoiceID</th>
+                <th>Date Created</th>
+                <th>Employee</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="invoice : ${ls}">
+                <td th:text="${invoice.InvoiceID}"></td>
+                <td th:text="${invoice.InvoiceDate}"></td>
+                <td>
+                    <span th:each="register : ${invoice.booking.register}">
+                        <span th:text="${register.employeeID.fullName}"></span>
+                    </span>
+                </td>
+                <td th:text="${invoice.totalAmount}"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" class="text-right"><strong>Total:</strong></td>
+                <td th:text="${totalAmount}"></td>
+                
+            </tr>
+        </tbody>
+    </table>
+    <div id="footer">
+        <div id="prepared-by">
+            <p>Người lập biểu</p>
+            <p>(Nguyễn Văn A)</p>
+        </div>
+        <div id="accountant">
+            <p>Kế toán</p>
+            <p>(Trần Thị B)</p>
+        </div>
+    </div>
+</body>
+</html>

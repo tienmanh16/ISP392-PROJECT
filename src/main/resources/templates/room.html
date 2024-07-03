@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <head>
         <meta charset="utf-8">
         <title>Room Detail</title>
@@ -12,46 +13,49 @@
         <link th:href="@{/css/mmenu.css}" rel="stylesheet">
         <link th:href="@{/css/style.copy.css}" rel="stylesheet">
         <link th:href="@{/css/modal.css}" rel="stylesheet">
-    <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="https://themify.me/themify-icons" rel="stylesheet">
+        <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
         <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
         <!-- Responsive -->
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
         <!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
         <!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </head>
 </head>
 
 <body>
 
 
-<div class="boxcar-wrapper">
-    <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-        <div th:replace="~{fragments/header :: header}"></div>
-    </header>
-    <!-- cars-section-fourteen -->
-    <section class="cars-section-fourteen layout-radius">
-        <div class="shop-c-box">
-        <div class="boxcar-container">
-            <div class="boxcar-title-three">
-                <ul class="breadcrumb">
-                    <li><a href="#">Home</a></li>
-                    <li><span>Room</span></li>
-                </ul>
-                <h2>Room List</h2>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-md-12 col-sm-12">
-                    <div class="side-bar">
-                        <div class="categories-box">
-                            <label for="date">Ngày:</label>
-                            <input type="date" id="date">
-                        </div>
-                        <div class="categories-box">
-                            <label for="time">Giờ:</label>
-                            <input type="time" id="time">
-                        </div>
-                        <!-- <div class="categories-box">
+    <div class="boxcar-wrapper">
+        <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+            <div th:replace="~{fragments/header_recep :: header}"></div>
+        </header>
+        <!-- cars-section-fourteen -->
+        <section class="cars-section-fourteen layout-radius">
+            <div class="shop-c-box">
+                <div class="boxcar-container">
+                    <div class="boxcar-title-three">
+                        <ul class="breadcrumb">
+                            <li><a href="#">Home</a></li>
+                            <li><span>Room</span></li>
+                        </ul>
+                        <h2>Room List</h2>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-12 col-sm-12">
+                            <div class="side-bar">
+                                <div class="categories-box">
+                                    <label for="date">Ngày:</label>
+                                    <input type="date" id="date">
+                                </div>
+                                <div class="categories-box">
+                                    <label for="time">Giờ:</label>
+                                    <input type="time" id="time">
+                                </div>
+                                <!-- <div class="categories-box">
                             <h6 class="title">Stattus</h6>
                             <div class="cheak-box">
                                 <label class="contain">Phong trong
@@ -72,260 +76,1011 @@
                                 </label>
                             </div>
                         </div> -->
-                        <form th:action="@{/filter-status}" method="post">
-                            <div class="categories-box">
-                                <h6 class="title">Status</h6>
-                                <div class="cheak-box">
-                                    <label class="contain">
-                                        <h6>Phòng trống</h6>
-                                        <input type="radio" name="statusFilter" value="Phòng trống">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label class="contain">
-                                        <h6>Phòng đang thuê</h6>
-                                        <input type="radio" name="statusFilter" value="Phòng đang thuê">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label class="contain">
-                                        <h6>Phòng đã đặt</h6>
-                                        <input type="radio" name="statusFilter" value="Phòng đã đặt">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <button type="submit">Submit</button>
+                                <form>
+                                    <div class="categories-box">
+                                        <h6 class="title">Status</h6>
+                                        <div class="cheak-box">
+                                            <label class="contain">
+                                                <h6>Phòng trống</h6>
+                                                <input type="radio" class="selectCheckbox" name="statusFilter"
+                                                    value="Empty Room">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="contain">
+                                                <h6>Phòng đang thuê</h6>
+                                                <input type="radio" class="selectCheckbox" name="statusFilter"
+                                                    value="Rented Room">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                            <label class="contain">
+                                                <h6>Phòng đã đặt</h6>
+                                                <input type="radio" class="selectCheckbox" name="statusFilter"
+                                                    value="Booked Room">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <!-- <button type="submit">Submit</button> -->
+                                    </div>
+                                    <div class="categories-box">
+                                        <h6 class="title">Loại Phòng</h6>
+                                        <div class="cheak-box" th:each="roomType : ${roomTypes}">
+                                            <label class="contain">
+                                                <h6 th:text="${roomType.roomTypeName}"></h6>
+                                                <input type="radio" class="selectCheckbox2" name="selectedRoomTypeName"
+                                                    th:value="${roomType.roomTypeName}">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <!-- <button type="submit">Submit</button> -->
+                                    </div>
+                                </form>
+
+
+
+
+
+
                             </div>
-                        </form>
-                        <form th:action="@{/filterRoomType}" method="post">
-                            <div class="categories-box">
-                                <h6 class="title">Loại Phòng</h6>
-                                <div class="cheak-box" th:each="roomType : ${roomTypes}">
-                                    <label class="contain">
-                                        <h6 th:text="${roomType.roomTypeName}"></h6>
-                                        <input type="radio" name="selectedRoomTypeId" th:value="${roomType.roomTypeId}" th:checked="${selectedRoomTypeId == roomType.roomTypeId}">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <button type="submit">Submit</button>
-                            </div>
-                        </form>
-                        <!-- <div class="categories-box">
-                            <h6 class="title">Loai Phong</h6>
-                            <div class="cheak-box" th:each="roomType : ${roomTypes}">
-                                <label class="contain"><h6 th:text="${roomType.roomTypeName}"></h6>
-                                    <input type="checkbox" name="selectedRoomTypes" th:value="${roomType.roomTypeId}" th:checked="${selectedRoomTypes.contains(roomType.roomTypeId)}">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="contain">Phong doi
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="contain">Phong gia dinh
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label> -->
-                                <!-- <label class="contain">Tat ca phong
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div> -->
-                        <!-- <div class="categories-box">
-                            <h6 class="title">Don Dep</h6>
-                            <div class="cheak-box">
-                                <label class="contain">Da don dep
-                                    <input type="checkbox" checked="checked">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="contain">Chua don dep
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="contain">Sua chua
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="contain">Tat ca
-                                    <input type="checkbox">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
-                <div class="content-column col-lg-9 col-md-12 col-sm-12">
-                    <div class="inner-column">
-                        <div class="text-box">
-                            <div class="title">Results</div>
                         </div>
-                        <div class="row">
-                            <!-- car-block-fourteen -->
-                            <div class="car-block-fourteen col-lg-4 col-md-6 col-sm-6" th:each="room : ${rooms}">
-                                <div class="inner-box">
-                                    <div class="content-box">
-                                        <h5 class="title" th:text="${room.roomNum}"></h5> 
-                                        <ul class="rating"> 
-                                            <li><i class="fa fa-star"></i></li> 
-                                            <li><i class="fa fa-star"></i></li> 
-                                            <li><i class="fa fa-star"></i></li> 
-                                            <li><i class="fa fa-star"></i></li> 
-                                            <li><i class="fa fa-star"></i></li> 
-                                        </ul> 
-                                        <p><h10 th:text="${room.status}"></h10></p>
-                                        <p><h10 th:text="${room.roomTypeName}"></h10></p>
-                                        <div><button class="btn js-buy-ticket">Sửa Thông Tin</button></div>
+                        <div class="content-column col-lg-9 col-md-12 col-sm-12">
+                            <div class="inner-column">
+                                <div class="text-box">
+                                    <div class="title">Results</div>
+                                </div>
+                                <div class="row">
+                                    <div class="car-block-fourteen col-lg-4 col-md-6 col-sm-6"
+                                        th:each="room : ${rooms}">
+                                        <div class="inner-box"
+                                            th:classappend="${room.status == 'Empty Room'} ? 'room-available' : (${room.status == 'Booked Room'} ? 'room-booked' : 'room-occupied')">
+                                            <div class="content-box">
+                                                <h5 class="title" th:text="${room.roomNum}"></h5>
+                                                <ul class="rating">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                                <p>
+                                                    <h10 id="statusRoom" class="checkedRoom" th:text="${room.status}">
+                                                    </h10>
+                                                </p>
+                                                <p>
+                                                    <h10 id="typeNameRoom" th:text="${room.roomTypeName}"></h10>
+                                                </p>
+                                                <div><button class="btn js-buy-ticket"
+                                                        th:onclick="openModal([[${room.id}]])">Sửa Thông Tin</button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="pagination-sec">
+                                    <nav aria-label="Page navigation example">
+                                        <ul class="pagination">
+                                            <li class="page-item"
+                                                th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                                                <a class="page-link" th:href="@{'?pageNo='+${currentPage - 1}}"
+                                                    aria-label="Previous">
+                                                    <span aria-hidden="true"><svg width="12" height="12"
+                                                            viewBox="0 0 12 12" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z"
+                                                                fill="#050B20" />
+                                                        </svg> </span>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                            </li>
+                                            <th:block th:each="i : ${#numbers.sequence(1, totalPage)}">
+                                                <li class="page-item"
+                                                    th:classappend="${currentPage == i ? 'active' : ''}">
+                                                    <a class="page-link" th:href="@{'?pageNo='+${i}}"
+                                                        th:text="${i}"></a>
+                                                </li>
+                                            </th:block>
+                                            <li class="page-item"
+                                                th:classappend="${currentPage == totalPage ? 'disabled' : ''}">
+                                                <a class="page-link" th:href="@{'?pageNo='+${currentPage + 1}}"
+                                                    aria-label="Next">
+                                                    <span aria-hidden="true"><svg width="12" height="12"
+                                                            viewBox="0 0 12 12" fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <g clip-path="url(#clip0_2880_6407)">
+                                                                <path
+                                                                    d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z"
+                                                                    fill="#050B20" />
+                                                            </g>
+                                                            <defs>
+                                                                <clipPath id="clip0_2880_6407">
+                                                                    <rect width="12" height="12" fill="white"
+                                                                        transform="translate(12 12) rotate(-180)" />
+                                                                </clipPath>
+                                                            </defs>
+                                                        </svg> </span>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
                             </div>
                         </div>
-                        <div class="pagination-sec">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                  <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Previous">
-                                      <span aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z" fill="#050B20"/>
-                                </svg> </span>
-                                      <span class="sr-only">Previous</span>
-                                    </a>
-                                  </li>
-                                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">...</a></li>
-                                  <li class="page-item"><a class="page-link" href="#">20</a></li>
-                                  <li class="page-item">
-                                    <a class="page-link" href="#" aria-label="Next">
-                                      <span aria-hidden="true"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <g clip-path="url(#clip0_2880_6407)">
-                                    <path d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z" fill="#050B20"/>
-                                    </g>
-                                    <defs>
-                                    <clipPath id="clip0_2880_6407">
-                                    <rect width="12" height="12" fill="white" transform="translate(12 12) rotate(-180)"/>
-                                    </clipPath>
-                                    </defs>
-                                </svg> </span>
-                                      <span class="sr-only">Next</span>
-                                    </a>
-                                  </li>
-                                </ul>
-                              </nav>
-                        </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
-        </div>
-        </div>
-    </section>
-</div>
-<div th:replace="~{fragments/footer :: footer}"></div>
+        </section>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
-<!-- modal chứa cả các giao diện phủ lên -->
-<div class="modal js-modal">
-    <div class="window js-modal-window">
-        <div class="title">P01</div>
-        <div class="main">
-            <div class="header">
-                <div>
-                    <span class="material-icons">account_box</span>
-                    <span id="txblTenKH" class="text"></span>
+    <!-- modal chứa cả các giao diện phủ lên -->
+    <div class="modal js-modal">
+        <div class="window js-modal-window">
+            <div class="title" id="idPhong"></div>
+            <div class="main">
+                <div class="header">
+                    <div>
+                        <span class="material-icons">account_box</span>
+                        <span id="txblTenKH" class="text"></span>
+                    </div>
+                    <div>
+                        <span class="material-icons">calendar_today</span>
+                        <span id="txblNgayDen" class="text"></span>
+                    </div>
+                    <div>
+                        <span class="material-icons" id="icDayorHour">access_time</span>
+                        <span id="txblSoNgay" class="text"></span>
+                    </div>
+                    <div>
+                        <span class="material-icons">group</span>
+                        <span id="txblSoNguoi" class="text"></span>
+                    </div>
                 </div>
-                <div>
-                    <span class="material-icons">calendar_today</span>
-                    <span id="txblNgayDen" class="text"></span>
+                <p id="invoiceId" style="display: none;"></p>
+                <div class="lefttt">
+                    <div class="list-view">
+
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>Dịch vụ</th>
+                                    <th>SL</th>
+                                    <th>Thành tiền</th>
+                                    <th style="display: none;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="lvSuDungDV">
+                                <!-- <tr>
+                                    <td>1</td>
+                                    <td>alo</td>
+                                    <td>123</td>
+                                </tr> -->
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <button class="button green-button js-themDV" id="btnThemDV">Thêm dịch vụ</button>
                 </div>
-                <div>
-                    <span class="material-icons" id="icDayorHour">access_time</span>
-                    <span id="txblSoNgay" class="text"></span>
-                </div>
-                <div>
-                    <span class="material-icons">group</span>
-                    <span id="txblSoNguoi" class="text"></span>
-                    <span>người</span>
+                <div class="righttt">
+                    <div class="list view">
+                        <p>Cập nhật tình trạng phòng</p>
+                        <input type="text" name="t1" id="statusPhong" value="">
+                        <br>
+                        <p>Cap nhat tinh trang don dep</p>
+                        <select>
+                            <option>Da don dep</option>
+                            <option>Chưa dọn dẹp</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-            <div class="lefttt">
-                <div class="list-view">
-                    <table border="1">
-                        <thead>
-                            <tr>
-                                <th>Dịch vụ</th>
-                                <th>SL</th>
-                                <th>Thành tiền</th>
+            <div class="footer">
+                <button class="button green-button" id="btnThanhToan">Thanh toán</button>
+                <button class="button green-button" id="btnNhanPhong">Nhận phòng</button>
+                <button class="button green-button" id="btnLuu">Lưu</button>
+                <button class="button gray-button js-modal-close" id="btnThoat">Thoát</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal js-modal-2">
+        <div class="window js-modal-window-2">
+            <div class="title">Thêm Dịch Vụ</div>
+            <div class="main main--service">
+                <div class="leftttDV">
+                    <p>Danh sách dịch vụ</p>
+                    <select id="cbTimKiemLoaiDV" class="combobox" onchange="sendServiceTypeId(this.value)">
+                        <option value="0">Tất cả dịch vụ</option>
+                        <option th:each="serviceType : ${serviceTypes}" th:text="${serviceType.SeTypeName}"
+                            th:value="${serviceType.SeTypeID}">
+                        </option>
+                    </select>
+                    <!-- <form class="searchDV" action="/search" method="get">
+                    <input type="text" name="query" placeholder="Tìm dịch vụ" />
+                    <button type="submit">Tìm</button>
+                </form> -->
+                    <div class="InputContainerSearch">
+                        <input placeholder="Search.." id="input" class="inputSearch" name="seName" type="text">
+                    </div>
+                    <div class="list-view-DV">
+
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>Loại DV</th>
+                                    <th>Dịch Vụ</th>
+                                    <th>Giá</th>
+                                    <th>Thêm</th>
+                                </tr>
+                            </thead>
+                            <!-- <tbody id="lvDanhSachDV">
+                            <tr id="serviceDS">
+                                <td id="serviceTypeName"></td>
+                                <td id="serviceName"></td>
+                                <td id="servicePrice"></td>
+                                <td id="addService"></td>
                             </tr>
-                        </thead>
-                        <tbody id="lvSuDungDV">
-                            <tr>
+                        </tbody> -->
+                            <tbody id="lvDanhSachDV">
+                                <tr id="serviceDS" th:each="service : ${services}">
+                                    <td id="serviceId" style="display: none;" th:text="${service.seId}"></td>
+                                    <td id="serviceTypeName" th:text="${service.seTypeName}"></td>
+                                    <td id="serviceName" th:text="${service.seName}"></td>
+                                    <td id="servicePrice" th:text="${service.sePrice}"></td>
+                                    <td id="addService"><a href="javascript:void(0)" class="wait-link">
+                                            <span class="material-icons" style="color: green;">add_circle</span>
+                                        </a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="rightttDV">
+                    <p>Dịch vụ đã chọn</p>
+                    <div class="list-view-DVDaChon">
+
+                        <table border="1">
+                            <thead>
+                                <tr>
+                                    <th>Dịch Vụ</th>
+                                    <th>Số Lượng</th>
+                                    <th>Thành Tiền</th>
+                                    <th>Xóa</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lvDichVuDaChon">
+                                <!-- <tr>
                                 <td>1</td>
                                 <td>alo</td>
                                 <td>123</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <button class="button green-button" id="btnThemDV">Thêm dịch vụ</button>
-            </div>
-            <div class="righttt">
-                <div class="list view">
-                    <p>Cap nhat tinh trang phong</p>
-                    <input type="text" name="t1" value="Phong dang thue">
-                    <br>
-                    <p>Cap nhat tinh trang don dep</p>
-                    <select>
-                        <option>Da don dep</option>
-                        <option>Chưa dọn dẹp</option>
-                    </select>
+                                <td><a href="listinvoice" class="wait-link">
+                                    <span class="material-icons" style="color: red;">cancel</span>
+                                </a></td>
+                            </tr> -->
+                            </tbody>
+                        </table>
+
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="footer">
-            <button class="button green-button" id="btnThanhToan">Thanh toán</button>
-            <button class="button green-button" id="btnNhanPhong">Nhận phòng</button>
-            <button class="button green-button" id="btnLuu">Lưu</button>
-            <button class="button gray-button js-modal-close" id="btnThoat">Thoát</button>
+            <div class="footer">
+                <button class="button green-button" id="btnLuuDV">Lưu</button>
+                <button class="button gray-button js-modal-close-2" id="btnThoat">Thoát</button>
+            </div>
+
+            <!-- == -->
         </div>
     </div>
-</div>
-<!-- hiệu ứng js trượt vào  -->
-<script>
-    const buyBtns = document.querySelectorAll('.js-buy-ticket')
-    // 3 nút có class js.. lưu vào biến buyBtns
-    const modal = document.querySelector('.js-modal')
-    // lấy tất cả các thằng có class .js-modal
-    const modalClose = document.querySelector('.js-modal-close')
+    <!-- hiệu ứng js trượt vào  -->
+    <script>
+        const buyBtns = document.querySelectorAll('.js-buy-ticket')
+        // 3 nút có class js.. lưu vào biến buyBtns
+        const modal = document.querySelector('.js-modal')
+        // lấy tất cả các thằng có class .js-modal
+        const modalClose = document.querySelector('.js-modal-close')
 
-    const modalWindow = document.querySelector('.js-modal-window')
+        const modalWindow = document.querySelector('.js-modal-window')
 
-    // hàm hiện modal mua vé (thêm class open cả modal)
-    function showByTickets() {
-        modal.classList.add('open')
-        // alert('ok')
-    }
-    
-    // hàm ẩn modal mua vé (xóa class open ở modal)
-    function hideByTickets() {
-        modal.classList.remove('open')
-        
-    }
-    // lặp qua từng thẻ button và nghe hành vi click
-    for(const buyBtn of buyBtns){
-        // từng thằng trong buyBtns
-        buyBtn.addEventListener('click',showByTickets)
-    }
-    // nghe hành vi click vaof button close
-    modalClose.addEventListener('click',hideByTickets)
-    // khi click vào tất cả các khoảng modal 
-    modal.addEventListener('click',hideByTickets)
-    // vì khi click vào tất cả các khoảng modal thì nó
-    // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
-    modalWindow.addEventListener('click', function(event){
-        event.stopPropagation()
-    })
-</script>
+        // Lấy các nút cần tương tác
+        const btnNhanPhong = document.getElementById('btnNhanPhong');
+        const btnThanhToan = document.getElementById('btnThanhToan');
+        const btnThemDV = document.getElementById('btnThemDV')
 
-<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+
+        // hàm hiện modal mua vé (thêm class open cả modal)
+        function showByTickets() {
+            modal.classList.add('open')
+            // alert('ok')
+        }
+
+        // hàm ẩn modal mua vé (xóa class open ở modal)
+        function hideByTickets() {
+            modal.classList.remove('open')
+
+        }
+        // lặp qua từng thẻ button và nghe hành vi click
+        for (const buyBtn of buyBtns) {
+            // từng thằng trong buyBtns
+            buyBtn.addEventListener('click', showByTickets)
+        }
+        // nghe hành vi click vaof button close
+        modalClose.addEventListener('click', hideByTickets)
+        // khi click vào tất cả các khoảng modal 
+        modal.addEventListener('click', hideByTickets)
+        // vì khi click vào tất cả các khoảng modal thì nó
+        // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
+        modalWindow.addEventListener('click', function (event) {
+            event.stopPropagation()
+        })
+
+        function openModal(roomId) {
+            // Hiển thị modal
+            modal.classList.add('open');
+
+            // Gửi request đến controller để lấy thông tin phòng
+            fetch(`/receptionist/editRoom?roomId=${roomId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Cập nhật thông tin phòng vào modal
+                    // Ví dụ:
+                    // document.getElementById('txblTenKH').textContent = data.customerName;
+                    // document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
+                    // document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
+                    // document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
+                    // document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
+                    // console.log(document.getElementById('invoiceId').textContent);
+                    //document.getElementById('idPhong').textContent = data.roomNumber;
+                    // Cập nhật các thông tin khác tương tự
+
+                    if (document.getElementById('statusPhong').value === "Empty Room") {
+                        document.getElementById('txblTenKH').textContent = "";
+                        document.getElementById('txblNgayDen').textContent = "Chưa có";
+                        document.getElementById('txblSoNgay').textContent = "Chưa có";
+                        document.getElementById('txblSoNguoi').textContent = "0 người";
+                        document.getElementById('invoiceId').textContent = "Chưa có";
+                    } else {
+                        document.getElementById('txblTenKH').textContent = data.customerName;
+                        document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
+                        document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
+                        document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
+                        document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
+                    }
+
+
+
+                    var invoiceLineData;
+                    // Lấy tham chiếu đến nút "Lưu"
+                    var saveButton = document.getElementById('btnLuu');
+                    saveButton.addEventListener('click', () => {
+                        const tbodyElement = document.getElementById('lvSuDungDV');
+                        invoiceLineData = [];
+
+                        for (let i = 0; i < tbodyElement.rows.length; i++) {
+                            const row = tbodyElement.rows[i];
+                            const quantity = row.cells[1].textContent;
+                            const amount = row.cells[2].textContent;
+                            const seId = row.cells[3].textContent;
+                            const invoiceId = data.booking[0].invoice[0].invoiceID.toString();
+
+                            invoiceLineData.push({
+                                InvoiceTotalAmount: amount,
+                                SeID: seId,
+                                Quantity: quantity,
+                                InvoiceID: invoiceId
+                            });
+                        }
+
+                        console.log("invoiceLineData", JSON.stringify(invoiceLineData)); // Thêm log để kiểm tra dữ liệu
+
+
+                        // Gọi hàm sendSelectedServices() để gửi dữ liệu đến controller
+                        sendSelectedServices();
+                    }
+                    );
+
+                    function sendSelectedServices() {
+                        fetch('/receptionist/addInvoiceLine', {
+                            method: 'POST', // Ensure method is POST
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(invoiceLineData)
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    console.log("Invoice lines saved successfully");
+                                    window.location.href = `receptionist/room`;
+                                    // Redirect or handle success as needed
+                                } else {
+                                    console.error('Failed to save selected services');
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
+                    //========================= Update danh sách dich vu đã chọn =====================================
+                    // function updateSelectedInvoiceLinesInput() {
+                    //     const selectedInvoiceLines = invoiceLineData;
+                    //     console.log('selectedInvoiceLines', selectedInvoiceLines);
+                    //     const selectedInvoiceLinesInput = document.getElementById('selected-invoiceLines-input');
+                    //     if (!selectedInvoiceLinesInput) {
+                    //         console.error('selected-rooms-input element not found');
+                    //         return;
+                    //     }
+                    //     selectedInvoiceLinesInput.value = JSON.stringify(selectedInvoiceLines);
+                    // }
+
+
+
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy thông tin khách hàng:', error);
+
+                }
+                );
+
+            fetch(`/receptionist/editRoom2?roomId=${roomId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Cập nhật thông tin phòng vào modal
+                    // Ví dụ:
+                    document.getElementById('idPhong').textContent = data.roomNum;
+                    document.getElementById('statusPhong').value = data.status;
+                    // Cập nhật các thông tin khác tương tự
+                    if (data.status === "Empty Room") {
+                        document.getElementById('txblTenKH').textContent = "";
+                        document.getElementById('txblNgayDen').textContent = "Chưa có";
+                        document.getElementById('txblSoNgay').textContent = "Chưa có";
+                        document.getElementById('txblSoNguoi').textContent = "0 người";
+                    }
+
+                    // Kiểm tra trạng thái phòng
+                    if (data.status === "Booked Room") {
+                        // Thêm sự kiện click cho nút "Nhận phòng"
+                        btnNhanPhong.style.display = 'inline-block';
+                        btnThanhToan.style.display = 'none';
+                        btnThemDV.style.display = 'none';
+                        // $('#btnNhanPhong').click(function() {
+                        //     $(this).hide();
+
+                        //     $('#btnThanhToan').show();
+                        //     $('#btnThemDV').show();
+                        //     $('.inner-box').addClass(`room${roomId}`);
+                        //     $.ajax({ 
+                        //         url: `/updateStatusRoom?roomId=${roomId}`,
+                        //         type: 'GET',
+                        //         dataType: 'json',
+                        //         success: function(data) {
+                        //             $('#idPhong').text(data.roomNum);
+                        //             $('#statusPhong').val(data.status); 
+                        //             var innerBox = $(`.room${roomId}`);
+
+                        //             $('.status-room').addClass('Occupied');
+
+                        //             innerBox.removeClass('room-available room-booked room-occupied');  
+                        //             if(innerBox.hasClass(`room${roomId}`)) {
+                        //                 if(data.status === 'Empty Room') {
+                        //                     innerBox.addClass('room-available');
+                        //                 } else if(data.status === 'Booked Room') {
+                        //                     innerBox.addClass('room-booked');
+                        //                 } else {
+                        //                     innerBox.addClass('room-occupied');                                  
+                        //                 }
+                        //             }
+
+                        //             if($('.status-room').hasClass('Occupied')) {
+                        //                 $('.status-room').text(data.status);
+
+                        //             }
+
+                        //         },
+                        //     });
+                        // });
+                        btnNhanPhong.addEventListener('click', () => {
+                            // Ẩn nút "Nhận phòng"
+                            btnNhanPhong.style.display = 'none';
+
+                            // Hiển thị nút "Thanh toán" và "Thêm DV"
+                            btnThanhToan.style.display = 'inline-block';
+                            btnThemDV.style.display = 'inline-block';
+
+
+                            // Gửi request đến controller để cập nhật trạng thái phòng
+                            fetch(`/receptionist/updateStatusRoom?roomId=${roomId}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Cập nhật thông tin phòng vào modal
+                                    // Ví dụ:
+                                    document.getElementById('idPhong').textContent = data.roomNum;
+                                    document.getElementById('statusPhong').value = data.status;
+
+                                    // Cập nhật khung sản phẩm
+                                    const roomBlock = document.querySelector(`.car-block-fourteen[data-room-id="${data.id}"]`);
+                                    if (roomBlock) {
+                                        // Xóa các lớp hiện có và thêm lớp mới dựa trên trạng thái phòng
+                                        roomBlock.classList.remove('room-available', 'room-booked', 'room-occupied');
+                                        roomBlock.classList.add(`room-${data.status.toLowerCase().replace(' ', '-')}`);
+
+                                        // Cập nhật trạng thái phòng
+                                        const statusRoomElement = roomBlock.querySelector('#statusRoom');
+                                        statusRoomElement.textContent = data.status;
+                                    } else {
+                                        console.log(`Không tìm thấy phần tử có data-room-id="${data.id}"`);
+                                        console.log(document.querySelector(`.car-block-fourteen[data-room-id="${data.id}"]`));
+                                    }
+                                });
+                        });
+
+                        //Hiển thị các nút
+                        btnNhanPhong.style.display = 'inline-block';
+                        btnThanhToan.style.display = 'none';
+                        btnThemDV.style.display = 'none';
+                    } else if (data.status === "Rented Room") {
+                        // Ẩn các nút
+                        btnNhanPhong.style.display = 'none';
+                        btnThanhToan.style.display = 'inline-block';
+                        btnThemDV.style.display = 'inline-block';
+                    } else {
+                        // Ẩn các nút
+                        btnNhanPhong.style.display = 'none';
+                        btnThanhToan.style.display = 'none';
+                        btnThemDV.style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy thông tin phòng:', error);
+                }
+                );
+
+
+
+            // Lấy nút "Thanh toán"
+            const btnThanhToan = document.getElementById('btnThanhToan');
+
+            // Thêm sự kiện click cho nút "Thanh toán"
+            btnThanhToan.addEventListener('click', async () => {
+                try {
+                    // Hiển thị confirm dialog
+                    const confirmed = await confirmPayment();
+                    if (confirmed) {
+                        // Lấy giá trị của phần tử <p id="invoiceId">
+                        const invoiceId = document.getElementById('invoiceId').textContent;
+
+                        // Gửi HTTP request lên server để cập nhật trạng thái phòng
+                        const roomId = await updateRoomStatus2();
+
+                        // Gửi HTTP request lên server
+                        const response = await fetch(`/receptionist/invoiceDetail/${invoiceId}`, {
+                            method: 'GET'
+                        });
+
+                        // Kiểm tra nếu request thành công
+                        if (response.ok) {
+                            // Chuyển hướng sang trang invoice1
+                            window.location.href = `/receptionist/invoiceDetail/${invoiceId}`;
+                        } else {
+                            console.error('Có lỗi xảy ra khi gửi invoiceID lên server');
+                        }
+                    } else {
+                        console.log('Thanh toán đã bị hủy');
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gửi HTTP request:', error);
+                }
+            });
+
+            async function confirmPayment() {
+                return new Promise((resolve) => {
+                    const confirmed = window.confirm('Bạn có muốn thanh toán không?');
+                    resolve(confirmed);
+                });
+            }
+
+            async function updateRoomStatus2() {
+                try {
+                    // Lấy giá trị của phần tử <p id="roomId">
+                    //const roomId = document.getElementById('idPhong').textContent;
+
+                    // Gửi HTTP request lên server để cập nhật trạng thái phòng
+                    const response = await fetch(`/receptionist/updateStatusRoom2?roomId=${roomId}`, {
+                        method: 'GET'
+                    });
+
+                    if (response.ok) {
+                        // Lấy dữ liệu từ response
+                        const room = await response.json();
+                        console.log('Room updated:', room);
+                        return room.id;
+                    } else {
+                        console.error('Có lỗi xảy ra khi cập nhật trạng thái phòng');
+                        return null;
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gửi HTTP request:', error);
+                    return null;
+                }
+            }
+
+
+
+
+
+
+        }
+
+
+    </script>
+    <script>
+        const themDVs = document.querySelectorAll('.js-themDV')
+        // 3 nút có class js.. lưu vào biến buyBtns
+        const modal2 = document.querySelector('.js-modal-2')
+        // lấy tất cả các thằng có class .js-modal
+        const modalClose2 = document.querySelector('.js-modal-close-2')
+
+        const modalWindow2 = document.querySelector('.js-modal-window-2')
+
+        // hàm hiện modal mua vé (thêm class open cả modal)
+        function showByTickets2() {
+            modal2.classList.add('open')
+            // alert('ok')
+        }
+
+        // hàm ẩn modal mua vé (xóa class open ở modal)
+        function hideByTickets2() {
+            modal2.classList.remove('open')
+
+        }
+        // lặp qua từng thẻ button và nghe hành vi click
+        for (const themDV of themDVs) {
+            // từng thằng trong buyBtns
+            themDV.addEventListener('click', showByTickets2)
+
+
+
+
+
+        }
+        // nghe hành vi click vaof button close
+        modalClose2.addEventListener('click', hideByTickets2)
+        // khi click vào tất cả các khoảng modal 
+        modal2.addEventListener('click', hideByTickets2)
+        // vì khi click vào tất cả các khoảng modal thì nó
+        // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
+        modalWindow2.addEventListener('click', function (event) {
+            event.stopPropagation()
+        })
+
+        function sendServiceTypeId(serviceTypeId) {
+            if (!serviceTypeId) {
+                return; // Không làm gì nếu không có giá trị được chọn
+            }
+
+            // Hiển thị modal
+            // Gửi request đến controller để lấy thông tin dịch vụ
+            fetch(`/receptionist/getServiceBySeTypeId?serviceTypeId=${serviceTypeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Lấy reference tới tbody của bảng
+                    const tbodyElement = document.getElementById('lvDanhSachDV');
+
+                    // Xóa các dòng hiện có trong tbody
+                    while (tbodyElement.firstChild) {
+                        tbodyElement.removeChild(tbodyElement.firstChild);
+                    }
+
+                    // Lặp qua từng ServiceDetailDTO trong data     
+                    data.forEach(serviceDetail => {
+                        // Tạo và cấu hình các element cho dòng mới
+                        const newRow = document.createElement('tr');
+                        newRow.id = 'serviceDS';
+
+                        const serviceIdCell = document.createElement('td');
+                        serviceIdCell.id = 'serviceId';
+                        serviceIdCell.textContent = serviceDetail.seId;
+                        serviceIdCell.style.display = 'none';
+
+
+                        const serviceTypeNameCell = document.createElement('td');
+                        serviceTypeNameCell.id = 'serviceTypeName';
+                        serviceTypeNameCell.textContent = serviceDetail.seTypeName;
+
+                        const serviceNameCell = document.createElement('td');
+                        serviceNameCell.id = 'serviceName';
+                        serviceNameCell.textContent = serviceDetail.seName;
+
+                        const servicePriceCell = document.createElement('td');
+                        servicePriceCell.id = 'servicePrice';
+                        servicePriceCell.textContent = serviceDetail.sePrice;
+
+                        const addServiceCell = document.createElement('td');
+                        addServiceCell.id = 'addService';
+                        const addServiceLink = document.createElement('a');
+                        addServiceLink.href = 'javascript:void(0)';
+                        addServiceLink.classList.add('wait-link');
+                        const addServiceIcon = document.createElement('span');
+                        addServiceIcon.classList.add('material-icons');
+                        addServiceIcon.style.color = 'green';
+                        addServiceIcon.textContent = 'add_circle';
+                        addServiceLink.appendChild(addServiceIcon);
+                        addServiceCell.appendChild(addServiceLink);
+
+                        // Thêm các cell vào dòng mới
+                        newRow.appendChild(serviceIdCell);
+                        newRow.appendChild(serviceTypeNameCell);
+                        newRow.appendChild(serviceNameCell);
+                        newRow.appendChild(servicePriceCell);
+                        newRow.appendChild(addServiceCell);
+
+                        // Thêm dòng mới vào tbody
+                        tbodyElement.appendChild(newRow);
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy danh sách dịch vụ:', error);
+                }
+                );
+        }
+
+
+
+        // Lấy tham chiếu đến ô input
+        const inputElement = document.getElementById('input');
+
+        // Lắng nghe sự kiện "keyup" trên ô input
+        inputElement.addEventListener('keyup', function (event) {
+            // Kiểm tra xem người dùng có nhấn phím Enter hay không
+            if (event.key === 'Enter') {
+                // Lấy giá trị của ô input
+                const seName = inputElement.value;
+                // Gọi hàm sendServiceName với giá trị seName
+                sendServiceName(seName);
+            }
+        });
+
+
+        function sendServiceName(seName) {
+
+            // Hiển thị modal
+            // Gửi request đến controller để lấy thông tin dịch vụ
+            fetch(`/receptionist/getServiceBySeName?seName=${seName}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Lấy reference tới tbody của bảng
+                    const tbodyElement = document.getElementById('lvDanhSachDV');
+
+                    // Xóa các dòng hiện có trong tbody
+                    while (tbodyElement.firstChild) {
+                        tbodyElement.removeChild(tbodyElement.firstChild);
+                    }
+
+                    // Lặp qua từng ServiceDetailDTO trong data     
+                    data.forEach(serviceDetail => {
+                        // Tạo và cấu hình các element cho dòng mới
+                        const newRow = document.createElement('tr');
+                        newRow.id = 'serviceDS';
+
+                        const serviceIdCell = document.createElement('td');
+                        serviceIdCell.id = 'serviceId';
+                        serviceIdCell.textContent = serviceDetail.seId;
+                        serviceIdCell.style.display = 'none';
+
+                        const serviceTypeNameCell = document.createElement('td');
+                        serviceTypeNameCell.id = 'serviceTypeName';
+                        serviceTypeNameCell.textContent = serviceDetail.seTypeName;
+
+                        const serviceNameCell = document.createElement('td');
+                        serviceNameCell.id = 'serviceName';
+                        serviceNameCell.textContent = serviceDetail.seName;
+
+                        const servicePriceCell = document.createElement('td');
+                        servicePriceCell.id = 'servicePrice';
+                        servicePriceCell.textContent = serviceDetail.sePrice;
+
+                        const addServiceCell = document.createElement('td');
+                        addServiceCell.id = 'addService';
+                        const addServiceLink = document.createElement('a');
+                        addServiceLink.href = 'javascript:void(0)';
+                        addServiceLink.classList.add('wait-link');
+                        const addServiceIcon = document.createElement('span');
+                        addServiceIcon.classList.add('material-icons');
+                        addServiceIcon.style.color = 'green';
+                        addServiceIcon.textContent = 'add_circle';
+                        addServiceLink.appendChild(addServiceIcon);
+                        addServiceCell.appendChild(addServiceLink);
+
+                        // Thêm các cell vào dòng mới
+                        newRow.appendChild(serviceIdCell);
+                        newRow.appendChild(serviceTypeNameCell);
+                        newRow.appendChild(serviceNameCell);
+                        newRow.appendChild(servicePriceCell);
+                        newRow.appendChild(addServiceCell);
+
+                        // Thêm dòng mới vào tbody
+                        tbodyElement.appendChild(newRow);
+                    });
+                })
+                .catch(error => {
+                    console.error('Lỗi khi lấy danh sách dịch vụ:', error);
+                }
+                );
+        }
+
+
+
+        // Sử dụng event delegation
+        const lvDanhSachDV = document.getElementById('lvDanhSachDV');
+        lvDanhSachDV.addEventListener('click', (event) => {
+            if (event.target.closest('.wait-link')) {
+                addServiceToSelectedTable(event);
+            }
+        });
+
+        function addServiceToSelectedTable(event) {
+            const row = event.target.closest('tr');
+            const serviceId = row.querySelector('#serviceId, .serviceId').textContent;
+            const serviceName = row.querySelector('#serviceName, .serviceName').textContent;
+            const servicePrice = parseFloat(row.querySelector('#servicePrice, .servicePrice').textContent);
+
+            // Kiểm tra xem dịch vụ đã tồn tại trong bảng "Dịch vụ đã chọn"
+            const existingRows = document.querySelectorAll('#lvDichVuDaChon tr');
+            let existingRow = null;
+            for (let i = 0; i < existingRows.length; i++) {
+                if (existingRows[i].querySelector('td:first-child').textContent === serviceName) {
+                    existingRow = existingRows[i];
+                    break;
+                }
+            }
+
+            if (existingRow) {
+                // Nếu dịch vụ đã tồn tại, cập nhật số lượng và thành tiền
+                const qtyCell = existingRow.querySelector('td:nth-child(2)');
+                const priceCell = existingRow.querySelector('td:nth-child(3)');
+                let qty = parseInt(qtyCell.textContent);
+                qty++;
+                qtyCell.textContent = qty.toString();
+                priceCell.textContent = (qty * servicePrice).toFixed(2);
+            } else {
+                // Nếu dịch vụ chưa tồn tại, thêm hàng mới vào bảng "Dịch vụ đã chọn"
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+            <td class="serviceName">${serviceName}</td>
+            <td>1</td>
+            <td class="servicePrice">${servicePrice.toFixed(2)}</td>
+            <td><a href="javascript:void(0)" class="wait-link-1">
+                <span class="material-icons" style="color: red;">cancel</span>
+            </a></td>
+            <td class="serviceId" style="display:none;">${serviceId}</td>
+            `;
+                document.getElementById('lvDichVuDaChon').appendChild(newRow);
+                console.log("row", newRow)
+            }
+        }
+
+
+        const lvDichVuDaChon = document.getElementById('lvDichVuDaChon');
+        lvDichVuDaChon.addEventListener('click', (event) => {
+            if (event.target.closest('.wait-link-1')) {
+                removeServiceFromSelectedTable(event);
+            }
+        });
+
+        function removeServiceFromSelectedTable(event) {
+            const row = event.target.closest('tr');
+            row.remove();
+        }
+
+
+
+
+
+
+
+
+
+        // Gắn sự kiện click vào nút "Lưu"
+        var btnLuuDV = document.getElementById('btnLuuDV');
+        btnLuuDV.addEventListener('click', function () {
+            // Lấy dữ liệu từ bảng "Dịch vụ đã chọn"
+            var selectedServices = [];
+            var lvDichVuDaChon = document.getElementById('lvDichVuDaChon');
+            var rows = lvDichVuDaChon.getElementsByTagName('tr');
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName('td');
+                var serviceName = cells[0].textContent;
+                var quantity = cells[1].textContent;
+                var price = cells[2].textContent;
+                var serviceId = cells[4].textContent;
+                selectedServices.push({
+                    seName: serviceName,
+                    seQuantity: quantity,
+                    sePrice: price,
+                    seId: serviceId
+                });
+            }
+
+            // Xóa dữ liệu trong bảng "Sử dụng dịch vụ"
+            var lvSuDungDV = document.getElementById('lvSuDungDV');
+            lvSuDungDV.innerHTML = '';
+
+            // Thêm dữ liệu đã chọn vào bảng "Sử dụng dịch vụ"
+            for (var j = 0; j < selectedServices.length; j++) {
+                var newRow = document.createElement('tr');
+                var nameTd = document.createElement('td');
+                nameTd.textContent = selectedServices[j].seName;
+                var quantityTd = document.createElement('td');
+                quantityTd.textContent = selectedServices[j].seQuantity;
+                var priceTd = document.createElement('td');
+                priceTd.textContent = selectedServices[j].sePrice;
+                var serviceIdTd = document.createElement('td');
+                serviceIdTd.style.display = 'none';
+                serviceIdTd.textContent = selectedServices[j].seId;
+                newRow.appendChild(nameTd);
+                newRow.appendChild(quantityTd);
+                newRow.appendChild(priceTd);
+                newRow.appendChild(serviceIdTd);
+                lvSuDungDV.appendChild(newRow);
+            }
+
+            // Đóng modal
+            document.querySelector('.js-modal-close-2').click();
+        });
+
+
+    </script>
+
+
+    <script>
+        // Lấy các phần tử HTML cần tương tác
+        const statusFilterRadios = document.querySelectorAll('.selectCheckbox[name="statusFilter"]');
+        const roomTypeRadios = document.querySelectorAll('input[name="selectedRoomTypeName"]');
+        const roomBlocks = document.querySelectorAll('.car-block-fourteen');
+
+        // Lắng nghe sự thay đổi của radio buttons
+        statusFilterRadios.forEach(radio => {
+            radio.addEventListener('change', filterRooms);
+        });
+
+        roomTypeRadios.forEach(radio => {
+            radio.addEventListener('change', filterRooms);
+        });
+
+        // Hàm lọc các phòng dựa trên trạng thái và loại phòng được chọn
+        function filterRooms() {
+            const selectedStatusFilter = document.querySelector('.selectCheckbox[name="statusFilter"]:checked');
+            const selectedRoomTypeNames = Array.from(document.querySelectorAll('input[name="selectedRoomTypeName"]:checked')).map(radio => radio.value);
+
+
+            roomBlocks.forEach(block => {
+                // Lấy giá trị của room.status
+                const statusElement = block.querySelector('#statusRoom');
+                const roomStatus = statusElement ? statusElement.textContent : '';
+
+                // Lấy giá trị của room.roomTypeName
+                const typeNameElement = block.querySelector('#typeNameRoom');
+                const roomTypeName = typeNameElement ? typeNameElement.textContent : '';
+
+
+                let shouldShow = true;
+
+                if (selectedStatusFilter && roomStatus !== selectedStatusFilter.value) {
+                    shouldShow = false;
+                }
+
+                if (selectedRoomTypeNames.length > 0 && !selectedRoomTypeNames.includes(roomTypeName)) {
+                    shouldShow = false;
+                }
+
+                block.style.display = shouldShow ? 'block' : 'none';
+
+                console.log('Selected status filter:', selectedStatusFilter ? selectedStatusFilter.value : 'None');
+                console.log('Selected room types:', selectedRoomTypeNames);
+                console.log('Room status:', roomStatus);
+                console.log('Room type name:', roomTypeName);
+            });
+        }
+    </script>
+
+    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+    <!-- <script th:src="@{/js/test.js}"></script> -->
     <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.copy1.js}"></script>

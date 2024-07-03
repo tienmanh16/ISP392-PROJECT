@@ -35,4 +35,21 @@ public class Email {
 
     }
 
+    public void sendEmailLeaveInfo(String to, String name ) throws MessagingException {
+        session.setMaxInactiveInterval(5 * 60);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(to);
+        helper.setSubject("Leave information successfully!!!");
+        Context context = new Context();
+        context.setVariable("name", "Hello, " + name + "!!!");
+        String htmlMsg = templateEngine.process("sendEmailLeaveInfo", context);
+        helper.setText(htmlMsg, true);
+
+        mailSender.send(message);
+
+    }
+
 }

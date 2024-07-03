@@ -26,7 +26,7 @@ import lombok.Data;
 
 public class Room {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "RoomID", nullable = false)
     private int id;
 
@@ -45,12 +45,18 @@ public class Room {
 
     @Column(name = "RoomActive", nullable = false)
     private int roomActive;
-     
+
+    @Column(name = "Cleaning", nullable = false)
+    private String cleaning;
+    
     @OneToMany(mappedBy = "roomID")
     @JsonManagedReference
     private List<BookingMapping> bookingMapping;
 
     @OneToMany(mappedBy = "room")
     @JsonManagedReference
-    private List<RoomItemMapping> roomItemMapping; 
+    private List<RoomItemMapping> roomItemMapping;
+
+
+    
 }

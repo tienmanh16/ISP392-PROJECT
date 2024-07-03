@@ -32,11 +32,11 @@ public class RoomType {
     @Column(name = "Description")
     private String des;
 
-    @Column(name = "PricePerHour")
-    private String priceHour;
+    @Column(name = "PricePerHour", nullable = false)
+    private int priceHour;
 
-    @Column(name = "PricePerDay")
-    private String priceDay;
+    @Column(name = "PricePerDay", nullable = false)
+    private int priceDay;
 
     @Column(name = "RoomTypeActive", nullable = false)
     private int roomTypeActive;
@@ -48,4 +48,7 @@ public class RoomType {
     @OneToMany(mappedBy = "roomType")
     @JsonManagedReference
     private List<ImageDetail> imageDetail;
+
+
+
 }

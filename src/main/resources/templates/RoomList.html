@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Room List</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="@https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
+    <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+        href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
+    <!-- thư viện để add header và footer  -->
+
+    <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}">
+    <link th:href="@{/css/mmenu.css}" rel="stylesheet">
+    <link th:href="@{/css/style.copy.css}" rel="stylesheet">
+
+    <link rel="shortcut icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+    <link rel="icon" th:href="@{/images/favicon.png}" type="image/x-icon">
+
+    <!-- Responsive -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+    <style>
+        .custom-button {
+            background-color: #05073e;
+            color: #fff;
+        }
+
+        .custom-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-input {
+            border: 2px solid #05073e;
+            border-radius: 5px 0 0 5px;
+            border-right: none;
+            height: 38px;
+            width: 250px;
+        }
+
+        .search-button {
+            border: 2px solid #05073e;
+            border-radius: 0 5px 5px 0;
+            height: 38px;
+            width: 120px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+    </style>
+    <style>
+        .table-filter {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .table-filter:hover {
+            border-color: #007bff;
+            /* Đổi màu viền khi hover */
+            background-color: #e9ecef;
+            /* Đổi màu nền khi hover */
+        }
+
+        .custom-button {
+            background-color: #05073e;
+            color: #fff;
+        }
+
+        .custom-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="boxcar-wrapper">
+        <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+            <div th:replace="~{fragments/header_admin :: header}"></div>
+        </header>
+                <!-- thêm class layout-radius để fix header  -->
+                <section class="ftco-section layout-radius">
+                    <div class="row">
+                        <div class="row justify-content-center">
+                            <div class="col-md-6 text-center mb-5">
+                                <h2 class="heading-section">Room Management</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <form class="search-container">
+                            <label for="searchbar"></label>
+                            <input type="text" id="searchbar" class="form-control search-input" name="name" placeholder="Search Room Number...">
+                            <button class="btn search-button" type="submit" id="search-button">
+                                Search
+                            </button>
+                        </form>
+
+                        <button class="btn custom-button" onclick="window.location.href='/add-room'">
+                            Add Room
+                        </button>
+                    </div>
+                <div class="container">
+                    <div class="col-lg-12">
+                        <div class="table-wrap">
+                            <table class="table table-striped" id="emp-table">
+                                <thead>
+                                    <tr>
+                                        <th col-index="1">ID</th>
+                                        <th col-index="2">Room Number</th>
+                                        <th col-index="3">Room Type
+                                            <select class="table-filter" onchange="filter_rows()">
+                                                <option value="all">All</option>
+                                            </select>
+                                        </th>
+                                        <th col-index="4">Description</th>
+                                        <th col-index="5">Price Hour
+                                            <select class="table-filter" onchange="filter_rows()">
+                                                <option value="all">All</option>
+                                            </select>
+                                        </th>
+                                        <th col-index="6">Price Day
+                                            <select class="table-filter" onchange="filter_rows()">
+                                                <option value="all">All</option>
+                                            </select>
+                                        </th>
+                                        <th col-index="7">Status
+                                            <select class="table-filter" onchange="filter_rows()">
+                                                <option value="all">All</option>
+                                            </select>
+                                        </th>
+                                        <th>Update</th>
+                                        <th>Change</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="room : ${rooms}">
+                                        <td th:text="${room.id}"></td>
+                                        <td th:text="${room.roomNum}"></td>
+                                        <td th:text="${room.RoomType.name}"></td>
+                                        <td th:text="${room.RoomType.des}"></td>
+                                        <td th:text="${room.RoomType.priceHour}"></td>
+                                        <td th:text="${room.RoomType.priceDay}"></td>
+                                        <td th:text="${room.status}"></td>
+                                        <td><a th:href="@{/listRooms/{id}/update(id=${room.id})}"
+                                                class="ti-menu"></a></td>
+                                        <td>
+                                                <a href="javascript:void(0);" th:if="${room.roomActive == 0}"
+                                                   th:onclick="'confirmActiveRoom(' + ${room.id} + ');'"
+                                                    class="btn btn-danger" style="width: 85px; height: 40px;">Inactive</a>
+                                                <a href="javascript:void(0);" th:if="${room.roomActive == 1}"
+                                                   th:onclick="'confirmInactiveRoom(' + ${room.id} + ');'"
+                                                    class="btn btn-success" style="width: 85px; height: 40px;">Active</a>
+                                            </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        </section>
+        <script>
+        function confirmActiveRoom(RoomID) {
+            if (confirm('Are you sure you want to active it?')) {
+                activeRoom(RoomID);
+            }
+        }
+
+        function activeRoom(RoomID) {
+            fetch(`/admin/activeRoom/${RoomID}`, {
+                method: 'GET'
+            })
+                .then(response => response.text().then(text => ({ status: response.status, text })))
+                .then(({ status, text }) => {
+                    alert(text);
+                    if (status === 200) { // HTTP OK status
+                        location.reload(); // Reload the page to reflect the change
+                    } else {
+                        throw new Error(text); // If the message is not expected, throw an error
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert("An error occurred: " + error.message);
+                });
+        }
+    </script>
+        <script>
+			function confirmInactiveRoom(RoomID) {
+				if (confirm('Are you sure you want to inactive it?')) {
+					inactiveRoom(RoomID);
+				}
+			}
+
+			function inactiveRoom(RoomID) {
+				fetch(`/admin/inactiveRoom/${RoomID}`, {
+					method: 'GET'
+				})
+					.then(response => response.text().then(text => ({ status: response.status, text })))
+					.then(({ status, text }) => {
+						alert(text);
+						if (status === 200) { // HTTP OK status
+							location.reload(); // Reload the page to reflect the change
+						} else {
+							throw new Error(text); // If the message is not expected, throw an error
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert("An error occurred: " + error.message);
+					});
+			}
+		</script>
+
+    </div>
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    <!-- thư viện để add header và footer  -->
+
+    <!-- Include filter.js at the end of the body -->
+    <script th:src="@{/js/filter.js}"></script>
+    <script>
+        // Call getUniqueValuesFromColumn after the script is loaded
+        window.onload = function () {
+            getUniqueValuesFromColumn();
+        };
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
+    <script th:src="@{/js/jquery.js}"></script>
+    <script th:src="@{/js/popper.min.js}"></script>
+    <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
+    <script th:src="@{/js/slick.min.js}"></script>
+    <script th:src="@{/js/slick-animation.min.js}"></script>
+    <script th:src="@{/js/jquery.fancybox.js}"></script>
+    <script th:src="@{/js/wow.js}"></script>
+    <script th:src="@{/js/appear.js}"></script>
+    <script th:src="@{/js/mixitup.js}"></script>
+    <script th:src="@{/js/knob.js}"></script>
+    <script th:src="@{/js/mmenu.js}"></script>
+    <script th:src="@{/js/main.copy1.js}"></script>
+
+
+
+    <script th:src="@{/src/main/resources/static/js/jquery.min.js}"></script>
+    <script th:src="@{/src/main/resources/static/js/popper.js}"></script>
+    <script th:src="@{/src/main/resources/static/js/bootstrap.min.js}"></script>
+    <script th:src="@{/src/main/resources/static/js/main.js}"></script>
+
+</body>
+
+</html>

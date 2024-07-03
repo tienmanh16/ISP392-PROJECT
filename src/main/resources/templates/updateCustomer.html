@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Update Customer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .form-wrapper {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 3px solid black;
+            border-radius: 5px;
+            background-color: beige;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-wrapper h2 {
+            color: #333;
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: inline-block;
+            width: 120px;
+            vertical-align: top;
+        }
+
+        .form-group input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            border: 3px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .form-group input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            background-color: #2fffb2;
+            color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-wrapper">
+        <h2 style="color: maroon;text-align: center;margin-top: -10px;">Update Customer Information</h2>
+        <form th:action="@{/receptionist/updateCustomer}" th:object="${customer}" method="post"
+            onsubmit="return checkFormSubmissionSync(event)">
+            <input type="hidden" th:field="*{customerID}">
+
+            <div class="form-group" style="position: relative;">
+                <label>Name:</label>
+                <input type="text" th:field="*{customerName}" required>
+                <span class="customerNameText"
+                    style="font-size: 13px; color: red; position: absolute; bottom: -1.5em;"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Gender:</label>
+                <select id="customerGender" th:field="*{customerGender}" class="form-control"
+                    style="width: 90px; height: 35px;margin-left: -60px;" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="position: relative;">
+                <label>Address:</label>
+                <input type="text" th:field="*{customerAddress}" required>
+                <span class="customerAddressText"
+                    style="font-size: 13px; color: red; position: absolute; bottom: -1.5em;"></span>
+            </div>
+
+            <div class="form-group" style="position: relative;">
+                <label>Phone:</label>
+                <input type="text" th:field="*{customerPhone}" required>
+                <span class="customerPhoneText"
+                    style="font-size: 13px; color: red; position: absolute; bottom: -1.5em;"></span>
+            </div>
+
+            <div class="form-group" style="position: relative;">
+                <label>Email:</label>
+                <input type="text" th:field="*{customerEmail}" required>
+                <span class="customerEmailText"
+                    style="font-size: 13px; color: red; position: absolute; bottom: -1.5em;"></span>
+            </div>
+
+            <div class="form-group" style="position: relative;">
+                <label>Identification ID:</label>
+                <input type="text" th:field="*{customerIdentificationID}" required>
+                <span class="customerIdentificationIDText"
+                    style="font-size: 13px; color: red; position: absolute; bottom: -1.5em;"></span>
+            </div>
+
+            <input type="submit" value="Update" style="background: darkseagreen;padding: 10px 20px;">
+        </form>
+    </div>
+
+    <script>
+        const customerNameText = document.querySelector('.customerNameText');
+        const customerIdentificationIDText = document.querySelector('.customerIdentificationIDText');
+        const customerPhoneText = document.querySelector('.customerPhoneText');
+        const customerEmailText = document.querySelector('.customerEmailText');
+        const customerAddressText = document.querySelector('.customerAddressText');
+
+        function checkCustomerName() {
+            return new Promise((resolve, reject) => {
+                const customerNamePattern = /^[\p{L}\p{N} ]+$/u;
+                const customerName = document.getElementById('customerName').value;
+                if (customerName.match(customerNamePattern)) {
+                    customerNameText.innerHTML = '';
+                    resolve(true);
+                } else {
+                    customerNameText.innerHTML = 'Customer Name must not contain special characters.';
+                    resolve(false);
+                }
+            });
+        }
+
+        function checkCustomerIdentificationIDText() {
+            return new Promise((resolve, reject) => {
+                const customerIdentificationIDPattern = /^\d+$/;
+                const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
+
+                if (customerIdentificationID.match(customerIdentificationIDPattern) && Number(customerIdentificationID) > 0) {
+                    customerIdentificationIDText.innerHTML = '';
+                    resolve(true);
+                } else {
+                    customerIdentificationIDText.innerHTML = 'Customer Identification ID must be a positive number.';
+                    resolve(false);
+                }
+            });
+        }
+
+        function checkPhoneNumber() {
+            return new Promise((resolve, reject) => {
+                const customerPhonePattern = /^[0-9]+$/;
+                const forbiddenCharsPattern = /[@!?#$%^*():;"',+=/\\|]/;
+                const customerPhone = document.getElementById('customerPhone').value.trim();
+
+                if (forbiddenCharsPattern.test(customerPhone)) {
+                    customerPhoneText.innerHTML = 'Customer phone must not contain special characters such as @!?#$%^*():;"\',+=/\\|.';
+                    resolve(false);
+                } else if (customerPhonePattern.test(customerPhone) && BigInt(customerPhone) > 0n) {
+                    customerPhoneText.innerHTML = '';
+                    resolve(true);
+                } else {
+                    customerPhoneText.innerHTML = 'Customer phone must be a positive number.';
+                    resolve(false);
+                }
+            });
+        }
+
+        function checkCustomerAddress() {
+            return new Promise((resolve, reject) => {
+                const customerAddressPattern = /^[\p{L}\p{N}, ]+$/u;
+                const customerAddress = document.getElementById('customerAddress').value;
+                if (customerAddress.match(customerAddressPattern)) {
+                    customerAddressText.innerHTML = '';
+                    resolve(true);
+                } else {
+                    customerAddressText.innerHTML = 'Customer Address must not contain special characters.';
+                    resolve(false);
+                }
+            });
+        }
+
+        function checkDuplicateEmail() {
+            return new Promise((resolve, reject) => {
+                $.ajax({
+                    url: '/receptionist/customer_check-email',
+                    type: 'GET',
+                    data: { customerEmail: document.getElementById('customerEmail').value },
+                    async: true,
+                    success: function (response) {
+                        if (response && response != null) {
+                            customerEmailText.innerHTML = 'Email already exists.';
+                            resolve(false);
+                        } else {
+                            customerEmailText.innerHTML = '';
+                            resolve(true);
+                        }
+                    },
+                    error: function () {
+                        customerEmailText.innerHTML = 'Error checking email.';
+                        resolve(false);
+                    }
+                });
+            });
+        }
+
+        function checkEmail() {
+            return new Promise((resolve, reject) => {
+                const customerEmailPattern = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+                const forbiddenCharsPattern = /[!?#$%^*():;"',+=/\\|]/;
+                const emailValue = document.getElementById('customerEmail').value.trim();
+                if (!emailValue.match(customerEmailPattern)) {
+                    customerEmailText.innerHTML = 'Must be a valid email address.';
+                    resolve(false);
+                } else if (emailValue.match(forbiddenCharsPattern)) {
+                    customerEmailText.innerHTML = 'Email must not contain special characters such as !?#$%^*():;"\',+=/\\|.';
+                    resolve(false);
+                } else {
+                    customerEmailText.innerHTML = '';
+                    resolve(true);
+                }
+            });
+        }
+
+        async function checkFormSubmission() {
+            const results = await Promise.all([
+                // checkDuplicateEmail(),
+                checkEmail(),
+                // checkCustomerName(),
+                checkCustomerIdentificationIDText(),
+                checkPhoneNumber(),
+                checkCustomerAddress(),
+                checkCustomerName()
+            ]);
+            return results.every(result => result === true);
+        }
+
+        document.querySelector('form').addEventListener('submit', handleSubmit);
+
+        async function checkFormSubmissionSync(event) {
+            event.preventDefault();
+            const isFormValid = await checkFormSubmission();
+            if (isFormValid) {
+                event.target.submit();
+            } else {
+                console.log('Form validation failed.');
+            }
+            return false; // Ngăn form gửi nếu không hợp lệ
+        }
+    </script>
+
+    <style>
+        .customerNameText,
+        .customerIdentificationIDText,
+        .customerPhoneText,
+        .customerEmailText,
+        .customerAddressText {
+            color: red;
+        }
+    </style>
+
+</body>
+</html>

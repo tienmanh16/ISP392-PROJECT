@@ -235,6 +235,13 @@ h6 {
   line-height: var(--line-height-heading-small);
 }
 
+c {
+  margin-right: 50px;
+  font-size: var(--h6-font-size);
+  font-weight: var(--h6-font-weight);
+  line-height: var(--line-height-heading-small);
+}
+
 /* -------- Body Text ---------- */
 table p {
   margin-bottom: 0;
@@ -449,7 +456,7 @@ Reset
 * {
   margin: 0px;
   padding: 0px;
-  border: none;
+  /* border: none; */
   outline: none;
   font-size: 100%;
 }
@@ -11577,6 +11584,24 @@ Section Title
   padding: 17px 30px 30px;
   text-align: center;
 }
+
+:root {
+  --Border: 1px solid #e5e5e5;
+  --theme-color-light: #f8f8f8;
+}
+
+.inner-box.room-available {
+  background-color: rgb(138, 244, 138);
+}
+
+.inner-box.room-booked {
+  background-color: rgba(113, 125, 113, 0.478);
+}
+
+.inner-box.room-occupied {
+  background-color: rgb(125, 192, 255);
+}
+
 
 .car-block-fourteen .inner-box .image-box {
   margin-bottom: 30px;

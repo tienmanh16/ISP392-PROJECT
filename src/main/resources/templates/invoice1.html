@@ -246,14 +246,15 @@
                             <p class="address">Invoice Number: <span th:text="${booking.Invoice[0].InvoiceID}"></span>
                             </p>
                         </div>
+                        <!-- nếu sau update 1 thằng book dc nhiều phòng sửa lại if else size > 1 .... -->
                         <div class="col-5 ">
                             <h2></h2>
                             <p class="address">Room Number: <span
                                     th:text="${booking.BookingMapping[0].RoomID.RoomNum}"></span>
                             </p>
-                            <p class="address">Check-in Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
+                            <p class="address">Check-in Date: <span th:text="${booking.BookingMapping[0].checkInDate}"></span>
                             </p>
-                            <p class="address">Check-out Date: <span th:text="${booking.invoice[0].invoiceDate}"></span>
+                            <p class="address">Check-out Date: <span th:text="${booking.BookingMapping[0].checkOutDate}"></span>
                             </p>
                         </div>
                     </div>
@@ -271,20 +272,15 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="service : ${listService}">
-                            <td th:text="${service.seName}"></td>
-                            <td th:text="${service.sePrice}">$</td>
-                            <td>
-                                <span th:each="line : ${service.invoiceLine}">
-                                    <span th:text="${line.quantity}"></span><br />
+                        <tr th:each="invoiceLineList : ${invoiceLineList}">
+                            <td th:text="${invoiceLineList.service.seName}"></td>
+                            <td th:text="${invoiceLineList.service.sePrice}">$</td>
+                            <td th:text="${invoiceLineList.quantity}">
 
-                                </span>
+
                             </td>
-                            <td>
-                                <span th:each="line : ${service.invoiceLine}">
-                                    <span th:text="${line.invoiceTotalAmount}"></span><br />
-
-                                </span>
+                            <td th:text="${invoiceLineList.InvoiceTotalAmount}">
+                                
                             </td>
 
 
