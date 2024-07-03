@@ -42,8 +42,8 @@ import com.isp.project.service.EmployeeService;
 
 @Controller
 // =========================
-@RequestMapping("/receptionist")
-public class BookingController {
+@RequestMapping("/admin")
+public class BookingControllerAdmin {
 
     @Autowired
     private BookingService bookingService;
@@ -81,37 +81,15 @@ public class BookingController {
 			Employee user = employeeService.findByEmail(email);
 			m.addAttribute("user1", user);
 		}
+
 	}
-
-    //  @GetMapping("/booking")
-    // public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model,Principal p
-    //         ) {
-    //             Employee user;
-    //     List<Booking> listBooking;
-    //     if (query != null && !query.isEmpty()) {
-    //         listBooking = bookingService.getAllBookingByName(query);
-    //     } else {
-    //         listBooking = bookingService.getAllBookingNew();
-    //     }
-        
-    //     if (p != null) {
-	// 		String email = p.getName();
-	// 		 user = employeeService.findByEmail(email);
-	// 		model.addAttribute("user1", user);
-	// 	}
-    //     BookingInfoDTO bookingInfo = new BookingInfoDTO();
-    //     bookingInfo.setEmployeeId(user.getId());
-    //     model.addAttribute("listBooking", listBooking);
-    //     model.addAttribute("query", query);
-    //     model.addAttribute("bookingInfo",bookingInfo);
-    //     // return "booking";
-    //     return "booking";
-
-    // }
 
     @GetMapping("/booking")
     public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model
             ) {
+                // @RequestParam("username") String username
+        // public String BookingRoom(@RequestParam(value = "table_search", required =
+        // false) String query, Model model) {
         List<Booking> listBooking;
         if (query != null && !query.isEmpty()) {
             listBooking = bookingService.getAllBookingByName(query);
@@ -122,10 +100,9 @@ public class BookingController {
         model.addAttribute("query", query);
         model.addAttribute("bookingInfo", new BookingInfoDTO());
         // return "booking";
-        return "booking";
+        return "bookingadmin";
 
     }
-
 
     // ================================== Booking Detail
     // =========================================================================
