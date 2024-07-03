@@ -205,9 +205,8 @@
               <label for="employee-id" style="display: inline-block; width: 150px;">Mã nhân viên</label>
               <input type="number" th:field="*{employeeId}"
                 style="display: inline-block; margin-left: -40px; width: 147px;" placeholder="Nhập mã nhân viên..."
-                th:value="${user1.fullName}" required min="1">
+                required min="1" readonly>
             </div>
-            <h2>tên nhân viên: [[${user1.id}]]</h2>
 
             <div style="margin-top: -40px; margin-left: 280px;">
               <label for="customer-quantity"

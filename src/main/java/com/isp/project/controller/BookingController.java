@@ -71,64 +71,33 @@ public class BookingController {
 
     @Autowired
     private EmployeeService employeeService;
-    // ============================== GET ALL BOOKING
-    // ================================================================================
-
-     @ModelAttribute
-	public void commonUser(Principal p, Model m) {
-		if (p != null) {
-			String email = p.getName();
-			Employee user = employeeService.findByEmail(email);
-			m.addAttribute("user1", user);
-		}
-	}
-
-    //  @GetMapping("/booking")
-    // public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model,Principal p
-    //         ) {
-    //             Employee user;
-    //     List<Booking> listBooking;
-    //     if (query != null && !query.isEmpty()) {
-    //         listBooking = bookingService.getAllBookingByName(query);
-    //     } else {
-    //         listBooking = bookingService.getAllBookingNew();
-    //     }
-        
-    //     if (p != null) {
-	// 		String email = p.getName();
-	// 		 user = employeeService.findByEmail(email);
-	// 		model.addAttribute("user1", user);
-	// 	}
-    //     BookingInfoDTO bookingInfo = new BookingInfoDTO();
-    //     bookingInfo.setEmployeeId(user.getId());
-    //     model.addAttribute("listBooking", listBooking);
-    //     model.addAttribute("query", query);
-    //     model.addAttribute("bookingInfo",bookingInfo);
-    //     // return "booking";
-    //     return "booking";
-
-    // }
-
+    // ============================== GET ALL BOOKING ================================================================================
     @GetMapping("/booking")
-    public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model
-            ) {
+    public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model,
+            Principal p) {
         List<Booking> listBooking;
         if (query != null && !query.isEmpty()) {
             listBooking = bookingService.getAllBookingByName(query);
         } else {
             listBooking = bookingService.getAllBookingNew();
         }
+        if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            if (user != null) {
+                BookingInfoDTO bookingInfo = new BookingInfoDTO();
+                bookingInfo.setEmployeeId(user.getId());
+                model.addAttribute("user1", user);
+                model.addAttribute("bookingInfo", bookingInfo);
+            } else {
+            }
+        }
         model.addAttribute("listBooking", listBooking);
         model.addAttribute("query", query);
-        model.addAttribute("bookingInfo", new BookingInfoDTO());
-        // return "booking";
         return "booking";
-
     }
 
-
-    // ================================== Booking Detail
-    // =========================================================================
+    // ================================== Booking Detail =========================================================================
     @GetMapping("bookingdetail")
     public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
         Booking bookingDetail = bookingService.getBookingByBookingID(id);
@@ -139,8 +108,7 @@ public class BookingController {
 
     }
 
-    // ============================= Delete Booking
-    // ===============================================================================
+    // ============================= Delete Booking ===============================================================================
     @PostMapping("/delete/{id}")
     public ResponseEntity<String> deleteBooking(@PathVariable("id") Integer id) {
         try {
@@ -155,8 +123,7 @@ public class BookingController {
         }
     }
 
-    // ====================== Đặt phòng
-    // ============================================================================================
+    // ====================== Đặt phòng ============================================================================================
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute("bookingInfo") BookingInfoDTO bookingInfo) {
 
@@ -240,8 +207,7 @@ public class BookingController {
         }
     }
 
-    // ======================== Delete BookingMapping of Booking
-    // ========================================================================
+    // ======================== Delete BookingMapping of Booking ========================================================================
     @DeleteMapping("/bookingMappings")
     public ResponseEntity<String> deleteBookingMappingsByRoomAndBooking(@RequestParam Integer roomId,
             @RequestParam Integer bookingId) {
