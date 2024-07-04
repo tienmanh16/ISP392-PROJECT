@@ -237,6 +237,7 @@
                     </div>
                 </div>
                 <p id="invoiceId" style="display: none;"></p>
+                <p id="bookingMappingId" style="display: none;"></p>
                 <div class="lefttt">
                     <div class="list-view">
 
@@ -266,10 +267,10 @@
                         <p>Cập nhật tình trạng phòng</p>
                         <input type="text" name="t1" id="statusPhong" value="">
                         <br>
-                        <p>Cap nhat tinh trang don dep</p>
-                        <select>
-                            <option>Da don dep</option>
-                            <option>Chưa dọn dẹp</option>
+                        <p>Cập nhật tình trạng dọn dẹp</p>
+                        <select id="cleaningRoom">
+                            <option>Cleaned</option>
+                            <option>Not Clean</option>
                         </select>
                     </div>
                 </div>
@@ -413,9 +414,14 @@
             event.stopPropagation()
         })
 
+        let currentRoomId; // Biến toàn cục để lưu roomId
+
         function openModal(roomId) {
             // Hiển thị modal
             modal.classList.add('open');
+
+            // Lưu roomId vào biến toàn cục
+            currentRoomId = roomId;
 
             // Gửi request đến controller để lấy thông tin phòng
             fetch(`/receptionist/editRoom?roomId=${roomId}`)
@@ -438,12 +444,14 @@
                         document.getElementById('txblSoNgay').textContent = "Chưa có";
                         document.getElementById('txblSoNguoi').textContent = "0 người";
                         document.getElementById('invoiceId').textContent = "Chưa có";
+                        document.getElementById('bookingMappingId').textContent = "Chưa có";
                     } else {
                         document.getElementById('txblTenKH').textContent = data.customerName;
                         document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
                         document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
                         document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
                         document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
+                        document.getElementById('bookingMappingId').textContent = data.booking[0].bookingMapping[0].bookingMappingID;
                     }
 
 
@@ -475,6 +483,7 @@
 
                         // Gọi hàm sendSelectedServices() để gửi dữ liệu đến controller
                         sendSelectedServices();
+                        updateRoomCleaning();
                     }
                     );
 
@@ -489,7 +498,7 @@
                             .then(response => {
                                 if (response.ok) {
                                     console.log("Invoice lines saved successfully");
-                                    window.location.href = `receptionist/room`;
+                                    window.location.href = `/receptionist/room`;
                                     // Redirect or handle success as needed
                                 } else {
                                     console.error('Failed to save selected services');
@@ -497,6 +506,44 @@
                             })
                             .catch(error => console.error('Error:', error));
                     }
+
+                    function updateRoomCleaning() {
+                        // Lấy trạng thái dọn dẹp được chọn từ dropdown
+                        const cleaningStatus = document.querySelector('#cleaningRoom').value;
+
+                        // Sử dụng biến toàn cục currentRoomId
+                        const roomId = currentRoomId;
+
+                        // Chuẩn bị dữ liệu để gửi lên server
+                        const roomData = {
+                            id: roomId,
+                            cleaning: cleaningStatus
+                        };
+                        console.log("RoomData:", JSON.stringify(roomData));
+
+                        // Gửi dữ liệu lên server bằng AJAX
+                        fetch(`/receptionist/updateRoomCleaning/${roomId}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(roomData)
+                        })
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.text();
+                            })
+                            .then(data => {
+                                console.log('Cập nhật trạng thái dọn dẹp phòng thành công:', data);
+                            })
+                            .catch(error => {
+                                console.error('Lỗi khi cập nhật trạng thái dọn dẹp phòng:', error);
+                            });
+                    }
+
+
                     //========================= Update danh sách dich vu đã chọn =====================================
                     // function updateSelectedInvoiceLinesInput() {
                     //     const selectedInvoiceLines = invoiceLineData;
@@ -525,7 +572,7 @@
                     // Ví dụ:
                     document.getElementById('idPhong').textContent = data.roomNum;
                     document.getElementById('statusPhong').value = data.status;
-                    // Cập nhật các thông tin khác tương tự
+                    //Cập nhật các thông tin khác tương tự
                     if (data.status === "Empty Room") {
                         document.getElementById('txblTenKH').textContent = "";
                         document.getElementById('txblNgayDen').textContent = "Chưa có";
@@ -648,6 +695,8 @@
                         // Gửi HTTP request lên server để cập nhật trạng thái phòng
                         const roomId = await updateRoomStatus2();
 
+                        const bookingMappingID = await updateBookingMapping();
+
                         // Gửi HTTP request lên server
                         const response = await fetch(`/receptionist/invoiceDetail/${invoiceId}`, {
                             method: 'GET'
@@ -692,6 +741,31 @@
                         return room.id;
                     } else {
                         console.error('Có lỗi xảy ra khi cập nhật trạng thái phòng');
+                        return null;
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi gửi HTTP request:', error);
+                    return null;
+                }
+            }
+
+            async function updateBookingMapping() {
+                try {
+                    // Lấy giá trị của phần tử <p id="roomId">
+                    const bookingMappingId = document.getElementById('bookingMappingId').textContent;
+
+                    // Gửi HTTP request lên server để cập nhật trạng thái phòng
+                    const response = await fetch(`/receptionist/updateBookingMapping?bookingMappingId=${bookingMappingId}`, {
+                        method: 'GET'
+                    });
+
+                    if (response.ok) {
+                        // Lấy dữ liệu từ response
+                        const bookingMapping = await response.json();
+                        console.log('BookingMapping updated:', bookingMapping);
+                        return bookingMapping.bookingMappingID;
+                    } else {
+                        console.error('Có lỗi xảy ra khi cập nhật active');
                         return null;
                     }
                 } catch (error) {
