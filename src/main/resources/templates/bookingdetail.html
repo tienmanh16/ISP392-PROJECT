@@ -32,34 +32,36 @@
 </head>
 <style>
   .btn-margin-bottom {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     /* Adjust the value as necessary */
   }
 
   .btn.js-buy-ticket {
-      background-color: green;
-      color: white;
-      /* Để đảm bảo văn bản trên nút có thể đọc được */
-      border: none;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
+    background-color: green;
+    color: white;
+    /* Để đảm bảo văn bản trên nút có thể đọc được */
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: -70px;
+    margin-left: 1300px;
+  }
 </style>
 
 <body>
   <div class="boxcar-wrapper">
     <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-      <div th:replace="~{fragments/header :: header}"></div>
+      <div th:replace="~{fragments/header_recep :: header}"></div>
     </header>
     <section class="ftco-section layout-radius">
       <div class="container">
-        <h1 class="mb-3">Booking Detail</h1>
+        <h3 class="mb-3" style="text-align: center;">Booking Detail</h3>
         <div>
           <a href="/receptionist/booking" class="btn btn-secondary btn-margin-bottom">
             <i class="fas fa-arrow-left"></i> Back to List
@@ -67,7 +69,7 @@
         </div>
 
         <div>
-          <button class="btn js-buy-ticket">+ Booking Room</button>
+          <button class="btn js-buy-ticket">+ Room</button>
         </div>
 
         <table class="table">
@@ -99,6 +101,7 @@
                   <br />
                 </span>
               </td>
+
               <td>
                 <a href="javascript:void(0);"
                   th:onclick="'confirmDelete(' + ${bookdetail.bookingID} + ',' + ${mapping.roomID.id} + ');'"
@@ -112,92 +115,88 @@
   </div>
   <div th:replace="~{fragments/footer :: footer}"></div>
 
-    <!-- modal chứa cả các giao diện phủ lên -->
-    <div class="modal js-modal">
-      <div class="windowmapping js-modal-window">
-        <div class="title">ĐẶT PHÒNG</div>
-        <form th:action="@{/receptionist/saveBookingMapping}" th:object="${newBookingMapping}" method="post"
-          onsubmit="return checkFormSubmissionSync(event)">
-          <input type="hidden" id="selected-rooms-input" th:field="*{selectedRoomsJson}">
-          <div class="main">             
-            <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Thông tin phòng</h6>
+  <!-- modal chứa cả các giao diện phủ lên -->
+  <div class="modal js-modal">
+    <div class="windowmapping js-modal-window">
+      <div class="title">Booking Detail</div>
+      <form th:action="@{/receptionist/saveBookingMapping}" method="post">
+        <input type="hidden" id="bookingId" name="bookingIdMapping" th:value="${bookdetail.bookingID}">
 
-            <div class="container" style="margin-left: 30px;">
-              <div style="margin-bottom: 10px;">
-                <label for="checkin-date" style="display: inline-block; width: 150px;">Ngày bắt đầu</label>
-                <input type="date" id="checkin-date" th:field="*{checkinDate}"
-                  style="display: inline-block; margin-left: -40px;" required>
-                 
-                <label for="checkout-date" style="display: inline-block; width: 150px;margin-left: 20px;">Ngày kết thúc</label>
-                <input type="date" id="checkout-date" th:field="*{checkoutDate}"
-                  style="display: inline-block; margin-left: -40px;" required>
-              </div>
-  
-              <!-- <div>
-                <label for="checkout-date" style="display: inline-block; width: 150px;">Ngày kết thúc</label>
-                <input type="date" id="checkout-date" th:field="*{checkoutDate}"
-                  style="display: inline-block; margin-left: -40px;" required>
-              </div> -->
-  
-              <div style="margin-top: 20px; margin-left: -5px;">
-                <label for="customer-quantity"
-                  style="display: inline-block; margin-left: 5px; width: 150px;">C.Quantity</label>
-                <input type="number" th:field="*{customerQuantity}"
-                  style="display: inline-block; margin-left: -40px; width: 146px;" placeholder="Nhập số lượng khách..."
-                  required min="1">
-              </div>
-            </div>
-  
-            <!-- Danh sách phòng trống -->
-            <div class="container" style="margin-left: -20px; margin-top: 10px;">
-              <h6 style="margin-bottom: 10px; margin-left: 50px;text-align: left; color: #0077cc;">Danh sách phòng
-                trống</h6>
-              <div class="list-view1"
-                style="max-height: 170px; margin-top: 0; margin-left: 5px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; padding: 10px;">
-                <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
-                  <thead>
-                    <tr>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Số Phòng</th>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Loại phòng</th>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Thêm</th>
-                    </tr>
-                  </thead>
-                  <tbody id="available-rooms">
-                    <!-- Các phòng trống sẽ được thêm vào đây dưới dạng các hàng của bảng -->
-                  </tbody>
-                </table>
-              </div>
-            </div>
-  
-            <!-- Phòng đã chọn -->
-            <div class="container" style="margin-left: 280px; margin-top: -197px;">
-              <h6 style="margin-bottom: 10px; margin-left: 120px; text-align: left; color: #0077cc;">Phòng đã chọn</h6>
-              <div class="list-view1"
-                style="max-height: 170px; margin-top: 0; margin-left: 50px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; overflow-x: auto; padding: 10px;">
-                <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
-                  <thead>
-                    <tr>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Số Phòng</th>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Loại phòng</th>
-                      <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;">Xóa</th>
-                    </tr>
-                  </thead>
-                  <tbody id="selected-rooms">
-                    <!-- Các phòng đã chọn sẽ được thêm vào đây dưới dạng các hàng của bảng -->
-                  </tbody>
-                </table>
-              </div>
+        <!-- Trường dữ liệu ẩn cho selectedRoomsJson -->
+        <input type="hidden" id="selected-rooms-input" name="selectedRoomsJson">
+        <div class="main">
+          <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Room Information</h6>
+
+          <div class="container" style="margin-left: 20px;">
+            <div style="margin-bottom: 10px;">
+              <label for="checkin-date" style="display: inline-block; width: 150px;">Check-in date</label>
+              <input type="date" id="checkin-date" name="checkinDate" style="display: inline-block; margin-left: -40px;"
+                required>
+
+              <label for="checkout-date" style="display: inline-block; width: 160px;margin-left: 20px;">Check-out
+                date</label>
+              <input type="date" id="checkout-date" name="checkoutDate"
+                style="display: inline-block; margin-left: -40px;" required>
             </div>
           </div>
-          <div class="footer">
-            <button type="submit" class="button green-button">Lưu</button>
-            <button type="button" class="button gray-button js-modal-close">Thoát</button>
+
+          <!-- Danh sách phòng trống -->
+          <div class="container" style="margin-left: -20px; margin-top: 10px;">
+            <h6 style="margin-bottom: 10px; margin-left: 50px;text-align: left; color: #0077cc;">list of available rooms
+            </h6>
+            <div class="list-view1"
+              style="max-height: 170px; margin-top: 0; margin-left: 5px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; padding: 10px;">
+              <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
+                <thead>
+                  <tr>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470; text-align: center;">
+                      Room Number</th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;text-align: center;">
+                      Room Type </th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;text-align: center;">
+                      Add</th>
+                  </tr>
+                </thead>
+                <tbody id="available-rooms">
+                  <!-- Các phòng trống sẽ được thêm vào đây dưới dạng các hàng của bảng -->
+                </tbody>
+              </table>
+            </div>
           </div>
-        </form>
-      </div>
+
+          <!-- Phòng đã chọn -->
+          <div class="container" style="margin-left: 280px; margin-top: -197px;">
+            <h6 style="margin-bottom: 10px; margin-left: 100px; text-align: left; color: #0077cc;">list of selected
+              Rooms</h6>
+            <div class="list-view1"
+              style="max-height: 170px; margin-top: 0; margin-left: 50px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; overflow-x: auto; padding: 10px;">
+              <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
+                <thead>
+                  <tr>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470; text-align: center;">
+                      Room Number</th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;text-align: center;">
+                      Room Type </th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;text-align: center;">
+                      Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="selected-rooms">
+                  <!-- Các phòng đã chọn sẽ được thêm vào đây dưới dạng các hàng của bảng -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <button type="submit" class="button green-button">ADD</button>
+          <button type="button" class="button gray-button js-modal-close">EXIT</button>
+        </div>
+      </form>
     </div>
+  </div>
 
-    <!-- =======================check-checkInDate-CheckOutDate==============================================================  -->
+  <!-- =======================check-checkInDate-CheckOutDate==============================================================  -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       // Lấy ngày hiện tại theo múi giờ Việt Nam
@@ -219,7 +218,7 @@
       });
     });
   </script>
-  
+
   <script>
     function confirmDelete(bookingID, roomID) {
       if (confirm("Are you sure you want to delete this booking mapping?")) {
@@ -247,40 +246,40 @@
     }
   </script>
 
-<script>
-  const buyBtns = document.querySelectorAll(".js-buy-ticket");
-  // 3 nút có class js.. lưu vào biến buyBtns
-  const modal = document.querySelector(".js-modal");
-  // lấy tất cả các thằng có class .js-modal
-  const modalClose = document.querySelector(".js-modal-close");
+  <script>
+    const buyBtns = document.querySelectorAll(".js-buy-ticket");
+    // 3 nút có class js.. lưu vào biến buyBtns
+    const modal = document.querySelector(".js-modal");
+    // lấy tất cả các thằng có class .js-modal
+    const modalClose = document.querySelector(".js-modal-close");
 
-  const modalWindow = document.querySelector(".js-modal-window");
+    const modalWindow = document.querySelector(".js-modal-window");
 
-  // hàm hiện modal mua vé (thêm class open cả modal)
-  function showByTickets() {
-    modal.classList.add("open");
-    // alert('ok')
-  }
+    // hàm hiện modal mua vé (thêm class open cả modal)
+    function showByTickets() {
+      modal.classList.add("open");
+      // alert('ok')
+    }
 
-  // hàm ẩn modal mua vé (xóa class open ở modal)
-  function hideByTickets() {
-    modal.classList.remove("open");
-  }
-  // lặp qua từng thẻ button và nghe hành vi click
-  for (const buyBtn of buyBtns) {
-    // từng thằng trong buyBtns
-    buyBtn.addEventListener("click", showByTickets);
-  }
-  // nghe hành vi click vaof button close
-  modalClose.addEventListener("click", hideByTickets);
-  // khi click vào tất cả các khoảng modal
-  modal.addEventListener("click", hideByTickets);
-  // vì khi click vào tất cả các khoảng modal thì nó
-  // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
-  modalWindow.addEventListener("click", function (event) {
-    event.stopPropagation();
-  });
-</script>
+    // hàm ẩn modal mua vé (xóa class open ở modal)
+    function hideByTickets() {
+      modal.classList.remove("open");
+    }
+    // lặp qua từng thẻ button và nghe hành vi click
+    for (const buyBtn of buyBtns) {
+      // từng thằng trong buyBtns
+      buyBtn.addEventListener("click", showByTickets);
+    }
+    // nghe hành vi click vaof button close
+    modalClose.addEventListener("click", hideByTickets);
+    // khi click vào tất cả các khoảng modal
+    modal.addEventListener("click", hideByTickets);
+    // vì khi click vào tất cả các khoảng modal thì nó
+    // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
+    modalWindow.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+  </script>
 
   <!-- ========== lắng nghe sự thay đổi checkIn - checkOut để hiển thị ra phòng trống============ -->
   <script>
@@ -319,7 +318,7 @@
                        <td id="cleaning" style="display:none;">${room.cleaning}</td>
                       <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
                           <a href="javascript:void(0);" class="add-room-link">
-                              <span class="material-icons" style="color: green;">add_circle</span>
+                              <span class="material-icons" style="color: green; margin-top: 10px;">add_circle</span>
                           </a>
                       </td>
                   `;
@@ -372,17 +371,19 @@
         const newRow = document.createElement('tr');
         newRow.innerHTML = `
           <td class="roomID" style="display:none;">${roomID}</td>
-          <td class="roomNum">${roomNum}</td>
+          <td class="roomNum" style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomNum}</td>
           <td class="roomTypeId" style="display:none;">${roomTypeId}</td>
-          <td class="roomTypeName">${roomTypeName}</td>
+          <td class="roomTypeName" style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomTypeName}</td>
           <td class="roomTypeDescription" style="display:none;">${roomTypeDescription}</td>
           <td class="priceHour" style="display:none;">${priceHour}</td>
           <td class="priceDay" style="display:none;">${priceDay}</td>
           <td class="status" style="display:none;">${status}</td>
           <td class="cleaning" style="display:none;">${cleaning}</td>
-          <td><a href="javascript:void(0)" class="remove-room-link">
-              <span class="material-icons" style="color: red;">cancel</span>
-          </a></td>
+          <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
+            <a href="javascript:void(0)" class="remove-room-link">
+              <span class="material-icons" style="color: red;margin-top: 10px;">cancel</span>
+          </a>
+          </td>
     `;
         selectedRoomsTableBody.appendChild(newRow);
         console.log("Row", row);
@@ -442,14 +443,13 @@
           return;
         }
         selectedRoomsInput.value = JSON.stringify(selectedRooms);
-        console.log("invoiceLineData", JSON.stringify(selectedRooms));
+        console.log("LineData", JSON.stringify(selectedRooms));
       }
     });
 
     //=======================================================================================================================
   </script>
   <!-- ================== Bắt Click thêm phòng đã chọn-END =================================================================== -->
-
 </body>
 
 </html>

@@ -60,12 +60,34 @@ public class test {
         return invoiceService.testPostMan(id);
     }
 
-    @GetMapping("/viet")
-    public Booking getMethodName() {
+    // @GetMapping("/viet")
+    // public Booking getMethodName() {
  
-        return bookingRepository.findByBookingID(6);
+    //     return bookingRepository.findByBookingID(9);
         
+    // }
+    @GetMapping("/viet")
+public Booking getMethodName() {
+    // Retrieve the booking by ID
+    Booking updateBooking = bookingRepository.findByBookingID(9);
+
+    // Ensure the booking and its invoice list are not null
+    if (updateBooking != null && updateBooking.getInvoice() != null && !updateBooking.getInvoice().isEmpty()) {
+        // Retrieve the first invoice
+        Invoice firstInvoice = updateBooking.getInvoice().get(0);
+
+        // Update the total amount
+        double totalAmount = firstInvoice.getTotalAmount();
+        totalAmount += 100;
+        firstInvoice.setTotalAmount(totalAmount);
+
+        // Save the updated booking
+        bookingRepository.save(updateBooking);
     }
+
+    return updateBooking;
+}
+    
     // @GetMapping("/tien")
     // public Employee revenueBooking() {
     //     return invoiceService.testReport();

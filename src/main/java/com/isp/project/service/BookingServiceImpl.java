@@ -22,11 +22,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public boolean deleteBookingRoom(Integer bookingID) {
         try {
-
             bookingRepository.deleteFromRegister(bookingID);
             bookingRepository.deleteFromBookingMapping(bookingID);
+            bookingRepository.deleteFromInvoice(bookingID);
             bookingRepository.deleteById(bookingID);
-
             return true;
         } catch (Exception e) {
             e.printStackTrace();
