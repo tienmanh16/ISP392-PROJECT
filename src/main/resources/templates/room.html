@@ -498,7 +498,7 @@
                             .then(response => {
                                 if (response.ok) {
                                     console.log("Invoice lines saved successfully");
-                                    //window.location.href = `/receptionist/room`;
+                                    window.location.href = `/receptionist/room`;
                                     // Redirect or handle success as needed
                                 } else {
                                     console.error('Failed to save selected services');
@@ -516,29 +516,33 @@
 
                         // Chuẩn bị dữ liệu để gửi lên server
                         const roomData = {
-                            roomId: roomId,
+                            id: roomId,
                             cleaning: cleaningStatus
                         };
                         console.log("RoomData:", JSON.stringify(roomData));
 
                         // Gửi dữ liệu lên server bằng AJAX
-                        fetch('/receptionist/updateRoomCleaning', {
-                            method: 'POST',
+                        fetch(`/receptionist/updateRoomCleaning/${roomId}`, {
+                            method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json'
                             },
                             body: JSON.stringify(roomData)
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            // Xử lý phản hồi từ server
-                            console.log('Cập nhật trạng thái dọn dẹp phòng:', roomData);
-                        })
-                        .catch(error => {
-                            // Xử lý lỗi xảy ra trong quá trình gửi request
-                            console.error('Lỗi khi cập nhật trạng thái dọn dẹp phòng:', error);
-                        });
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Network response was not ok');
+                                }
+                                return response.text();
+                            })
+                            .then(data => {
+                                console.log('Cập nhật trạng thái dọn dẹp phòng thành công:', data);
+                            })
+                            .catch(error => {
+                                console.error('Lỗi khi cập nhật trạng thái dọn dẹp phòng:', error);
+                            });
                     }
+
 
                     //========================= Update danh sách dich vu đã chọn =====================================
                     // function updateSelectedInvoiceLinesInput() {

@@ -168,8 +168,80 @@
                         </table>
                     </div>
                 </div>
+
+                <div class="pagination">
+                    <button id="prev-page" onclick="prevPage()">Previous</button>
+                    <span id="page-info"></span>
+                    <button id="next-page" onclick="nextPage()">Next</button>
+                </div>
             </div>
         </section>
+
+        <style>
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 20px;
+            }
+            
+            .pagination button {
+                margin: 0 5px;
+                padding: 10px 20px;
+                border: none;
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+            
+            .pagination button:hover {
+                background-color: #0056b3;
+            }
+            
+            #page-info {
+                margin: 0 10px;
+            }
+        </style>
+
+        <script>
+            const rowsPerPage = 5;
+            let currentPage = 1;
+            const table = document.getElementById('emp-table');
+            const tbody = table.getElementsByTagName('tbody')[0];
+            const rows = tbody.getElementsByTagName('tr');
+            const pageInfo = document.getElementById('page-info');
+            
+            function displayRows() {
+                const start = (currentPage - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                
+                for (let i = 0; i < rows.length; i++) {
+                    rows[i].style.display = i >= start && i < end ? '' : 'none';
+                }
+            
+                pageInfo.textContent = `Page ${currentPage} of ${Math.ceil(rows.length / rowsPerPage)}`;
+            }
+            
+            function prevPage() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayRows();
+                }
+            }
+            
+            function nextPage() {
+                if (currentPage * rowsPerPage < rows.length) {
+                    currentPage++;
+                    displayRows();
+                }
+            }
+            
+            // Initial display
+            displayRows();
+        </script>
+
+
         <script>
             function confirmActiveService(SeID) {
                 if (confirm('Are you sure you want to active it?')) {
