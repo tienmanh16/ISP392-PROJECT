@@ -119,11 +119,13 @@ public class RoomController2 {
     }
 
     @GetMapping("/listRoomType")
-    public String RoomCategory(Model model, @Param("name") String name) {
+    public String RoomCategory(Model model, @Param("name") String name, @Param("sortDirection") String sortDirection) {
         List<RoomType> listRoomType;
         if (name != null) {
             listRoomType = this.roomTypeService.searchRoomType(name);
-        } else {
+        }else if (sortDirection != null) {
+            listRoomType = roomTypeService.getAllSortedByPrice(sortDirection);
+        }else {
             listRoomType = this.roomTypeService.getAll();
         }
         model.addAttribute("listRoomType", listRoomType);

@@ -3,6 +3,7 @@ package com.isp.project.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomTypeDetailDTO;
@@ -97,6 +98,12 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     public List<RoomType> searchRoomType(String name) {
      return this.roomTypeRepository.searchRoomType(name);   
+    }
+
+    @Override
+    public List<RoomType> getAllSortedByPrice(String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by("priceHour").ascending() : Sort.by("priceHour").descending();
+        return roomTypeRepository.findAll(sort);
     }
 
 }

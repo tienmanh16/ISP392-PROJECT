@@ -171,7 +171,7 @@
                                         <td th:text="${room.RoomType.priceDay}"></td>
                                         <td th:text="${room.status}"></td>
                                         <td th:text="${room.cleaning}"></td>
-                                        <td><a th:href="@{/listRooms/{id}/update(id=${room.id})}"
+                                        <td><a th:href="@{/admin/listRooms/{id}/update(id=${room.id})}"
                                                 class="ti-menu"></a></td>
                                         <td>
                                                 <a href="javascript:void(0);" th:if="${room.roomActive == 0}"
