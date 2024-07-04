@@ -21,5 +21,6 @@ public interface RoomItemRepository extends JpaRepository<RoomItem, Integer> {
     @Query(value = "DELETE FROM RoomItemMapping WHERE ItemID = :ItemID", nativeQuery = true)
     void deleteByItemId(@Param("ItemID") int ItemID);
 
-    // boolean existsByItemName(String itemName);
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM RoomItem r WHERE r.ItemName = :itemName")
+    boolean existsByItemName(@Param("itemName") String itemName);
 }
