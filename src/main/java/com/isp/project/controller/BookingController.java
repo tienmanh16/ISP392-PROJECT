@@ -244,7 +244,7 @@ public class BookingController {
         Room delete_room = room.get();
         Booking updateBooking = bookingService.getBookingByBookingID(bookingId);
         double total_room_update = updateBooking.getInvoice().get(0).getTotalAmount();
-        
+
         try {
             total_room_update = total_room_update - delete_room.getRoomType().getPriceDay();
             updateBooking.getInvoice().get(0).setTotalAmount(total_room_update);

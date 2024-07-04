@@ -2,71 +2,142 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Update Customer</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-        }
+  <meta charset="UTF-8">
+  <title>Update RoomItems</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
 
-        .form-wrapper {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 3px solid black;
-            border-radius: 5px;
-            background-color: beige;
-            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-        }
+    .form-wrapper {
+      max-width: 500px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 3px solid black;
+      border-radius: 5px;
+      background-color: #fdfdf84d;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    }
 
-        .form-wrapper h2 {
-            color: #333;
-            text-align: center;
-            margin-top: 0;
-        }
+    .form-wrapper h2 {
+      color: #333;
+      text-align: center;
+      margin-top: 0;
+    }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-        .form-group label {
-            display: inline-block;
-            width: 120px;
-            vertical-align: top;
-        }
+    .form-group label {
+      display: inline-block;
+      width: 120px;
+      vertical-align: top;
+    }
 
-        .form-group input[type="text"] {
-            width: calc(100% - 10px);
-            padding: 8px;
-            border: 3px solid #ccc;
-            border-radius: 3px;
-        }
+    .form-group input[type="text"] {
+      width: calc(100% - 10px);
+      padding: 8px;
+      border: 3px solid #ccc;
+      border-radius: 3px;
+    }
 
-        .form-group input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            border-radius: 3px;
-            background-color: #2fffb2;
-            color: #fff;
-            cursor: pointer;
-        }
-    </style>
+    .form-group input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      border: none;
+      border-radius: 3px;
+      background-color: #2fffb2;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .itemNameText {
+      color: red;
+    }
+  </style>
 </head>
 
 <body>
-    <div class="form-wrapper">
-        <h2 style="color: maroon;text-align: center;margin-top: -10px;">Update RoomItem Information</h2>
-        <form th:action="@{/admin/updateRoomitem}" th:object="${roomitem}" method="post">
-            <input type="hidden" th:field="*{ItemID}">
-            <div class="form-group">
-                <label>Name:</label>
-                <input type="text" th:field="*{ItemName}">
-            </div>
-            <input type="submit" value="Update" style="background: darkseagreen;padding: 10px 20px;">
-        </form>
-    </div>
+  <div class="form-wrapper">
+    <h2 style="color: maroon;text-align: center;margin-top: -10px;">Update RoomItem Information</h2>
+    <form th:action="@{/admin/updateRoomitem}" th:object="${roomitem}" method="post"
+      onsubmit="return checkFormSubmissionSync(event)">
+      <input type="hidden" th:field="*{ItemID}">
+
+      <div class="form-group" style="position: relative;margin-bottom: 50px;">
+        <label>Name:</label>
+        <input type="text" th:field="*{ItemName}" required>
+        <span class="itemNameText" style="font-size: 15px; color: red; position: absolute; bottom: -2em;"></span>
+      </div>
+      <button type="submit" value="update"
+        style="background: green ;padding: 10px 20px; color: white; border: white; border-radius: 5px;">UPDATE</button>
+    </form>
+  </div>
+
+  <script>
+    const itemNameText = document.querySelector('.itemNameText');
+
+    function checkItemName() {
+      return new Promise((resolve, reject) => {
+        const itemNameTextPattern = /^[\p{L}\p{N} ]+$/u;
+        const itemName = document.getElementById('ItemName').value;
+        if (itemName.match(itemNameTextPattern)) {
+          itemNameText.innerHTML = '';
+          resolve(true);
+        } else {
+          itemNameText.innerHTML = 'Item Name must not contain special characters.';
+          resolve(false);
+        }
+      });
+    }
+
+    function checkDuplicateItemName() {
+      return new Promise((resolve, reject) => {
+        $.ajax({
+          url: '/admin/roomitems_check-name',
+          type: 'GET',
+          data: { ItemName: document.getElementById('ItemName').value },
+          async: true,
+          success: function (response) {
+            if (response && response != null) {
+              itemNameText.innerHTML = 'Item Name already exists.';
+              resolve(false);
+            } else {
+              itemNameText.innerHTML = '';
+              resolve(true);
+            }
+          },
+          error: function () {
+            itemNameText.innerHTML = 'Error checking email.';
+            resolve(false);
+          }
+        });
+      });
+    }
+
+    async function checkFormSubmission() {
+      const results = await Promise.all([
+        //   checkDuplicateItemName(),
+        checkItemName()
+      ]);
+      return results.every(result => result === true);
+    }
+
+    document.querySelector('form').addEventListener('submit', handleSubmit);
+
+    async function checkFormSubmissionSync(event) {
+      event.preventDefault();
+      const isFormValid = await checkFormSubmission();
+      if (isFormValid) {
+        event.target.submit();
+      } else {
+        console.log('Form validation failed.');
+      }
+      return false; // Ngăn form gửi nếu không hợp lệ
+    }
+  </script>
 </body>
 
 </html>

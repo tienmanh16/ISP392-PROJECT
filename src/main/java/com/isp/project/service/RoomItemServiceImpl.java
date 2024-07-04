@@ -41,9 +41,9 @@ public class RoomItemServiceImpl implements RoomItemService {
         return roomItemRepository.findAll();
     }
 
-    // @Override
-    // public boolean existsByItemName(String ItemName) {
-    // return roomItemRepository.existsByItemName(ItemName);
-    // }
+    @Override
+    public boolean existsByItemName(String ItemName) {
+    return roomItemRepository.existsByItemName(ItemName);
+    }
 
 }
