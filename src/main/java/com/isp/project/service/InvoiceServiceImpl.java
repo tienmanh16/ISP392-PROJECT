@@ -73,11 +73,17 @@ public class InvoiceServiceImpl implements InvoiceService {
             converterProperties.setFontProvider(fontProvider);
 
             HtmlConverter.convertToPdf(processedHtml, pdfWriter, converterProperties);
-            FileOutputStream fout = new FileOutputStream("D:/FPTU/" + name);
-            byteArrayOutputStream.writeTo(fout);
+            String filePath = "D:/FPTU/" + name;
+            try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                byteArrayOutputStream.writeTo(outputStream);
             byteArrayOutputStream.close();
             byteArrayOutputStream.flush();
-            fout.close();
+            outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Xử lý ngoại lệ tại đây nếu cần thiết
+            }
+         
             return null;
 
         } catch (Exception e) {
