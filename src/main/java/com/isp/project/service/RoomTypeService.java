@@ -19,5 +19,5 @@ public interface RoomTypeService {
     List<RoomType> findAllInactive();
     void updateRoomTypeActiveStatus(int id, int status);
     List<RoomType> searchRoomType(String name);
-    List<RoomType> getAllSortedByPrice(String sortDirection);
+    //List<RoomType> getAllSortedByPrice(String sortDirection);
 }

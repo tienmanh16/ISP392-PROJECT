@@ -123,9 +123,11 @@ public class RoomController2 {
         List<RoomType> listRoomType;
         if (name != null) {
             listRoomType = this.roomTypeService.searchRoomType(name);
-        }else if (sortDirection != null) {
-            listRoomType = roomTypeService.getAllSortedByPrice(sortDirection);
-        }else {
+        }
+//        else if (sortDirection != null) {
+//            listRoomType = roomTypeService.getAllSortedByPrice(sortDirection);
+//        }
+        else {
             listRoomType = this.roomTypeService.getAll();
         }
         model.addAttribute("listRoomType", listRoomType);

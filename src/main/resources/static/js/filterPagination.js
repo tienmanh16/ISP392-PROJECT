@@ -64,3 +64,41 @@ document.querySelectorAll(".table-filter").forEach((filter) => {
     filter.addEventListener("change", filterRows);
 });
 
+// Sorting function
+function sortTableByColumn(columnIndex, ascending) {
+    const dirModifier = ascending ? 1 : -1;
+    filteredRows.sort((a, b) => {
+        const aText = a.querySelector(`td:nth-child(${columnIndex})`).textContent.trim();
+        const bText = b.querySelector(`td:nth-child(${columnIndex})`).textContent.trim();
+        const aValue = parseFloat(aText) || 0;
+        const bValue = parseFloat(bText) || 0;
+
+        return (aValue - bValue) * dirModifier;
+    });
+
+    currentPage = 1; // Reset to the first page after sorting
+    displayRows();
+}
+
+// Add event listeners for sorting buttons
+document.getElementById('sort-asc-price-hour').addEventListener('click', () => {
+    sortTableByColumn(4, true); // Assuming priceHour is the 4th column (index 4)
+});
+
+document.getElementById('sort-desc-price-hour').addEventListener('click', () => {
+    sortTableByColumn(4, false); // Assuming priceHour is the 4th column (index 4)
+});
+
+// Add event listeners for sorting buttons
+document.getElementById('sort-asc-price-day').addEventListener('click', () => {
+    sortTableByColumn(5, true); // Assuming priceDay is the 5th column (index 5)
+});
+
+document.getElementById('sort-desc-price-day').addEventListener('click', () => {
+    sortTableByColumn(5, false); // Assuming priceDay is the 5th column (index 5)
+});
+
+// Initial display
+getUniqueValuesFromColumn();
+displayRows();
+

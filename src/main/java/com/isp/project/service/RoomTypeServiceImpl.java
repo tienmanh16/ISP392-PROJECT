@@ -100,10 +100,10 @@ public class RoomTypeServiceImpl implements RoomTypeService {
      return this.roomTypeRepository.searchRoomType(name);   
     }
 
-    @Override
-    public List<RoomType> getAllSortedByPrice(String sortDirection) {
-        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by("priceHour").ascending() : Sort.by("priceHour").descending();
-        return roomTypeRepository.findAll(sort);
-    }
+//    @Override
+//    public List<RoomType> getAllSortedByPrice(String sortDirection) {
+//        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by("priceHour").ascending() : Sort.by("priceHour").descending();
+//        return roomTypeRepository.findAll(sort);
+//    }
 
 }

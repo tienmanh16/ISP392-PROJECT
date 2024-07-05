@@ -53,5 +53,5 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Integer> {
        @Query("Select c FROM RoomType c WHERE c.name LIKE %?1%")
         List<RoomType> searchRoomType(String name);
 
-       List<RoomType> findAll(Sort sort);
+       //List<RoomType> findAll(Sort sort);
 }
