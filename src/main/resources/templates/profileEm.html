@@ -41,6 +41,21 @@
             align-items: center;
             gap: 20px;
         }
+        .view-button {
+            margin: 0 5px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #05073e;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .view-button:hover {
+
+            background-color: #333;
+            color: white
+        }
     </style>
 </head>
 
@@ -105,7 +120,7 @@
                             <td th:text="${employee.isActive ? 'Active' : 'Inactive'}"></td>
                         </tr>
                     </table>
-                    <a th:href="@{'/receptionist/employee_edit/'+${employee.id}}" class="btn btn-primary">Edit My Information</a>
+                    <a th:href="@{'/receptionist/employee_edit/'+${employee.id}}" class="view-button">Edit My Information</a>
                 </div>
             </div>
         </div>
