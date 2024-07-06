@@ -184,19 +184,16 @@ public class BookingController {
                 bookingMapping.setBookingTotalAmount(roomDetail.getPriceDay()); // Set appropriate amount
 
                 bookingMappingRepository.save(bookingMapping);
-
-                
-                Invoice newInvoice = new Invoice();
-                newInvoice.setBooking(booking);
-                newInvoice.setCustomerName(customer.getCustomerName());
-                newInvoice.setTotalAmount(room.getRoomType().getPriceDay());
-                newInvoice.setInvoiceDate(bookingInfo.getCheckoutDate());
-                invoiceRepository.save(newInvoice);
             }
         }
 
         // create Invoice
-       
+        Invoice newInvoice = new Invoice();
+        newInvoice.setBooking(booking);
+        newInvoice.setCustomerName(customer.getCustomerName());
+        newInvoice.setTotalAmount(total_room);
+        newInvoice.setInvoiceDate(bookingInfo.getCheckoutDate());
+        invoiceRepository.save(newInvoice);
 
         // return "redirect:/booking"; // Redirect to booking result page
         return "redirect:/receptionist/booking";
