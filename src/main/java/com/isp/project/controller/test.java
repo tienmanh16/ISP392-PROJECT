@@ -27,6 +27,8 @@ import com.isp.project.service.RoomService;
 import com.isp.project.service.RoomTypeService;
 import com.isp.project.service.SeService;
 
+import jakarta.mail.MessagingException;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -134,10 +136,17 @@ public Booking getMethodName() {
         List<String> ls = this.roomTypeService.rateUseRoomTypeByMonth(9, 2024);
         return ls;
     }
-    @GetMapping("/invoice")
-    public List<Invoice> getMethodName1(Model model) {
-        return invoiceRepository.getInvoicesForMonth(9, 2024);
-    }
+    // @GetMapping("/invoice")
+    // public List<Invoice> getMethodName1(Model model) {
+    //     // send mail
+    //     String email = "tiennmhe172825@fpt.edu.vn";
+    //     int invoiceID = ;
+    //     try {
+    //         emailService.sendEmailCheckOut(email, invoiceID);
+    //     } catch (MessagingException e) {
+    //         // Handle the exception, e.g., log it or take appropriate action
+    //     }
+    // }
     
     
     
