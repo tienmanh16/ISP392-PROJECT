@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Room;
 
 @Repository
@@ -137,9 +138,12 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
     Page<Room> findAll(Pageable pageable);
 
 
-    @Modifying
-    @Query("UPDATE Room SET status = 'Rented Room' WHERE id = :roomId")
-    void updateRoomStatusByRoomId(@Param("roomId") Integer roomId);
+   //  @Modifying
+   //  @Query("UPDATE Room SET status = 'Rented Room' WHERE id = :roomId")
+   //  void updateRoomStatusByRoomId(@Param("roomId") Integer roomId);
+   @Modifying
+   @Query("UPDATE BookingMapping SET bookingMappingActive = 2 WHERE bookingMappingID = :bookingMappingId")
+   void updateRoomStatusByRoomId(@Param("bookingMappingId") Integer bookingMappingId);
 
     @Modifying
     @Query("UPDATE Room SET status = 'Empty Room' WHERE id = :roomId")
@@ -153,7 +157,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
     @Query("UPDATE BookingMapping SET bookingMappingActive = 0 WHERE bookingMappingID = :bookingMappingId")
     void updateBookingMappingActive(@Param("bookingMappingId") Integer bookingMappingId);
 
-    @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus " +
+    @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus, r.cleaning " +
                "FROM Room r " +
                "INNER JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID " +
                "WHERE r.RoomID NOT IN ( " +
@@ -169,4 +173,6 @@ List<Object[]> findAvailableRooms(@Param("checkinDate") Date checkinDate,
 
     @Query("Select c FROM Room c WHERE c.roomNum LIKE %?1%")
     List<Room> searchRoom(String name);
+
+   
 }

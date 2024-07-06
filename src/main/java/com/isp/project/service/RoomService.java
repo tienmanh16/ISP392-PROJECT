@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Room;
 
 @Service
@@ -48,5 +49,5 @@ public interface RoomService {
 
     void updateRoomCleaningByRoomId(Integer roomId, String cleaning);
 
-
+   List<BookingMapping> getAllRoom();
 }

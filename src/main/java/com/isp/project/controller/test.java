@@ -11,9 +11,11 @@ import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Register;
+import com.isp.project.model.Room;
 import com.isp.project.model.Service;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
+import com.isp.project.repositories.RoomRepository;
 import com.isp.project.service.BookingMappingService;
 import com.isp.project.service.BookingService;
 import com.isp.project.service.InvoiceService;
@@ -23,6 +25,9 @@ import com.isp.project.service.SeService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +56,8 @@ public class test {
     @Autowired
     private InvoiceServiceImpl invoiceService;
 
-    
+    @Autowired
+    private RoomRepository roomRepository;
     @Autowired
     private BookingMappingService bookingMappingService; 
 
@@ -65,6 +71,13 @@ public class test {
     // public Employee revenueBooking() {
     //     return invoiceService.testReport();
     // }
+
+    //  @GetMapping("/tien")
+    // public List<Room> revenueBooking() {
+    //     Date date = Date.valueOf("2024-06-01");
+    //     // return bookingMappingRepository.findRooms(date);
+    // }
+
 
     @Autowired
     private SeService seService;
@@ -81,6 +94,20 @@ public class test {
         //services = serviceRepository.findAll();
         model.addAttribute("services", services);
         return services;
+    }
+
+    @GetMapping("/viet")
+    public List<BookingMapping> getBookingMapping() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            // Chuyển đổi chuỗi thành java.sql.Date
+            date = new Date(sdf.parse("2024-06-01").getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<BookingMapping> list = bookingMappingRepository.findByCheckInDateLessThanEqual(date);
+        return list;
     }
     
     

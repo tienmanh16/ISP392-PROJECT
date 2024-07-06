@@ -1,8 +1,10 @@
 package com.isp.project.controller;
 
+import java.security.Principal;
 import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,18 +27,21 @@ import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
 import com.isp.project.model.Employee;
+import com.isp.project.model.Invoice;
 import com.isp.project.model.Register;
 import com.isp.project.model.Room;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.CustomerRepository;
 import com.isp.project.repositories.EmployeeRepository;
+import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.repositories.RegisterRepository;
 import com.isp.project.repositories.RoomRepository;
 import com.isp.project.service.BookingService;
+import com.isp.project.service.EmployeeService;
 
 @Controller
-//=========================
+// =========================
 @RequestMapping("/receptionist")
 public class BookingController {
 
@@ -61,23 +66,37 @@ public class BookingController {
     @Autowired
     private RoomRepository roomRepository;
 
+    @Autowired
+    private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private EmployeeService employeeService;
+
     // ============================== GET ALL BOOKING
     // ================================================================================
     @GetMapping("/booking")
-    public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model) {
-
+    public String BookingRoom(@RequestParam(value = "table_search", required = false) String query, Model model,
+            Principal p) {
         List<Booking> listBooking;
         if (query != null && !query.isEmpty()) {
             listBooking = bookingService.getAllBookingByName(query);
         } else {
             listBooking = bookingService.getAllBookingNew();
         }
+        if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            if (user != null) {
+                BookingInfoDTO bookingInfo = new BookingInfoDTO();
+                bookingInfo.setEmployeeId(user.getId());
+                model.addAttribute("user1", user);
+                model.addAttribute("bookingInfo", bookingInfo);
+            } else {
+            }
+        }
         model.addAttribute("listBooking", listBooking);
         model.addAttribute("query", query);
-        model.addAttribute("bookingInfo", new BookingInfoDTO());
-        // return "booking";
         return "booking";
-
     }
 
     // ================================== Booking Detail
@@ -86,7 +105,7 @@ public class BookingController {
     public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
         Booking bookingDetail = bookingService.getBookingByBookingID(id);
         model.addAttribute("bookdetail", bookingDetail);
-        // return "bookingdetail";
+        model.addAttribute("newBookingMapping", new BookingInfoDTO());
         return "bookingdetail";
 
     }
@@ -111,14 +130,22 @@ public class BookingController {
     // ============================================================================================
     @PostMapping("/saveBooking")
     public String saveBooking(@ModelAttribute("bookingInfo") BookingInfoDTO bookingInfo) {
-        // Create and save customer information
-        Customer customer = new Customer();
-        customer.setCustomerName(bookingInfo.getCustomerName());
-        customer.setCustomerGender(bookingInfo.getGender());
-        customer.setCustomerAddress(bookingInfo.getCustomerAddress());
-        customer.setCustomerPhone(bookingInfo.getCustomerPhone());
-        customer.setCustomerEmail(bookingInfo.getCustomerEmail());
-        customer.setCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
+
+        Optional<Customer> existingCustomer = customerRepository
+                .findByCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
+
+        Customer customer;
+        if (existingCustomer.isPresent()) {
+            customer = existingCustomer.get();
+        } else {
+            customer = new Customer();
+            customer.setCustomerName(bookingInfo.getCustomerName());
+            customer.setCustomerGender(bookingInfo.getGender());
+            customer.setCustomerAddress(bookingInfo.getCustomerAddress());
+            customer.setCustomerPhone(bookingInfo.getCustomerPhone());
+            customer.setCustomerEmail(bookingInfo.getCustomerEmail());
+            customer.setCustomerIdentificationID(bookingInfo.getCustomerIdentificationID());
+        }
         customerRepository.save(customer);
 
         // Create and save booking information
@@ -127,7 +154,7 @@ public class BookingController {
         Date bookingDate = new Date(System.currentTimeMillis());
         booking.setBookingDate(bookingDate);
         booking.setCustomerQuantity(bookingInfo.getCustomerQuantity());
-        booking.setIsCancelled(1); // Default to not cancelled
+        // booking.setIsCancelled(0); // Default to not cancelled
         bookingRepository.save(booking);
 
         // Add to register
@@ -141,15 +168,17 @@ public class BookingController {
             ex.printStackTrace();
         }
 
+        double total_room = 0;
         // Parse selectedRoomsJson to List<RoomDetailDTO>
         List<RoomDetailDTO> selectedRooms = convertJsonToRoomDetailDTOList(bookingInfo.getSelectedRoomsJson());
         for (RoomDetailDTO roomDetail : selectedRooms) {
             Room room = roomRepository.findById(roomDetail.getId()).orElse(null);
             if (room != null) {
+                total_room += room.getRoomType().getPriceDay();
                 BookingMapping bookingMapping = new BookingMapping();
                 bookingMapping.setBookingID(booking);
                 bookingMapping.setRoomID(room);
-                room.setStatus("Booked Room");
+                bookingMapping.setBookingMappingActive(1);
                 bookingMapping.setCheckInDate(bookingInfo.getCheckinDate());
                 bookingMapping.setCheckOutDate(bookingInfo.getCheckoutDate());
                 bookingMapping.setBookingTotalAmount(roomDetail.getPriceDay()); // Set appropriate amount
@@ -157,8 +186,44 @@ public class BookingController {
                 bookingMappingRepository.save(bookingMapping);
             }
         }
+
+        // create Invoice
+        Invoice newInvoice = new Invoice();
+        newInvoice.setBooking(booking);
+        newInvoice.setCustomerName(customer.getCustomerName());
+        newInvoice.setTotalAmount(total_room);
+        newInvoice.setInvoiceDate(bookingInfo.getCheckoutDate());
+        invoiceRepository.save(newInvoice);
+
         // return "redirect:/booking"; // Redirect to booking result page
         return "redirect:/receptionist/booking";
+    }
+
+    @PostMapping("/saveBookingMapping")
+    public String saveBookingMapping(@RequestParam Date checkinDate,
+            @RequestParam Date checkoutDate,
+            @RequestParam int bookingIdMapping,
+            @RequestParam String selectedRoomsJson) {
+        List<RoomDetailDTO> selectedRooms = convertJsonToRoomDetailDTOList(selectedRoomsJson);
+        Booking updateBooking = bookingService.getBookingByBookingID(bookingIdMapping);
+        double total_room_update = updateBooking.getInvoice().get(0).getTotalAmount();
+        for (RoomDetailDTO roomDetail : selectedRooms) {
+            Room room = roomRepository.findById(roomDetail.getId()).orElse(null);
+            if (room != null) {
+                total_room_update += room.getRoomType().getPriceDay();
+                BookingMapping bookingMapping = new BookingMapping();
+                bookingMapping.setBookingID(updateBooking);
+                bookingMapping.setRoomID(room);
+                room.setStatus("Booked Room");
+                bookingMapping.setCheckInDate(checkinDate);
+                bookingMapping.setCheckOutDate(checkoutDate);
+                bookingMapping.setBookingTotalAmount(roomDetail.getPriceDay()); // Set appropriate amount
+                bookingMappingRepository.save(bookingMapping);
+            }
+        }
+        updateBooking.getInvoice().get(0).setTotalAmount(total_room_update);
+        bookingRepository.save(updateBooking);
+        return "redirect:/receptionist/bookingdetail?id=" + updateBooking.getBookingID();
     }
 
     private List<RoomDetailDTO> convertJsonToRoomDetailDTOList(String json) {
@@ -172,15 +237,19 @@ public class BookingController {
         }
     }
 
-    //======================== Delete BookingMapping of Booking ========================================================================
     @DeleteMapping("/bookingMappings")
-    public ResponseEntity<String> deleteBookingMappingsByRoomAndBooking(@RequestParam Integer roomId, @RequestParam Integer bookingId) {
-        Room room = new Room();
-        room.setId(roomId);
-        Booking booking = new Booking();
-        booking.setBookingID(bookingId);
+    public ResponseEntity<String> deleteBookingMappingsByRoomAndBooking(@RequestParam Integer roomId,
+            @RequestParam Integer bookingId) {
+        Optional<Room> room = roomRepository.findById(roomId);
+        Room delete_room = room.get();
+        Booking updateBooking = bookingService.getBookingByBookingID(bookingId);
+        double total_room_update = updateBooking.getInvoice().get(0).getTotalAmount();
+
         try {
-            boolean deleted = bookingService.deleteBookingMappingByRoomAndBooking(booking, room);
+            total_room_update = total_room_update - delete_room.getRoomType().getPriceDay();
+            updateBooking.getInvoice().get(0).setTotalAmount(total_room_update);
+            bookingRepository.save(updateBooking);
+            boolean deleted = bookingService.deleteBookingMappingByRoomAndBooking(updateBooking, delete_room);
             if (deleted) {
                 return ResponseEntity.ok("BookingMapping deleted successfully");
             } else {

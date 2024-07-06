@@ -32,6 +32,7 @@ import com.isp.project.dto.InvoiceLineDTO;
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.dto.ServiceDetailDTO;
+import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
 import com.isp.project.model.Invoice;
@@ -39,6 +40,8 @@ import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Room;
 import com.isp.project.model.RoomType;
 import com.isp.project.model.Service;
+import com.isp.project.repositories.BookingMappingRepository;
+import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.InvoiceLineRepository;
 import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.repositories.RoomRepository;
@@ -80,6 +83,13 @@ public class RoomController {
 
     @Autowired
     private RoomTypeService roomTypeService;
+
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private BookingMappingRepository bookingMappingRepository;
+
 
     @GetMapping("/listRooms")
     public String listRooms(Model model) {
@@ -190,12 +200,17 @@ public class RoomController {
         return "RoomCategory";
     }
 
+    // @GetMapping("/editRoom")
+    // public ResponseEntity<Customer> getRoom(@RequestParam("roomId") Integer roomId) {
+    //     Customer customer = roomServiceImpl.test(roomId);
+    //     return ResponseEntity.ok(customer);
+    // }
     @GetMapping("/editRoom")
-    public ResponseEntity<Customer> getRoom(@RequestParam("roomId") Integer roomId) {
-        Customer customer = roomServiceImpl.test(roomId);
+    public ResponseEntity<Customer> getRoom(@RequestParam("bookingMappingId") Integer bookingMappingId) {
+        Customer customer =  bookingMappingRepository.getReferenceById(bookingMappingId).getBookingID().getCustomerID();
         return ResponseEntity.ok(customer);
     }
-
+    
     @GetMapping("/filterRoom")
     public String getRoomFromFilter(@RequestParam("statusFilter") String statusFilter,
             @RequestParam(required = false) Integer selectedRoomTypeId, Model model) {
@@ -253,6 +268,11 @@ public class RoomController {
     // return ResponseEntity.ok(roomCustomerDTO);
     // }
 
+    // @GetMapping("/editRoom2")
+    // public ResponseEntity<Room> getRoom2(@RequestParam("roomId") Integer roomId) {
+    //     Room room = roomServiceImpl.testR(roomId);
+    //     return ResponseEntity.ok(room);
+    // }
     @GetMapping("/editRoom2")
     public ResponseEntity<Room> getRoom2(@RequestParam("roomId") Integer roomId) {
         Room room = roomServiceImpl.testR(roomId);

@@ -49,12 +49,13 @@
                             <div class="side-bar">
                                 <div class="categories-box">
                                     <label for="date">Ngày:</label>
-                                    <input type="date" id="date">
+                                    <input type="date" id="checkin-date" name="checkin-date"
+                                        style="display: inline-block; margin-left: 10px;" required>
                                 </div>
-                                <div class="categories-box">
+                                <!-- <div class="categories-box">
                                     <label for="time">Giờ:</label>
                                     <input type="time" id="time">
-                                </div>
+                                </div> -->
                                 <!-- <div class="categories-box">
                             <h6 class="title">Stattus</h6>
                             <div class="cheak-box">
@@ -80,12 +81,7 @@
                                     <div class="categories-box">
                                         <h6 class="title">Status</h6>
                                         <div class="cheak-box">
-                                            <label class="contain">
-                                                <h6>Phòng trống</h6>
-                                                <input type="radio" class="selectCheckbox" name="statusFilter"
-                                                    value="Empty Room">
-                                                <span class="checkmark"></span>
-                                            </label>
+
                                             <label class="contain">
                                                 <h6>Phòng đang thuê</h6>
                                                 <input type="radio" class="selectCheckbox" name="statusFilter"
@@ -127,13 +123,17 @@
                                 <div class="text-box">
                                     <div class="title">Results</div>
                                 </div>
-                                <div class="row">
-                                    <div class="car-block-fourteen col-lg-4 col-md-6 col-sm-6"
-                                        th:each="room : ${rooms}">
+                                <div class="row" id="available-rooms">
+                                    <!-- Rooms will be dynamically inserted here by JavaScript -->
+                                
+                                    <!-- <div class="car-block-fourteen col-lg-4 col-md-6 col-sm-6" 
+                                       th:each="room : ${rooms}">
                                         <div class="inner-box"
-                                            th:classappend="${room.status == 'Empty Room'} ? 'room-available' : (${room.status == 'Booked Room'} ? 'room-booked' : 'room-occupied')">
+                                            th:classappend="${room.bookingMappingActive == 0} ? 'room-available' : (${room.bookingMappingActive == 1} ? 'room-booked' : 'room-occupied')">
+
                                             <div class="content-box">
-                                                <h5 class="title" th:text="${room.roomNum}"></h5>
+                                                <h5 class="title" th:text="${room.roomID.roomNum}"></h5>
+
                                                 <ul class="rating">
                                                     <li><i class="fa fa-star"></i></li>
                                                     <li><i class="fa fa-star"></i></li>
@@ -142,20 +142,24 @@
                                                     <li><i class="fa fa-star"></i></li>
                                                 </ul>
                                                 <p>
-                                                    <h10 id="statusRoom" class="checkedRoom" th:text="${room.status}">
+                                                    <h10 id="statusRoom" class="checkedRoom"
+                                                        th:text="${room.bookingMappingActive == 1 ? 'Booked Room' : (room.bookingMappingActive == 2 ? 'Rented Room' : '')}">
                                                     </h10>
                                                 </p>
                                                 <p>
-                                                    <h10 id="typeNameRoom" th:text="${room.roomTypeName}"></h10>
+                                                    <h10 id="typeNameRoom" th:text="${room.roomID.roomType.name}"></h10>
                                                 </p>
-                                                <div><button class="btn js-buy-ticket"
-                                                        th:onclick="openModal([[${room.id}]])">Sửa Thông Tin</button>
+                                              
+                                                <div>
+                                                    <button class="btn js-buy-ticket"
+                                                        th:onclick="'openModal(' + ${room.roomID.id} + ', ' + ${room.bookingMappingID} + ')'">
+                                                        Sửa Thông Tin
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="pagination-sec">
+                                    </div> -->
+                                    <!-- <div class="pagination-sec">
                                     <nav aria-label="Page navigation example">
                                         <ul class="pagination">
                                             <li class="page-item"
@@ -203,12 +207,12 @@
                                             </li>
                                         </ul>
                                     </nav>
+                                </div> -->
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
@@ -228,7 +232,7 @@
                         <span id="txblNgayDen" class="text"></span>
                     </div>
                     <div>
-                        <span class="material-icons" id="icDayorHour">access_time</span>
+                        <span class="material-icons" id="icDayorHour">calendar_today</span>
                         <span id="txblSoNgay" class="text"></span>
                     </div>
                     <div>
@@ -416,17 +420,20 @@
 
         let currentRoomId; // Biến toàn cục để lưu roomId
 
-        function openModal(roomId) {
+        function openModal(roomId, bookingMappingId) {
             // Hiển thị modal
             modal.classList.add('open');
 
             // Lưu roomId vào biến toàn cục
             currentRoomId = roomId;
+            console.log("customer:", bookingMappingId);
 
             // Gửi request đến controller để lấy thông tin phòng
-            fetch(`/receptionist/editRoom?roomId=${roomId}`)
+            fetch(`/receptionist/editRoom?bookingMappingId=${bookingMappingId}`)
                 .then(response => response.json())
                 .then(data => {
+                    console.log("customer:", data);
+
                     // Cập nhật thông tin phòng vào modal
                     // Ví dụ:
                     // document.getElementById('txblTenKH').textContent = data.customerName;
@@ -438,22 +445,91 @@
                     //document.getElementById('idPhong').textContent = data.roomNumber;
                     // Cập nhật các thông tin khác tương tự
 
-                    if (document.getElementById('statusPhong').value === "Empty Room") {
-                        document.getElementById('txblTenKH').textContent = "";
-                        document.getElementById('txblNgayDen').textContent = "Chưa có";
-                        document.getElementById('txblSoNgay').textContent = "Chưa có";
-                        document.getElementById('txblSoNguoi').textContent = "0 người";
-                        document.getElementById('invoiceId').textContent = "Chưa có";
-                        document.getElementById('bookingMappingId').textContent = "Chưa có";
-                    } else {
-                        document.getElementById('txblTenKH').textContent = data.customerName;
-                        document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
-                        document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
-                        document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
-                        document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
-                        document.getElementById('bookingMappingId').textContent = data.booking[0].bookingMapping[0].bookingMappingID;
-                    }
+                    // if (document.getElementById('statusPhong').value === "Empty Room") {
+                    //     document.getElementById('txblTenKH').textContent = "";
+                    //     document.getElementById('txblNgayDen').textContent = "Chưa có";
+                    //     document.getElementById('txblSoNgay').textContent = "Chưa có";
+                    //     document.getElementById('txblSoNguoi').textContent = "0 người";
+                    //     document.getElementById('invoiceId').textContent = "Chưa có";
+                    //     document.getElementById('bookingMappingId').textContent = "Chưa có";
+                    // } else {
+                    //     document.getElementById('txblTenKH').textContent = data.customerName;
+                    //     document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
+                    //     document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
+                    //     document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
+                    //     document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
+                    //     document.getElementById('bookingMappingId').textContent = data.booking[0].bookingMapping[0].bookingMappingID;
+                    // }
+                    document.getElementById('txblTenKH').textContent = data.customerName;
+                    // console.log("customer:",data.bookingID.customerID.customerName);
+                    document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
+                    document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
+                    document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
+                    document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
+                    document.getElementById('bookingMappingId').textContent = bookingMappingId;
 
+                    // ====================================================================================================================================================================================
+                    // Kiểm tra trạng thái phòng
+                    // if (data.booking[0].bookingMapping[0].bookingMappingActive == 1) {
+                    if (data.booking[0].bookingMapping[0].bookingMappingActive == 1) {
+                        // Thêm sự kiện click cho nút "Nhận phòng"
+                        btnNhanPhong.style.display = 'inline-block';
+                        btnThanhToan.style.display = 'none';
+                        btnThemDV.style.display = 'none';
+
+                        btnNhanPhong.addEventListener('click', () => {
+                            // Ẩn nút "Nhận phòng"
+                            btnNhanPhong.style.display = 'none';
+
+                            // Hiển thị nút "Thanh toán" và "Thêm DV"
+                            btnThanhToan.style.display = 'inline-block';
+                            btnThemDV.style.display = 'inline-block';
+
+
+                            // Gửi request đến controller để cập nhật trạng thái phòng
+                            // fetch(`/receptionist/updateStatusRoom?roomId=${data.booking[0].bookingMapping[0].bookingMappingID}`)
+                            fetch(`/receptionist/updateStatusRoom?roomId=${bookingMappingId}`)
+                                .then(response => response.json())
+                                .then(data => {
+                                    // Cập nhật thông tin phòng vào modal
+                                    // Ví dụ:
+                                    // document.getElementById('idPhong').textContent = data.roomNum;
+                                    // document.getElementById('statusPhong').value = data.status;
+                                    window.location.href = `/receptionist/room`;
+
+                                    // Cập nhật khung sản phẩm
+                                    // const roomBlock = document.querySelector(`.car-block-fourteen[data-room-id="${data.id}"]`);
+                                    // if (roomBlock) {
+                                    //     // Xóa các lớp hiện có và thêm lớp mới dựa trên trạng thái phòng
+                                    //     roomBlock.classList.remove('room-available', 'room-booked', 'room-occupied');
+                                    //     roomBlock.classList.add(`room-${data.status.toLowerCase().replace(' ', '-')}`);
+
+                                    //     // Cập nhật trạng thái phòng
+                                    //     const statusRoomElement = roomBlock.querySelector('#statusRoom');
+                                    //     statusRoomElement.textContent = data.status;
+                                    // } else {
+                                    //     console.log(`Không tìm thấy phần tử có data-room-id="${data.id}"`);
+                                    //     console.log(document.querySelector(`.car-block-fourteen[data-room-id="${data.id}"]`));
+                                    // }
+                                });
+                        });
+
+                        //Hiển thị các nút
+                        btnNhanPhong.style.display = 'inline-block';
+                        btnThanhToan.style.display = 'none';
+                        btnThemDV.style.display = 'none';
+                    } else {
+                        // Ẩn các nút
+                        btnNhanPhong.style.display = 'none';
+                        btnThanhToan.style.display = 'inline-block';
+                        btnThemDV.style.display = 'inline-block';
+                    }
+                    // } else {
+                    //     // Ẩn các nút
+                    //     btnNhanPhong.style.display = 'none';
+                    //     btnThanhToan.style.display = 'none';
+                    //     btnThemDV.style.display = 'none';
+                    // }
 
 
                     var invoiceLineData;
@@ -560,6 +636,7 @@
 
                 })
                 .catch(error => {
+                    console.log("customer:", data);
                     console.error('Lỗi khi lấy thông tin khách hàng:', error);
 
                 }
@@ -580,98 +657,63 @@
                         document.getElementById('txblSoNguoi').textContent = "0 người";
                     }
 
-                    // Kiểm tra trạng thái phòng
-                    if (data.status === "Booked Room") {
-                        // Thêm sự kiện click cho nút "Nhận phòng"
-                        btnNhanPhong.style.display = 'inline-block';
-                        btnThanhToan.style.display = 'none';
-                        btnThemDV.style.display = 'none';
-                        // $('#btnNhanPhong').click(function() {
-                        //     $(this).hide();
+                    // // Kiểm tra trạng thái phòng
+                    // if (data.status === "Booked Room") {
+                    //     // Thêm sự kiện click cho nút "Nhận phòng"
+                    //     btnNhanPhong.style.display = 'inline-block';
+                    //     btnThanhToan.style.display = 'none';
+                    //     btnThemDV.style.display = 'none';
 
-                        //     $('#btnThanhToan').show();
-                        //     $('#btnThemDV').show();
-                        //     $('.inner-box').addClass(`room${roomId}`);
-                        //     $.ajax({ 
-                        //         url: `/updateStatusRoom?roomId=${roomId}`,
-                        //         type: 'GET',
-                        //         dataType: 'json',
-                        //         success: function(data) {
-                        //             $('#idPhong').text(data.roomNum);
-                        //             $('#statusPhong').val(data.status); 
-                        //             var innerBox = $(`.room${roomId}`);
+                    //     btnNhanPhong.addEventListener('click', () => {
+                    //         // Ẩn nút "Nhận phòng"
+                    //         btnNhanPhong.style.display = 'none';
 
-                        //             $('.status-room').addClass('Occupied');
-
-                        //             innerBox.removeClass('room-available room-booked room-occupied');  
-                        //             if(innerBox.hasClass(`room${roomId}`)) {
-                        //                 if(data.status === 'Empty Room') {
-                        //                     innerBox.addClass('room-available');
-                        //                 } else if(data.status === 'Booked Room') {
-                        //                     innerBox.addClass('room-booked');
-                        //                 } else {
-                        //                     innerBox.addClass('room-occupied');                                  
-                        //                 }
-                        //             }
-
-                        //             if($('.status-room').hasClass('Occupied')) {
-                        //                 $('.status-room').text(data.status);
-
-                        //             }
-
-                        //         },
-                        //     });
-                        // });
-                        btnNhanPhong.addEventListener('click', () => {
-                            // Ẩn nút "Nhận phòng"
-                            btnNhanPhong.style.display = 'none';
-
-                            // Hiển thị nút "Thanh toán" và "Thêm DV"
-                            btnThanhToan.style.display = 'inline-block';
-                            btnThemDV.style.display = 'inline-block';
+                    //         // Hiển thị nút "Thanh toán" và "Thêm DV"
+                    //         btnThanhToan.style.display = 'inline-block';
+                    //         btnThemDV.style.display = 'inline-block';
 
 
-                            // Gửi request đến controller để cập nhật trạng thái phòng
-                            fetch(`/receptionist/updateStatusRoom?roomId=${roomId}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    // Cập nhật thông tin phòng vào modal
-                                    // Ví dụ:
-                                    document.getElementById('idPhong').textContent = data.roomNum;
-                                    document.getElementById('statusPhong').value = data.status;
+                    //         // Gửi request đến controller để cập nhật trạng thái phòng
+                    //         fetch(`/receptionist/updateStatusRoom?roomId=${roomId}`)
+                    //             .then(response => response.json())
+                    //             .then(data => {
+                    //                 // Cập nhật thông tin phòng vào modal
+                    //                 // Ví dụ:
+                    //                 document.getElementById('idPhong').textContent = data.roomNum;
+                    //                 document.getElementById('statusPhong').value = data.status;
 
-                                    // Cập nhật khung sản phẩm
-                                    const roomBlock = document.querySelector(`.car-block-fourteen[data-room-id="${data.id}"]`);
-                                    if (roomBlock) {
-                                        // Xóa các lớp hiện có và thêm lớp mới dựa trên trạng thái phòng
-                                        roomBlock.classList.remove('room-available', 'room-booked', 'room-occupied');
-                                        roomBlock.classList.add(`room-${data.status.toLowerCase().replace(' ', '-')}`);
+                    //                 // Cập nhật khung sản phẩm
+                    //                 const roomBlock = document.querySelector(`.car-block-fourteen[data-room-id="${data.id}"]`);
+                    //                 if (roomBlock) {
+                    //                     // Xóa các lớp hiện có và thêm lớp mới dựa trên trạng thái phòng
+                    //                     roomBlock.classList.remove('room-available', 'room-booked', 'room-occupied');
+                    //                     roomBlock.classList.add(`room-${data.status.toLowerCase().replace(' ', '-')}`);
 
-                                        // Cập nhật trạng thái phòng
-                                        const statusRoomElement = roomBlock.querySelector('#statusRoom');
-                                        statusRoomElement.textContent = data.status;
-                                    } else {
-                                        console.log(`Không tìm thấy phần tử có data-room-id="${data.id}"`);
-                                        console.log(document.querySelector(`.car-block-fourteen[data-room-id="${data.id}"]`));
-                                    }
-                                });
-                        });
+                    //                     // Cập nhật trạng thái phòng
+                    //                     const statusRoomElement = roomBlock.querySelector('#statusRoom');
+                    //                     statusRoomElement.textContent = data.status;
+                    //                 } else {
+                    //                     console.log(`Không tìm thấy phần tử có data-room-id="${data.id}"`);
+                    //                     console.log(document.querySelector(`.car-block-fourteen[data-room-id="${data.id}"]`));
+                    //                 }
+                    //             });
+                    //     });
 
-                        //Hiển thị các nút
-                        btnNhanPhong.style.display = 'inline-block';
-                        btnThanhToan.style.display = 'none';
-                        btnThemDV.style.display = 'none';
-                    } else if (data.status === "Rented Room") {
-                        // Ẩn các nút
-                        btnNhanPhong.style.display = 'none';
-                        btnThanhToan.style.display = 'inline-block';
-                        btnThemDV.style.display = 'inline-block';
-                    } else {
-                        // Ẩn các nút
-                        btnNhanPhong.style.display = 'none';
-                        btnThanhToan.style.display = 'none';
-                        btnThemDV.style.display = 'none';
-                    }
+                    //     //Hiển thị các nút
+                    //     btnNhanPhong.style.display = 'inline-block';
+                    //     btnThanhToan.style.display = 'none';
+                    //     btnThemDV.style.display = 'none';
+                    // } else if (data.status === "Rented Room") {
+                    //     // Ẩn các nút
+                    //     btnNhanPhong.style.display = 'none';
+                    //     btnThanhToan.style.display = 'inline-block';
+                    //     btnThemDV.style.display = 'inline-block';
+                    // } else {
+                    //     // Ẩn các nút
+                    //     btnNhanPhong.style.display = 'none';
+                    //     btnThanhToan.style.display = 'none';
+                    //     btnThemDV.style.display = 'none';
+                    // }
                 })
                 .catch(error => {
                     console.error('Lỗi khi lấy thông tin phòng:', error);
@@ -1153,8 +1195,185 @@
         }
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lấy ngày hiện tại theo múi giờ Việt Nam
+            const now = new Date();
+            const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+            const year = vietnamTime.getFullYear();
+            const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+            const day = String(vietnamTime.getDate()).padStart(2, '0');
+            const today = `${year}-${month}-${day}`;
+
+            // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
+            const checkinDateInput = document.getElementById("checkin-date");
+            checkinDateInput.setAttribute("min", today);
+
+            checkinDateInput.addEventListener("change", function () {
+                // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
+                const checkoutDateInput = document.getElementById("checkout-date");
+                checkoutDateInput.setAttribute("min", checkinDateInput.value);
+            });
+        });
+    </script>
+
+<!-- <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const checkinDateElement = document.getElementById('checkin-date');
+    
+    if (checkinDateElement) {
+        checkinDateElement.addEventListener('change', updateAvailableRooms);
+    } else {
+        console.error('Element with ID "checkin-date" not found');
+    }
+});
+
+function updateAvailableRooms() {
+    const checkinDate = document.getElementById('checkin-date').value;
+
+    if (checkinDate) {
+        fetch(`/receptionist/roomtest?checkinDate=${checkinDate}`, {
+            method: 'GET'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data);
+            const availableRoomsTable = document.getElementById('available-rooms');
+            if (availableRoomsTable) {
+                availableRoomsTable.innerHTML = '';
+
+                data.forEach(room => {
+                    const roomClass = room.bookingMappingActive === 0 ? 'room-available' : (room.bookingMappingActive === 1 ? 'room-booked' : 'room-occupied');
+                    const statusText = room.bookingMappingActive === 1 ? 'Booked Room' : (room.bookingMappingActive === 2 ? 'Rented Room' : '');
+
+                    const roomDiv = document.createElement('div');
+                    roomDiv.className = `car-block-fourteen col-lg-4 col-md-6 col-sm-6`;
+                    roomDiv.innerHTML = `
+                        <div class="inner-box ${roomClass}">
+                            <div class="content-box">
+                                <h5 class="title">${room.roomID.roomNum}</h5>
+                                <ul class="rating">
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                    <li><i class="fa fa-star"></i></li>
+                                </ul>
+                                <p>
+                                    <h10 id="statusRoom" class="checkedRoom">${statusText}</h10>
+                                </p>
+                                <p>
+                                    <h10 id="typeNameRoom">${room.roomID.roomType.name}</h10>
+                                </p>
+                                <div>
+                                    <button class="btn js-buy-ticket" onclick="openModal(${room.roomID.id}, ${room.bookingMappingID})">
+                                        Sửa Thông Tin
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    availableRoomsTable.appendChild(roomDiv);
+                });
+            } else {
+                console.error('Element with ID "available-rooms" not found');
+            }
+        })
+        .catch(error => console.error('Error fetching available rooms:', error));
+    } else {
+        console.error('checkinDate is not set');
+    }
+}
+
+</script> -->
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const checkinDateElement = document.getElementById('checkin-date');
+    
+    if (checkinDateElement) {
+        checkinDateElement.addEventListener('change', updateAvailableRooms);
+    } else {
+        console.error('Element with ID "checkin-date" not found');
+    }
+    
+    // Fetch all rooms on initial load
+    updateAvailableRooms();
+});
+
+function updateAvailableRooms() {
+    const checkinDate = document.getElementById('checkin-date') ? document.getElementById('checkin-date').value : null;
+
+    let url = '/receptionist/roomtest';
+    if (checkinDate) {
+        url += `?checkinDate=${checkinDate}`;
+    }
+
+    fetch(url, {
+        method: 'GET'
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log(data);
+        const availableRoomsTable = document.getElementById('available-rooms');
+        if (availableRoomsTable) {
+            availableRoomsTable.innerHTML = '';
+
+            data.forEach(room => {
+                const roomClass = room.bookingMappingActive === 0 ? 'room-available' : (room.bookingMappingActive === 1 ? 'room-booked' : 'room-occupied');
+                const statusText = room.bookingMappingActive === 1 ? 'Booked Room' : (room.bookingMappingActive === 2 ? 'Rented Room' : '');
+
+                const roomDiv = document.createElement('div');
+                roomDiv.className = `car-block-fourteen col-lg-4 col-md-6 col-sm-6`;
+                roomDiv.innerHTML = `
+                    <div class="inner-box ${roomClass}">
+                        <div class="content-box">
+                        
+                            <ul class="rating">
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                                <li><i class="fa fa-star"></i></li>
+                            </ul>
+                            <p>
+                                <h10 id="statusRoom" class="checkedRoom">${statusText}</h10>
+                            </p>
+                            <p>
+                                <h10 id="typeNameRoom">${room.roomID.roomType.name}</h10>
+                                <h5 class="title">${room.roomID.roomNum}</h5>
+                            </p>
+                            <div>
+                                <button class="btn js-buy-ticket" onclick="openModal(${room.roomID.id}, ${room.bookingMappingID})">
+                                    Sửa Thông Tin
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                availableRoomsTable.appendChild(roomDiv);
+            });
+        } else {
+            console.error('Element with ID "available-rooms" not found');
+        }
+    })
+    .catch(error => console.error('Error fetching available rooms:', error));
+}
+</script>
+
+
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>
-    <!-- <script th:src="@{/js/test.js}"></script> -->
+    <!-- <script th:src="@{/js/test.js}"></> -->
     <script th:src="@{/js/jquery.js}"></script>
     <script th:src="@{/js/popper.min.js}"></script>
     <script th:src="@{/js/bootstrap.min.copy1.js}"></script>
