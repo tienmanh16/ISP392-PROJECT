@@ -20,11 +20,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.isp.project.dto.RoomDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Employee;
 import com.isp.project.model.Room;
 import com.isp.project.repositories.BookingMappingRepository;
+import com.isp.project.repositories.RoomRepository;
 import com.isp.project.service.BookingMappingService;
 import com.isp.project.service.EmployeeService;
 import com.isp.project.service.RoomService;
@@ -40,7 +42,10 @@ public class HomeController {
 
     @Autowired
     private EmployeeService userService;
-    
+
+    @Autowired
+    private RoomRepository roomRepository;
+
     @Autowired
     private BookingMappingRepository bookingMappingRepository;
 
@@ -117,31 +122,31 @@ public class HomeController {
     // }
     @GetMapping("/receptionist/room")
     public String listRoom(Model model) {
-    // Page<RoomDetailDTO> list = this.roomService.getAll(pageNo);
+        // Page<RoomDetailDTO> list = this.roomService.getAll(pageNo);
 
-    // model.addAttribute("totalPage", list.getTotalPages());
-    // model.addAttribute("currentPage", pageNo);
-    List<BookingMapping> list_All = roomService.getAllRoom();
+        // model.addAttribute("totalPage", list.getTotalPages());
+        // model.addAttribute("currentPage", pageNo);
+        List<BookingMapping> list_All = roomService.getAllRoom();
 
-    List<BookingMapping> list = new ArrayList<>();
+        List<BookingMapping> list = new ArrayList<>();
 
-    LocalDate currentDate = LocalDate.now();
+        LocalDate currentDate = LocalDate.now();
 
-    for (BookingMapping bookingMapping : list_All) {
-    if(bookingMapping.getBookingMappingActive()==1 ||
-    bookingMapping.getBookingMappingActive()==2){
-    list.add(bookingMapping);
-    }
-    }
+        for (BookingMapping bookingMapping : list_All) {
+            if (bookingMapping.getBookingMappingActive() == 1 ||
+                    bookingMapping.getBookingMappingActive() == 2) {
+                list.add(bookingMapping);
+            }
+        }
 
-    model.addAttribute("roomTypes",
-    roomTypeServiceImpl.getAllRoomTypesWithDetails());
-    model.addAttribute("rooms", list);
-    model.addAttribute("services", seService.getAllServiceDetail());
-    // //model.addAttribute("services",
-    // seService.findAllServiceDetailByServiceTypeId(1);
-    model.addAttribute("serviceTypes", seService.getAllServiceTypes());
-    return "room";
+        model.addAttribute("roomTypes",
+                roomTypeServiceImpl.getAllRoomTypesWithDetails());
+        model.addAttribute("rooms", list);
+        model.addAttribute("services", seService.getAllServiceDetail());
+        // //model.addAttribute("services",
+        // seService.findAllServiceDetailByServiceTypeId(1);
+        model.addAttribute("serviceTypes", seService.getAllServiceTypes());
+        return "room";
     }
 
     // @GetMapping("/receptionist/room")
@@ -200,58 +205,73 @@ public class HomeController {
 
     // }
 
-    //========================
+    // ========================
     // @GetMapping("/receptionist/roomtest")
     // @GetMapping("/receptionist/roomtest")
     // @ResponseBody
-    // public List<BookingMapping> getAvailableRooms(@RequestParam(required = false) String checkinDate) {
-    //     if (checkinDate != null) {
-    //         Date date = Date.valueOf(checkinDate);
-    //         return bookingMappingService.getAvailableRooms(date);
-    //     } else {
-    //         return bookingMappingService.getAvailableRooms(null); // Fetch all rooms if no date is provided
-    //     }
+    // public List<BookingMapping> getAvailableRooms(@RequestParam(required = false)
+    // String checkinDate) {
+    // if (checkinDate != null) {
+    // Date date = Date.valueOf(checkinDate);
+    // return bookingMappingService.getAvailableRooms(date);
+    // } else {
+    // return bookingMappingService.getAvailableRooms(null); // Fetch all rooms if
+    // no date is provided
+    // }
     // }
     // @GetMapping("/receptionist/roomtest")
     // @ResponseBody
-    // public List<BookingMapping> getAvailableRooms(@RequestParam(required = false) String checkinDate) {
-    //     if (checkinDate == null || checkinDate.isEmpty()) {
-    //         // Return all BookingMapping records if checkinDate is not set
-    //         return bookingMappingRepository.findAll();
-    //     } else {
-    //         // Return BookingMapping records filtered by checkinDate
-    //         Date date = Date.valueOf(checkinDate);
-    //         return bookingMappingRepository.findByCheckInDateLessThanEqual(date);
-    //     }
+    // public List<BookingMapping> getAvailableRooms(@RequestParam(required = false)
+    // String checkinDate) {
+    // if (checkinDate == null || checkinDate.isEmpty()) {
+    // // Return all BookingMapping records if checkinDate is not set
+    // return bookingMappingRepository.findAll();
+    // } else {
+    // // Return BookingMapping records filtered by checkinDate
+    // Date date = Date.valueOf(checkinDate);
+    // return bookingMappingRepository.findByCheckInDateLessThanEqual(date);
     // }
-    //===================đã lấy được ========================================================================
+    // }
+    // ===================đã lấy được
+    // ========================================================================
     // @GetMapping("/receptionist/roomtest")
     // @ResponseBody
-    // public ResponseEntity<List<BookingMapping>> getAvailableRooms(@RequestParam(required = false) String checkinDate) {
-    //     List<BookingMapping> bookingMappings;
-    //     if (checkinDate == null || checkinDate.isEmpty()) {
-    //         bookingMappings = bookingMappingRepository.findAll();
-    //     } else {
-    //         Date date = Date.valueOf(checkinDate);
-    //         bookingMappings = bookingMappingRepository.findByCheckInDateLessThanEqual(date);
-    //     }        
-    
-    //     return ResponseEntity.ok(bookingMappings);
+    // public ResponseEntity<List<BookingMapping>>
+    // getAvailableRooms(@RequestParam(required = false) String checkinDate) {
+    // List<BookingMapping> bookingMappings;
+    // if (checkinDate == null || checkinDate.isEmpty()) {
+    // bookingMappings = bookingMappingRepository.findAll();
+    // } else {
+    // Date date = Date.valueOf(checkinDate);
+    // bookingMappings =
+    // bookingMappingRepository.findByCheckInDateLessThanEqual(date);
     // }
-    //===================đã lấy được ========================================================================
+
+    // return ResponseEntity.ok(bookingMappings);
+    // }
+    // ===================đã lấy được
+    // ========================================================================
 
     @GetMapping("/receptionist/roomtest")
     @ResponseBody
-    public ResponseEntity<List<BookingMapping>> getAvailableRooms(@RequestParam(required = false) String checkinDate) {
-        List<BookingMapping> bookingMappings;
+    public ResponseEntity<List<RoomDTO>> getAvailableRooms(@RequestParam(required = false) String checkinDate) {
+        List<RoomDTO> bookingMappings;
+        List<RoomDTO> list = new ArrayList<>();
+
         if (checkinDate == null || checkinDate.isEmpty()) {
-            bookingMappings = bookingMappingRepository.findAll();
+            bookingMappings = roomRepository.findAllRooms();
         } else {
             Date date = Date.valueOf(checkinDate);
-            bookingMappings = bookingMappingRepository.findByCheckInDateLessThanEqual(date);
-        }        
-    
-        return ResponseEntity.ok(bookingMappings);
+            bookingMappings = roomRepository.findAllRoomsWithCheckInDate(date);
+        }
+        for (RoomDTO bookingMapping : bookingMappings) {
+            if (bookingMapping.getBookingMappingActive() == 1 ||
+                    bookingMapping.getBookingMappingActive() == 2) {
+                list.add(bookingMapping);
+            }
+        }
+
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/detail")

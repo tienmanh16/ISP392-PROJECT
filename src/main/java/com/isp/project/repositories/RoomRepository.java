@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.isp.project.dto.RoomCustomerDTO;
+import com.isp.project.dto.RoomDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Room;
@@ -47,6 +48,34 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "FROM Room r "
            + "JOIN r.roomType rt ")
     List<RoomDetailDTO> findAllRoomsWithDetails1();
+
+
+    @Query("SELECT new com.isp.project.dto.RoomDTO("
+           + "r.id, "
+           + "r.roomNum, "
+           + "rt.name, "
+           + "r.cleaning, "
+           + "bm.bookingMappingID, "
+           + "bm.bookingMappingActive "
+           + ") "
+           + "FROM BookingMapping bm "
+           + "JOIN bm.roomID r "
+           + "JOIN r.roomType rt ")
+    List<RoomDTO> findAllRooms();
+    
+    @Query("SELECT new com.isp.project.dto.RoomDTO("
+           + "r.id, "
+           + "r.roomNum, "
+           + "rt.name, "
+           + "r.cleaning, "
+           + "bm.bookingMappingID, "
+           + "bm.bookingMappingActive "
+           + ") "
+           + "FROM BookingMapping bm "
+           + "JOIN bm.roomID r "
+           + "JOIN r.roomType rt "
+           + "WHERE bm.checkInDate <= :checkInDate")
+    List<RoomDTO> findAllRoomsWithCheckInDate(@Param("checkInDate") Date checkinDate);
 
     @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
             + "r.id, "

@@ -81,7 +81,6 @@
                                     <div class="categories-box">
                                         <h6 class="title">Status</h6>
                                         <div class="cheak-box">
-
                                             <label class="contain">
                                                 <h6>Phòng đang thuê</h6>
                                                 <input type="radio" class="selectCheckbox" name="statusFilter"
@@ -95,7 +94,6 @@
                                                 <span class="checkmark"></span>
                                             </label>
                                         </div>
-                                        <!-- <button type="submit">Submit</button> -->
                                     </div>
                                     <div class="categories-box">
                                         <h6 class="title">Loại Phòng</h6>
@@ -107,13 +105,8 @@
                                                 <span class="checkmark"></span>
                                             </label>
                                         </div>
-                                        <!-- <button type="submit">Submit</button> -->
                                     </div>
                                 </form>
-
-
-
-
 
 
                             </div>
@@ -124,90 +117,12 @@
                                     <div class="title">Results</div>
                                 </div>
                                 <div class="row" id="available-rooms">
-                                    <!-- Rooms will be dynamically inserted here by JavaScript -->
-                                
-                                    <!-- <div class="car-block-fourteen col-lg-4 col-md-6 col-sm-6" 
-                                       th:each="room : ${rooms}">
-                                        <div class="inner-box"
-                                            th:classappend="${room.bookingMappingActive == 0} ? 'room-available' : (${room.bookingMappingActive == 1} ? 'room-booked' : 'room-occupied')">
 
-                                            <div class="content-box">
-                                                <h5 class="title" th:text="${room.roomID.roomNum}"></h5>
-
-                                                <ul class="rating">
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                    <li><i class="fa fa-star"></i></li>
-                                                </ul>
-                                                <p>
-                                                    <h10 id="statusRoom" class="checkedRoom"
-                                                        th:text="${room.bookingMappingActive == 1 ? 'Booked Room' : (room.bookingMappingActive == 2 ? 'Rented Room' : '')}">
-                                                    </h10>
-                                                </p>
-                                                <p>
-                                                    <h10 id="typeNameRoom" th:text="${room.roomID.roomType.name}"></h10>
-                                                </p>
-                                              
-                                                <div>
-                                                    <button class="btn js-buy-ticket"
-                                                        th:onclick="'openModal(' + ${room.roomID.id} + ', ' + ${room.bookingMappingID} + ')'">
-                                                        Sửa Thông Tin
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="pagination-sec">
-                                    <nav aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                            <li class="page-item"
-                                                th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-                                                <a class="page-link" th:href="@{'?pageNo='+${currentPage - 1}}"
-                                                    aria-label="Previous">
-                                                    <span aria-hidden="true"><svg width="12" height="12"
-                                                            viewBox="0 0 12 12" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M2.57983 5.99989C2.57983 5.7849 2.66192 5.56987 2.82573 5.4059L7.98559 0.24617C8.31382 -0.0820565 8.84598 -0.0820565 9.17408 0.24617C9.50217 0.574263 9.50217 1.10632 9.17408 1.43457L4.60841 5.99989L9.17376 10.5654C9.50185 10.8935 9.50185 11.4256 9.17376 11.7537C8.84566 12.0821 8.31366 12.0821 7.98544 11.7537L2.82555 6.59404C2.66176 6.42999 2.57983 6.21495 2.57983 5.99989Z"
-                                                                fill="#050B20" />
-                                                        </svg> </span>
-                                                    <span class="sr-only">Previous</span>
-                                                </a>
-                                            </li>
-                                            <th:block th:each="i : ${#numbers.sequence(1, totalPage)}">
-                                                <li class="page-item"
-                                                    th:classappend="${currentPage == i ? 'active' : ''}">
-                                                    <a class="page-link" th:href="@{'?pageNo='+${i}}"
-                                                        th:text="${i}"></a>
-                                                </li>
-                                            </th:block>
-                                            <li class="page-item"
-                                                th:classappend="${currentPage == totalPage ? 'disabled' : ''}">
-                                                <a class="page-link" th:href="@{'?pageNo='+${currentPage + 1}}"
-                                                    aria-label="Next">
-                                                    <span aria-hidden="true"><svg width="12" height="12"
-                                                            viewBox="0 0 12 12" fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <g clip-path="url(#clip0_2880_6407)">
-                                                                <path
-                                                                    d="M9.42017 6.00011C9.42017 6.2151 9.33808 6.43013 9.17427 6.5941L4.01441 11.7538C3.68618 12.0821 3.15402 12.0821 2.82592 11.7538C2.49783 11.4257 2.49783 10.8937 2.82592 10.5654L7.39159 6.00011L2.82624 1.43461C2.49815 1.10652 2.49815 0.574382 2.82624 0.246315C3.15434 -0.0820709 3.68634 -0.0820709 4.01457 0.246315L9.17446 5.40596C9.33824 5.57001 9.42017 5.78505 9.42017 6.00011Z"
-                                                                    fill="#050B20" />
-                                                            </g>
-                                                            <defs>
-                                                                <clipPath id="clip0_2880_6407">
-                                                                    <rect width="12" height="12" fill="white"
-                                                                        transform="translate(12 12) rotate(-180)" />
-                                                                </clipPath>
-                                                            </defs>
-                                                        </svg> </span>
-                                                    <span class="sr-only">Next</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </nav>
-                                </div> -->
+                                </div>
+                                <div class="pagination">
+                                    <button id="prev-page" onclick="changePage(-1)">Previous</button>
+                                    <span id="page-info"></span>
+                                    <button id="next-page" onclick="changePage(1)">Next</button>
                                 </div>
                             </div>
                         </div>
@@ -216,6 +131,33 @@
         </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <style>
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .pagination button {
+            margin: 0 5px;
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        
+        .pagination button:hover {
+            background-color: #0056b3;
+        }
+        
+        #page-info {
+            margin: 0 10px;
+        }
+    </style>
 
     <!-- modal chứa cả các giao diện phủ lên -->
     <div class="modal js-modal">
@@ -242,6 +184,7 @@
                 </div>
                 <p id="invoiceId" style="display: none;"></p>
                 <p id="bookingMappingId" style="display: none;"></p>
+                <p id="bookingMappingActive" style="display: none;"></p>
                 <div class="lefttt">
                     <div class="list-view">
 
@@ -420,7 +363,7 @@
 
         let currentRoomId; // Biến toàn cục để lưu roomId
 
-        function openModal(roomId, bookingMappingId) {
+        function openModal(roomId, bookingMappingId, bookingMappingActive) {
             // Hiển thị modal
             modal.classList.add('open');
 
@@ -467,11 +410,18 @@
                     document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
                     document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
                     document.getElementById('bookingMappingId').textContent = bookingMappingId;
+                    document.getElementById('bookingMappingActive').textContent = bookingMappingActive;
+
+                    if (bookingMappingActive == 1) {
+                        document.getElementById('statusPhong').value = "Booked Room";
+                    } else {
+                        document.getElementById('statusPhong').value = "Rented Room";
+                    }
 
                     // ====================================================================================================================================================================================
                     // Kiểm tra trạng thái phòng
                     // if (data.booking[0].bookingMapping[0].bookingMappingActive == 1) {
-                    if (data.booking[0].bookingMapping[0].bookingMappingActive == 1) {
+                    if (bookingMappingActive == 1) {
                         // Thêm sự kiện click cho nút "Nhận phòng"
                         btnNhanPhong.style.display = 'inline-block';
                         btnThanhToan.style.display = 'none';
@@ -648,7 +598,7 @@
                     // Cập nhật thông tin phòng vào modal
                     // Ví dụ:
                     document.getElementById('idPhong').textContent = data.roomNum;
-                    document.getElementById('statusPhong').value = data.status;
+                    //document.getElementById('statusPhong').value = data.status;
                     //Cập nhật các thông tin khác tương tự
                     if (data.status === "Empty Room") {
                         document.getElementById('txblTenKH').textContent = "";
@@ -1164,16 +1114,14 @@
             const selectedStatusFilter = document.querySelector('.selectCheckbox[name="statusFilter"]:checked');
             const selectedRoomTypeNames = Array.from(document.querySelectorAll('input[name="selectedRoomTypeName"]:checked')).map(radio => radio.value);
 
-
             roomBlocks.forEach(block => {
                 // Lấy giá trị của room.status
                 const statusElement = block.querySelector('#statusRoom');
-                const roomStatus = statusElement ? statusElement.textContent : '';
+                const roomStatus = statusElement ? statusElement.textContent.trim() : '';
 
                 // Lấy giá trị của room.roomTypeName
                 const typeNameElement = block.querySelector('#typeNameRoom');
-                const roomTypeName = typeNameElement ? typeNameElement.textContent : '';
-
+                const roomTypeName = typeNameElement ? typeNameElement.textContent.trim() : '';
 
                 let shouldShow = true;
 
@@ -1194,6 +1142,7 @@
             });
         }
     </script>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -1217,128 +1166,54 @@
         });
     </script>
 
-<!-- <script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const checkinDateElement = document.getElementById('checkin-date');
-    
-    if (checkinDateElement) {
-        checkinDateElement.addEventListener('change', updateAvailableRooms);
-    } else {
-        console.error('Element with ID "checkin-date" not found');
-    }
-});
 
-function updateAvailableRooms() {
-    const checkinDate = document.getElementById('checkin-date').value;
+    <!-- <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const checkinDateElement = document.getElementById('checkin-date');
 
-    if (checkinDate) {
-        fetch(`/receptionist/roomtest?checkinDate=${checkinDate}`, {
-            method: 'GET'
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log(data);
-            const availableRoomsTable = document.getElementById('available-rooms');
-            if (availableRoomsTable) {
-                availableRoomsTable.innerHTML = '';
-
-                data.forEach(room => {
-                    const roomClass = room.bookingMappingActive === 0 ? 'room-available' : (room.bookingMappingActive === 1 ? 'room-booked' : 'room-occupied');
-                    const statusText = room.bookingMappingActive === 1 ? 'Booked Room' : (room.bookingMappingActive === 2 ? 'Rented Room' : '');
-
-                    const roomDiv = document.createElement('div');
-                    roomDiv.className = `car-block-fourteen col-lg-4 col-md-6 col-sm-6`;
-                    roomDiv.innerHTML = `
-                        <div class="inner-box ${roomClass}">
-                            <div class="content-box">
-                                <h5 class="title">${room.roomID.roomNum}</h5>
-                                <ul class="rating">
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                    <li><i class="fa fa-star"></i></li>
-                                </ul>
-                                <p>
-                                    <h10 id="statusRoom" class="checkedRoom">${statusText}</h10>
-                                </p>
-                                <p>
-                                    <h10 id="typeNameRoom">${room.roomID.roomType.name}</h10>
-                                </p>
-                                <div>
-                                    <button class="btn js-buy-ticket" onclick="openModal(${room.roomID.id}, ${room.bookingMappingID})">
-                                        Sửa Thông Tin
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    availableRoomsTable.appendChild(roomDiv);
-                });
+            if (checkinDateElement) {
+                checkinDateElement.addEventListener('change', updateAvailableRooms);
             } else {
-                console.error('Element with ID "available-rooms" not found');
+                console.error('Element with ID "checkin-date" not found');
             }
-        })
-        .catch(error => console.error('Error fetching available rooms:', error));
-    } else {
-        console.error('checkinDate is not set');
-    }
-}
 
-</script> -->
+            // Fetch all rooms on initial load
+            updateAvailableRooms();
+        });
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-    const checkinDateElement = document.getElementById('checkin-date');
-    
-    if (checkinDateElement) {
-        checkinDateElement.addEventListener('change', updateAvailableRooms);
-    } else {
-        console.error('Element with ID "checkin-date" not found');
-    }
-    
-    // Fetch all rooms on initial load
-    updateAvailableRooms();
-});
+        function updateAvailableRooms() {
+            const checkinDate = document.getElementById('checkin-date') ? document.getElementById('checkin-date').value : null;
 
-function updateAvailableRooms() {
-    const checkinDate = document.getElementById('checkin-date') ? document.getElementById('checkin-date').value : null;
+            let url = '/receptionist/roomtest';
+            if (checkinDate) {
+                url += `?checkinDate=${checkinDate}`;
+            }
 
-    let url = '/receptionist/roomtest';
-    if (checkinDate) {
-        url += `?checkinDate=${checkinDate}`;
-    }
+            fetch(url, {
+                method: 'GET'
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    const availableRoomsTable = document.getElementById('available-rooms');
+                    if (availableRoomsTable) {
+                        availableRoomsTable.innerHTML = '';
 
-    fetch(url, {
-        method: 'GET'
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log(data);
-        const availableRoomsTable = document.getElementById('available-rooms');
-        if (availableRoomsTable) {
-            availableRoomsTable.innerHTML = '';
+                        data.forEach(room => {
+                            const roomClass = room.bookingMappingActive === 0 ? 'room-available' : (room.bookingMappingActive === 1 ? 'room-booked' : 'room-occupied');
+                            const statusText = room.bookingMappingActive === 1 ? 'Booked Room' : (room.bookingMappingActive === 2 ? 'Rented Room' : '');
 
-            data.forEach(room => {
-                const roomClass = room.bookingMappingActive === 0 ? 'room-available' : (room.bookingMappingActive === 1 ? 'room-booked' : 'room-occupied');
-                const statusText = room.bookingMappingActive === 1 ? 'Booked Room' : (room.bookingMappingActive === 2 ? 'Rented Room' : '');
-
-                const roomDiv = document.createElement('div');
-                roomDiv.className = `car-block-fourteen col-lg-4 col-md-6 col-sm-6`;
-                roomDiv.innerHTML = `
+                            const roomDiv = document.createElement('div');
+                            roomDiv.className = `car-block-fourteen col-lg-4 col-md-6 col-sm-6`;
+                            roomDiv.innerHTML = `
                     <div class="inner-box ${roomClass}">
                         <div class="content-box">
-                        
+                            <h5 class="title">${room.roomNum}</h5>
                             <ul class="rating">
                                 <li><i class="fa fa-star"></i></li>
                                 <li><i class="fa fa-star"></i></li>
@@ -1350,26 +1225,174 @@ function updateAvailableRooms() {
                                 <h10 id="statusRoom" class="checkedRoom">${statusText}</h10>
                             </p>
                             <p>
-                                <h10 id="typeNameRoom">${room.roomID.roomType.name}</h10>
-                                <h5 class="title">${room.roomID.roomNum}</h5>
+                                <h10 id="typeNameRoom">${room.roomTypeName}</h10>                               
                             </p>
                             <div>
-                                <button class="btn js-buy-ticket" onclick="openModal(${room.roomID.id}, ${room.bookingMappingID})">
+                                <button class="btn js-buy-ticket" onclick="openModal(${room.id}, ${room.bookingMappingId}, ${room.bookingMappingActive})">
                                     Sửa Thông Tin
                                 </button>
                             </div>
                         </div>
                     </div>
                 `;
-                availableRoomsTable.appendChild(roomDiv);
-            });
-        } else {
-            console.error('Element with ID "available-rooms" not found');
+                            availableRoomsTable.appendChild(roomDiv);
+                        });
+                    } else {
+                        console.error('Element with ID "available-rooms" not found');
+                    }
+                })
+                .catch(error => console.error('Error fetching available rooms:', error));
         }
-    })
-    .catch(error => console.error('Error fetching available rooms:', error));
-}
-</script>
+    </script> -->
+
+    <!-- js -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkinDateElement = document.getElementById('checkin-date');
+    
+        if (checkinDateElement) {
+            checkinDateElement.addEventListener('change', updateAvailableRooms);
+        } else {
+            console.error('Element with ID "checkin-date" not found');
+        }
+    
+        const statusFilterElements = document.querySelectorAll('input[name="statusFilter"]');
+        const roomTypeFilterElements = document.querySelectorAll('input[name="selectedRoomTypeName"]');
+    
+        statusFilterElements.forEach(element => {
+            element.addEventListener('change', updateAvailableRooms);
+        });
+    
+        roomTypeFilterElements.forEach(element => {
+            element.addEventListener('change', updateAvailableRooms);
+        });
+    
+        // Pagination variables
+        window.currentPage = 1;
+        window.roomsPerPage = 3;
+        window.filteredRooms = [];
+    
+        // Fetch all rooms on initial load
+        updateAvailableRooms();
+    });
+    
+    function updateAvailableRooms() {
+        const checkinDate = document.getElementById('checkin-date') ? document.getElementById('checkin-date').value : null;
+    
+        let url = '/receptionist/roomtest';
+        if (checkinDate) {
+            url += `?checkinDate=${checkinDate}`;
+        }
+    
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                const availableRoomsTable = document.getElementById('available-rooms');
+                if (availableRoomsTable) {
+                    availableRoomsTable.innerHTML = '';
+    
+                    window.filteredRooms = data.map(room => {
+                        const roomClass = room.bookingMappingActive === 0 ? 'room-available' : (room.bookingMappingActive === 1 ? 'room-booked' : 'room-occupied');
+                        const statusText = room.bookingMappingActive === 1 ? 'Booked Room' : (room.bookingMappingActive === 2 ? 'Rented Room' : '');
+    
+                        const roomDiv = document.createElement('div');
+                        roomDiv.className = `car-block-fourteen col-lg-4 col-md-6 col-sm-6`;
+                        roomDiv.innerHTML = `
+                            <div class="inner-box ${roomClass}">
+                                <div class="content-box">
+                                    <h5 class="title">${room.roomNum}</h5>
+                                    <ul class="rating">
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                        <li><i class="fa fa-star"></i></li>
+                                    </ul>
+                                    <p>
+                                        <h10 id="statusRoom" class="checkedRoom">${statusText}</h10>
+                                    </p>
+                                    <p>
+                                        <h10 id="typeNameRoom">${room.roomTypeName}</h10>                               
+                                    </p>
+                                    <div>
+                                        <button class="btn js-buy-ticket" onclick="openModal(${room.id}, ${room.bookingMappingId}, ${room.bookingMappingActive})">
+                                            Sửa Thông Tin
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        return roomDiv;
+                    });
+    
+                    // Reapply filters after updating the rooms
+                    filterRooms();
+                } else {
+                    console.error('Element with ID "available-rooms" not found');
+                }
+            })
+            .catch(error => console.error('Error fetching available rooms:', error));
+    }
+    
+    function filterRooms() {
+        const statusFilter = document.querySelector('input[name="statusFilter"]:checked');
+        const roomTypeFilter = document.querySelector('input[name="selectedRoomTypeName"]:checked');
+    
+        const statusFilterValue = statusFilter ? statusFilter.value : null;
+        const roomTypeFilterValue = roomTypeFilter ? roomTypeFilter.value : null;
+    
+        const rooms = window.filteredRooms.filter(room => {
+            const statusText = room.querySelector('#statusRoom').textContent;
+            const roomTypeName = room.querySelector('#typeNameRoom').textContent;
+    
+            const statusMatch = statusFilterValue ? statusText === statusFilterValue : true;
+            const roomTypeMatch = roomTypeFilterValue ? roomTypeName === roomTypeFilterValue : true;
+    
+            return statusMatch && roomTypeMatch;
+        });
+    
+        renderRooms(rooms);
+    }
+    
+    function renderRooms(rooms) {
+        const availableRoomsTable = document.getElementById('available-rooms');
+        availableRoomsTable.innerHTML = '';
+    
+        const start = (window.currentPage - 1) * window.roomsPerPage;
+        const end = start + window.roomsPerPage;
+        const paginatedRooms = rooms.slice(start, end);
+    
+        paginatedRooms.forEach(room => {
+            availableRoomsTable.appendChild(room);
+        });
+    
+        document.getElementById('page-info').textContent = `Page ${window.currentPage} of ${Math.ceil(rooms.length / window.roomsPerPage)}`;
+    }
+    
+    function changePage(direction) {
+        const totalPages = Math.ceil(window.filteredRooms.length / window.roomsPerPage);
+    
+        window.currentPage += direction;
+        if (window.currentPage < 1) {
+            window.currentPage = 1;
+        } else if (window.currentPage > totalPages) {
+            window.currentPage = totalPages;
+        }
+    
+        filterRooms();
+    }
+    </script>
+    
+
+
 
 
     <div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-angle-up"></span></div>

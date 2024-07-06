@@ -2,6 +2,7 @@ package com.isp.project.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isp.project.dto.RoomDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
@@ -77,6 +78,12 @@ public class test {
     //     Date date = Date.valueOf("2024-06-01");
     //     // return bookingMappingRepository.findRooms(date);
     // }
+
+     @GetMapping("/tien")
+    public List<RoomDTO> revenueBooking() {
+        Date date = Date.valueOf("2024-05-31");
+        return roomRepository.findAllRoomsWithCheckInDate(date);
+    }
 
 
     @Autowired
