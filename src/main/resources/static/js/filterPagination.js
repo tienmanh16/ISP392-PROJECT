@@ -98,6 +98,24 @@ document.getElementById('sort-desc-price-day').addEventListener('click', () => {
     sortTableByColumn(5, false); // Assuming priceDay is the 5th column (index 5)
 });
 
+// Add event listeners for sorting buttons
+document.getElementById('sort-asc-price-hour').addEventListener('click', () => {
+    sortTableByColumn(5, true); // Assuming priceHour is the 4th column (index 4)
+});
+
+document.getElementById('sort-desc-price-hour').addEventListener('click', () => {
+    sortTableByColumn(5, false); // Assuming priceHour is the 4th column (index 4)
+});
+
+// Add event listeners for sorting buttons
+document.getElementById('sort-asc-price-day').addEventListener('click', () => {
+    sortTableByColumn(6, true); // Assuming priceDay is the 5th column (index 5)
+});
+
+document.getElementById('sort-desc-price-day').addEventListener('click', () => {
+    sortTableByColumn(6, false); // Assuming priceDay is the 5th column (index 5)
+});
+
 // Initial display
 getUniqueValuesFromColumn();
 displayRows();

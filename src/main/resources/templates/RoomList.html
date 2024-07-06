@@ -82,6 +82,21 @@
             background-color: #e9ecef;
             /* Đổi màu nền khi hover */
         }
+        .sort-button {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 0px;
+            background-color: #f8f9fa;
+            color: #333;
+            margin-left: 0px;
+            cursor: pointer;
+            width: 50px; height: 30px;
+        }
+
+        .sort-button:hover {
+            border-color: #007bff;
+            background-color: #e9ecef;
+        }
 
         .custom-button {
             background-color: #05073e;
@@ -141,11 +156,15 @@
                                             <select class="table-filter" onchange="filter_rows()">
                                                 <option value="all">All</option>
                                             </select>
+                                            <button class="sort-button" id="sort-price-hour-asc">Asc</button>
+                                            <button class="sort-button" id="sort-price-hour-desc">Desc</button>
                                         </th>
                                         <th col-index="6">Price Day
                                             <select class="table-filter" onchange="filter_rows()">
                                                 <option value="all">All</option>
                                             </select>
+                                            <button class="sort-button" id="sort-price-day-asc">Asc</button>
+                                            <button class="sort-button" id="sort-price-day-desc">Desc</button>
                                         </th>
                                         <th col-index="7">Status
                                             <select class="table-filter" onchange="filter_rows()">
@@ -193,6 +212,36 @@
                     </div>
                 </div>
         </section>
+        <script>
+            // [EXISTING PAGINATION CODE OMITTED FOR BREVITY]
+
+            // Sorting function
+            function sortTable(columnIndex, order) {
+                const rowsArray = Array.from(rows);
+                rowsArray.sort((a, b) => {
+                    const cellA = a.querySelector(`td:nth-child(${columnIndex})`).innerText;
+                    const cellB = b.querySelector(`td:nth-child(${columnIndex})`).innerText;
+                    const valueA = parseFloat(cellA.replace(/[^0-9.-]+/g, ""));
+                    const valueB = parseFloat(cellB.replace(/[^0-9.-]+/g, ""));
+                    return order === 'asc' ? valueA - valueB : valueB - valueA;
+                });
+
+                rowsArray.forEach((row, index) => {
+                    tbody.appendChild(row); // Reorder the rows in the table
+                    row.style.display = index < rowsPerPage ? '' : 'none';
+                });
+
+                filteredRows = rowsArray;
+                currentPage = 1; // Reset to the first page after sorting
+                displayRows();
+            }
+
+            // Event listeners for sorting
+            document.getElementById('sort-price-hour-asc').addEventListener('click', () => sortTable(5, 'asc'));
+            document.getElementById('sort-price-hour-desc').addEventListener('click', () => sortTable(5, 'desc'));
+            document.getElementById('sort-price-day-asc').addEventListener('click', () => sortTable(6, 'asc'));
+            document.getElementById('sort-price-day-desc').addEventListener('click', () => sortTable(6, 'desc'));
+        </script>
         <style>
             .pagination {
                 display: flex;
