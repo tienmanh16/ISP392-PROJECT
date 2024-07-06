@@ -2,6 +2,7 @@ package com.isp.project.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.isp.project.dto.RoomDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
@@ -31,6 +32,9 @@ import jakarta.mail.MessagingException;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,6 +116,19 @@ public Booking getMethodName() {
     // public Employee revenueBooking() {
     //     return invoiceService.testReport();
     // }
+
+    //  @GetMapping("/tien")
+    // public List<Room> revenueBooking() {
+    //     Date date = Date.valueOf("2024-06-01");
+    //     // return bookingMappingRepository.findRooms(date);
+    // }
+
+     @GetMapping("/tien")
+    public List<RoomDTO> revenueBooking() {
+        Date date = Date.valueOf("2024-05-31");
+        return roomRepository.findAllRoomsWithCheckInDate(date);
+    }
+
 
     @Autowired
     private SeService seService;

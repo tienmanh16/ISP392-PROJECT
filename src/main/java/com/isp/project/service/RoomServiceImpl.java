@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
-import com.isp.project.model.Room;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.RoomRepository;
 
@@ -216,6 +215,13 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public void updateRoomCleaningByRoomId(Integer roomId, String cleaning) {
         roomRepository.updateRoomCleaningByRoomId(roomId, cleaning);
+    }
+
+
+
+    @Override
+    public List<BookingMapping> getAllRoom() {
+      return bookingMappingRepository.findAll();
     }
 
 }
