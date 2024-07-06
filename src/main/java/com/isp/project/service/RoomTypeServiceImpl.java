@@ -1,11 +1,19 @@
 package com.isp.project.service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomTypeDetailDTO;
+import com.isp.project.model.BookingMapping;
+import com.isp.project.model.Room;
 import com.isp.project.model.RoomType;
 import com.isp.project.repositories.RoomTypeRepository;
 
@@ -13,6 +21,9 @@ import com.isp.project.repositories.RoomTypeRepository;
 public class RoomTypeServiceImpl implements RoomTypeService {
     @Autowired
     private RoomTypeRepository roomTypeRepository;
+
+    @Autowired
+    private RoomTypeService roomTypeService;
 
     public RoomTypeServiceImpl(RoomTypeRepository roomTypeRepository) {
         this.roomTypeRepository = roomTypeRepository;
@@ -97,6 +108,68 @@ public class RoomTypeServiceImpl implements RoomTypeService {
     @Override
     public List<RoomType> searchRoomType(String name) {
      return this.roomTypeRepository.searchRoomType(name);   
+    }
+
+    @Override
+    public List<String> rateUseRoomTypeByMonth(int month, int year) {
+        List<RoomType> roomTypes = this.roomTypeRepository.findAll();
+        List<String> result = new ArrayList<>();
+        int totalDaysInMonth = YearMonth.of(year, month).lengthOfMonth();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    
+        int totalBookedDays = 0; // tổng số ngày phòng đã được đặt trong tháng
+    
+        // Tính tổng số ngày phòng đã được đặt trong tháng
+        for (RoomType roomType : roomTypes) {
+            for (Room room : roomType.getRoom()) {
+                for (BookingMapping bookingMapping : room.getBookingMapping()) {
+                    LocalDate checkIn = LocalDate.parse(dateFormat.format(bookingMapping.getCheckInDate()), formatter);
+                    LocalDate checkOut = LocalDate.parse(dateFormat.format(bookingMapping.getCheckOutDate()), formatter);
+    
+                    if ((checkIn.getYear() == year && checkIn.getMonthValue() == month) ||
+                        (checkOut.getYear() == year && checkOut.getMonthValue() == month) ||
+                        (checkIn.getYear() < year && checkOut.getYear() > year) ||
+                        (checkIn.getYear() == year && checkOut.getYear() == year && 
+                         checkIn.getMonthValue() < month && checkOut.getMonthValue() > month)) {
+                        
+                        LocalDate start = checkIn.getYear() == year && checkIn.getMonthValue() == month ? checkIn : LocalDate.of(year, month, 1);
+                        LocalDate end = checkOut.getYear() == year && checkOut.getMonthValue() == month ? checkOut : LocalDate.of(year, month, totalDaysInMonth);
+                        
+                        totalBookedDays += (int) ChronoUnit.DAYS.between(start, end);
+                    }
+                }
+            }
+        }
+    
+        // Tính phần trăm sử dụng cho từng loại phòng
+        for (RoomType roomType : roomTypes) {
+            int bookedDays = 0;
+    
+            for (Room room : roomType.getRoom()) {
+                for (BookingMapping bookingMapping : room.getBookingMapping()) {
+                    LocalDate checkIn = LocalDate.parse(dateFormat.format(bookingMapping.getCheckInDate()), formatter);
+                    LocalDate checkOut = LocalDate.parse(dateFormat.format(bookingMapping.getCheckOutDate()), formatter);
+    
+                    if ((checkIn.getYear() == year && checkIn.getMonthValue() == month) ||
+                        (checkOut.getYear() == year && checkOut.getMonthValue() == month) ||
+                        (checkIn.getYear() < year && checkOut.getYear() > year) ||
+                        (checkIn.getYear() == year && checkOut.getYear() == year && 
+                         checkIn.getMonthValue() < month && checkOut.getMonthValue() > month)) {
+                        
+                        LocalDate start = checkIn.getYear() == year && checkIn.getMonthValue() == month ? checkIn : LocalDate.of(year, month, 1);
+                        LocalDate end = checkOut.getYear() == year && checkOut.getMonthValue() == month ? checkOut : LocalDate.of(year, month, totalDaysInMonth);
+                        
+                        bookedDays += (int) ChronoUnit.DAYS.between(start, end);
+                    }
+                }
+            }
+    
+            double usageRate = ((double) bookedDays / totalBookedDays) * 100;
+            result.add(roomType.getName() + " - " + String.format("%.2f", usageRate) + "%");
+        }
+    
+        return result;
     }
 
 }
