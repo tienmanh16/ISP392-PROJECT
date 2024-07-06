@@ -84,27 +84,39 @@
 
             <div class="action-buttons">
                 <form class="search-container">
-                    <input type="text" id="searchbar" class="form-control search-input" placeholder="Search Here">
-                    <select id="category" class="form-select search-button">
+                    <input type="text" id="searchbar" class=" search-input" placeholder="Type Here">
+                    <select id="category" class=" search-button" style="width: 90px; height: 38px;">
                         <option value="0" selected>Select</option>
                         <option value="2">Name</option>
                         <option value="3">Gender</option>
                         <option value="5">Role</option>
-                        <option value="10">Salary</option>
 
                     </select>
                 </form>
-                <form action="/admin/employee_list" method="get">
-                    <select id="statusFilter" class="form-select search-button" name="status"
-                        onchange="this.form.submit()" th:value="${status}">
-                        <option value="all" th:selected="${status == null || status == 'all'}">
-                            All</option>
-                        <option value="active" th:selected="${status == 'active'}">Active
-                        </option>
-                        <option value="inactive" th:selected="${status == 'inactive'}">Inactive
-                        </option>
+                <form method="get" th:action="@{/admin/employee_search_active}">
+                    <select id="statusFilter" class=" search-button" name="status" style="width: 90px;">
+                        <option value="all" th:selected="${status == null || status == 'all'}">All</option>
+                        <option value="active" th:selected="${status == 'active'}">Active</option>
+                        <option value="inactive" th:selected="${status == 'inactive'}">Inactive</option>
                     </select>
+                    <button class="search-button" type="submit" style="width: 75px;">Status</button>
                 </form>
+
+                <label class="search-container">Sort salary:
+                    <button class="sort-button" id="sort-price-hour-asc"><svg xmlns="http://www.w3.org/2000/svg"
+                            width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5" />
+                        </svg>
+                    </button>
+
+                    <button class="sort-button" id="sort-price-hour-desc"><svg xmlns="http://www.w3.org/2000/svg"
+                            width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd"
+                                d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1" />
+                        </svg>
+                    </button>
+                </label>
                 <button class="btn custom-button" onclick="window.location.href='/admin/employee_add'">
                     Add Employee
                 </button>
@@ -127,7 +139,7 @@
                                     <th>Salary</th>
                                     <th>UserName</th>
                                     <th>Status
-                                        
+
                                     </th>
 
                                     <th>Fail Attempt</th>
@@ -155,7 +167,7 @@
                                             th:classappend="${list.isActive == true ? 'btn-success' : 'btn-danger'}"
                                             th:text="${list.isActive == true ? 'Active' : 'InActive'}"
                                             th:data-id="${list.id}" th:data-active="${list.isActive}"
-                                            onclick="toggleStatus(this)" style="width: 85px; height: 40px;">
+                                            onclick="toggleStatus(this)" style="width: 95px; height: 40px;">
                                         </button>
                                     </td>
                                     <td th:text="${list.failedAttempt}"></td>
@@ -175,9 +187,9 @@
                                 </tr>
                             </tbody>
                         </table>
-                        
+
+                    </div>
                 </div>
-            </div>
         </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
@@ -186,7 +198,27 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
     <script>
+        function sortTableBySalary(order) {
+            const tbody = document.getElementById('body');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
 
+            rows.sort((rowA, rowB) => {
+                const salaryA = parseFloat(rowA.querySelector('td:nth-child(10)').innerText);
+                const salaryB = parseFloat(rowB.querySelector('td:nth-child(10)').innerText);
+
+                if (order === 'asc') {
+                    return salaryA - salaryB;
+                } else {
+                    return salaryB - salaryA;
+                }
+            });
+
+            rows.forEach(row => tbody.appendChild(row)); // Reorder the rows in the table
+        }
+
+        // Event listeners for sorting by salary
+        document.getElementById('sort-price-hour-asc').addEventListener('click', () => sortTableBySalary('asc'));
+        document.getElementById('sort-price-hour-desc').addEventListener('click', () => sortTableBySalary('desc'));
 
         function toggleStatus(button) {
             const employeeId = button.getAttribute('data-id');
