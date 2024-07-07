@@ -92,6 +92,23 @@
             background-color: #333;
             color: #fff;
         }
+
+        .sort-button {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 0px;
+            background-color: #f8f9fa;
+            color: #333;
+            margin-left: 0px;
+            cursor: pointer;
+            width: 50px;
+            height: 30px;
+        }
+
+        .sort-button:hover {
+            border-color: #007bff;
+            background-color: #e9ecef;
+        }
     </style>
 
 </head>
@@ -141,6 +158,8 @@
                                         <select class="table-filter" onchange="filter_rows()">
                                             <option value="all">All</option>
                                         </select>
+                                        <button class="sort-button" id="sort-price-service-asc">Asc</button>
+                                        <button class="sort-button" id="sort-price-service-desc">Desc</button>
                                     </th>
                                     <th>Update</th>
                                     <th>Status</th>
@@ -184,7 +203,7 @@
                 align-items: center;
                 margin-top: 20px;
             }
-            
+
             .pagination button {
                 margin: 0 5px;
                 padding: 10px 20px;
@@ -194,11 +213,11 @@
                 cursor: pointer;
                 border-radius: 4px;
             }
-            
+
             .pagination button:hover {
                 background-color: #0056b3;
             }
-            
+
             #page-info {
                 margin: 0 10px;
             }
@@ -244,6 +263,36 @@
 
             // Initial display
             displayRows();
+        </script>
+
+
+        <script>
+            // [EXISTING PAGINATION CODE OMITTED FOR BREVITY]
+
+            // Sorting function
+            function sortTable(columnIndex, order) {
+                const rowsArray = Array.from(rows);
+                rowsArray.sort((a, b) => {
+                    const cellA = a.querySelector(`td:nth-child(${columnIndex})`).innerText;
+                    const cellB = b.querySelector(`td:nth-child(${columnIndex})`).innerText;
+                    const valueA = parseFloat(cellA.replace(/[^0-9.-]+/g, ""));
+                    const valueB = parseFloat(cellB.replace(/[^0-9.-]+/g, ""));
+                    return order === 'asc' ? valueA - valueB : valueB - valueA;
+                });
+
+                rowsArray.forEach((row, index) => {
+                    tbody.appendChild(row); // Reorder the rows in the table
+                    row.style.display = index < rowsPerPage ? '' : 'none';
+                });
+
+                filteredRows = rowsArray;
+                currentPage = 1; // Reset to the first page after sorting
+                displayRows();
+            }
+
+            // Event listeners for sorting
+            document.getElementById('sort-price-service-asc').addEventListener('click', () => sortTable(4, 'asc'));
+            document.getElementById('sort-price-service-desc').addEventListener('click', () => sortTable(4, 'desc'));
         </script>
 
 
@@ -341,7 +390,7 @@
     <!-- thư viện để add header và footer  -->
 
     <!-- Include filter.js at the end of the body -->
-    <script th:src="@{/js/filterService.js}"></script>
+    <script th:src="@{/js/filterPagination.js}"></script>
     <script>
         // Call getUniqueValuesFromColumn after the script is loaded
         window.onload = function () {
