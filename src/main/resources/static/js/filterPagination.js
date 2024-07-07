@@ -44,11 +44,23 @@ function filterRows() {
         }
     });
 
+    const isNumeric = (str) => {
+        if (typeof str != "string") return false; // we only process strings!
+        return !isNaN(str) && // use type coercion to parse the entirety of the string (`parseFloat` alone does not do this)
+            !isNaN(parseFloat(str)); // ensure strings of whitespace fail
+    };
+
     filteredRows = Array.from(rows).filter((row) => {
         for (const colIndex in filterValueDict) {
             const filterValue = filterValueDict[colIndex];
             const cellValue = row.querySelector(`td:nth-child(${colIndex})`).innerHTML.trim();
-            if (cellValue.indexOf(filterValue) === -1) {
+
+            // If the column is numeric, perform an exact match
+            if (isNumeric(filterValue) && isNumeric(cellValue)) {
+                if (parseFloat(cellValue) !== parseFloat(filterValue)) {
+                    return false;
+                }
+            } else if (cellValue.indexOf(filterValue) === -1) {
                 return false;
             }
         }
@@ -114,6 +126,14 @@ document.getElementById('sort-asc-price-day').addEventListener('click', () => {
 
 document.getElementById('sort-desc-price-day').addEventListener('click', () => {
     sortTableByColumn(6, false); // Assuming priceDay is the 5th column (index 5)
+});
+
+document.getElementById('sort-asc-price-service').addEventListener('click', () => {
+    sortTableByColumn(4, true); // Assuming priceHour is the 4th column (index 4)
+});
+
+document.getElementById('sort-desc-price-service').addEventListener('click', () => {
+    sortTableByColumn(4, false); // Assuming priceHour is the 4th column (index 4)
 });
 
 // Initial display
