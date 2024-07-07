@@ -206,9 +206,9 @@ public class RoomController {
     //     return ResponseEntity.ok(customer);
     // }
     @GetMapping("/editRoom")
-    public ResponseEntity<Customer> getRoom(@RequestParam("bookingMappingId") Integer bookingMappingId) {
-        Customer customer =  bookingMappingRepository.getReferenceById(bookingMappingId).getBookingID().getCustomerID();
-        return ResponseEntity.ok(customer);
+    public ResponseEntity<Booking> getRoom(@RequestParam("bookingMappingId") Integer bookingMappingId) {
+        Booking booking =  bookingMappingRepository.getReferenceById(bookingMappingId).getBookingID();
+        return ResponseEntity.ok(booking);
     }
     
     @GetMapping("/filterRoom")

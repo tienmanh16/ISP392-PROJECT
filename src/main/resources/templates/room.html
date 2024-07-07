@@ -403,12 +403,12 @@
                     //     document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
                     //     document.getElementById('bookingMappingId').textContent = data.booking[0].bookingMapping[0].bookingMappingID;
                     // }
-                    document.getElementById('txblTenKH').textContent = data.customerName;
+                    document.getElementById('txblTenKH').textContent = data.invoice[0].customerName;
                     // console.log("customer:",data.bookingID.customerID.customerName);
-                    document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
-                    document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
-                    document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
-                    document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
+                    document.getElementById('txblNgayDen').textContent = data.bookingMapping[0].checkInDate;
+                    document.getElementById('txblSoNgay').textContent = data.bookingMapping[0].checkOutDate;
+                    document.getElementById('txblSoNguoi').textContent = data.customerQuantity;
+                    document.getElementById('invoiceId').textContent = data.invoice[0].invoiceID;
                     document.getElementById('bookingMappingId').textContent = bookingMappingId;
                     document.getElementById('bookingMappingActive').textContent = bookingMappingActive;
 
@@ -1269,7 +1269,7 @@
     
         // Pagination variables
         window.currentPage = 1;
-        window.roomsPerPage = 3;
+        window.roomsPerPage = 6;
         window.filteredRooms = [];
     
         // Fetch all rooms on initial load

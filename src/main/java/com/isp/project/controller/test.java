@@ -80,9 +80,8 @@ public class test {
     // }
 
      @GetMapping("/tien")
-    public List<RoomDTO> revenueBooking() {
-        Date date = Date.valueOf("2024-05-31");
-        return roomRepository.findAllRoomsWithCheckInDate(date);
+    public Booking revenueBooking() {
+        return bookingMappingRepository.getReferenceById(9).getBookingID();
     }
 
 
