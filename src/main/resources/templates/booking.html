@@ -124,7 +124,7 @@
                     <td th:text="${booking.bookingID}"></td>
                     <td th:text="${booking.customerID.customerName}"></td>
                     <td>
-                      <span th:text="${#dates.format(booking.bookingDate, 'dd-MM-yyyy')}"></span>
+                      <span th:text="${#dates.format(booking.bookingDate, 'yyyy-MM-dd')}"></span>
                     </td>
                     <td>
                       <span th:each="register : ${booking.register}">
@@ -349,6 +349,7 @@
       let rows = tbody.getElementsByTagName('tr');
       let searchtext = searchbar.value.toLowerCase();
       let searchdate = dateInput.value;
+      console.log("date:",searchdate);
 
       // không lọc dữ liệu nếu cả ô tìm kiếm, ô ngày và trạng thái đều trống
       if (searchtext == '' && searchdate == '') {
