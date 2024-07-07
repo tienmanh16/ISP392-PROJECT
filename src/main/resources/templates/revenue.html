@@ -65,8 +65,8 @@
 									<button type="submit" class="btn btn-primary ml-4 veiwbutton">Submit</button>
 								</div>
 								<div class="ml-auto">
-									<a th:href="@{/admin/print_revenue_report_word(startDate=${startDate}, endDate=${endDate})}" class="btn btn-primary veiwbutton">Export to Word</a>
-									<a th:href="@{/admin/print_revenue_report(startDate=${startDate}, endDate=${endDate})}" class="btn btn-primary ml-2 veiwbutton">Export to PDF</a>
+									<a th:href="@{/admin/print_revenue_report_word(startDate=${startDate}, endDate=${endDate})}" class="btn btn-primary veiwbutton" onclick="return confirm('Are you sure you want to export to Word?')">Export to Word</a>
+									<a th:href="@{/admin/print_revenue_report(startDate=${startDate}, endDate=${endDate})}" class="btn btn-primary ml-2 veiwbutton" onclick="return confirm('Are you sure you want to export to PDF?')">Export to PDF</a>
 								</div>
 							</div>
 						</div>

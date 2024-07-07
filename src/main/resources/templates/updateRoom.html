@@ -69,6 +69,13 @@
                 <option value="Booked Room">Booked Room</option>
             </select>
         </div>
+        <div class="form-group">
+            <label for="cleaning">Cleaning:</label>
+            <select class="form-control" id="cleaning" th:field="*{cleaning}">
+                <option value="Cleaned">Cleaned</option>
+                <option value="Not Clean">Not Clean</option>
+            </select>
+        </div>
     <button type="submit" class="btn custom-button">Save</button>
 					<button type="reset" class="btn custom-button">Cancel</button>
 					<a class="btn custom-button" href="/admin/listRooms">Display List Room</a>

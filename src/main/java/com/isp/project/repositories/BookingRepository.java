@@ -40,6 +40,11 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
 
     @Modifying
     @Transactional
+    @Query(value = "DELETE FROM Invoice WHERE BookingID = :bookingID", nativeQuery = true)
+    void deleteFromInvoice(@Param("bookingID") Integer bookingID);
+
+    @Modifying
+    @Transactional
     @Query("DELETE FROM BookingMapping bm WHERE bm.bookingID = :booking AND bm.roomID = :room")
     void deleteByRoomAndBooking(@Param("booking") Booking booking, @Param("room") Room room);
 

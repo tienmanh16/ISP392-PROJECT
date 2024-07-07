@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Booking Room</title>
+  <title>RoomItem Management</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -110,22 +110,24 @@
   <div class="modal js-modal">
     <div class="windowroomitem js-modal-window">
       <div class="title">ADD ROOM ITEMS</div>
-      <form th:action="@{/admin/addroomitem}" th:object="${addRoomItem}" method="post" onsubmit="return checkFormSubmissionSync(event)">      
+      <form th:action="@{/admin/addroomitem}" th:object="${addRoomItem}" method="post"
+        onsubmit="return checkFormSubmissionSync(event)">
 
-        <div class="main-customer" style="position: relative; display: flex; flex-direction: column; align-items: center;">
+        <div class="main-customer"
+          style="position: relative; display: flex; flex-direction: column; align-items: center;">
           <h3 style="margin-bottom: 10px; color: #0077cc;">Room Item Information</h3>
           <div style="display: flex; align-items: center;">
             <span class="material-icons" style="vertical-align: middle;">other_houses</span>
-            <input type="text" th:field="*{ItemName}" name="ItemName" id="ItemName" placeholder="Enter room item..." required 
-                   style="vertical-align: middle; width: 400px; margin-left: 10px;">
+            <input type="text" th:field="*{ItemName}" name="ItemName" id="ItemName" placeholder="Enter room item..."
+              required style="vertical-align: middle; width: 400px; margin-left: 10px;">
           </div>
           <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); text-align: center;">
             <span class="itemNameText" style="font-size: 13px;"></span>
           </div>
         </div>
-<br>
-<br>
-<br>
+        <br>
+        <br>
+        <br>
         <div class="footer">
           <button type="submit" class="button green-button">ADD</button>
           <button type="button" class="button gray-button js-modal-close">EXIT</button>
@@ -213,7 +215,7 @@
 
     async function checkFormSubmission() {
       const results = await Promise.all([
-      // checkDuplicateItemName(),
+        checkDuplicateItemName(),
         checkItemName()
       ]);
       return results.every(result => result === true);
@@ -308,4 +310,5 @@
   <script th:src="@{/js/mmenu.js}"></script>
   <script th:src="@{/js/main.copy1.js}"></script>
 </body>
+
 </html>

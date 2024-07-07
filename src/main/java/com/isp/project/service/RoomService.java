@@ -5,10 +5,12 @@ import java.util.List;
 
 import com.isp.project.model.RoomType;
 import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Room;
 
 @Service
@@ -43,5 +45,9 @@ public interface RoomService {
 
     void updateRoomStatusByRoomId2(Integer roomId);
 
+    void updateBookingMappingActive(Integer bookingMappingId);
 
+    void updateRoomCleaningByRoomId(Integer roomId, String cleaning);
+
+   List<BookingMapping> getAllRoom();
 }

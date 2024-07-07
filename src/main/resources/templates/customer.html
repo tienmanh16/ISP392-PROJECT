@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <title>Booking Room</title>
+  <title>Customer Management</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -117,7 +117,7 @@
           <div style="margin-bottom: 20px; position: relative;">
             <span class="material-icons" style="vertical-align: middle;">account_box</span>
             <input type="text" th:field="*{customerName}" style=" width: 400px; vertical-align: middle;"
-              name="customerName" id="customerName" placeholder="Nhập tên khách hàng..." required>
+              name="customerName" id="customerName" placeholder="Enter customer name..." required>
             <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
               <span class="customerNameText" style="font-size: 13px;"></span>
             </div>
@@ -126,7 +126,8 @@
           <div style="margin-bottom: 20px; position: relative;">
             <span class="material-icons" style="vertical-align: middle;">badge</span>
             <input type="number" th:field="*{customerIdentificationID}" style=" width: 400px; vertical-align: middle;"
-              name="customerIdentificationID" id="customerIdentificationID" placeholder="Nhập số CMND..." required>
+              name="customerIdentificationID" id="customerIdentificationID" placeholder="Enter ID card number..."
+              required>
             <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
               <span class="customerIdentificationIDText" style="font-size: 13px"></span>
             </div>
@@ -135,7 +136,7 @@
           <div style="margin-bottom: 20px; position: relative;">
             <span class="material-icons" style="vertical-align: middle;">call</span>
             <input type="number" th:field="*{customerPhone}" style=" width: 400px; vertical-align: middle;"
-              name="customerPhone" id="customerPhone" placeholder="Nhập số điện thoại..." required>
+              name="customerPhone" id="customerPhone" placeholder="Enter phone number..." required>
             <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
               <span class="customerPhoneText" style="font-size: 13px"></span>
             </div>
@@ -144,7 +145,7 @@
           <div style="margin-bottom: 20px; position: relative;">
             <span class="material-icons" style="vertical-align: middle;">mail</span>
             <input type="email" th:field="*{customerEmail}" style=" width: 400px; vertical-align: middle;"
-              name="customerEmail" id="customerEmail" placeholder="Nhập địa chỉ email..." required>
+              name="customerEmail" id="customerEmail" placeholder="Enter customer email..." required>
             <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
               <span class="customerEmailText" style="font-size: 13px;margin-left: -15px;"></span>
             </div>
@@ -153,7 +154,7 @@
           <div style="margin-bottom: 20px; position: relative;">
             <span class="material-icons" style="vertical-align: middle;">location_on</span>
             <input type="text" th:field="*{customerAddress}" style=" width: 400px; vertical-align: middle;"
-              name="customerAddress" id="customerAddress" placeholder="Nhập địa chỉ..." required>
+              name="customerAddress" id="customerAddress" placeholder="Enter customer address..." required>
             <div style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
               <span class="customerAddressText" style="font-size: 13px;margin-left: 10px;"></span>
             </div>

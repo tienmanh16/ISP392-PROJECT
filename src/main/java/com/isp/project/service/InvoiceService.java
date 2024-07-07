@@ -25,4 +25,5 @@ public interface InvoiceService {
     Map<String, Double> getTotalServiceByYear(int year);
     Page<Invoice> pageInvoice(Integer pageNo);
     void htmlToWord(String html, String filePath);
+    List<String> seUseMost(int month, int year);
 }

@@ -4,10 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,8 +18,10 @@ import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
+import com.isp.project.repositories.InvoiceLineRepository;
 import com.isp.project.repositories.InvoiceRepository;
-
+import com.isp.project.repositories.ServiceRepository;
+import com.isp.project.repositories.ServiceTypeRepository;
 import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
@@ -40,9 +39,10 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
-import java.io.IOException;
-import java.io.InputStream;
 
 // import com.itextpdf.io.source.ByteArrayOutputStream;
 
@@ -56,6 +56,15 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Autowired
     private BookingMappingRepository bookingMappingRepository;
+
+    @Autowired
+    private InvoiceLineRepository invoiceLineRepository;
+
+    @Autowired
+    private ServiceRepository serviceRepository;
+
+    @Autowired
+    private ServiceTypeRepository serviceTypeRepository;
 
     @Override
     public List<Invoice> getAllInvoice() {
@@ -73,11 +82,17 @@ public class InvoiceServiceImpl implements InvoiceService {
             converterProperties.setFontProvider(fontProvider);
 
             HtmlConverter.convertToPdf(processedHtml, pdfWriter, converterProperties);
-            FileOutputStream fout = new FileOutputStream("D:/FPTU/" + name);
-            byteArrayOutputStream.writeTo(fout);
+            String filePath = "D:/FPTU/" + name;
+            try (FileOutputStream outputStream = new FileOutputStream(filePath)) {
+                byteArrayOutputStream.writeTo(outputStream);
             byteArrayOutputStream.close();
             byteArrayOutputStream.flush();
-            fout.close();
+            outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Xử lý ngoại lệ tại đây nếu cần thiết
+            }
+         
             return null;
 
         } catch (Exception e) {
@@ -254,7 +269,56 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
     }
 
-   
+   @Override
+public List<String> seUseMost(int month, int year) {
+    List<InvoiceLine> invoiceLines = invoiceLineRepository.getInvoiceLineForMonth(month, year);
+
+    if (invoiceLines.isEmpty()) {
+        return Collections.emptyList();
+    }
+
+    Map<Integer, Integer> serviceQuantityMap = new HashMap<>();
+    AtomicInteger totalQuantity = new AtomicInteger(0); // Using AtomicInteger
+
+    // Calculate total quantity
+    invoiceLines.forEach(invoiceLine -> {
+        int serviceId = invoiceLine.getService().getSeID();
+        int quantity = invoiceLine.getQuantity();
+
+        serviceQuantityMap.put(serviceId, serviceQuantityMap.getOrDefault(serviceId, 0) + quantity);
+        totalQuantity.addAndGet(quantity); // Add quantity to AtomicInteger
+    });
+
+    // Get top 3 services by quantity and format results
+    List<String> topServices = serviceQuantityMap.entrySet().stream()
+            .sorted(Map.Entry.<Integer, Integer>comparingByValue().reversed())
+            .limit(3)
+            .map(entry -> {
+                int serviceId = entry.getKey();
+                int quantity = entry.getValue();
+                Optional<com.isp.project.model.Service> serviceOptional = serviceRepository.findById(serviceId);
+                if (serviceOptional.isPresent()) {
+                    com.isp.project.model.Service service = serviceOptional.get();
+                    String serviceName = service.getSeName();
+                    int serviceTypeId = service.getServiceType().getSeTypeID();
+                    Optional<com.isp.project.model.ServiceType> serviceTypeOptional = serviceTypeRepository.findById(serviceTypeId);
+                    if (serviceTypeOptional.isPresent()) {
+                        String serviceTypeName = serviceTypeOptional.get().getSeTypeName();
+                        
+                        // Calculate percentage
+                        double percentage = ((double) quantity / totalQuantity.get()) * 100;
+
+                        return String.format("%s: %s-%.2f%%", serviceTypeName, serviceName, percentage);
+                    }
+                }
+                return null;
+            })
+            .filter(Objects::nonNull)
+            .collect(Collectors.toList());
+
+    return topServices;
+}
+
 
     
     

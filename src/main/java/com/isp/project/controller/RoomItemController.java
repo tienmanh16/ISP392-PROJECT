@@ -79,10 +79,9 @@ public class RoomItemController {
         }
     }
 
-    // @GetMapping("/roomitems_check-name")
-    // public ResponseEntity<Boolean> checkEmailExists(@RequestParam String
-    // ItemName) {
-    // boolean exists = roomItemService.existsByItemName(ItemName);
-    // return ResponseEntity.ok(exists);
-    // }
+    @GetMapping("/roomitems_check-name")
+    public ResponseEntity<Boolean> checkEmailExists(@RequestParam String ItemName) {
+        boolean exists = roomItemService.existsByItemName(ItemName);
+        return ResponseEntity.ok(exists);
+    }
 }

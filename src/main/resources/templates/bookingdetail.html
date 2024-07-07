@@ -7,14 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700" rel="stylesheet" type="text/css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  <link href="https://themify.me/themify-icons" rel="stylesheet" />
   <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}" />
 
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" />
   <link rel="stylesheet" th:href="@{/css/AdminLTE.css}" />
   <!-- thư viện để add header và footer  -->
-
+  <link th:href="@{/css/modalviet.css}" rel="stylesheet" />
   <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/slick-theme.css}" />
   <link rel="stylesheet" type="text/css" th:href="@{/css/slick.css}" />
@@ -30,23 +32,44 @@
 </head>
 <style>
   .btn-margin-bottom {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     /* Adjust the value as necessary */
+  }
+
+  .btn.js-buy-ticket {
+    background-color: green;
+    color: white;
+    /* Để đảm bảo văn bản trên nút có thể đọc được */
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: -70px;
+    margin-left: 1300px;
   }
 </style>
 
 <body>
   <div class="boxcar-wrapper">
     <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-      <div th:replace="~{fragments/header :: header}"></div>
+      <div th:replace="~{fragments/header_recep :: header}"></div>
     </header>
     <section class="ftco-section layout-radius">
       <div class="container">
-        <h1 class="mb-3">Booking Detail</h1>
+        <h3 class="mb-3" style="text-align: center;">Booking Detail</h3>
         <div>
           <a href="/receptionist/booking" class="btn btn-secondary btn-margin-bottom">
             <i class="fas fa-arrow-left"></i> Back to List
           </a>
+        </div>
+
+        <div>
+          <button class="btn js-buy-ticket">+ Room</button>
         </div>
 
         <table class="table">
@@ -78,6 +101,7 @@
                   <br />
                 </span>
               </td>
+
               <td>
                 <a href="javascript:void(0);"
                   th:onclick="'confirmDelete(' + ${bookdetail.bookingID} + ',' + ${mapping.roomID.id} + ');'"
@@ -90,6 +114,111 @@
     </section>
   </div>
   <div th:replace="~{fragments/footer :: footer}"></div>
+
+  <!-- modal chứa cả các giao diện phủ lên -->
+  <div class="modal js-modal">
+    <div class="windowmapping js-modal-window">
+      <div class="title">Booking Detail</div>
+      <form th:action="@{/receptionist/saveBookingMapping}" method="post">
+        <input type="hidden" id="bookingId" name="bookingIdMapping" th:value="${bookdetail.bookingID}">
+
+        <!-- Trường dữ liệu ẩn cho selectedRoomsJson -->
+        <input type="hidden" id="selected-rooms-input" name="selectedRoomsJson">
+        <div class="main">
+          <h6 style="margin-bottom: 10px; text-align: center; color: #0077cc;">Room Information</h6>
+
+          <div class="container" style="margin-left: 20px;">
+            <div style="margin-bottom: 10px;">
+              <label for="checkin-date" style="display: inline-block; width: 150px;">Check-in date</label>
+              <input type="date" id="checkin-date" name="checkinDate" style="display: inline-block; margin-left: -40px;"
+                required>
+
+              <label for="checkout-date" style="display: inline-block; width: 160px;margin-left: 20px;">Check-out
+                date</label>
+              <input type="date" id="checkout-date" name="checkoutDate"
+                style="display: inline-block; margin-left: -40px;" required>
+            </div>
+          </div>
+
+          <!-- Danh sách phòng trống -->
+          <div class="container" style="margin-left: -20px; margin-top: 10px;">
+            <h6 style="margin-bottom: 10px; margin-left: 50px;text-align: left; color: #0077cc;">list of available rooms
+            </h6>
+            <div class="list-view1"
+              style="max-height: 170px; margin-top: 0; margin-left: 5px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; padding: 10px;">
+              <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
+                <thead>
+                  <tr>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470; text-align: center;">
+                      Room Number</th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;text-align: center;">
+                      Room Type </th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;text-align: center;">
+                      Add</th>
+                  </tr>
+                </thead>
+                <tbody id="available-rooms">
+                  <!-- Các phòng trống sẽ được thêm vào đây dưới dạng các hàng của bảng -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Phòng đã chọn -->
+          <div class="container" style="margin-left: 280px; margin-top: -197px;">
+            <h6 style="margin-bottom: 10px; margin-left: 100px; text-align: left; color: #0077cc;">list of selected
+              Rooms</h6>
+            <div class="list-view1"
+              style="max-height: 170px; margin-top: 0; margin-left: 50px; border: 2px solid rgba(0, 0, 0, 0.5); border-radius: 4px; max-width: 300px; overflow-y: auto; overflow-x: auto; padding: 10px;">
+              <table style="border-collapse: collapse; width: 100%; border-radius: 0; font-size: smaller;">
+                <thead>
+                  <tr>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470; text-align: center;">
+                      Room Number</th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;text-align: center;">
+                      Room Type </th>
+                    <th style="border: 2px solid rgba(0, 0, 0, 0.2); background-color: #44444470;text-align: center;">
+                      Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="selected-rooms">
+                  <!-- Các phòng đã chọn sẽ được thêm vào đây dưới dạng các hàng của bảng -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="footer">
+          <button type="submit" class="button green-button">ADD</button>
+          <button type="button" class="button gray-button js-modal-close">EXIT</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- =======================check-checkInDate-CheckOutDate==============================================================  -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Lấy ngày hiện tại theo múi giờ Việt Nam
+      const now = new Date();
+      const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+      const year = vietnamTime.getFullYear();
+      const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+      const day = String(vietnamTime.getDate()).padStart(2, '0');
+      const today = `${year}-${month}-${day}`;
+
+      // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
+      const checkinDateInput = document.getElementById("checkin-date");
+      checkinDateInput.setAttribute("min", today);
+
+      checkinDateInput.addEventListener("change", function () {
+        // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
+        const checkoutDateInput = document.getElementById("checkout-date");
+        checkoutDateInput.setAttribute("min", checkinDateInput.value);
+      });
+    });
+  </script>
+
   <script>
     function confirmDelete(bookingID, roomID) {
       if (confirm("Are you sure you want to delete this booking mapping?")) {
@@ -116,6 +245,211 @@
       }
     }
   </script>
+
+  <script>
+    const buyBtns = document.querySelectorAll(".js-buy-ticket");
+    // 3 nút có class js.. lưu vào biến buyBtns
+    const modal = document.querySelector(".js-modal");
+    // lấy tất cả các thằng có class .js-modal
+    const modalClose = document.querySelector(".js-modal-close");
+
+    const modalWindow = document.querySelector(".js-modal-window");
+
+    // hàm hiện modal mua vé (thêm class open cả modal)
+    function showByTickets() {
+      modal.classList.add("open");
+      // alert('ok')
+    }
+
+    // hàm ẩn modal mua vé (xóa class open ở modal)
+    function hideByTickets() {
+      modal.classList.remove("open");
+    }
+    // lặp qua từng thẻ button và nghe hành vi click
+    for (const buyBtn of buyBtns) {
+      // từng thằng trong buyBtns
+      buyBtn.addEventListener("click", showByTickets);
+    }
+    // nghe hành vi click vaof button close
+    modalClose.addEventListener("click", hideByTickets);
+    // khi click vào tất cả các khoảng modal
+    modal.addEventListener("click", hideByTickets);
+    // vì khi click vào tất cả các khoảng modal thì nó
+    // bao gồm các giao diện phủ lên nên ngăn chặn bằng stopPropagation
+    modalWindow.addEventListener("click", function (event) {
+      event.stopPropagation();
+    });
+  </script>
+
+  <!-- ========== lắng nghe sự thay đổi checkIn - checkOut để hiển thị ra phòng trống============ -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.getElementById('checkin-date').addEventListener('change', updateAvailableRooms);
+      document.getElementById('checkout-date').addEventListener('change', updateAvailableRooms);
+    });
+
+    function updateAvailableRooms() {
+      const checkinDate = document.getElementById('checkin-date').value;
+      const checkoutDate = document.getElementById('checkout-date').value;
+
+      if (checkinDate && checkoutDate) {
+        fetch('/receptionist/api/availableRooms', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ checkinDate, checkoutDate })
+        })
+          .then(response => response.json())
+          .then(data => {
+            const availableRoomsTable = document.getElementById('available-rooms');
+            availableRoomsTable.innerHTML = '';
+            data.forEach(room => {
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                      <td id="roomID" style="display:none;">${room.id}</td>
+                      <td id="roomNum" style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomNum}</td>
+                      <td id="roomTypeId" style="display:none;">${room.roomTypeId}</td>
+                      <td id ="roomTypeName" style="border: 2px solid rgba(0, 0, 0, 0.2);">${room.roomTypeName}</td>
+                      <td id="roomTypeDescription" style="display:none;">${room.roomTypeDescription}</td>
+                      <td id="priceHour" style="display:none;">${room.priceHour}</td>
+                      <td id="priceDay" style="display:none;">${room.priceDay}</td>
+                      <td id="status" style="display:none;">${room.status}</td>
+                       <td id="cleaning" style="display:none;">${room.cleaning}</td>
+                      <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
+                          <a href="javascript:void(0);" class="add-room-link">
+                              <span class="material-icons" style="color: green; margin-top: 10px;">add_circle</span>
+                          </a>
+                      </td>
+                  `;
+              availableRoomsTable.appendChild(row);
+              console.log("row", row);
+            });
+          })
+          .catch(error => console.error('Error fetching available rooms:', error));
+      }
+    }
+  </script>
+
+  <!-- ================== Bắt Click thêm phòng đã chọn-START=================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+      const availableRoom = document.getElementById('available-rooms');
+      availableRoom.addEventListener('click', (event) => {
+        if (event.target.closest('.add-room-link')) {
+          addRoomToSelectedTable(event);
+        }
+      });
+
+      function addRoomToSelectedTable(event) {
+        const row = event.target.closest('tr');
+
+        const roomID = row.querySelector('#roomID, .roomID').textContent;
+        const roomNum = row.querySelector('#roomNum, .roomNum').textContent;
+        const roomTypeId = row.querySelector('#roomTypeId, .roomTypeId').textContent;
+        const roomTypeName = row.querySelector('#roomTypeName, .roomTypeName').textContent;
+        const roomTypeDescription = row.querySelector('#roomTypeDescription, .roomTypeDescription').textContent;
+        const priceHour = row.querySelector('#priceHour, .priceHour').textContent;
+        const priceDay = row.querySelector('#priceDay, .priceDay').textContent;
+        const status = row.querySelector('#status, .status').textContent;
+        const cleaning = row.querySelector('#cleaning, .cleaning').textContent;
+
+        const selectedRoomsTableBody = document.getElementById('selected-rooms');
+        if (!selectedRoomsTableBody) {
+          console.error('selected-rooms element not found');
+          return;
+        }
+
+        const existingRows = selectedRoomsTableBody.getElementsByTagName('tr');
+        for (let i = 0; i < existingRows.length; i++) {
+          const existingRoomNum = existingRows[i].querySelector('.roomNum').textContent;
+          if (existingRoomNum === roomNum) {
+            return;
+          }
+        }
+
+        const newRow = document.createElement('tr');
+        newRow.innerHTML = `
+          <td class="roomID" style="display:none;">${roomID}</td>
+          <td class="roomNum" style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomNum}</td>
+          <td class="roomTypeId" style="display:none;">${roomTypeId}</td>
+          <td class="roomTypeName" style="border: 2px solid rgba(0, 0, 0, 0.2);">${roomTypeName}</td>
+          <td class="roomTypeDescription" style="display:none;">${roomTypeDescription}</td>
+          <td class="priceHour" style="display:none;">${priceHour}</td>
+          <td class="priceDay" style="display:none;">${priceDay}</td>
+          <td class="status" style="display:none;">${status}</td>
+          <td class="cleaning" style="display:none;">${cleaning}</td>
+          <td style="border: 2px solid rgba(0, 0, 0, 0.2); text-align: center; vertical-align: middle;">
+            <a href="javascript:void(0)" class="remove-room-link">
+              <span class="material-icons" style="color: red;margin-top: 10px;">cancel</span>
+          </a>
+          </td>
+    `;
+        selectedRoomsTableBody.appendChild(newRow);
+        console.log("Row", row);
+        updateSelectedRoomsInput();
+      }
+
+      const selectedRoomsTableBody = document.getElementById('selected-rooms');
+      selectedRoomsTableBody.addEventListener('click', (event) => {
+        if (event.target.closest('.remove-room-link')) {
+          removeRoomFromSelectedTable(event);
+        }
+      });
+
+      function removeRoomFromSelectedTable(event) {
+        const row = event.target.closest('tr');
+        row.remove();
+        console.log("Row", row);
+        updateSelectedRoomsInput();
+      }
+      // ======================================= Lấy danh sách phòng đã chọn ====================================================================================
+      function getSelectedRooms() {
+        const rows = selectedRoomsTableBody.getElementsByTagName('tr');
+        const selectedRooms = [];
+
+        for (let i = 0; i < rows.length; i++) {
+          const roomID = rows[i].querySelector('.roomID').textContent;
+          const roomNum = rows[i].querySelector('.roomNum').textContent;
+          const roomTypeId = rows[i].querySelector('.roomTypeId').textContent;
+          const roomTypeName = rows[i].querySelector('.roomTypeName').textContent;
+          const roomTypeDescription = rows[i].querySelector('.roomTypeDescription').textContent;
+          const priceHour = rows[i].querySelector('.priceHour').textContent;
+          const priceDay = rows[i].querySelector('.priceDay').textContent;
+          const status = rows[i].querySelector('.status').textContent;
+          const cleaning = rows[i].querySelector('.cleaning').textContent;
+
+          selectedRooms.push({
+            id: roomID,
+            roomNum,
+            roomTypeId,
+            roomTypeName,
+            roomTypeDescription,
+            priceHour,
+            priceDay,
+            status,
+            cleaning
+          });
+        }
+        console.log("invoiceLineData", JSON.stringify(selectedRooms));
+        return selectedRooms;
+      }
+      // ========================= Update danh sách phòng đã chọn =====================================
+      function updateSelectedRoomsInput() {
+        const selectedRooms = getSelectedRooms();
+        const selectedRoomsInput = document.getElementById('selected-rooms-input');
+        if (!selectedRoomsInput) {
+          console.error('selected-rooms-input element not found');
+          return;
+        }
+        selectedRoomsInput.value = JSON.stringify(selectedRooms);
+        console.log("LineData", JSON.stringify(selectedRooms));
+      }
+    });
+
+    //=======================================================================================================================
+  </script>
+  <!-- ================== Bắt Click thêm phòng đã chọn-END =================================================================== -->
 </body>
 
 </html>

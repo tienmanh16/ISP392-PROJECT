@@ -11,5 +11,6 @@ public interface RoomItemService {
     List<RoomItem> findRoomItemsByNameContaining(String keyword);
 
     List<RoomItem> findAll();
-    // boolean existsByItemName(String ItemName);
+    
+    boolean existsByItemName(String ItemName);
 }

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.isp.project.model.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -14,13 +16,19 @@ import org.springframework.stereotype.Service;
 
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
-import com.isp.project.model.Room;
+import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.RoomRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class RoomServiceImpl implements RoomService {
+
+    @Autowired
+    private BookingMappingRepository bookingMappingRepository;
+
+
+
     private final RoomRepository roomRepository;
 
     @Override
@@ -105,6 +113,10 @@ public class RoomServiceImpl implements RoomService {
         return customer;
     }
 
+    public BookingMapping testBookingMapping(int id) {
+        return bookingMappingRepository.getReferenceById(id);
+    }
+
     public Room testR(int id) {
         return roomRepository.getReferenceById(id);
     }
@@ -187,6 +199,29 @@ public class RoomServiceImpl implements RoomService {
     @Transactional
     public void updateRoomStatusByRoomId2(Integer roomId) {
         roomRepository.updateRoomStatusByRoomId2(roomId);
+    }
+
+
+
+    @Override
+    @Transactional
+    public void updateBookingMappingActive(Integer bookingMappingId) {
+        roomRepository.updateBookingMappingActive(bookingMappingId);
+    }
+
+
+
+    @Override
+    @Transactional
+    public void updateRoomCleaningByRoomId(Integer roomId, String cleaning) {
+        roomRepository.updateRoomCleaningByRoomId(roomId, cleaning);
+    }
+
+
+
+    @Override
+    public List<BookingMapping> getAllRoom() {
+      return bookingMappingRepository.findAll();
     }
 
 }

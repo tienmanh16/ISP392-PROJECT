@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <!-- Custom Style -->
     <!-- <link rel="stylesheet" th:href="@{css/style1.css}"> -->
-    <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+    <link rel="stylesheet" th:href="@{fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
         href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
     <title>Invoice..!</title>
 
@@ -229,7 +229,7 @@
                 <div class="logo">
                     <img src="logo.png" alt="" class="img-fluid">
                     <!-- //print -->
-                    <a th:href="@{/receptionist/printInvoice/{invoiceID}(invoiceID=${booking.Invoice[0].InvoiceID})}"
+                    <a th:href="@{receptionist/printInvoice/{invoiceID}(invoiceID=${booking.Invoice[0].InvoiceID})}"
                         class="ti-printer print-text">
                         <span class="print-text">Print</span>
                     </a>

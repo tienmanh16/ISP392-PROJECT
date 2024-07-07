@@ -19,4 +19,5 @@ public interface RoomTypeService {
     List<RoomType> findAllInactive();
     void updateRoomTypeActiveStatus(int id, int status);
     List<RoomType> searchRoomType(String name);
+    List<String> rateUseRoomTypeByMonth(int month, int year);
 }

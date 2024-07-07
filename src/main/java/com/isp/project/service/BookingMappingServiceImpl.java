@@ -3,7 +3,10 @@ package com.isp.project.service;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.lang.Double;
+import java.sql.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +54,23 @@ public class BookingMappingServiceImpl implements BookingMappingService {
         }
 
         return data;
+    }
+
+    // public List<BookingMapping> getAvailableRooms(String checkinDate) {
+    //     if (checkinDate == null || checkinDate.isEmpty()) {
+    //         return bookingMappingRepository.findAll();
+    //     } else {
+    //         Date date = Date.valueOf(checkinDate);
+    //         return bookingMappingRepository.findByCheckInDateLessThanEqual(date);
+    //     }
+    // }
+
+    public List<BookingMapping> getAvailableRooms(Date checkinDate) {
+        if (checkinDate == null) {
+            return bookingMappingRepository.findAll();
+        } else {
+            return bookingMappingRepository.findByCheckInDateLessThanEqual(checkinDate);
+        }
     }
 
 }

@@ -12,7 +12,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.isp.project.dto.RoomCustomerDTO;
+import com.isp.project.dto.RoomDTO;
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Room;
 
 @Repository
@@ -47,20 +49,48 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
          + "JOIN r.roomType rt ")
    List<RoomDetailDTO> findAllRoomsWithDetails1();
 
-   @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
-         + "r.id, "
-         + "r.roomNum, "
-         + "rt.id, "
-         + "rt.name, "
-         + "rt.des, "
-         + "rt.priceHour, "
-         + "rt.priceDay, "
-         + "r.status, "
-         + "r.cleaning "
-         + ") "
-         + "FROM Room r "
-         + "JOIN r.roomType rt ")
-   List<RoomDetailDTO> findAllRoomsWithDetails();
+
+    @Query("SELECT new com.isp.project.dto.RoomDTO("
+           + "r.id, "
+           + "r.roomNum, "
+           + "rt.name, "
+           + "r.cleaning, "
+           + "bm.bookingMappingID, "
+           + "bm.bookingMappingActive "
+           + ") "
+           + "FROM BookingMapping bm "
+           + "JOIN bm.roomID r "
+           + "JOIN r.roomType rt ")
+    List<RoomDTO> findAllRooms();
+    
+    @Query("SELECT new com.isp.project.dto.RoomDTO("
+           + "r.id, "
+           + "r.roomNum, "
+           + "rt.name, "
+           + "r.cleaning, "
+           + "bm.bookingMappingID, "
+           + "bm.bookingMappingActive "
+           + ") "
+           + "FROM BookingMapping bm "
+           + "JOIN bm.roomID r "
+           + "JOIN r.roomType rt "
+           + "WHERE bm.checkInDate <= :checkInDate")
+    List<RoomDTO> findAllRoomsWithCheckInDate(@Param("checkInDate") Date checkinDate);
+
+    @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
+            + "r.id, "
+            + "r.roomNum, "
+            + "rt.id, "
+            + "rt.name, "
+            + "rt.des, "
+            + "rt.priceHour, "
+            + "rt.priceDay, "
+            + "r.status, "
+           + "r.cleaning "
+            + ") "
+            + "FROM Room r "
+            + "JOIN r.roomType rt ")
+    List<RoomDetailDTO> findAllRoomsWithDetails();
 
    @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
          + "r.id, "
@@ -135,30 +165,41 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
 
    Page<Room> findAll(Pageable pageable);
 
+   //  @Modifying
+   //  @Query("UPDATE Room SET status = 'Rented Room' WHERE id = :roomId")
+   //  void updateRoomStatusByRoomId(@Param("roomId") Integer roomId);
    @Modifying
-   @Query("UPDATE Room SET status = 'Rented Room' WHERE id = :roomId")
-   void updateRoomStatusByRoomId(@Param("roomId") Integer roomId);
+   @Query("UPDATE BookingMapping SET bookingMappingActive = 2 WHERE bookingMappingID = :bookingMappingId")
+   void updateRoomStatusByRoomId(@Param("bookingMappingId") Integer bookingMappingId);
 
-   @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus, r.cleaning "
-         +
-         "FROM Room r " +
-         "INNER JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID " +
-         "WHERE r.RoomID NOT IN ( " +
-         "   SELECT bm.RoomID " +
-         "   FROM BookingMapping bm " +
-         "   WHERE bm.CheckInDate < :checkoutDate " +
-         "   AND bm.CheckOutDate > :checkinDate " +
-         ") AND r.RoomActive = 1", nativeQuery = true)
-   List<Object[]> findAvailableRooms(@Param("checkinDate") Date checkinDate,
-         @Param("checkoutDate") Date checkoutDate);
+   @Modifying
+   @Query("UPDATE Room SET status = 'Empty Room' WHERE id = :roomId")
+   void updateRoomStatusByRoomId2(@Param("roomId") Integer roomId);
 
+   @Modifying
+   @Query("UPDATE Room SET cleaning = :cleaning WHERE id = :roomId")
+   void updateRoomCleaningByRoomId(@Param("roomId") Integer roomId, @Param("cleaning") String cleaning);
 
-         @Query("Select c FROM Room c WHERE c.roomNum LIKE %?1%")
-         List<Room> searchRoom(String name);
+   @Modifying
+   @Query("UPDATE BookingMapping SET bookingMappingActive = 0 WHERE bookingMappingID = :bookingMappingId")
+   void updateBookingMappingActive(@Param("bookingMappingId") Integer bookingMappingId);
 
-         boolean existsByRoomNum(String roomNum);
+    @Query(value = "SELECT r.RoomID, r.RoomNumber, rt.RoomTypeID, rt.RoomTypeName, rt.Description, rt.PricePerHour, rt.PricePerDay, r.RoomStatus, r.cleaning " +
+               "FROM Room r " +
+               "INNER JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID " +
+               "WHERE r.RoomID NOT IN ( " +
+               "   SELECT bm.RoomID " +
+               "   FROM BookingMapping bm " +
+               "   WHERE bm.CheckInDate < :checkoutDate " +
+               "   AND bm.CheckOutDate > :checkinDate " +
+               ") AND r.RoomActive = 1", nativeQuery = true)
+List<Object[]> findAvailableRooms(@Param("checkinDate") Date checkinDate,
+                                  @Param("checkoutDate") Date checkoutDate);
 
-         @Modifying
-         @Query("UPDATE Room SET status = 'Empty Room' WHERE id = :roomId")
-         void updateRoomStatusByRoomId2(@Param("roomId") Integer roomId);
+   boolean existsByRoomNum(String roomNum);
+
+    @Query("Select c FROM Room c WHERE c.roomNum LIKE %?1%")
+    List<Room> searchRoom(String name);
+
+   
 }

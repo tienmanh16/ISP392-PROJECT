@@ -25,6 +25,7 @@ import com.isp.project.service.BookingMappingService;
 import com.isp.project.service.BookingService;
 import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
+import com.isp.project.service.RoomTypeService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -47,13 +48,15 @@ public class ReportController {
 
     @Autowired
     private SpringTemplateEngine templateEngine;
+    @Autowired
+    private RoomTypeService roomTypeService;
 
     @GetMapping("/statistic")
     public String reportGetdate(@RequestParam(value = "month", required = false) Integer month,
             @RequestParam(value = "year", required = false) Integer year,
             Model model) {
         if (month == null & year == null) {
-            month = 1;
+            month = 7;
             year = 2024;
         }
 
@@ -79,13 +82,21 @@ public class ReportController {
         model.addAttribute("totalCustomer", totalCustomer);
 
         Map<String, Double> percentByMonth = new HashMap<>();
-        ;
+        
         percentByMonth.put("percentBooking", ((revenueBooking / (revenueService + revenueBooking)) * 100));
         percentByMonth.put("percentService", ((revenueService / (revenueService + revenueBooking)) * 100));
         model.addAttribute("percentByMonth", percentByMonth.values());
 
         model.addAttribute("percentBooking", ((revenueBooking / (revenueService + revenueBooking)) * 100));
         model.addAttribute("percentService", ((revenueService / (revenueService + revenueBooking)) * 100));
+
+
+        List<String> useMostService = invoiceService.seUseMost(month, year);
+        model.addAttribute("useMostService", useMostService);
+
+
+        List<String> rateUseRoomType = roomTypeService.rateUseRoomTypeByMonth(month,year);
+        model.addAttribute("rateUseRoomType", rateUseRoomType);
         return "report";
     }
 

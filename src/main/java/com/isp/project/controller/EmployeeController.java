@@ -167,4 +167,11 @@ public class EmployeeController {
         return "viewEmployee";
     }
 
+    @GetMapping("/viewProfile")
+    public String getProfileEm(Model model, Principal principal) {
+        String email = principal.getName();
+        Employee employee = employeeService.findByEmail(email);
+        model.addAttribute("employee", employee);
+        return "viewProfile";
+}
 }
