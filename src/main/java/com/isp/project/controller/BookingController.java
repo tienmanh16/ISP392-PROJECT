@@ -26,6 +26,7 @@ import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
+import com.isp.project.model.Email;
 import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
 import com.isp.project.model.Register;
@@ -71,6 +72,9 @@ public class BookingController {
 
     @Autowired
     private EmployeeService employeeService;
+    
+    @Autowired
+    Email emailService;
 
     // ============================== GET ALL BOOKING
     // ================================================================================
@@ -195,6 +199,15 @@ public class BookingController {
         newInvoice.setInvoiceDate(bookingInfo.getCheckoutDate());
         invoiceRepository.save(newInvoice);
 
+
+    //=================SendEmail=====================================
+    String emailCustomer = customer.getCustomerEmail();
+    try {
+        emailService.sendEmailBooking(emailCustomer, bookingInfo);
+    } catch (Exception e) {
+        // TODO: handle exception
+    }
+  
         // return "redirect:/booking"; // Redirect to booking result page
         return "redirect:/receptionist/booking";
     }
