@@ -3,7 +3,9 @@ package com.isp.project.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,33 +16,41 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-	@Autowired
-	public CustomAuthSuccessHandler successHandler;
+    @Autowired
+    public CustomAuthSuccessHandler successHandler;
 
-	@Autowired
-	public CustomFailureHandler failureHandler;
+    @Autowired
+    public CustomSuccessHandler successHandler1;
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Autowired
+    public CustomFailureHandler failureHandler;
 
-	@Bean
-	public UserDetailsService getDetailsService() {
-		return new CustomUserDetailsService();
-	}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public DaoAuthenticationProvider getAuthenticationProvider() {
-		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(getDetailsService());
-		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-		return daoAuthenticationProvider;
-	}
-	// "/home", "/contact", "/forgotpass/**", "/detail", "/css/**", "/images/**", "/scss/**", "/fonts/**", "/js/**","/assets/**", "/login
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
+    @Bean
+    public UserDetailsService getDetailsService() {
+        return new CustomUserDetailsService();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider getAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(getDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoAuthenticationProvider;
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers("/receptionist/**").hasAnyRole("RECEPTIONIST", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
@@ -50,14 +60,17 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .loginProcessingUrl("/userLogin")
                 .failureHandler(failureHandler)
-				.successHandler(successHandler)
+                .successHandler(successHandler)
                 .permitAll()
+            )
+            .oauth2Login(oauth2Login -> oauth2Login
+                .loginPage("/login")
+                .successHandler(successHandler1).permitAll()
             )
             .exceptionHandling(exception -> exception
                 .accessDeniedPage("/login")
             );
 
-		return http.build();
-	}
-
+        return http.build();
+    }
 }

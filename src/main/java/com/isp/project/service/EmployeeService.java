@@ -22,13 +22,15 @@ public interface EmployeeService {
 
     List<Employee> findAll();
 
-    // List<Employee> findActiveEmployees();
+    List<Employee> findActiveEmployees();
+    List<Employee> findInActiveEmployees();
     Employee save(Employee entity);
     
     boolean existsByEmail(String email);
     boolean existsByUsername(String username);
 
     boolean toggleEmployeeStatus(int employeeId, boolean currentStatus);
+    boolean toggleEmployeeLock(int employeeId, boolean currentLock);
 
     public Employee saveUser(Employee employee);
 

@@ -1,6 +1,7 @@
 package com.isp.project.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,27 +29,25 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @ModelAttribute
-	public void commonUser(Principal p, Model m) {
-		if (p != null) {
-			String email = p.getName();
-			Employee user = employeeService.findByEmail(email);
-			m.addAttribute("user", user);
-		}
-	}
+    public void commonUser(Principal p, Model m) {
+        if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            m.addAttribute("user", user);
+        }
+    }
 
-	@GetMapping("/home")
-	public String profile() {
-		return "home_admin";
-	}
-
+    @GetMapping("/home")
+    public String profile() {
+        return "home_admin";
+    }
 
     @GetMapping("/employee_list")
     public String listEmployee(Model model) {
-        model.addAttribute("emList", employeeService.findAll());
+        List<Employee> emList = employeeService.findAll();
+        model.addAttribute("emList", emList);
         return "viewEmployee";
     }
-
-    
 
     @GetMapping("/employee_add")
     public String add(Model model) {
@@ -66,20 +65,20 @@ public class EmployeeController {
         employeeService.saveUser(employee);
         return "redirect:/admin/employee_list";
     }
-    
+
     @GetMapping("/employee_edit/{id}")
     public String edit(Model model, @PathVariable("id") int id) {
         Employee employee = employeeService.findById(id);
         if (employee != null) {
             model.addAttribute("employee", employee);
-            return "editEm"; 
+            return "editEm";
         } else {
-            return "redirect:/admin/employee_list"; 
+            return "redirect:/admin/employee_list";
         }
     }
 
     @PostMapping("/employee_edit")
-    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, @RequestParam("password") String password,  BindingResult bindingResult) {
+    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, @RequestParam("password") String password, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "editEm";
         }
@@ -101,7 +100,7 @@ public class EmployeeController {
             employeeService.saveUser(existingEmployee);
         }
         return "redirect:/admin/employee_list";
-        
+
     }
 
     @GetMapping("/employee_delete/{id}")
@@ -124,6 +123,16 @@ public class EmployeeController {
         }
     }
 
+    @PostMapping("/employee_toggleLock/{employeeId}")
+    public ResponseEntity<?> toggleLock(@PathVariable("employeeId") int employeeId, @RequestParam("isAccountNonLocked") boolean isAccountNonLocked) {
+        try {
+            boolean newLock = employeeService.toggleEmployeeLock(employeeId, isAccountNonLocked);
+            return ResponseEntity.ok().body(newLock);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to toggle employee Lock.");
+        }
+    }
+
     @GetMapping("/employee_check-email")
     public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
         boolean exists = employeeService.existsByEmail(email);
@@ -136,5 +145,26 @@ public class EmployeeController {
         return ResponseEntity.ok(exists);
     }
 
+    @GetMapping("/employee_search_active")
+    public String sortEmployeesBySalary(@RequestParam("status") String status, Model model) {
+        List<Employee> emList;
+        if (null == status) {
+            emList = employeeService.findAll();
+        } else {
+            emList = switch (status) {
+                case "all" ->
+                    employeeService.findAll();
+                case "active" ->
+                    employeeService.findActiveEmployees();
+                case "inactive" ->
+                    employeeService.findInActiveEmployees();
+                default ->
+                    employeeService.findAll();
+            };
+        }
+        model.addAttribute("emList", emList);
+        model.addAttribute("status", status);
+        return "viewEmployee";
+    }
 
 }

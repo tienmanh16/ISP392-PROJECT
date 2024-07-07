@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.isp.project.model.Employee;
 
-
 public class CustomUser implements UserDetails {
 
 	private Employee user;
@@ -21,13 +20,9 @@ public class CustomUser implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-
-		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
-
-		return Arrays.asList(authority);
+		return Arrays.asList(new SimpleGrantedAuthority(user.getRole()));
 	}
 
-	
 	@Override
 	public String getPassword() {
 		return user.getPassword();

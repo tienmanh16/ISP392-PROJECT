@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,27 +37,19 @@ public class ForgotPasswordController {
 
     @GetMapping("")
     public String forgotPassword() {
-        // Check if the user is logged in or not
-        UserDTO user = (UserDTO) session.getAttribute("user_sess");
-        if (user != null) {
-            return "redirect:/home";
-        } else {
-            return "forgotpass";
-        }
+        return "forgotpass";
     }
 
     @PostMapping("")
     public String forgotPasswordProcess(@ModelAttribute UserDTO userDTO, Model model) {
-        // Check for email
         Employee checkEmail = userService.findByEmail(userDTO.getEmail());
         if (checkEmail != null) {
             try {
                 emailService.sendEmail(checkEmail.getEmail(), checkEmail.getVerifyCode());
                 session.setAttribute("rawUser", checkEmail);
                 model.addAttribute("message", "Password reset instructions have been sent to your email.");
-                return "forgotpass"; // Consider redirecting to a confirmation page
+                return "forgotpass";
             } catch (MessagingException e) {
-                // Handle email sending failure
                 model.addAttribute("error", "Failed to send email. Please try again later.");
                 return "forgotpass";
             }
@@ -80,10 +71,7 @@ public class ForgotPasswordController {
 
     @PostMapping("/resetpassword")
     public String changePassword(@Valid @ModelAttribute("employee") UserResetPasswordDto userResetPasswordDto,
-                                 BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()) {
-            return "resetpassword";
-        }
+            Model model) {
 
         Employee rawUser = (Employee) session.getAttribute("rawUser");
         if (rawUser == null) {
@@ -91,9 +79,11 @@ public class ForgotPasswordController {
         }
 
         Employee userId = userService.findById(rawUser.getId());
+        // System.out.println("VerifyCode from database: " + userId.getVerifyCode());
+        // System.out.println("VerifyCode from form: " + userResetPasswordDto.getVerifyCode());
 
         // Check if the verification code input matches the one in the database
-        if (!userId.getVerifyCode().equals(userResetPasswordDto.getVerifyCode())) {
+        if (!userId.getVerifyCode().equals(userResetPasswordDto.getVerifyCode().replaceAll("\\s+", ""))) {
             model.addAttribute("error", "Verification code incorrect!");
             return "resetpassword";
         }
@@ -101,8 +91,7 @@ public class ForgotPasswordController {
         // Change the user's password
         userService.changePassword(rawUser.getId(), userResetPasswordDto);
         model.addAttribute("successMessage", "Password has been successfully changed.");
-        
-        // Stay on the same page and display success message
+
         return "resetpassword";
     }
 }

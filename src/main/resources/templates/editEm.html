@@ -200,10 +200,10 @@
         document.getElementById("salary").addEventListener("input", function () {
 			var input = this.value; 
 			if (input<=0) { 
-                salaryText.innerHTML = 'Salary must be a positive number'; // Hiển thị thông báo lỗi
+                salaryText.innerHTML = 'Salary must be a positive number'; 
 				this.value="";
 			} else {
-				document.getElementById("salaryError").innerText = ""; // Xóa thông báo lỗi nếu không có lỗi
+				salaryText.innerHTML= ""; 
 			}
 		});
 	</script>
