@@ -117,9 +117,7 @@ public class InvoidController {
             totalSePrice += invoiceLine.getInvoiceTotalAmount();
         }
 
-        for (BookingMapping ls : booking.getBookingMapping()) {
-            totalAmountRoom += ls.getBookingTotalAmount();
-        }
+        totalAmountRoom = invoiceRepository.getReferenceById(invoiceID).getTotalAmount();
 
         double totalInvoice = totalAmountRoom + totalSePrice;
 
@@ -138,11 +136,12 @@ public class InvoidController {
         model.addAttribute("invoiceLineList", invoiceLineList);
 
         // send mail
-        // String email = invoiceRepository.getReferenceById(invoiceID).getBooking().getCustomerID().getCustomerEmail();
+        // String email =
+        // invoiceRepository.getReferenceById(invoiceID).getBooking().getCustomerID().getCustomerEmail();
         // try {
-        //     emailService.sendEmailCheckOut(email, invoiceID);
+        // emailService.sendEmailCheckOut(email, invoiceID);
         // } catch (MessagingException e) {
-        //     // Handle the exception, e.g., log it or take appropriate action
+        // // Handle the exception, e.g., log it or take appropriate action
         // }
         return "invoice1";
     }

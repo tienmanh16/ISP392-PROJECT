@@ -9,12 +9,17 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
   <link href="https://themify.me/themify-icons" rel="stylesheet" />
   <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}" />
 
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" />
   <link rel="stylesheet" th:href="@{/css/AdminLTE.css}" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+      href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
+
   <!-- thư viện để add header và footer  -->
   <link th:href="@{/css/modalviet.css}" rel="stylesheet" />
   <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet" />
@@ -83,6 +88,7 @@
               <th>Customer Quantity</th>
               <th>Room Number</th>
               <th>Employee Name</th>
+              <th>Check-in</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -95,6 +101,7 @@
               <td th:text="${#dates.format(bookdetail.bookingDate, 'dd-MM-yyyy')}"></td>
               <td th:text="${bookdetail.customerQuantity}"></td>
               <td th:text="${mapping.roomID.roomNum}"></td>
+              
               <td>
                 <span th:each="register : ${bookdetail.register}">
                   <span th:text="${register.employeeID.fullName}"></span>
@@ -102,6 +109,19 @@
                 </span>
               </td>
 
+              <td>
+                <a href="javascript:void(0);" th:if="${mapping.bookingMappingActive == 2}"
+                   th:onclick="'confirmActiveRoom(' + ${mapping.bookingMappingID} + ');'"
+                    class="btn btn-danger" style="width: 100px; height: 40px;">Rented</a>
+                <a href="javascript:void(0);" th:if="${mapping.bookingMappingActive == 1}"
+                   th:onclick="'confirmInactiveRoom(' + ${mapping.bookingMappingID} + ');'"
+                    class="btn btn-success" style="width: 100px; height: 40px;">Check-in</a>
+            </td>
+
+              <!-- <td>
+                <a th:href="@{/receptionist/checkIn/{bookingMappingid}(bookingMappingid=${mapping.bookingMappingID})}">Link</a>
+            </td> -->
+            
               <td>
                 <a href="javascript:void(0);"
                   th:onclick="'confirmDelete(' + ${bookdetail.bookingID} + ',' + ${mapping.roomID.id} + ');'"
@@ -449,6 +469,33 @@
 
     //=======================================================================================================================
   </script>
+
+<script>
+  function confirmInactiveRoom(bookingMappingid) {
+    if (confirm('Are you sure you want to Check-in it?')) {
+      inactiveRoom(bookingMappingid);
+    }
+  }
+
+  function inactiveRoom(bookingMappingid) {
+    fetch(`/receptionist/checkIn/${bookingMappingid}`, {
+      method: 'GET'
+    })
+      .then(response => response.text().then(text => ({ status: response.status, text })))
+      .then(({ status, text }) => {
+        alert(text);
+        if (status === 200) { // HTTP OK status
+          location.reload(); // Reload the page to reflect the change
+        } else {
+          throw new Error(text); // If the message is not expected, throw an error
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert("An error occurred: " + error.message);
+      });
+  }
+</script>
   <!-- ================== Bắt Click thêm phòng đã chọn-END =================================================================== -->
 </body>
 

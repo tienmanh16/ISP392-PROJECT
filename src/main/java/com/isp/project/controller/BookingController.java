@@ -2,9 +2,14 @@ package com.isp.project.controller;
 
 import java.security.Principal;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -72,7 +77,7 @@ public class BookingController {
 
     @Autowired
     private EmployeeService employeeService;
-    
+
     @Autowired
     Email emailService;
 
@@ -192,22 +197,21 @@ public class BookingController {
         }
 
         // create Invoice
-        Invoice newInvoice = new Invoice();
-        newInvoice.setBooking(booking);
-        newInvoice.setCustomerName(customer.getCustomerName());
-        newInvoice.setTotalAmount(total_room);
-        newInvoice.setInvoiceDate(bookingInfo.getCheckoutDate());
-        invoiceRepository.save(newInvoice);
+        // Invoice newInvoice = new Invoice();
+        // newInvoice.setBooking(booking);
+        // newInvoice.setCustomerName(customer.getCustomerName());
+        // newInvoice.setTotalAmount(total_room);
+        // newInvoice.setInvoiceDate(bookingInfo.getCheckoutDate());
+        // invoiceRepository.save(newInvoice);
 
+        // =================SendEmail=====================================
+        String emailCustomer = customer.getCustomerEmail();
+        try {
+            emailService.sendEmailBooking(emailCustomer, bookingInfo);
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
 
-    //=================SendEmail=====================================
-    String emailCustomer = customer.getCustomerEmail();
-    try {
-        emailService.sendEmailBooking(emailCustomer, bookingInfo);
-    } catch (Exception e) {
-        // TODO: handle exception
-    }
-  
         // return "redirect:/booking"; // Redirect to booking result page
         return "redirect:/receptionist/booking";
     }
@@ -273,4 +277,73 @@ public class BookingController {
         }
 
     }
+
+    // @GetMapping("/checkIn/{bookingMappingid}")
+    // public String getMethodName(@PathVariable("bookingMappingid") int bookingMappingid) {
+    //     Optional<BookingMapping> bookingMapping_raw = bookingMappingRepository.findById(bookingMappingid);
+    //     BookingMapping bookingMapping = bookingMapping_raw.get();
+    //     Booking booking = bookingRepository.findByBookingID(bookingMapping.getBookingID().getBookingID());
+
+    //     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    //     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    //     LocalDate checkIn = LocalDate.parse(dateFormat.format(bookingMapping.getCheckInDate()), formatter);
+    //     LocalDate checkOut = LocalDate.parse(dateFormat.format(bookingMapping.getCheckOutDate()), formatter);
+    //     int totalBookedDays = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
+
+    //     int totalPriceRoom = bookingMapping.getBookingTotalAmount() * totalBookedDays;
+
+    //     Invoice newInvoice = new Invoice();
+    //     newInvoice.setBooking(booking);
+    //     newInvoice.setCustomerName(booking.getCustomerID().getCustomerName());
+    //     newInvoice.setTotalAmount(totalPriceRoom);
+    //     newInvoice.setInvoiceDate(bookingMapping.getCheckInDate());
+    //     invoiceRepository.save(newInvoice);
+
+    //     bookingMapping.setBookingMappingActive(2);
+    //     bookingMappingRepository.save(bookingMapping);
+    //     return "redirect:/receptionist/bookingdetail?id=" + booking.getBookingID();
+    // }
+
+    @GetMapping("/checkIn/{bookingMappingid}")
+    public ResponseEntity<String> getMethodName(@PathVariable("bookingMappingid") int bookingMappingid) {
+
+        try {
+            Optional<BookingMapping> bookingMapping_raw = bookingMappingRepository.findById(bookingMappingid);
+            BookingMapping bookingMapping = bookingMapping_raw.get();
+            Booking booking = bookingRepository.findByBookingID(bookingMapping.getBookingID().getBookingID());
+    
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            LocalDate checkIn = LocalDate.parse(dateFormat.format(bookingMapping.getCheckInDate()), formatter);
+            LocalDate checkOut = LocalDate.parse(dateFormat.format(bookingMapping.getCheckOutDate()), formatter);
+            int totalBookedDays = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
+    
+            int totalPriceRoom = bookingMapping.getBookingTotalAmount() * totalBookedDays;
+    
+            Invoice newInvoice = new Invoice();
+            newInvoice.setBooking(booking);
+            newInvoice.setCustomerName(booking.getCustomerID().getCustomerName());
+            newInvoice.setTotalAmount(totalPriceRoom);
+            newInvoice.setInvoiceDate(bookingMapping.getCheckInDate());
+            invoiceRepository.save(newInvoice);
+    
+            bookingMapping.setBookingMappingActive(2);
+            bookingMappingRepository.save(bookingMapping);
+            return ResponseEntity.ok("Room inactive successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
+        }
+       
+    }
+
+    // @GetMapping("/inactiveBookingMapping/{id}")
+    // public ResponseEntity<String> inactiveRoom(@PathVariable("id") int id) {
+    //     try {
+            
+    //         return ResponseEntity.ok("Room inactive successfully");
+    //     } catch (Exception e) {
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
+    //     }
+    // }
+
 }
