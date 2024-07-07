@@ -10,6 +10,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import com.isp.project.dto.BookingInfoDTO;
 import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
@@ -64,6 +65,24 @@ public class Email {
         Context context = new Context();
         context.setVariable("name", "Hello, " + name + "!!!");
         String htmlMsg = templateEngine.process("sendEmailLeaveInfo", context);
+        helper.setText(htmlMsg, true);
+
+        mailSender.send(message);
+
+    }
+
+    public void sendEmailBooking(String to, BookingInfoDTO bookingInfo ) throws MessagingException {
+        session.setMaxInactiveInterval(5 * 60);
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+        helper.setTo(to);
+        helper.setSubject("Booking Successfully!!!");
+        Context context = new Context();
+        // context.setVariable("name", "Hello, " + name + "!!!");
+        context.setVariable("customerName", bookingInfo.getCustomerName());
+        String htmlMsg = templateEngine.process("sendBookingEmail", context);
         helper.setText(htmlMsg, true);
 
         mailSender.send(message);
