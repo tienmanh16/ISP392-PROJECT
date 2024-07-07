@@ -2,6 +2,7 @@ package com.isp.project.repositories;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -51,4 +52,6 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Integer> {
 
        @Query("Select c FROM RoomType c WHERE c.name LIKE %?1%")
         List<RoomType> searchRoomType(String name);
+
+       //List<RoomType> findAll(Sort sort);
 }

@@ -15,7 +15,7 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
-        .passText, .emailText,.salaryText, .dobText {
+        .passText, .emailText,.salaryText, .dobText, .fullNameText, .addressText  {
             color: red; 
         }
 
@@ -41,6 +41,8 @@
                     <div class="form-group">
                         <label>Full Name</label>
                         <input type="text" th:field="*{fullName}" class="form-control" placeholder="Enter name" required>
+                        <span class="fullNameText"></span>
+                        <div id="errorFullNameMessage" class="alert alert-danger" style="display: none;" role="alert"></div>
                     </div>
                     <div class="form-group">
                         <label>Dob</label>
@@ -72,6 +74,8 @@
                     <div class="form-group">
                         <label>Address</label>
                         <input type="text" th:field="*{address}" class="form-control" placeholder="Enter address">
+                        <span class="addressText"></span>
+                        <div id="errorAddressMessage" class="alert alert-danger" style="display: none;" role="alert"></div>
                     </div>
                     <div class="form-group">
                         <label>CCCD</label>
@@ -145,6 +149,8 @@
         const form = document.querySelector('form');
         const email = document.getElementById('email');
         const username = document.getElementById('username');
+        const fullNameText = document.querySelector('.fullNameText');
+        const addressText = document.querySelector('.addressText');
         const password = document.getElementById('password');
         const passText = document.querySelector('.passText');
         const emailText = document.querySelector('.emailText');
@@ -157,6 +163,30 @@
 
         password.addEventListener('input', checkPassword);
         email.addEventListener('input', checkEmail);
+
+        function checkFullName() {
+            const fullNamePattern = /^[\p{L}\p{N} ]+$/u;
+            const fullName = document.getElementById('name').value;
+            if (fullName.match(fullNamePattern)) {
+                fullNameText.innerHTML = '';
+                return true;
+            } else {
+                fullNameText.innerHTML = 'Name must not contain special characters.';
+                return false;
+            }
+        }
+
+        function checkAddress() {
+            const AddressPattern = /^[\p{L}\p{N} ]+$/u;
+            const Address = document.getElementById('address').value;
+            if (Address.match(AddressPattern)) {
+                addressText.innerHTML = '';
+                return true;
+            } else {
+                addressText.innerHTML = 'Address must not contain special characters.';
+                return false;
+            }
+        }
 
         function checkPassword() {
             const passPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
@@ -173,7 +203,7 @@
             const isValidPass = checkPassword();
             const isValidEmail = checkEmail();
 
-            return isValidEmail && isValidPass && !checkDuplicateEmail() && !checkDuplicateUsername();
+            return isValidEmail && isValidPass && !checkDuplicateEmail() && !checkDuplicateUsername() && checkFullName() && checkAddress();
         }
 
         function checkEmail() {
