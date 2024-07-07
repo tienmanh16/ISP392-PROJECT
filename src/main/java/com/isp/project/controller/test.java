@@ -84,12 +84,13 @@ public class test {
         return invoiceService.testPostMan(id);
     }
 
-    // @GetMapping("/viet")
-    // public Booking getMethodName() {
+    @GetMapping("/tien1")
+    public List<InvoiceLine> getMethodName12() {
  
-    //     return bookingRepository.findByBookingID(9);
+        return invoiceService.listInvoiceLine(16);
         
-    // }
+    }
+    
     @GetMapping("/viet")
 public Booking getMethodName() {
     // Retrieve the booking by ID
