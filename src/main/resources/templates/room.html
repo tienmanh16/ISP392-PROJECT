@@ -363,7 +363,7 @@
 
         let currentRoomId; // Biến toàn cục để lưu roomId
 
-        function openModal(roomId, bookingMappingId, bookingMappingActive) {
+        function openModal(roomId, bookingMappingId, bookingMappingActive, invoiceId) {
             // Hiển thị modal
             modal.classList.add('open');
 
@@ -408,7 +408,7 @@
                     document.getElementById('txblNgayDen').textContent = data.bookingMapping[0].checkInDate;
                     document.getElementById('txblSoNgay').textContent = data.bookingMapping[0].checkOutDate;
                     document.getElementById('txblSoNguoi').textContent = data.customerQuantity;
-                    document.getElementById('invoiceId').textContent = data.invoice[0].invoiceID;
+                    document.getElementById('invoiceId').textContent = invoiceId;
                     document.getElementById('bookingMappingId').textContent = bookingMappingId;
                     document.getElementById('bookingMappingActive').textContent = bookingMappingActive;
 
@@ -494,7 +494,7 @@
                             const quantity = row.cells[1].textContent;
                             const amount = row.cells[2].textContent;
                             const seId = row.cells[3].textContent;
-                            const invoiceId = data.booking[0].invoice[0].invoiceID.toString();
+                            const invoiceId = document.getElementById('invoiceId').textContent;
 
                             invoiceLineData.push({
                                 InvoiceTotalAmount: amount,
@@ -682,7 +682,7 @@
                     const confirmed = await confirmPayment();
                     if (confirmed) {
                         // Lấy giá trị của phần tử <p id="invoiceId">
-                        const invoiceId = document.getElementById('invoiceId').textContent;
+                        //const invoiceId = document.getElementById('invoiceId').textContent;
 
                         // Gửi HTTP request lên server để cập nhật trạng thái phòng
                         const roomId = await updateRoomStatus2();
@@ -1323,7 +1323,7 @@
                                         <h10 id="typeNameRoom">${room.roomTypeName}</h10>                               
                                     </p>
                                     <div>
-                                        <button class="btn js-buy-ticket" onclick="openModal(${room.id}, ${room.bookingMappingId}, ${room.bookingMappingActive})">
+                                        <button class="btn js-buy-ticket" onclick="openModal(${room.id}, ${room.bookingMappingId}, ${room.bookingMappingActive}, ${room.invoiceId})">
                                             Sửa Thông Tin
                                         </button>
                                     </div>

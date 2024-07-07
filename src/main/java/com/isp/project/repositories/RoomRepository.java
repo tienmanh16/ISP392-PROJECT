@@ -56,9 +56,12 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "rt.name, "
            + "r.cleaning, "
            + "bm.bookingMappingID, "
-           + "bm.bookingMappingActive "
+           + "bm.bookingMappingActive, "
+           + "i.InvoiceID "
            + ") "
            + "FROM BookingMapping bm "
+           + "JOIN bm.bookingID b "
+           + "JOIN b.invoice i "
            + "JOIN bm.roomID r "
            + "JOIN r.roomType rt ")
     List<RoomDTO> findAllRooms();
@@ -69,9 +72,12 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "rt.name, "
            + "r.cleaning, "
            + "bm.bookingMappingID, "
-           + "bm.bookingMappingActive "
+           + "bm.bookingMappingActive, "
+           + "i.InvoiceID "
            + ") "
            + "FROM BookingMapping bm "
+           + "JOIN bm.bookingID b "
+           + "JOIN b.invoice i "
            + "JOIN bm.roomID r "
            + "JOIN r.roomType rt "
            + "WHERE bm.checkInDate <= :checkInDate")
