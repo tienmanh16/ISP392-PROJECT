@@ -29,6 +29,49 @@
   <!-- Responsive -->
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <style>
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      /* căn giữa theo chiều ngang */
+      margin-top: 20px;
+    }
+
+    .search-container {
+      display: flex;
+      align-items: center;
+      /* căn giữa theo chiều dọc */
+      gap: 10px;
+      /* khoảng cách giữa các phần tử */
+      max-width: 600px;
+      /* chiều rộng tối đa của search container */
+      margin: 0 auto;
+      /* căn giữa container */
+    }
+
+    .search-input,
+    .input,
+    .option {
+      flex: 1;
+      padding: 5px;
+      border: 2px solid #000;
+      border-radius: 25px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    .search-input {
+      margin-right: 5px;
+    }
+
+    .input {
+      margin-right: 5px;
+    }
+
+    .option {
+      min-width: 120px;
+    }
+  </style>
 </head>
 
 <body>
@@ -51,15 +94,12 @@
             <div>
               <button class="btn js-buy-ticket">+ Booking Room</button>
             </div>
-            <form th:action="@{/receptionist/booking}" method="get" class="form-inline ml-auto">
+            <form class="form-inline ml-auto">
               <div class="input-group" style="width: 200px">
-                <input type="text" name="table_search" class="form-control form-control-sm" placeholder="Search"
-                  th:value="${query}" />
-                <div class="input-group-append">
-                  <button type="submit" class="btn btn-default btn-sm">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </div>
+                <input type="text" id="searchbar" class=" search-input" placeholder="Search Here">
+              </div>
+              <div class="input-group" style="width: 200px">
+              <input id="dateInput" class="input" name="keyDate" type="date">
               </div>
             </form>
           </div>
@@ -79,7 +119,7 @@
                     <th>Delete</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="body">
                   <tr th:each="booking : ${listBooking}">
                     <td th:text="${booking.bookingID}"></td>
                     <td th:text="${booking.customerID.customerName}"></td>
@@ -273,6 +313,66 @@
       </form>
     </div>
   </div>
+
+
+   <!-- ==================================Filter Serch=========================== -->
+   <script>
+    function toggleStatus(button) {
+      const id = button.getAttribute('data-id');
+      const isContacted = button.getAttribute('data-active') === 'true';
+
+      $.ajax({
+        url: '/receptionist/contact_status/' + id,
+        type: 'POST',
+        data: { isContacted: isContacted },
+        success: function (data) {
+          // Update button text and style
+          button.textContent = !isContacted ? 'Contacted' : 'No Contact';
+          button.classList.toggle('btn-success', !isContacted);
+          button.classList.toggle('btn-danger', isContacted);
+          // Update data attribute in the button
+          button.setAttribute('data-active', !isContacted);
+        },
+        error: function (xhr, status, error) {
+          console.error("Failed to toggle status: " + error);
+        }
+      });
+    }
+
+    var searchbar = document.getElementById('searchbar');
+    var dateInput = document.getElementById('dateInput');
+    var tbody = document.getElementById('body');
+    var orignaltabledata = tbody.innerHTML;
+
+    function Search() {
+      tbody.innerHTML = orignaltabledata;
+      let rows = tbody.getElementsByTagName('tr');
+      let searchtext = searchbar.value.toLowerCase();
+      let searchdate = dateInput.value;
+
+      // không lọc dữ liệu nếu cả ô tìm kiếm, ô ngày và trạng thái đều trống
+      if (searchtext == '' && searchdate == '') {
+        tbody.innerHTML = orignaltabledata;
+        return;
+      }
+
+      let filteredrows = '';
+
+      for (let i = 0; i < rows.length; i++) {
+        let rowtext = rows[i].innerText.toLowerCase();
+        let rowdate = rows[i].querySelector('td:nth-child(3)').innerText; // Giả định ngày tháng nằm ở cột thứ 3
+
+        let textMatch = rowtext.indexOf(searchtext) > -1;
+        let dateMatch = searchdate == '' || rowdate.startsWith(searchdate);
+        if (textMatch && dateMatch) {
+          filteredrows += rows[i].outerHTML;
+        }
+      }
+      tbody.innerHTML = filteredrows;
+    }
+    searchbar.addEventListener('input', Search);
+    dateInput.addEventListener('input', Search);
+  </script>
 
   <!-- =======================check-checkInDate-CheckOutDate============================================================== -->
   <script>
