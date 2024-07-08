@@ -119,21 +119,23 @@ public class InvoidController {
 
         totalAmountRoom = invoiceRepository.getReferenceById(invoiceID).getTotalAmount();
 
-        double totalInvoice = totalAmountRoom + totalSePrice;
+        String roomName = invoiceRepository.getReferenceById(invoiceID).getBookingMapping().getRoomID().getRoomNum();
+        //double totalInvoice = totalAmountRoom + totalSePrice;
 
         // update total invoice after checkout
-        Optional<Invoice> optionalInvoice = invoiceRepository.findById(invoiceID);
-        if (optionalInvoice.isPresent()) {
-            Invoice invoice = optionalInvoice.get();
-            invoice.setTotalAmount(totalInvoice);
-            invoiceRepository.save(invoice);
-        }
+        // Optional<Invoice> optionalInvoice = invoiceRepository.findById(invoiceID);
+        // if (optionalInvoice.isPresent()) {
+        //     Invoice invoice = optionalInvoice.get();
+        //     invoice.setTotalAmount(totalInvoice);
+        //     invoiceRepository.save(invoice);
+        // }
         model.addAttribute("invoiceID", invoiceID);
         model.addAttribute("booking", booking);
         model.addAttribute("totalAmountRoom", totalAmountRoom);
         model.addAttribute("listService", serviceList);
         model.addAttribute("totalSePrice", totalSePrice);
         model.addAttribute("invoiceLineList", invoiceLineList);
+        model.addAttribute("roomName", roomName);
 
         // send mail
         // String email =
