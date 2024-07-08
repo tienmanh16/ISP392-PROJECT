@@ -12,7 +12,6 @@ public class RoomDTO {
     private String cleaning;
     private int bookingMappingId;
     private int bookingMappingActive;
-    private int invoiceId;
 
 
 }

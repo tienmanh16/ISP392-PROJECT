@@ -699,7 +699,7 @@
                     const confirmed = await confirmPayment();
                     if (confirmed) {
                         // Lấy giá trị của phần tử <p id="invoiceId">
-                        //const invoiceId = document.getElementById('invoiceId').textContent;
+                        const invoiceId = document.getElementById('invoiceId').textContent;
 
                         // Gửi HTTP request lên server để cập nhật trạng thái phòng
                         const roomId = await updateRoomStatus2();

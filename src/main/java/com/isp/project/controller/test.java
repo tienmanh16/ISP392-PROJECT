@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isp.project.dto.RoomDTO;
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.dto.RoomInvoiceDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
@@ -125,8 +126,8 @@ public Booking getMethodName() {
     // }
 
      @GetMapping("/tien")
-    public Booking revenueBooking() {
-        return bookingMappingRepository.getReferenceById(9).getBookingID();
+    public RoomInvoiceDTO revenueBooking() {
+        return roomRepository.findInvoiceIdByBookingMappingId(7);
     }
 
 
