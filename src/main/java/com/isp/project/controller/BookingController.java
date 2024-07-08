@@ -223,23 +223,20 @@ public class BookingController {
             @RequestParam String selectedRoomsJson) {
         List<RoomDetailDTO> selectedRooms = convertJsonToRoomDetailDTOList(selectedRoomsJson);
         Booking updateBooking = bookingService.getBookingByBookingID(bookingIdMapping);
-        double total_room_update = updateBooking.getInvoice().get(0).getTotalAmount();
+    
         for (RoomDetailDTO roomDetail : selectedRooms) {
             Room room = roomRepository.findById(roomDetail.getId()).orElse(null);
             if (room != null) {
-                total_room_update += room.getRoomType().getPriceDay();
                 BookingMapping bookingMapping = new BookingMapping();
                 bookingMapping.setBookingID(updateBooking);
                 bookingMapping.setRoomID(room);
-                room.setStatus("Booked Room");
+                bookingMapping.setBookingMappingActive(1);
                 bookingMapping.setCheckInDate(checkinDate);
                 bookingMapping.setCheckOutDate(checkoutDate);
                 bookingMapping.setBookingTotalAmount(roomDetail.getPriceDay()); // Set appropriate amount
                 bookingMappingRepository.save(bookingMapping);
             }
         }
-        updateBooking.getInvoice().get(0).setTotalAmount(total_room_update);
-        bookingRepository.save(updateBooking);
         return "redirect:/receptionist/bookingdetail?id=" + updateBooking.getBookingID();
     }
 
@@ -330,7 +327,7 @@ public class BookingController {
     
             bookingMapping.setBookingMappingActive(2);
             bookingMappingRepository.save(bookingMapping);
-            return ResponseEntity.ok("Room inactive successfully");
+            return ResponseEntity.ok("Check-In successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
         }

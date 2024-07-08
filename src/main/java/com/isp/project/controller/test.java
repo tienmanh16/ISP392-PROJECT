@@ -91,7 +91,7 @@ public class test {
         return invoiceService.listInvoiceLine(16);
         
     }
-    
+
     @GetMapping("/viet")
 public Booking getMethodName() {
     // Retrieve the booking by ID
@@ -126,8 +126,8 @@ public Booking getMethodName() {
     // }
 
      @GetMapping("/tien")
-    public RoomInvoiceDTO revenueBooking() {
-        return roomRepository.findInvoiceIdByBookingMappingId(7);
+    public List<RoomDTO> revenueBooking() {
+        return roomRepository.findAllRooms();
     }
 
 

@@ -88,7 +88,7 @@
               <th>Customer Quantity</th>
               <th>Room Number</th>
               <th>Employee Name</th>
-              <th>Check-in</th>
+              <th>Status</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -112,10 +112,12 @@
               <td>
                 <a href="javascript:void(0);" th:if="${mapping.bookingMappingActive == 2}"
                    th:onclick="'confirmActiveRoom(' + ${mapping.bookingMappingID} + ');'"
-                    class="btn btn-danger" style="width: 100px; height: 40px;">Rented</a>
+                    class="btn btn-danger" style="width: 100px; height: 40px;">Renting</a>
                 <a href="javascript:void(0);" th:if="${mapping.bookingMappingActive == 1}"
                    th:onclick="'confirmInactiveRoom(' + ${mapping.bookingMappingID} + ');'"
                     class="btn btn-success" style="width: 100px; height: 40px;">Check-in</a>
+                    <a href="javascript:void(0);" th:if="${mapping.bookingMappingActive == 0}"                 
+                    class="btn btn-secondary" style="width: 100px;height: 40px;">Paid</a>
             </td>
 
               <!-- <td>
@@ -123,7 +125,7 @@
             </td> -->
             
               <td>
-                <a href="javascript:void(0);"
+                <a href="javascript:void(0);" th:if="${mapping.bookingMappingActive == 1}"
                   th:onclick="'confirmDelete(' + ${bookdetail.bookingID} + ',' + ${mapping.roomID.id} + ');'"
                   class="btn btn-danger ti-close"></a>
               </td>
