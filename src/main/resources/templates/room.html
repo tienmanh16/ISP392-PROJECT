@@ -408,9 +408,26 @@
                     document.getElementById('txblNgayDen').textContent = data.bookingMapping[0].checkInDate;
                     document.getElementById('txblSoNgay').textContent = data.bookingMapping[0].checkOutDate;
                     document.getElementById('txblSoNguoi').textContent = data.customerQuantity;
-                    document.getElementById('invoiceId').textContent = invoiceId;
+                    //document.getElementById('invoiceId').textContent = invoiceId;
                     document.getElementById('bookingMappingId').textContent = bookingMappingId;
                     document.getElementById('bookingMappingActive').textContent = bookingMappingActive;
+
+                    fetch(`/receptionist/findInvoiceId?bookingMappingId=${bookingMappingId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Cập nhật thông tin phòng vào modal
+                            // Ví dụ:
+                            //Cập nhật các thông tin khác tương tự
+                            document.getElementById('invoiceId').textContent = data.invoiceId;
+                            console.log("invoiceId:", data.invoiceId);
+
+                            
+                        })
+                        .catch(error => {
+                            console.error('Lỗi khi lấy thông tin invoice:', error);
+                        }
+                    );
+
 
                     if (bookingMappingActive == 1) {
                         document.getElementById('statusPhong').value = "Booked Room";
