@@ -117,7 +117,7 @@ public class InvoidController {
             totalSePrice += invoiceLine.getInvoiceTotalAmount();
         }
 
-        totalAmountRoom = invoiceRepository.getReferenceById(invoiceID).getTotalAmount();
+        totalAmountRoom = booking.getInvoice().get(0).getTotalAmount();
 
         double totalInvoice = totalAmountRoom + totalSePrice;
 

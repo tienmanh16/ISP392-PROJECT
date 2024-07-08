@@ -60,8 +60,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
            + "i.InvoiceID "
            + ") "
            + "FROM BookingMapping bm "
-           + "JOIN bm.bookingID b "
-           + "JOIN b.invoice i "
+           + "LEFT JOIN bm.bookingID b "
+           + "LEFT JOIN b.invoice i "
            + "JOIN bm.roomID r "
            + "JOIN r.roomType rt ")
     List<RoomDTO> findAllRooms();
