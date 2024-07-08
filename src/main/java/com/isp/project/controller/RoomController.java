@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isp.project.dto.InvoiceLineDTO;
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.dto.RoomInvoiceDTO;
 import com.isp.project.dto.ServiceDetailDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
@@ -209,6 +210,12 @@ public class RoomController {
     public ResponseEntity<Booking> getRoom(@RequestParam("bookingMappingId") Integer bookingMappingId) {
         Booking booking =  bookingMappingRepository.getReferenceById(bookingMappingId).getBookingID();
         return ResponseEntity.ok(booking);
+    }
+
+    @GetMapping("/findInvoiceId")
+    public ResponseEntity<RoomInvoiceDTO> getInvoiceId(@RequestParam("bookingMappingId") Integer bookingMappingId) {
+        RoomInvoiceDTO roomInvoiceDTO =  roomRepository.findInvoiceIdByBookingMappingId(bookingMappingId);
+        return ResponseEntity.ok(roomInvoiceDTO);
     }
     
     @GetMapping("/filterRoom")

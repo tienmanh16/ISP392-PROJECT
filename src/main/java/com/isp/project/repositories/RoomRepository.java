@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.isp.project.dto.RoomCustomerDTO;
 import com.isp.project.dto.RoomDTO;
 import com.isp.project.dto.RoomDetailDTO;
+import com.isp.project.dto.RoomInvoiceDTO;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Room;
 
@@ -56,12 +57,9 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "rt.name, "
            + "r.cleaning, "
            + "bm.bookingMappingID, "
-           + "bm.bookingMappingActive, "
-           + "i.InvoiceID "
+           + "bm.bookingMappingActive "
            + ") "
            + "FROM BookingMapping bm "
-           + "JOIN bm.bookingID b "
-           + "JOIN b.invoice i "
            + "JOIN bm.roomID r "
            + "JOIN r.roomType rt ")
     List<RoomDTO> findAllRooms();
@@ -72,16 +70,30 @@ public interface RoomRepository extends JpaRepository<Room, Integer>{
            + "rt.name, "
            + "r.cleaning, "
            + "bm.bookingMappingID, "
-           + "bm.bookingMappingActive, "
-           + "i.InvoiceID "
+           + "bm.bookingMappingActive "
            + ") "
            + "FROM BookingMapping bm "
-           + "JOIN bm.bookingID b "
-           + "JOIN b.invoice i "
            + "JOIN bm.roomID r "
            + "JOIN r.roomType rt "
            + "WHERE bm.checkInDate <= :checkInDate")
     List<RoomDTO> findAllRoomsWithCheckInDate(@Param("checkInDate") Date checkinDate);
+
+    @Query("SELECT new com.isp.project.dto.RoomInvoiceDTO("
+           + "bm.bookingMappingID, "
+           + "r.id, "
+           + "r.roomNum, "
+           + "rt.name, "
+           + "r.cleaning, "
+           + "bm.bookingMappingActive, "
+           + "i.InvoiceID "
+           + ") "
+           + "FROM BookingMapping bm "
+           + "LEFT JOIN bm.bookingID b "
+           + "LEFT JOIN b.invoice i "
+           + "JOIN bm.roomID r "
+           + "JOIN r.roomType rt "
+           + "WHERE bm.bookingMappingID = :bookingMappingID")
+    RoomInvoiceDTO findInvoiceIdByBookingMappingId(@Param("bookingMappingID") Integer bookingMappingId);
 
     @Query("SELECT new com.isp.project.dto.RoomDetailDTO("
             + "r.id, "

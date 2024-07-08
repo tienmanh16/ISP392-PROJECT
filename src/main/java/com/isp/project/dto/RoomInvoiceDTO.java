@@ -5,13 +5,12 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RoomDTO {
+public class RoomInvoiceDTO {
+    private int bookingMappingId;
     private int id;
     private String roomNum;
     private String roomTypeName;
     private String cleaning;
-    private int bookingMappingId;
     private int bookingMappingActive;
-
-
+    private int invoiceId;
 }
