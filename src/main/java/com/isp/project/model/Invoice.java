@@ -17,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.Getter;
@@ -55,6 +56,10 @@ public class Invoice {
     @OneToMany(mappedBy = "invoice")
     @JsonManagedReference
     private List<InvoiceLine> invoiceLine;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "BookingMappingID")
+    private BookingMapping bookingMapping;
     
 
 }

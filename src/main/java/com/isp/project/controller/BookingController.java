@@ -325,6 +325,7 @@ public class BookingController {
             newInvoice.setCustomerName(booking.getCustomerID().getCustomerName());
             newInvoice.setTotalAmount(totalPriceRoom);
             newInvoice.setInvoiceDate(bookingMapping.getCheckInDate());
+            newInvoice.setBookingMapping(bookingMapping);
             invoiceRepository.save(newInvoice);
     
             bookingMapping.setBookingMappingActive(2);
