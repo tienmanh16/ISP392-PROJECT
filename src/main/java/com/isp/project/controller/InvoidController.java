@@ -128,7 +128,7 @@ public class InvoidController {
             invoice.setTotalAmount(totalInvoice);
             invoiceRepository.save(invoice);
         }
-
+        model.addAttribute("invoiceID", invoiceID);
         model.addAttribute("booking", booking);
         model.addAttribute("totalAmountRoom", totalAmountRoom);
         model.addAttribute("listService", serviceList);
