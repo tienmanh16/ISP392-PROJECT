@@ -166,12 +166,7 @@
                                             <button class="sort-button" id="sort-price-day-asc">Asc</button>
                                             <button class="sort-button" id="sort-price-day-desc">Desc</button>
                                         </th>
-                                        <th col-index="7">Status
-                                            <select class="table-filter" onchange="filter_rows()">
-                                                <option value="all">All</option>
-                                            </select>
-                                        </th>
-                                        <th col-index="8">Cleaning
+                                        <th col-index="7">Cleaning
                                             <select class="table-filter" onchange="filter_rows()">
                                                 <option value="all">All</option>
                                             </select>
@@ -188,7 +183,6 @@
                                         <td th:text="${room.RoomType.des}"></td>
                                         <td th:text="${room.RoomType.priceHour}"></td>
                                         <td th:text="${room.RoomType.priceDay}"></td>
-                                        <td th:text="${room.status}"></td>
                                         <td th:text="${room.cleaning}"></td>
                                         <td><a th:href="@{/admin/listRooms/{id}/update(id=${room.id})}"
                                                 class="ti-menu"></a></td>
