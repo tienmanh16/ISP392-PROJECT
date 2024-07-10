@@ -73,8 +73,7 @@ public class InvoidController {
 
     @GetMapping("/printInvoice/{invoiceID}")
     public String printInvoice(@PathVariable("invoiceID") int invoiceID, Model model) {
-        // Fetch the invoice details
-        Booking booking = invoiceService.getInfoInvoice(invoiceID);
+        Invoice invoice = invoiceRepository.findById(invoiceID).get();
         double totalSePrice = 0.0;
         double totalAmountRoom = 0.0;
         List<Service> serviceList = invoiceServiceImpl.listService(invoiceID);
@@ -84,17 +83,23 @@ public class InvoidController {
             totalSePrice += invoiceLine.getInvoiceTotalAmount();
 
         }
-        for (BookingMapping ls : booking.getBookingMapping()) {
-            totalAmountRoom += ls.getBookingTotalAmount();
-        }
+
+        totalAmountRoom = invoice.getBookingMapping().getBookingTotalAmount();
+
+        String roomName = invoiceRepository.getReferenceById(invoiceID).getBookingMapping().getRoomID().getRoomNum();
+        BookingMapping bookingMapping = invoice.getBookingMapping();
+
         // Prepare context for Thymeleaf
         Context context = new Context();
-        context.setVariable("booking", booking);
+        context.setVariable("invoiceID", invoiceID);
         context.setVariable("totalAmountRoom", totalAmountRoom);
         context.setVariable("listService", serviceList);
 
         context.setVariable("totalSePrice", totalSePrice);
         context.setVariable("invoiceLineList", invoiceLineList);
+        context.setVariable("roomName", roomName);
+        context.setVariable("invoice", invoice);
+        context.setVariable("bookingMapping", bookingMapping);
 
         // Render HTML template as a string
         String htmlContent = templateEngine.process("printInvoice", context);
@@ -107,35 +112,29 @@ public class InvoidController {
 
     @GetMapping("/invoiceDetail/{invoiceID}")
     public String invoice1(Model model, @PathVariable("invoiceID") int invoiceID) {
-        Booking booking = invoiceService.getInfoInvoice(invoiceID);
+        Invoice invoice = invoiceRepository.findById(invoiceID).get();
         double totalSePrice = 0.0;
         double totalAmountRoom = 0.0;
         List<Service> serviceList = invoiceServiceImpl.listService(invoiceID);
         List<InvoiceLine> invoiceLineList = invoiceServiceImpl.listInvoiceLine(invoiceID);
-
         for (InvoiceLine invoiceLine : invoiceLineList) {
+
             totalSePrice += invoiceLine.getInvoiceTotalAmount();
+
         }
 
-        totalAmountRoom = booking.getInvoice().get(0).getTotalAmount();
+        totalAmountRoom = invoice.getBookingMapping().getBookingTotalAmount();
 
         String roomName = invoiceRepository.getReferenceById(invoiceID).getBookingMapping().getRoomID().getRoomNum();
-        //double totalInvoice = totalAmountRoom + totalSePrice;
-
-        // update total invoice after checkout
-        // Optional<Invoice> optionalInvoice = invoiceRepository.findById(invoiceID);
-        // if (optionalInvoice.isPresent()) {
-        //     Invoice invoice = optionalInvoice.get();
-        //     invoice.setTotalAmount(totalInvoice);
-        //     invoiceRepository.save(invoice);
-        // }
+        BookingMapping bookingMapping = invoice.getBookingMapping();
         model.addAttribute("invoiceID", invoiceID);
-        model.addAttribute("booking", booking);
         model.addAttribute("totalAmountRoom", totalAmountRoom);
         model.addAttribute("listService", serviceList);
         model.addAttribute("totalSePrice", totalSePrice);
         model.addAttribute("invoiceLineList", invoiceLineList);
         model.addAttribute("roomName", roomName);
+        model.addAttribute("invoice", invoice);
+        model.addAttribute("bookingMapping", bookingMapping);
 
         // send mail
         // String email =
