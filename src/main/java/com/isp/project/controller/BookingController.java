@@ -207,7 +207,7 @@ public class BookingController {
         // =================SendEmail=====================================
         String emailCustomer = customer.getCustomerEmail();
         try {
-            emailService.sendEmailBooking(emailCustomer, bookingInfo);
+            emailService.sendEmailBooking(emailCustomer, bookingInfo,selectedRooms,employee);
         } catch (Exception e) {
             // TODO: handle exception
         }

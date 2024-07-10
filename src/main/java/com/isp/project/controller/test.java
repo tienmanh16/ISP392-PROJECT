@@ -8,6 +8,7 @@ import com.isp.project.dto.RoomInvoiceDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
+import com.isp.project.model.Email;
 import com.isp.project.model.Employee;
 import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
@@ -80,6 +81,9 @@ public class test {
     @Autowired
     private InvoiceRepository invoiceRepository;
 
+    @Autowired
+    Email emailService;
+
     @GetMapping("/{id}")
     public List<Booking> getMethodName(@PathVariable int id ) {
         return invoiceService.testPostMan(id);
@@ -114,9 +118,18 @@ public Booking getMethodName() {
     return updateBooking;
 }
     
-    // @GetMapping("/tien")
-    // public Employee revenueBooking() {
-    //     return invoiceService.testReport();
+    // @GetMapping("/send")
+    // public boolean revenueBooking1() {
+    //     boolean check = false;      
+    //     String email = "vietdxhe172563@fpt.edu.vn";
+    //     try {
+    //         emailService.sendEmailBookingTest(email);
+    //         return check = true;
+    //     } catch (Exception e) {
+    //         // TODO: handle exception
+    //     }
+    //     return check;
+        
     // }
 
     //  @GetMapping("/tien")
