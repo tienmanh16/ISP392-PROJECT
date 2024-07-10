@@ -1,8 +1,10 @@
 package com.isp.project.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,6 +32,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.isp.project.dto.InvoiceLineDTO;
 import com.isp.project.dto.RoomCustomerDTO;
+import com.isp.project.dto.RoomDTO;
 import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.dto.RoomInvoiceDTO;
 import com.isp.project.dto.ServiceDetailDTO;
@@ -51,6 +54,7 @@ import com.isp.project.service.InvoiceLineService;
 import com.isp.project.service.RoomService;
 import com.isp.project.service.RoomServiceImpl;
 import com.isp.project.service.RoomTypeService;
+import com.isp.project.service.RoomTypeServiceImpl;
 import com.isp.project.service.SeService;
 
 
@@ -95,13 +99,65 @@ public class RoomController {
     @Autowired
     private InvoiceLineService invoiceLineService;
 
+    @Autowired
+    private RoomTypeServiceImpl roomTypeServiceImpl;
+
     @GetMapping("/managerbooking")
     public String ManagerBooking() {
         return "ManagerBooking";
     }
 
    
-   
+//    @GetMapping("/room")
+//     public String listRoom(Model model) {
+//         // Page<RoomDetailDTO> list = this.roomService.getAll(pageNo);
+
+//         // model.addAttribute("totalPage", list.getTotalPages());
+//         // model.addAttribute("currentPage", pageNo);
+//         List<BookingMapping> list_All = roomService.getAllRoom();
+
+//         List<BookingMapping> list = new ArrayList<>();
+
+//         LocalDate currentDate = LocalDate.now();
+
+//         for (BookingMapping bookingMapping : list_All) {
+//             if (bookingMapping.getBookingMappingActive() == 1 ||
+//                     bookingMapping.getBookingMappingActive() == 2) {
+//                 list.add(bookingMapping);
+//             }
+//         }
+
+//         model.addAttribute("roomTypes",
+//                 roomTypeServiceImpl.getAllRoomTypesWithDetails());
+//         model.addAttribute("rooms", list);
+//         model.addAttribute("services", seService.getAllServiceDetail());
+//         // //model.addAttribute("services",
+//         // seService.findAllServiceDetailByServiceTypeId(1);
+//         model.addAttribute("serviceTypes", seService.getAllServiceTypes());
+//         return "room";
+//     }
+
+    // @GetMapping("/roomtest")
+    // @ResponseBody
+    // public ResponseEntity<List<RoomDTO>> getAvailableRooms(@RequestParam(required = false) String checkinDate) {
+    //     List<RoomDTO> bookingMappings;
+    //     List<RoomDTO> list = new ArrayList<>();
+
+    //     if (checkinDate == null || checkinDate.isEmpty()) {
+    //         bookingMappings = roomRepository.findAllRooms();
+    //     } else {
+    //         Date date = Date.valueOf(checkinDate);
+    //         bookingMappings = roomRepository.findAllRoomsWithCheckInDate(date);
+    //     }
+    //     for (RoomDTO bookingMapping : bookingMappings) {
+    //         if (bookingMapping.getBookingMappingActive() == 1 ||
+    //                 bookingMapping.getBookingMappingActive() == 2) {
+    //             list.add(bookingMapping);
+    //         }
+    //     }
+
+    //     return ResponseEntity.ok(list);
+    // }
 
 
 

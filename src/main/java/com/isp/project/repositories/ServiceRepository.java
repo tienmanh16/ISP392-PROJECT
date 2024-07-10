@@ -23,7 +23,8 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
        + "st.serviceTypeActive "
        + ") "
        + "FROM Service s "
-       + "JOIN s.serviceType st ")
+       + "JOIN s.serviceType st "
+       + "WHERE s.serviceActive = 1")
     List<ServiceDetailDTO> findAllServiceDetail();
 
     @Query("SELECT new com.isp.project.dto.ServiceDetailDTO("

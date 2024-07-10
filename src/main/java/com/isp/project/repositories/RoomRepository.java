@@ -190,7 +190,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
    void updateRoomStatusByRoomId(@Param("bookingMappingId") Integer bookingMappingId);
 
    @Modifying
-   @Query("UPDATE Room SET status = 'Empty Room' WHERE id = :roomId")
+   @Query("UPDATE Room SET cleaning = 'Not CLean' WHERE id = :roomId")
    void updateRoomStatusByRoomId2(@Param("roomId") Integer roomId);
 
    @Modifying
