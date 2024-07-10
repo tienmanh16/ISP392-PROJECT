@@ -163,7 +163,7 @@ public class BookingController {
         Date bookingDate = new Date(System.currentTimeMillis());
         booking.setBookingDate(bookingDate);
         booking.setCustomerQuantity(bookingInfo.getCustomerQuantity());
-        // booking.setIsCancelled(0); // Default to not cancelled
+        booking.setIsCancelled(1); 
         bookingRepository.save(booking);
 
         // Add to register
@@ -314,6 +314,11 @@ public class BookingController {
             LocalDate checkIn = LocalDate.parse(dateFormat.format(bookingMapping.getCheckInDate()), formatter);
             LocalDate checkOut = LocalDate.parse(dateFormat.format(bookingMapping.getCheckOutDate()), formatter);
             int totalBookedDays = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
+
+            booking.setIsCancelled(0);
+            bookingRepository.save(booking);
+
+
     
             int totalPriceRoom = bookingMapping.getBookingTotalAmount() * totalBookedDays;
     
