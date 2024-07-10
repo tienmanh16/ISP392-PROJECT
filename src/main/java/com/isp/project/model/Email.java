@@ -11,6 +11,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import com.isp.project.dto.BookingInfoDTO;
+import com.isp.project.dto.RoomDetailDTO;
 import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.service.InvoiceService;
 import com.isp.project.service.InvoiceServiceImpl;
@@ -26,9 +27,8 @@ public class Email {
     HttpSession session;
     @Autowired
     private TemplateEngine templateEngine;
-    
 
-     @Autowired
+    @Autowired
     private InvoiceService invoiceService;
 
     @Autowired
@@ -54,7 +54,7 @@ public class Email {
 
     }
 
-    public void sendEmailLeaveInfo(String to, String name ) throws MessagingException {
+    public void sendEmailLeaveInfo(String to, String name) throws MessagingException {
         session.setMaxInactiveInterval(5 * 60);
 
         MimeMessage message = mailSender.createMimeMessage();
@@ -71,7 +71,7 @@ public class Email {
 
     }
 
-    public void sendEmailBooking(String to, BookingInfoDTO bookingInfo ) throws MessagingException {
+    public void sendEmailBooking(String to, BookingInfoDTO bookingInfo, List<RoomDetailDTO> roomDetailDTO, Employee employee) throws MessagingException {
         session.setMaxInactiveInterval(5 * 60);
 
         MimeMessage message = mailSender.createMimeMessage();
@@ -80,8 +80,11 @@ public class Email {
         helper.setTo(to);
         helper.setSubject("Booking Successfully!!!");
         Context context = new Context();
-        // context.setVariable("name", "Hello, " + name + "!!!");
-        context.setVariable("customerName", bookingInfo.getCustomerName());
+        // context.setVariable("customerName", bookingInfo.getCustomerName());
+        context.setVariable("bookingInfo", bookingInfo);
+        context.setVariable("selectedRoom", roomDetailDTO);
+        context.setVariable("employee", employee);
+
         String htmlMsg = templateEngine.process("sendBookingEmail", context);
         helper.setText(htmlMsg, true);
 
@@ -89,45 +92,77 @@ public class Email {
 
     }
 
+    // public void sendEmailBookingTest(String to) throws MessagingException {
+    //     session.setMaxInactiveInterval(5 * 60);
+
+    //     MimeMessage message = mailSender.createMimeMessage();
+    //     MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+    //     helper.setTo(to);
+    //     helper.setSubject("Booking Successfully!!!");
+    //     Context context = new Context();
+
+    //     String customerName = "Dear Nguyễn Mạnh Tiến,";
+    //     String checkInDate = "2024-07-09";
+    //     String checkOutDate = "2024-07-11";
+    //     String receptionistName = "Đỗ Xuân việt";
+    //     String room1 = "P01 - Phòng Đơn";
+    //     String room2 = "P01 - Phòng Đơn";
+    //     String room3 = "P01 - Phòng Đơn";
+       
+    //     context.setVariable("customerName", customerName);
+    //     context.setVariable("checkInDate", checkInDate);
+    //     context.setVariable("checkOutDate", checkOutDate);
+    //     context.setVariable("receptionistName", receptionistName);
+    //     context.setVariable("room1", room1);
+    //     context.setVariable("room2", room2);
+    //     context.setVariable("room3", room3);
+
+    //     String htmlMsg = templateEngine.process("sendBookingEmail", context);
+    //     helper.setText(htmlMsg, true);
+
+    //     mailSender.send(message);
+
+    // }
+
     public void sendEmailCheckOut(String to, int invoiceID) throws MessagingException {
- 
-    
+
         // Cập nhật thời gian session
         session.setMaxInactiveInterval(5 * 60);
-    
+
         // Tạo email
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
-    
+
         // Lấy thông tin booking và tính toán
         Booking booking = invoiceService.getInfoInvoice(invoiceID);
         double totalSePrice = 0.0;
         double totalAmountRoom = 0.0;
         List<Service> serviceList = invoiceServiceImpl.listService(invoiceID);
         List<InvoiceLine> invoiceLineList = invoiceServiceImpl.listInvoiceLine(invoiceID);
-    
+
         for (InvoiceLine invoiceLine : invoiceLineList) {
             totalSePrice += invoiceLine.getInvoiceTotalAmount();
         }
-    
+
         for (BookingMapping ls : booking.getBookingMapping()) {
             totalAmountRoom += ls.getBookingTotalAmount();
         }
-    
-        //double totalInvoice = totalAmountRoom + totalSePrice;
-    
+
+        // double totalInvoice = totalAmountRoom + totalSePrice;
+
         // // Cập nhật tổng số tiền hóa đơn
         // Optional<Invoice> optionalInvoice = invoiceRepository.findById(invoiceID);
         // if (optionalInvoice.isPresent()) {
-        //     Invoice invoice = optionalInvoice.get();
-        //     invoice.setTotalAmount(totalInvoice);
-        //     invoiceRepository.save(invoice);
+        // Invoice invoice = optionalInvoice.get();
+        // invoice.setTotalAmount(totalInvoice);
+        // invoiceRepository.save(invoice);
         // }
-    
+
         // Thiết lập các thuộc tính của email
         helper.setTo(to);
         helper.setSubject("Electronic Invoice");
-    
+
         // Sử dụng TemplateEngine để tạo nội dung email
         Context context = new Context();
         context.setVariable("booking", booking);
@@ -135,12 +170,12 @@ public class Email {
         context.setVariable("listService", serviceList);
         context.setVariable("totalSePrice", totalSePrice);
         context.setVariable("invoiceLineList", invoiceLineList);
-    
+
         String htmlMsg = templateEngine.process("invoice1", context);
         helper.setText(htmlMsg, true);
-    
+
         // Gửi email
         mailSender.send(message);
     }
-    
+
 }
