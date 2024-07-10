@@ -158,6 +158,10 @@
                     <td>
                       <a href="javascript:void(0);" th:if="${booking.isCancelled == 1}"
                         th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'" class="btn btn-danger ti-close"></a>
+                        <!-- <a href="javascript:void(0);" th:if="${booking.isCancelled == 2}"
+                        th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'" class="btn btn-danger">Renting</a>
+                        <a href="javascript:void(0);" th:if="${booking.isCancelled == 0}" class="btn btn-secondary"
+                  style="width: 100px;height: 40px;">Done</a> -->
                     </td>
                   </tr>
                 </tbody>

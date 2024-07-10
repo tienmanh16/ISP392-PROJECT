@@ -163,7 +163,7 @@ public class BookingController {
         Date bookingDate = new Date(System.currentTimeMillis());
         booking.setBookingDate(bookingDate);
         booking.setCustomerQuantity(bookingInfo.getCustomerQuantity());
-        booking.setIsCancelled(1); 
+        booking.setIsCancelled(1);
         bookingRepository.save(booking);
 
         // Add to register
@@ -177,20 +177,27 @@ public class BookingController {
             ex.printStackTrace();
         }
 
-        double total_room = 0;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        LocalDate checkIn = LocalDate.parse(dateFormat.format(bookingInfo.getCheckinDate()), formatter);
+        LocalDate checkOut = LocalDate.parse(dateFormat.format(bookingInfo.getCheckoutDate()), formatter);
+        int totalBookedDays = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
         // Parse selectedRoomsJson to List<RoomDetailDTO>
         List<RoomDetailDTO> selectedRooms = convertJsonToRoomDetailDTOList(bookingInfo.getSelectedRoomsJson());
         for (RoomDetailDTO roomDetail : selectedRooms) {
             Room room = roomRepository.findById(roomDetail.getId()).orElse(null);
             if (room != null) {
-                total_room += room.getRoomType().getPriceDay();
+
                 BookingMapping bookingMapping = new BookingMapping();
                 bookingMapping.setBookingID(booking);
                 bookingMapping.setRoomID(room);
                 bookingMapping.setBookingMappingActive(1);
                 bookingMapping.setCheckInDate(bookingInfo.getCheckinDate());
                 bookingMapping.setCheckOutDate(bookingInfo.getCheckoutDate());
-                bookingMapping.setBookingTotalAmount(roomDetail.getPriceDay()); // Set appropriate amount
+
+                int totalPriceRoom = room.getRoomType().getPriceDay() * totalBookedDays;
+
+                bookingMapping.setBookingTotalAmount(totalPriceRoom); // Set appropriate amount
 
                 bookingMappingRepository.save(bookingMapping);
             }
@@ -207,7 +214,7 @@ public class BookingController {
         // =================SendEmail=====================================
         String emailCustomer = customer.getCustomerEmail();
         try {
-            emailService.sendEmailBooking(emailCustomer, bookingInfo,selectedRooms,employee);
+            emailService.sendEmailBooking(emailCustomer, bookingInfo, selectedRooms, employee);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -223,7 +230,13 @@ public class BookingController {
             @RequestParam String selectedRoomsJson) {
         List<RoomDetailDTO> selectedRooms = convertJsonToRoomDetailDTOList(selectedRoomsJson);
         Booking updateBooking = bookingService.getBookingByBookingID(bookingIdMapping);
-    
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        LocalDate checkIn = LocalDate.parse(dateFormat.format(checkinDate), formatter);
+        LocalDate checkOut = LocalDate.parse(dateFormat.format(checkoutDate), formatter);
+        int totalBookedDays = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
+
         for (RoomDetailDTO roomDetail : selectedRooms) {
             Room room = roomRepository.findById(roomDetail.getId()).orElse(null);
             if (room != null) {
@@ -233,7 +246,8 @@ public class BookingController {
                 bookingMapping.setBookingMappingActive(1);
                 bookingMapping.setCheckInDate(checkinDate);
                 bookingMapping.setCheckOutDate(checkoutDate);
-                bookingMapping.setBookingTotalAmount(roomDetail.getPriceDay()); // Set appropriate amount
+                int totalPriceRoom = room.getRoomType().getPriceDay() * totalBookedDays;
+                bookingMapping.setBookingTotalAmount(totalPriceRoom); // Set appropriate amount
                 bookingMappingRepository.save(bookingMapping);
             }
         }
@@ -257,12 +271,8 @@ public class BookingController {
         Optional<Room> room = roomRepository.findById(roomId);
         Room delete_room = room.get();
         Booking updateBooking = bookingService.getBookingByBookingID(bookingId);
-        double total_room_update = updateBooking.getInvoice().get(0).getTotalAmount();
-
         try {
-            total_room_update = total_room_update - delete_room.getRoomType().getPriceDay();
-            updateBooking.getInvoice().get(0).setTotalAmount(total_room_update);
-            bookingRepository.save(updateBooking);
+
             boolean deleted = bookingService.deleteBookingMappingByRoomAndBooking(updateBooking, delete_room);
             if (deleted) {
                 return ResponseEntity.ok("BookingMapping deleted successfully");
@@ -275,32 +285,6 @@ public class BookingController {
 
     }
 
-    // @GetMapping("/checkIn/{bookingMappingid}")
-    // public String getMethodName(@PathVariable("bookingMappingid") int bookingMappingid) {
-    //     Optional<BookingMapping> bookingMapping_raw = bookingMappingRepository.findById(bookingMappingid);
-    //     BookingMapping bookingMapping = bookingMapping_raw.get();
-    //     Booking booking = bookingRepository.findByBookingID(bookingMapping.getBookingID().getBookingID());
-
-    //     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    //     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    //     LocalDate checkIn = LocalDate.parse(dateFormat.format(bookingMapping.getCheckInDate()), formatter);
-    //     LocalDate checkOut = LocalDate.parse(dateFormat.format(bookingMapping.getCheckOutDate()), formatter);
-    //     int totalBookedDays = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
-
-    //     int totalPriceRoom = bookingMapping.getBookingTotalAmount() * totalBookedDays;
-
-    //     Invoice newInvoice = new Invoice();
-    //     newInvoice.setBooking(booking);
-    //     newInvoice.setCustomerName(booking.getCustomerID().getCustomerName());
-    //     newInvoice.setTotalAmount(totalPriceRoom);
-    //     newInvoice.setInvoiceDate(bookingMapping.getCheckInDate());
-    //     invoiceRepository.save(newInvoice);
-
-    //     bookingMapping.setBookingMappingActive(2);
-    //     bookingMappingRepository.save(bookingMapping);
-    //     return "redirect:/receptionist/bookingdetail?id=" + booking.getBookingID();
-    // }
-
     @GetMapping("/checkIn/{bookingMappingid}")
     public ResponseEntity<String> getMethodName(@PathVariable("bookingMappingid") int bookingMappingid) {
 
@@ -308,45 +292,25 @@ public class BookingController {
             Optional<BookingMapping> bookingMapping_raw = bookingMappingRepository.findById(bookingMappingid);
             BookingMapping bookingMapping = bookingMapping_raw.get();
             Booking booking = bookingRepository.findByBookingID(bookingMapping.getBookingID().getBookingID());
-    
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            LocalDate checkIn = LocalDate.parse(dateFormat.format(bookingMapping.getCheckInDate()), formatter);
-            LocalDate checkOut = LocalDate.parse(dateFormat.format(bookingMapping.getCheckOutDate()), formatter);
-            int totalBookedDays = (int) ChronoUnit.DAYS.between(checkIn, checkOut);
 
             booking.setIsCancelled(0);
             bookingRepository.save(booking);
 
-
-    
-            int totalPriceRoom = bookingMapping.getBookingTotalAmount() * totalBookedDays;
-    
             Invoice newInvoice = new Invoice();
             newInvoice.setBooking(booking);
             newInvoice.setCustomerName(booking.getCustomerID().getCustomerName());
-            newInvoice.setTotalAmount(totalPriceRoom);
+            newInvoice.setTotalAmount(bookingMapping.getBookingTotalAmount());
             newInvoice.setInvoiceDate(bookingMapping.getCheckInDate());
             newInvoice.setBookingMapping(bookingMapping);
             invoiceRepository.save(newInvoice);
-    
+
             bookingMapping.setBookingMappingActive(2);
             bookingMappingRepository.save(bookingMapping);
             return ResponseEntity.ok("Check-In successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
         }
-       
-    }
 
-    // @GetMapping("/inactiveBookingMapping/{id}")
-    // public ResponseEntity<String> inactiveRoom(@PathVariable("id") int id) {
-    //     try {
-            
-    //         return ResponseEntity.ok("Room inactive successfully");
-    //     } catch (Exception e) {
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
-    //     }
-    // }
+    }
 
 }
