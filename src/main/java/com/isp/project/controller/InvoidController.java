@@ -136,6 +136,14 @@ public class InvoidController {
         model.addAttribute("invoice", invoice);
         model.addAttribute("bookingMapping", bookingMapping);
 
+         // update total invoice after checkout
+        //  Optional<Invoice> optionalInvoice = invoiceRepository.findById(invoiceID);
+        //  if (optionalInvoice.isPresent()) {
+        //      Invoice invoice = optionalInvoice.get();
+        //      invoice.setTotalAmount(totalInvoice);
+        //      invoiceRepository.save(invoice);
+        //  }
+
         // send mail
         // String email =
         // invoiceRepository.getReferenceById(invoiceID).getBooking().getCustomerID().getCustomerEmail();
