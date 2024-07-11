@@ -18,6 +18,7 @@ import com.isp.project.model.RoomType;
 import com.isp.project.model.Service;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
+import com.isp.project.repositories.InvoiceLineRepository;
 import com.isp.project.repositories.InvoiceRepository;
 import com.isp.project.repositories.RoomRepository;
 import com.isp.project.repositories.RoomTypeRepository;
@@ -37,6 +38,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -79,6 +81,9 @@ public class test {
 
     @Autowired
     private InvoiceRepository invoiceRepository;
+
+    @Autowired
+    private InvoiceLineRepository invoiceLineRepository; 
 
     @GetMapping("/{id}")
     public List<Booking> getMethodName(@PathVariable int id ) {
@@ -126,8 +131,17 @@ public Booking getMethodName() {
     // }
 
      @GetMapping("/tien")
-    public RoomInvoiceDTO revenueBooking() {
-        return roomRepository.findInvoiceIdByBookingMappingId(7);
+    public boolean revenueBooking() {
+        boolean check =false;
+        List<InvoiceLine> invoiceLines = invoiceRepository.findById(10).get().getInvoiceLine();
+        for (InvoiceLine invoiceLine : invoiceLines) {
+            if(invoiceLine.getService().getSeID() == 11){
+                invoiceLine.setQuantity(invoiceLine.getQuantity()+1);
+                invoiceLineRepository.save(invoiceLine);
+                return check =true;
+            }
+        }
+        return check;
     }
 
 
