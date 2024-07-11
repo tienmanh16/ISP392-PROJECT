@@ -62,7 +62,7 @@ public class HomeController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login() { 
         return "login";
     }
 
@@ -89,6 +89,9 @@ public class HomeController {
     @Autowired
     private BookingMappingService bookingMappingService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     // @GetMapping("/receptionist/room")
     // public String listRoom(Model model, @RequestParam(name = "pageNo",
     // defaultValue = "1") Integer pageNo) {
@@ -107,7 +110,7 @@ public class HomeController {
     // return "room";
     // }
     @GetMapping("/receptionist/room")
-    public String listRoom(Model model) {
+    public String listRoom(Model model, Principal p) {
         // Page<RoomDetailDTO> list = this.roomService.getAll(pageNo);
 
         // model.addAttribute("totalPage", list.getTotalPages());
@@ -132,6 +135,15 @@ public class HomeController {
         // //model.addAttribute("services",
         // seService.findAllServiceDetailByServiceTypeId(1);
         model.addAttribute("serviceTypes", seService.getAllServiceTypes());
+
+        if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            if (user != null) {
+                model.addAttribute("user1", user);
+            } else {
+            }
+        }
         return "room";
     }
 

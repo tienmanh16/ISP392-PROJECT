@@ -461,14 +461,35 @@ public class RoomController {
                     Service newService = newServiceOptional.get();
                     Invoice newInvoice = newInvoiceOptional.get();
 
+                    List<InvoiceLine> invoiceLines = invoiceRepository.findById(invoiceId).get().getInvoiceLine();
+                    boolean serviceFound = false;
+                    for (InvoiceLine invoiceLine1 : invoiceLines) {
+                        if (invoiceLine1.getService().getSeID() == seId) {
+                            invoiceLine1.setQuantity(invoiceLine1.getQuantity() + quantity);
+                            invoiceLine1.setInvoiceTotalAmount(invoiceLine1.getInvoiceTotalAmount() + invoiceTotalAmount);
+                            invoiceLineRepository.save(invoiceLine1);
+                            serviceFound = true;
+                            break;
+                        }
+                    }
                     // Create and save the InvoiceLine
-                    InvoiceLine invoiceLine = new InvoiceLine();
-                    invoiceLine.setInvoiceTotalAmount(invoiceTotalAmount);
-                    invoiceLine.setService(newService);
-                    invoiceLine.setQuantity(quantity);
-                    invoiceLine.setInvoice(newInvoice);
+                    // InvoiceLine invoiceLine = new InvoiceLine();
+                    // invoiceLine.setInvoiceTotalAmount(invoiceTotalAmount);
+                    // invoiceLine.setService(newService);
+                    // invoiceLine.setQuantity(quantity);
+                    // invoiceLine.setInvoice(newInvoice);
 
-                    invoiceLineRepository.save(invoiceLine);
+                    // invoiceLineRepository.save(invoiceLine);
+                    if (!serviceFound) {
+                        InvoiceLine invoiceLine = new InvoiceLine();
+                        invoiceLine.setInvoiceTotalAmount(invoiceTotalAmount);
+                        invoiceLine.setService(newService);
+                        invoiceLine.setQuantity(quantity);
+                        invoiceLine.setInvoice(newInvoice);
+                    
+                        invoiceLineRepository.save(invoiceLine);
+                    }
+                    //invoiceLineRepository.save(invoiceLine);
                 } else {
                     // Handle case where service or invoice is not found
                     System.out.println("Service or Invoice not found for IDs: " + seId + ", " + invoiceId);

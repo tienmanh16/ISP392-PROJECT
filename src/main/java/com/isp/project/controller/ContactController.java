@@ -1,5 +1,6 @@
 package com.isp.project.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.isp.project.model.Email;
+import com.isp.project.model.Employee;
 import com.isp.project.model.GuestInformation;
+import com.isp.project.service.EmployeeService;
 import com.isp.project.service.GuestInformationService;
 
 import jakarta.mail.MessagingException;
@@ -32,6 +35,9 @@ public class ContactController {
     @Autowired
     Email emailService;
 
+    @Autowired
+    private EmployeeService employeeService;
+
     @GetMapping("/leaveInfo")
      public String leaveInfo(Model model) {
         GuestInformation guestInformation = new GuestInformation();
@@ -41,11 +47,19 @@ public class ContactController {
 
     }
     @GetMapping("/receptionist/listInfo")
-    public String listGuestInfo(Model model, @RequestParam(name ="pageNo", defaultValue = "1") Integer pageNo ) {
+    public String listGuestInfo(Model model, @RequestParam(name ="pageNo", defaultValue = "1") Integer pageNo , Principal p) {
         Page<GuestInformation> guestInformations = this.guestInformationService.pageInvoice(pageNo);
         model.addAttribute("listInfo", guestInformations);
         model.addAttribute("totalPage", guestInformations.getTotalPages());
         model.addAttribute("currentPage", pageNo);
+        if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            if (user != null) {
+                model.addAttribute("user1", user);
+            } else {
+            }
+        }
         return "listGuestInfo";
     }
     

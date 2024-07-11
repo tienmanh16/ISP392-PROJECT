@@ -111,10 +111,18 @@ public class BookingController {
     // ================================== Booking Detail
     // =========================================================================
     @GetMapping("bookingdetail")
-    public String getBookingDetail(@RequestParam("id") Integer id, Model model) {
+    public String getBookingDetail(@RequestParam("id") Integer id, Model model, Principal p) {
         Booking bookingDetail = bookingService.getBookingByBookingID(id);
         model.addAttribute("bookdetail", bookingDetail);
         model.addAttribute("newBookingMapping", new BookingInfoDTO());
+        if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            if (user != null) {
+                model.addAttribute("user1", user);
+            } else {
+            }
+        }
         return "bookingdetail";
 
     }
