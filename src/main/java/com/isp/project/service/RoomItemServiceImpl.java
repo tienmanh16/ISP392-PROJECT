@@ -36,14 +36,29 @@ public class RoomItemServiceImpl implements RoomItemService {
         return roomItemRepository.findRoomItemByNameContaining(keyword);
     }
 
+    // @Override
+    // public List<RoomItem> findAll() {
+    //     return roomItemRepository.findAll();
+    // }
     @Override
     public List<RoomItem> findAll() {
-        return roomItemRepository.findAll();
+        return roomItemRepository.findByItemsActiveTrue();
     }
-
+    
     @Override
     public boolean existsByItemName(String ItemName) {
     return roomItemRepository.existsByItemName(ItemName);
+    }
+
+    @Override
+    public boolean toggleRoomItemStatus(int itemId, boolean currentStatus) {
+       RoomItem roomItem = roomItemRepository.findById(itemId).get();
+       if(roomItem == null){
+        throw new IllegalArgumentException("Item not found with ID: " + itemId);
+       }
+       roomItem.setItemsActive(!currentStatus);
+       roomItemRepository.save(roomItem);
+       return !currentStatus;
     }
 
 }

@@ -28,7 +28,12 @@ public class RoomItem {
     @Column(name="ItemName")
     private String itemName;
 
+    @Column(name = "ItemsActive")
+    private Boolean itemsActive;
+
     @OneToMany(mappedBy = "roomItem")
     @JsonManagedReference
     private List<RoomItemMapping> roomItemMapping;
+
+    
 }

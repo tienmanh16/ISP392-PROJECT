@@ -9,12 +9,16 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
   <link href="https://themify.me/themify-icons" rel="stylesheet" />
   <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}" />
 
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" />
   <link rel="stylesheet" th:href="@{/css/AdminLTE.css}" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+    href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
   <!-- thư viện để add header và footer  -->
   <link th:href="@{/css/modalviet.css}" rel="stylesheet" />
   <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet" />
@@ -113,7 +117,7 @@
                     <th>Item ID</th>
                     <th>Item Name</th>
                     <th>Update</th>
-                    <th>Delete</th>
+                    <th>Item Status</th>
                   </tr>
                 </thead>
                 <tbody id="body">
@@ -125,11 +129,14 @@
                         <i class="ti-pencil-alt"></i>
                       </a>
                     </td>
+
                     <td>
-                      <a href="javascript:void(0);" th:onclick="'confirmDelete1(' + ${roomitem.ItemID} + ');'">
-                        <i class="material-icons"
-                          style="color: red;font-size: 40px; vertical-align: middle;">delete_forever</i>
-                      </a>
+                      <button type="button" class="btn statusButton"
+                        th:classappend="${roomitem.itemsActive == true ? 'btn-success' : 'btn-danger'}"
+                        th:text="${roomitem.itemsActive == true ? 'Active' : 'InActive'}"
+                        th:data-id="${roomitem.ItemID}" th:data-active="${roomitem.itemsActive}"
+                        onclick="toggleStatus(this)" style="width: 95px; height: 40px;">
+                      </button>
                     </td>
                   </tr>
                 </tbody>
@@ -146,6 +153,38 @@
     </section>
   </div>
   <div th:replace="~{fragments/footer :: footer}"></div>
+
+  <script>
+    function toggleStatus(button) {
+      const itemId = button.getAttribute('data-id');
+      const isActive = button.getAttribute('data-active') === 'true';
+
+      const confirmation = confirm(`Are you sure you want to ${isActive ? 'deactivate' : 'activate'} this account?`);
+      if (!confirmation) {
+        return;
+      }
+
+      $.ajax({
+        url: '/admin/inactiveRoomItems/' + itemId,
+        type: 'GET',
+        data: { isActive: isActive },
+        success: function (data) {
+          const newActiveState = !isActive;
+          // Update button text and style
+          button.textContent = newActiveState ? 'Active' : 'InActive';
+          button.classList.toggle('btn-success', newActiveState);
+          button.classList.toggle('btn-danger', !newActiveState);
+          // Update data attribute in database
+          button.setAttribute('data-active', newActiveState);
+        },
+        error: function (error) {
+          alert(`Failed to ${isActive ? 'deactivate' : 'activate'} the account. Please try again.`);
+        }
+      });
+    }
+
+  </script>
+
 
   <style>
     .pagination {
@@ -188,6 +227,7 @@
             <span class="material-icons" style="vertical-align: middle;">other_houses</span>
             <input type="text" th:field="*{ItemName}" name="ItemName" id="ItemName" placeholder="Enter room item..."
               required style="vertical-align: middle; width: 400px; margin-left: 10px;">
+            <input type="text" style="display: none;" th:field="*{itemsActive}">
           </div>
           <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); text-align: center;">
             <span class="itemNameText" style="font-size: 13px;"></span>

@@ -15,11 +15,13 @@ import com.isp.project.model.Invoice;
 import com.isp.project.model.InvoiceLine;
 import com.isp.project.model.Register;
 import com.isp.project.model.Room;
+import com.isp.project.model.RoomItem;
 import com.isp.project.model.RoomType;
 import com.isp.project.model.Service;
 import com.isp.project.repositories.BookingMappingRepository;
 import com.isp.project.repositories.BookingRepository;
 import com.isp.project.repositories.InvoiceRepository;
+import com.isp.project.repositories.RoomItemRepository;
 import com.isp.project.repositories.RoomRepository;
 import com.isp.project.repositories.RoomTypeRepository;
 import com.isp.project.service.BookingMappingService;
@@ -82,6 +84,9 @@ public class test {
     private InvoiceRepository invoiceRepository;
 
     @Autowired
+    private RoomItemRepository roomItemRepository;
+
+    @Autowired
     Email emailService;
 
     @GetMapping("/{id}")
@@ -90,9 +95,9 @@ public class test {
     }
 
     @GetMapping("/tien1")
-    public List<InvoiceLine> getMethodName12() {
+    public List<RoomItem> getMethodName12() {
  
-        return invoiceService.listInvoiceLine(16);
+        return roomItemRepository.findByItemsActiveTrue();
         
     }
 
