@@ -23,10 +23,10 @@ public class RoomItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ItemID")
-    private int ItemID;
+    private int itemID;
 
     @Column(name="ItemName")
-    private String ItemName;
+    private String itemName;
 
     @OneToMany(mappedBy = "roomItem")
     @JsonManagedReference

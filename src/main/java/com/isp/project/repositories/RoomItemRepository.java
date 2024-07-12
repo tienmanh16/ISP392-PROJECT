@@ -13,7 +13,7 @@ import com.isp.project.model.RoomItem;
 @Repository
 public interface RoomItemRepository extends JpaRepository<RoomItem, Integer> {
 
-    @Query("SELECT r FROM RoomItem r WHERE r.ItemName LIKE CONCAT('%', :keyword, '%')")
+    @Query("SELECT r FROM RoomItem r WHERE r.itemName LIKE CONCAT('%', :keyword, '%')")
     List<RoomItem> findRoomItemByNameContaining(@Param("keyword") String keyword);
 
     @Transactional
@@ -21,6 +21,8 @@ public interface RoomItemRepository extends JpaRepository<RoomItem, Integer> {
     @Query(value = "DELETE FROM RoomItemMapping WHERE ItemID = :ItemID", nativeQuery = true)
     void deleteByItemId(@Param("ItemID") int ItemID);
 
-    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM RoomItem r WHERE r.ItemName = :itemName")
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM RoomItem r WHERE r.itemName = :itemName")
     boolean existsByItemName(@Param("itemName") String itemName);
+
+    List<RoomItem> findByItemName(String itemName);
 }

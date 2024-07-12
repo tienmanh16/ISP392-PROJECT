@@ -264,7 +264,7 @@
       filteredRows = Array.from(rows).filter((row) => {
 
         const invoiceDate = row.cells[2].textContent;
-        const customerName = row.cells[1].textContent.toLowerCase();
+        const customerName = row.textContent.toLowerCase();
 
         return (
 
