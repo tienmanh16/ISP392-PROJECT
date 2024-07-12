@@ -59,18 +59,18 @@ public class InvoidController {
     public String listInvoice(Model model, @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
             @Param("key") String key, @Param("keyDate") Date keyDate, Principal p) {
 
-        Page<Invoice> invoice = this.invoiceService.pageInvoice(pageNo);
-
-        if (key != null) {
-            invoice = this.invoiceService.searchInvoice(pageNo, key);
-            model.addAttribute("key", key);
-        } else if (keyDate != null) {
-            invoice = this.invoiceService.searchInvoice(pageNo, keyDate);
-            model.addAttribute("keyDate", keyDate);
-        } else {
-            invoice = this.invoiceService.pageInvoice(pageNo);
-        }
-        model.addAttribute("totalPage", invoice.getTotalPages());
+        //Page<Invoice> invoice = this.invoiceService.pageInvoice(pageNo);
+                List<Invoice> invoice = this.invoiceService.getAllInvoice();
+        // if (key != null) {
+        //     invoice = this.invoiceService.searchInvoice(pageNo, key);
+        //     model.addAttribute("key", key);
+        // } else if (keyDate != null) {
+        //     invoice = this.invoiceService.searchInvoice(pageNo, keyDate);
+        //     model.addAttribute("keyDate", keyDate);
+        // } else {
+        //     invoice = this.invoiceService.pageInvoice(pageNo);
+        // }
+        // model.addAttribute("totalPage", invoice.getTotalPages());
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("listInvoice", invoice);
         if (p != null) {

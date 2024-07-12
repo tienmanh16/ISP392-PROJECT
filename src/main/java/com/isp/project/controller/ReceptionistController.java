@@ -20,6 +20,9 @@ public class ReceptionistController {
 	@Autowired
 	private EmployeeService userRepo;
 
+	@Autowired
+	private EmployeeService employeeService;
+
 	@ModelAttribute
 	public void commonUser(Principal p, Model m) {
 		if (p != null) {
@@ -31,7 +34,15 @@ public class ReceptionistController {
 	}
 
 	@GetMapping("/home")
-	public String profile() {
+	public String profile(Principal p,Model model) {
+		if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            if (user != null) {
+                model.addAttribute("user1", user);
+            } else {
+            }
+        }
 		return "home_recep";
 	}
 

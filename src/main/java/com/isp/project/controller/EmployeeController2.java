@@ -19,10 +19,13 @@ public class EmployeeController2 {
     EmployeeService employeeService;
 
     @GetMapping("/profileEm")
-    public String getProfileEm(Model model, Principal principal) {
-        String email = principal.getName();
+    public String getProfileEm(Model model, Principal p) {
+        String email = p.getName();
         Employee employee = employeeService.findByEmail(email);
         model.addAttribute("employee", employee);
+        Employee user = employeeService.findByEmail(email);
+        model.addAttribute("user1", user);
+        
         return "profileEm";
     }
 
