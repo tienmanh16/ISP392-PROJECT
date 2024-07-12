@@ -25,4 +25,6 @@ public interface RoomItemRepository extends JpaRepository<RoomItem, Integer> {
     boolean existsByItemName(@Param("itemName") String itemName);
 
     List<RoomItem> findByItemName(String itemName);
+
+    //
 }
