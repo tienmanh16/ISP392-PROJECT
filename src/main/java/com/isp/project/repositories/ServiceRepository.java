@@ -38,7 +38,7 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
        + ") "
        + "FROM Service s "
        + "JOIN s.serviceType st "
-       + "WHERE st.SeTypeID = :seTypeId")
+       + "WHERE st.SeTypeID = :seTypeId and s.serviceActive = 1")
     List<ServiceDetailDTO> findAllServiceDetailByServiceTypeId(@Param("seTypeId") Integer seTypeId);
 
 
@@ -53,7 +53,7 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
        + ") "
        + "FROM Service s "
        + "JOIN s.serviceType st "
-       + "WHERE s.SeName LIKE %:seName%")
+       + "WHERE s.SeName LIKE %:seName% and s.serviceActive = 1")
     List<ServiceDetailDTO> findAllServiceDetailBySeName(@Param("seName") String seName);
 
 

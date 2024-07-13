@@ -138,12 +138,6 @@
 							Add Room Type
 						</button>
 					</div>
-<!--					<div class="sort-buttons">-->
-<!--						<form action="/admin/listRoomType" method="get">-->
-<!--							<button type="submit" name="sortDirection" value="asc" class="btn custom-button">Sort by PriceHour Ascending</button>-->
-<!--							<button type="submit" name="sortDirection" value="desc" class="btn custom-button">Sort by PriceHour Descending</button>-->
-<!--						</form>-->
-<!--					</div>-->
 				<div class="container">
 					<div class="col-lg-12">
 						<div class="table-wrap">
@@ -179,12 +173,6 @@
 										<td th:text="${list.priceHour}"></td>
 										<td th:text="${list.priceDay}"></td>
 										<td><a th:href="@{/admin/list/{id}/update(id=${list.id})}" class="ti-menu"></a></td>
-										<!-- <td><a th:href="@{/list/{id}/delete(id=${list.id})}" class="btn btn-danger ti-close"></a></td> -->
-										<!-- <td><a href="javascript:void(0);"
-												th:onclick="'confirmDelete(' + ${list.id} + ');'"
-												class="btn btn-danger ti-close"></a>
-										</td> -->
-										<!-- <td><a href="javascript:void(0);" th:onclick="'confirmHide(' + ${list.id} + ');'" class="btn btn-danger ti-close"></a></td> -->
 										<td>
 											<a href="javascript:void(0);" th:if="${list.roomTypeActive == 1}"
 												th:onclick="'confirmInactiveRoomType(' + ${list.id} + ');'"

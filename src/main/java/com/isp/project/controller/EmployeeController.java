@@ -43,8 +43,17 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee_list")
-    public String listEmployee(Model model) {
+    public String listEmployee(Model model, Principal p) {
         List<Employee> emList = employeeService.findAll();
+        if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            if (user != null) {
+                model.addAttribute("user1", user);
+            } else {
+            }
+        }
+
         model.addAttribute("emList", emList);
         return "viewEmployee";
     }
@@ -146,7 +155,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee_search_active")
-    public String sortEmployeesBySalary(@RequestParam("status") String status, Model model) {
+    public String sortEmployeesBySalary(@RequestParam("status") String status, Model model, Principal p) {
         List<Employee> emList;
         if (null == status) {
             emList = employeeService.findAll();
@@ -161,6 +170,14 @@ public class EmployeeController {
                 default ->
                     employeeService.findAll();
             };
+        }
+        if (p != null) {
+            String email = p.getName();
+            Employee user = employeeService.findByEmail(email);
+            if (user != null) {
+                model.addAttribute("user1", user);
+            } else {
+            }
         }
         model.addAttribute("emList", emList);
         model.addAttribute("status", status);

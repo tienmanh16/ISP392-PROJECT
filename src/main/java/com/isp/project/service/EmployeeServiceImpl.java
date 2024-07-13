@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -205,6 +204,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     // Set lockTime to null if the account is unlocked
     if (newLockStatus) {
         employee.setLockTime(null);
+        employee.setFailedAttempt(0);
     } else {
         employee.setLockTime(new Date());
     }

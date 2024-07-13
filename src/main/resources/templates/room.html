@@ -31,7 +31,13 @@
 
     <div class="boxcar-wrapper">
         <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-            <div th:replace="~{fragments/header_recep :: header}"></div>
+            <div th:if="${user1.role == 'ROLE_ADMIN'}">
+                <div th:replace="~{fragments/header_admin :: header}"></div>
+            </div>
+        
+            <div th:if="${user1.role == 'ROLE_RECEPTIONIST'}">
+              <div th:replace="~{fragments/header_recep :: header}"></div>
+          </div>
         </header>
         <!-- cars-section-fourteen -->
         <section class="cars-section-fourteen layout-radius">
@@ -611,14 +617,14 @@
                         const bookingMappingID = await updateBookingMapping();
 
                         // Gửi HTTP request lên server
-                        const response = await fetch(`/receptionist/invoiceDetail/${invoiceId}`, {
+                        const response = await fetch(`/receptionist/invoicePayment/${invoiceId}`, {
                             method: 'GET'
                         });
 
                         // Kiểm tra nếu request thành công
                         if (response.ok) {
                             // Chuyển hướng sang trang invoice1
-                            window.location.href = `/receptionist/invoiceDetail/${invoiceId}`;
+                            window.location.href = `/receptionist/invoicePayment/${invoiceId}`;
                         } else {
                             console.error('Có lỗi xảy ra khi gửi invoiceID lên server');
                         }
@@ -1152,7 +1158,7 @@
                             roomDiv.innerHTML = `
                             <div class="inner-box ${roomClass}">
                                 <div class="content-box">
-                                    <h5 class="title">${room.roomNum}</h5>
+                                    <h5 class="title">${room.roomNum} <span class="material-icons" style = "margin-left: 90px; font-size: 27px;">cleaning_services</span> <span style = "margin-left: 5px; font-size: 17px;">${room.cleaning}</span></h5>
                                     <ul class="rating">
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>

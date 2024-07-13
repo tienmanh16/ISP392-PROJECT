@@ -229,7 +229,7 @@
                 <div class="logo">
                     <img src="logo.png" alt="" class="img-fluid">
                     <!-- //print -->
-                    <a th:href="@{receptionist/printInvoice/{invoiceID}(invoiceID=${booking.Invoice[0].InvoiceID})}"
+                    <a th:href="@{/receptionist/printInvoice/{invoiceID}(invoiceID=${invoiceID})}"
                         class="ti-printer print-text">
                         <span class="print-text">Print</span>
                     </a>
@@ -240,21 +240,21 @@
                 <div class="col-10">
                     <div class="row bb pb-3">
                         <div class="col-7">
-                            <h2 th:text="${booking.invoice[0].customerName}"></h2>
-                            <p class="address"> Invoice Date: <span th:text="${booking.Invoice[0].InvoiceDate}"></span>
+                            <h2 th:text="${invoice.customerName}"></h2>
+                            <p class="address"> Invoice Date: <span th:text="${invoice.InvoiceDate}"></span>
                             </p>
-                            <p class="address">Invoice Number: <span th:text="${booking.Invoice[0].InvoiceID}"></span>
+                            <p class="address">Invoice Number: <span th:text="${invoiceID}"></span>
                             </p>
                         </div>
                         <!-- nếu sau update 1 thằng book dc nhiều phòng sửa lại if else size > 1 .... -->
                         <div class="col-5 ">
                             <h2></h2>
                             <p class="address">Room Number: <span
-                                    th:text="${booking.BookingMapping[0].RoomID.RoomNum}"></span>
+                                    th:text="${roomName}"></span>
                             </p>
-                            <p class="address">Check-in Date: <span th:text="${booking.BookingMapping[0].checkInDate}"></span>
+                            <p class="address">Check-in Date: <span th:text="${bookingMapping.checkInDate}"></span>
                             </p>
-                            <p class="address">Check-out Date: <span th:text="${booking.BookingMapping[0].checkOutDate}"></span>
+                            <p class="address">Check-out Date: <span th:text="${bookingMapping.checkOutDate}"></span>
                             </p>
                         </div>
                     </div>
@@ -295,8 +295,8 @@
                 <div class="row">
                     <div class="col-8">
                         <p class="m-0 font-weight-bold">Note:</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. In delectus, adipisci vero est
-                            dolore praesentium.</p>
+                        <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. In delectus, adipisci vero est
+                            dolore praesentium.</p> -->
                     </div>
                     <div class="col-4">
                         <table class="table border-0 table-hover">
@@ -320,8 +320,8 @@
 
                         <!-- Signature -->
                         <div class="col-12">
-                            <img src="signature.png" class="img-fluid" alt="">
-                            <p class="text-center m-0">Director Signature</p>
+                            <!-- <img src="signature.png" class="img-fluid" alt="">
+                            <p class="text-center m-0">Director Signature</p> -->
                         </div>
                     </div>
                 </div>

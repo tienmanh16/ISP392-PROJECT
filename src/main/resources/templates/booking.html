@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
@@ -9,12 +9,16 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:400,100,300,700" rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
+  <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
   <link href="https://themify.me/themify-icons" rel="stylesheet" />
   <link rel="stylesheet" th:href="@{https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css}" />
 
   <link rel="stylesheet" th:href="@{/css/style.css}" />
   <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" />
   <link rel="stylesheet" th:href="@{/css/AdminLTE.css}" />
+  <link rel="stylesheet" th:href="@{/css/style.css}" media="all" href="/css/style.css" type="text/css">
+  <link rel="stylesheet" th:href="@{/fonts/themify-icons-font/themify-icons/themify-icons.css}" media="all"
+    href="/static/fonts/themify-icons-font/themify-icons/themify-icons.css" type="text/css">
   <!-- thư viện để add header và footer  -->
   <link th:href="@{/css/modalviet.css}" rel="stylesheet" />
   <link th:href="@{/css/bootstrap.min.copy.css}" rel="stylesheet" />
@@ -77,7 +81,13 @@
 <body>
   <div class="boxcar-wrapper">
     <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
+      <div th:if="${user1.role == 'ROLE_ADMIN'}">
+        <div th:replace="~{fragments/header_admin :: header}"></div>
+    </div>
+
+    <div th:if="${user1.role == 'ROLE_RECEPTIONIST'}">
       <div th:replace="~{fragments/header_recep :: header}"></div>
+  </div>
     </header>
 
     <!-- thêm class layout-radius để fix header  -->
@@ -99,7 +109,7 @@
                 <input type="text" id="searchbar" class=" search-input" placeholder="Search Here">
               </div>
               <div class="input-group" style="width: 200px">
-              <input id="dateInput" class="input" name="keyDate" type="date">
+                <input id="dateInput" class="input" name="keyDate" type="date">
               </div>
             </form>
           </div>
@@ -116,6 +126,7 @@
                     <th>Booking Date</th>
                     <th>Employee Name</th>
                     <th>Detail</th>
+
                     <th>Delete</th>
                   </tr>
                 </thead>
@@ -134,9 +145,29 @@
                     <td>
                       <a th:href="@{'bookingdetail?id=' + ${booking.bookingID}}" class="ti-list"></a>
                     </td>
-                    <td>
+
+                    <!-- <td>
+                      <a href="javascript:void(0);" th:if="${booking.isCancelled == 2}"
+                         th:onclick="'confirmActiveRoom(' + ${booking.bookingID} + ');'"
+                          class="btn btn-danger" style="width: 100px; height: 40px;">Renting</a>
+                      <a href="javascript:void(0);" th:if="${booking.isCancelled == 1}"
+                         th:onclick="'confirmInactiveRoom(' + ${booking.bookingID} + ');'"
+                          class="btn btn-success" style="width: 100px; height: 40px;">Check-in</a>
+                          <a href="javascript:void(0);" th:if="${booking.isCancelled == 0}"                 
+                          class="btn btn-secondary" style="width: 100px;height: 40px;">Paid</a>
+                  </td> -->
+
+                    <!-- <td>
                       <a href="javascript:void(0);" th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'"
                         class="btn btn-danger ti-close"></a>
+                    </td> -->
+                    <td>
+                      <a href="javascript:void(0);" th:if="${booking.isCancelled == 1}"
+                        th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'" class="btn btn-danger ti-close"></a>
+                        <!-- <a href="javascript:void(0);" th:if="${booking.isCancelled == 2}"
+                        th:onclick="'confirmDelete(' + ${booking.bookingID} + ');'" class="btn btn-danger">Renting</a>
+                        <a href="javascript:void(0);" th:if="${booking.isCancelled == 0}" class="btn btn-secondary"
+                  style="width: 100px;height: 40px;">Done</a> -->
                     </td>
                   </tr>
                 </tbody>
@@ -228,8 +259,8 @@
                 style="display: inline-block; margin-left: -30px;" required>
               <label for="checkin-time" style="display: inline-block; width: 150px; margin-left: 20px;">Check-in
                 time</label>
-              <input type="time" id="checkin-time" th:field="*{checkinTime}"
-                style="display: inline-block; margin-left: -30px;" required>
+              <input type="time" id="checkin-time" name="checkin-time"
+                style="display: inline-block; margin-left: -30px;text-align: center;" value="12:00" readonly>
             </div>
 
             <div>
@@ -238,22 +269,22 @@
                 style="display: inline-block; margin-left: -40px;" required>
               <label for="checkout-time" style="display: inline-block; width: 160px; margin-left: 20px;">Check-out
                 time</label>
-              <input type="time" id="checkout-time" th:field="*{checkoutTime}"
-                style="display: inline-block; margin-left: -40px;" required>
+              <input type="time" id="checkout-time" name="checkout-time"
+                style="display: inline-block; margin-left: -40px; text-align: center;" value="11:00" readonly>
             </div>
 
-            <div style="margin-top: 10px;">
-              <label for="employee-id" style="display: inline-block; width: 150px;">Receptionist ID</label>
-              <input type="number" th:field="*{employeeId}"
-                style="display: inline-block; margin-left: -30px; width: 147px;" placeholder="Nhập mã nhân viên..."
-                required min="1" readonly>
+            <div style="margin-top: 5px;">
+              <label for="employee-id" style="display: inline-block; width: 160px;">Receptionist:</label>
+              <input type="number" th:field="*{employeeId}" style="display: none; margin-left: -30px; width: 147px;"
+                placeholder="Nhập mã nhân viên..." required min="1" readonly>
+              <p style="display: inline-block; margin-left: -40px;" th:text="${user1.fullName}"></p>
             </div>
 
-            <div style="margin-top: -40px; margin-left: 290px;">
+            <div style="margin-top: -50px; margin-left: 290px;">
               <label for="customer-quantity"
                 style="display: inline-block; margin-left: 5px; width: 150px;">C.Quantity</label>
               <input type="number" th:field="*{customerQuantity}"
-                style="display: inline-block; margin-left: -30px; width: 110px;" placeholder="Nhập số lượng khách..."
+                style="display: inline-block; margin-left: -30px; width: 105px;" placeholder="Nhập số lượng khách..."
                 required min="1">
             </div>
           </div>
@@ -315,8 +346,8 @@
   </div>
 
 
-   <!-- ==================================Filter Serch=========================== -->
-   <script>
+  <!-- ==================================Filter Serch=========================== -->
+  <script>
     function toggleStatus(button) {
       const id = button.getAttribute('data-id');
       const isContacted = button.getAttribute('data-active') === 'true';
@@ -349,7 +380,7 @@
       let rows = tbody.getElementsByTagName('tr');
       let searchtext = searchbar.value.toLowerCase();
       let searchdate = dateInput.value;
-      console.log("date:",searchdate);
+      console.log("date:", searchdate);
 
       // không lọc dữ liệu nếu cả ô tìm kiếm, ô ngày và trạng thái đều trống
       if (searchtext == '' && searchdate == '') {

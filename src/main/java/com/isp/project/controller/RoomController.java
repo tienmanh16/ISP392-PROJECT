@@ -489,7 +489,7 @@ public class RoomController {
                     
                         invoiceLineRepository.save(invoiceLine);
                     }
-
+                    //invoiceLineRepository.save(invoiceLine);
                 } else {
                     // Handle case where service or invoice is not found
                     System.out.println("Service or Invoice not found for IDs: " + seId + ", " + invoiceId);

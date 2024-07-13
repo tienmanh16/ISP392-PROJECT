@@ -8,6 +8,7 @@ import com.isp.project.dto.RoomInvoiceDTO;
 import com.isp.project.model.Booking;
 import com.isp.project.model.BookingMapping;
 import com.isp.project.model.Customer;
+import com.isp.project.model.Email;
 import com.isp.project.model.Employee;
 import com.isp.project.model.Employee;
 import com.isp.project.model.Invoice;
@@ -83,7 +84,7 @@ public class test {
     private InvoiceRepository invoiceRepository;
 
     @Autowired
-    private InvoiceLineRepository invoiceLineRepository; 
+    Email emailService;
 
     @GetMapping("/{id}")
     public List<Booking> getMethodName(@PathVariable int id ) {
@@ -96,7 +97,7 @@ public class test {
         return invoiceService.listInvoiceLine(16);
         
     }
-    
+
     @GetMapping("/viet")
 public Booking getMethodName() {
     // Retrieve the booking by ID
@@ -119,9 +120,18 @@ public Booking getMethodName() {
     return updateBooking;
 }
     
-    // @GetMapping("/tien")
-    // public Employee revenueBooking() {
-    //     return invoiceService.testReport();
+    // @GetMapping("/send")
+    // public boolean revenueBooking1() {
+    //     boolean check = false;      
+    //     String email = "vietdxhe172563@fpt.edu.vn";
+    //     try {
+    //         emailService.sendEmailBookingTest(email);
+    //         return check = true;
+    //     } catch (Exception e) {
+    //         // TODO: handle exception
+    //     }
+    //     return check;
+        
     // }
 
     //  @GetMapping("/tien")
@@ -131,17 +141,8 @@ public Booking getMethodName() {
     // }
 
      @GetMapping("/tien")
-    public boolean revenueBooking() {
-        boolean check =false;
-        List<InvoiceLine> invoiceLines = invoiceRepository.findById(10).get().getInvoiceLine();
-        for (InvoiceLine invoiceLine : invoiceLines) {
-            if(invoiceLine.getService().getSeID() == 11){
-                invoiceLine.setQuantity(invoiceLine.getQuantity()+1);
-                invoiceLineRepository.save(invoiceLine);
-                return check =true;
-            }
-        }
-        return check;
+    public List<RoomDTO> revenueBooking() {
+        return roomRepository.findAllRooms();
     }
 
 

@@ -69,7 +69,13 @@
 <body>
     <div class="boxcar-wrapper">
         <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-            <div th:replace="~{fragments/header_admin :: header}"></div>
+            <div th:if="${user1.role == 'ROLE_ADMIN'}">
+                <div th:replace="~{fragments/header_admin :: header}"></div>
+            </div>
+        
+            <div th:if="${user1.role == 'ROLE_RECEPTIONIST'}">
+              <div th:replace="~{fragments/header_recep :: header}"></div>
+          </div>
         </header>
 
         <!-- thêm class layout-radius để fix header  -->
@@ -216,7 +222,6 @@
             rows.forEach(row => tbody.appendChild(row)); // Reorder the rows in the table
         }
 
-        // Event listeners for sorting by salary
         document.getElementById('sort-price-hour-asc').addEventListener('click', () => sortTableBySalary('asc'));
         document.getElementById('sort-price-hour-desc').addEventListener('click', () => sortTableBySalary('desc'));
 

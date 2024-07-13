@@ -24650,7 +24650,7 @@ Chat Widget
 ***/
 .login-section {
   position: relative;
-  padding: 120px 0;
+  padding: 50px 0;
   border-radius: 80px;
   background-color: var(--theme-color-light);
 }

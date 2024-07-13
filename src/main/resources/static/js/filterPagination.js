@@ -45,8 +45,8 @@ function filterRows() {
     });
 
     const isNumeric = (str) => {
-        if (typeof str != "string") return false; // we only process strings!  
-        return !isNaN(str) && // use type coercion to parse the entirety of the string (`parseFloat` alone does not do this) 
+        if (typeof str != "string") return false; // we only process strings!
+        return !isNaN(str) && // use type coercion to parse the entirety of the string (`parseFloat` alone does not do this)
             !isNaN(parseFloat(str)); // ensure strings of whitespace fail
     };
 
@@ -128,14 +128,7 @@ document.getElementById('sort-desc-price-day').addEventListener('click', () => {
     sortTableByColumn(6, false); // Assuming priceDay is the 5th column (index 5)
 });
 
-document.getElementById('sort-asc-price-service').addEventListener('click', () => {
-    sortTableByColumn(4, true); // Assuming priceHour is the 4th column (index 4)
-});
-
-document.getElementById('sort-desc-price-service').addEventListener('click', () => {
-    sortTableByColumn(4, false); // Assuming priceHour is the 4th column (index 4)
-});
-
 // Initial display
 getUniqueValuesFromColumn();
 displayRows();
+
