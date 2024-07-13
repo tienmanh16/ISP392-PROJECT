@@ -13,4 +13,6 @@ public interface RoomItemService {
     List<RoomItem> findAll();
     
     boolean existsByItemName(String ItemName);
+
+    boolean toggleRoomItemStatus(int itemId, boolean currentStatus);
 }

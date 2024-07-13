@@ -39,9 +39,11 @@ public class RoomItemController {
         } else {
             listRoomItem = roomItemService.getAllRoomItem();
         }
+        RoomItem roomItem = new RoomItem();
+        roomItem.setItemsActive(true);
         model.addAttribute("roomItemList", listRoomItem);
         model.addAttribute("queryItemName", queryItemName);
-        model.addAttribute("addRoomItem", new RoomItem());
+        model.addAttribute("addRoomItem", roomItem);
         return "roomitems";
     }
 
@@ -84,4 +86,16 @@ public class RoomItemController {
         boolean exists = roomItemService.existsByItemName(ItemName);
         return ResponseEntity.ok(exists);
     }
+
+    @GetMapping("/inactiveRoomItems/{itemId}")
+    public ResponseEntity<?> toggleStatus(@PathVariable("itemId") int itemId,
+            @RequestParam("isActive") boolean isActive) {
+        try {
+            boolean newStatus = roomItemService.toggleRoomItemStatus(itemId, isActive);
+            return ResponseEntity.ok().body(newStatus);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to toggle employee status.");
+        }
+    }
+
 }

@@ -70,6 +70,7 @@
         <label>Name:</label>
         <input type="text" th:field="*{ItemName}" required>
         <span class="itemNameText" style="font-size: 15px; color: red; position: absolute; bottom: -2em;"></span>
+        <input type="text" style="display: none;" th:field="*{itemsActive}" required>
       </div>
       <button type="submit" value="update"
         style="background: green ;padding: 10px 20px; color: white; border: white; border-radius: 5px;">UPDATE</button>

@@ -24,5 +24,6 @@ public interface RoomItemRepository extends JpaRepository<RoomItem, Integer> {
     @Query("SELECT CASE WHEN COUNT(r) > 0 THEN true ELSE false END FROM RoomItem r WHERE r.itemName = :itemName")
     boolean existsByItemName(@Param("itemName") String itemName);
 
+    //
     List<RoomItem> findByItemsActiveTrue();
 }
