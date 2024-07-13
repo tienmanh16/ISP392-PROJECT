@@ -38,7 +38,7 @@ public class RoomItemServiceImpl implements RoomItemService {
 
     @Override
     public List<RoomItem> findAll() {
-        return roomItemRepository.findAll();
+        return roomItemRepository.findByItemsActiveTrue();
     }
 
     @Override

@@ -56,11 +56,16 @@ public class ItemDetailController {
     public String save(Model model, @Valid @ModelAttribute("itemdetail") RoomItemMapping roomItemMapping) {
        // Kiểm tra trùng lặp
        if (itemDetailService.isDuplicate(roomItemMapping)) {
-        model.addAttribute("duplicate","Duplicate!!! Please try again");
-        model.addAttribute("itemdetail", roomItemMapping);
-        model.addAttribute("rooms", roomService.findAll());
-        model.addAttribute("items", roomItemService.findAll());
-        return "addItemdetail"; 
+         RoomItemMapping existingMapping = itemDetailService.findDuplicate(roomItemMapping);
+        if (existingMapping != null) {
+            existingMapping.setQuantity(existingMapping.getQuantity() + roomItemMapping.getQuantity());
+            itemDetailService.save(existingMapping);
+            model.addAttribute("duplicate", "Add successfully");
+            model.addAttribute("itemdetail", roomItemMapping);
+            model.addAttribute("rooms", roomService.findAll());
+            model.addAttribute("items", roomItemService.findAll());
+            return "addItemdetail"; 
+        }
     }
        
         itemDetailService.save(roomItemMapping);

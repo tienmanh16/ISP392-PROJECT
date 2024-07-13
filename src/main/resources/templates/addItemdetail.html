@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label>Room Number</label>
                         <select th:field="*{room.id}" class="form-control" required>
-                            <option th:each="room : ${rooms}" th:value="${room.id}" th:text="${room.roomNum}"></option>
+                            <option th:each="room : ${rooms}" th:if="${room.roomActive != 0}" th:value="${room.id}" th:text="${room.roomNum}"></option>
                         </select>
                     </div>
                     <div class="form-group">

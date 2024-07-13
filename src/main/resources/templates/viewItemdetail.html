@@ -97,7 +97,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="list : ${itemDeList}">
+                                <tr th:each="list : ${itemDeList}" th:if = "${list.roomItem.itemsActive != false and list.room.roomActive != 0}">
                                     <th th:text="${list.RoomItemID}"></th>
                                     <td th:text="${list.room.roomNum}"></td>
                                     <td th:text="${list.roomItem.ItemName}"></td>

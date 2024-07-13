@@ -42,7 +42,13 @@ public class ItemDetailServiceImpl implements ItemDetailService{
         return existingMapping != null;
     }
 
-  
+    @Override
+    public RoomItemMapping findDuplicate(RoomItemMapping entity) {
+       
+
+        return itemDetailRepository.findByRoomAndItem(
+            entity.getRoom().getId(), entity.getRoomItem().getItemID());
+    }
 
    
 
