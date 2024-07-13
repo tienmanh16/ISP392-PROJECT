@@ -14,12 +14,12 @@ import com.isp.project.model.Service;
 @Repository
 public interface ServiceRepository extends JpaRepository<Service, Integer> {
     @Query("SELECT new com.isp.project.dto.ServiceDetailDTO("
-       + "s.SeID, "
-       + "s.SeName, "
-       + "s.SePrice, "
+       + "s.seID, "
+       + "s.seName, "
+       + "s.sePrice, "
        + "s.serviceActive, "
-       + "st.SeTypeID, "
-       + "st.SeTypeName, "
+       + "st.seTypeID, "
+       + "st.seTypeName, "
        + "st.serviceTypeActive "
        + ") "
        + "FROM Service s "
@@ -28,38 +28,40 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
     List<ServiceDetailDTO> findAllServiceDetail();
 
     @Query("SELECT new com.isp.project.dto.ServiceDetailDTO("
-       + "s.SeID, "
-       + "s.SeName, "
-       + "s.SePrice, "
+       + "s.seID, "
+       + "s.seName, "
+       + "s.sePrice, "
        + "s.serviceActive, "
-       + "st.SeTypeID, "
-       + "st.SeTypeName, "
+       + "st.seTypeID, "
+       + "st.seTypeName, "
        + "st.serviceTypeActive "
        + ") "
        + "FROM Service s "
        + "JOIN s.serviceType st "
-       + "WHERE st.SeTypeID = :seTypeId")
+       + "WHERE st.seTypeID = :seTypeId and s.serviceActive = 1")
     List<ServiceDetailDTO> findAllServiceDetailByServiceTypeId(@Param("seTypeId") Integer seTypeId);
 
 
     @Query("SELECT new com.isp.project.dto.ServiceDetailDTO("
-       + "s.SeID, "
-       + "s.SeName, "
-       + "s.SePrice, "
+       + "s.seID, "
+       + "s.seName, "
+       + "s.sePrice, "
        + "s.serviceActive, "
-       + "st.SeTypeID, "
-       + "st.SeTypeName, "
+       + "st.seTypeID, "
+       + "st.seTypeName, "
        + "st.serviceTypeActive "
        + ") "
        + "FROM Service s "
        + "JOIN s.serviceType st "
-       + "WHERE s.SeName LIKE %:seName%")
+       + "WHERE s.seName LIKE %:seName% and s.serviceActive = 1")
     List<ServiceDetailDTO> findAllServiceDetailBySeName(@Param("seName") String seName);
 
 
     //boolean existsBySeName(String SeName);
 
-    @Query("Select c FROM Service c WHERE c.SeName LIKE %?1%")
+    @Query("Select c FROM Service c WHERE c.seName LIKE %?1%")
     List<Service> searchService(String name);
+
+    boolean existsBySeName(String seName);
 
 }

@@ -16,9 +16,9 @@ public interface ServiceTypeRepository extends JpaRepository<ServiceType, Intege
 
        @Modifying
        @Transactional
-       @Query("UPDATE ServiceType s SET s.serviceTypeActive = :status WHERE s.SeTypeID = :SeTypeID")
-       void updateServiceTypeActiveStatus(@Param("SeTypeID") int id, @Param("status") int status);
+       @Query("UPDATE ServiceType s SET s.serviceTypeActive = :status WHERE s.seTypeID = :seTypeID")
+       void updateServiceTypeActiveStatus(@Param("seTypeID") int id, @Param("status") int status);
 
-       @Query("Select c FROM ServiceType c WHERE c.SeTypeName LIKE %?1%")
+       @Query("Select c FROM ServiceType c WHERE c.seTypeName LIKE %?1%")
        List<ServiceType> searchServiceType(String name);
 }

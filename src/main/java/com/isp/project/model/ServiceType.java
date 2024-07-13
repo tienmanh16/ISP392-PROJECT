@@ -24,10 +24,10 @@ public class ServiceType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SeTypeID", nullable = false)
-    private int SeTypeID;
+    private int seTypeID;
 
     @Column(name = "SeTypeName")
-    private String SeTypeName;
+    private String seTypeName;
 
     @Column(name = "ServiceTypeActive", nullable = false)
     private int serviceTypeActive;

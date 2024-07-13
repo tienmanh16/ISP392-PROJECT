@@ -57,7 +57,6 @@ import com.isp.project.service.RoomTypeService;
 import com.isp.project.service.RoomTypeServiceImpl;
 import com.isp.project.service.SeService;
 
-
 import jakarta.validation.Valid;
 
 @Controller
@@ -95,7 +94,6 @@ public class RoomController {
     @Autowired
     private BookingMappingRepository bookingMappingRepository;
 
-
     @Autowired
     private InvoiceLineService invoiceLineService;
 
@@ -107,76 +105,76 @@ public class RoomController {
         return "ManagerBooking";
     }
 
-   
-//    @GetMapping("/room")
-//     public String listRoom(Model model) {
-//         // Page<RoomDetailDTO> list = this.roomService.getAll(pageNo);
+    // @GetMapping("/room")
+    // public String listRoom(Model model) {
+    // // Page<RoomDetailDTO> list = this.roomService.getAll(pageNo);
 
-//         // model.addAttribute("totalPage", list.getTotalPages());
-//         // model.addAttribute("currentPage", pageNo);
-//         List<BookingMapping> list_All = roomService.getAllRoom();
+    // // model.addAttribute("totalPage", list.getTotalPages());
+    // // model.addAttribute("currentPage", pageNo);
+    // List<BookingMapping> list_All = roomService.getAllRoom();
 
-//         List<BookingMapping> list = new ArrayList<>();
+    // List<BookingMapping> list = new ArrayList<>();
 
-//         LocalDate currentDate = LocalDate.now();
+    // LocalDate currentDate = LocalDate.now();
 
-//         for (BookingMapping bookingMapping : list_All) {
-//             if (bookingMapping.getBookingMappingActive() == 1 ||
-//                     bookingMapping.getBookingMappingActive() == 2) {
-//                 list.add(bookingMapping);
-//             }
-//         }
+    // for (BookingMapping bookingMapping : list_All) {
+    // if (bookingMapping.getBookingMappingActive() == 1 ||
+    // bookingMapping.getBookingMappingActive() == 2) {
+    // list.add(bookingMapping);
+    // }
+    // }
 
-//         model.addAttribute("roomTypes",
-//                 roomTypeServiceImpl.getAllRoomTypesWithDetails());
-//         model.addAttribute("rooms", list);
-//         model.addAttribute("services", seService.getAllServiceDetail());
-//         // //model.addAttribute("services",
-//         // seService.findAllServiceDetailByServiceTypeId(1);
-//         model.addAttribute("serviceTypes", seService.getAllServiceTypes());
-//         return "room";
-//     }
+    // model.addAttribute("roomTypes",
+    // roomTypeServiceImpl.getAllRoomTypesWithDetails());
+    // model.addAttribute("rooms", list);
+    // model.addAttribute("services", seService.getAllServiceDetail());
+    // // //model.addAttribute("services",
+    // // seService.findAllServiceDetailByServiceTypeId(1);
+    // model.addAttribute("serviceTypes", seService.getAllServiceTypes());
+    // return "room";
+    // }
 
     // @GetMapping("/roomtest")
     // @ResponseBody
-    // public ResponseEntity<List<RoomDTO>> getAvailableRooms(@RequestParam(required = false) String checkinDate) {
-    //     List<RoomDTO> bookingMappings;
-    //     List<RoomDTO> list = new ArrayList<>();
+    // public ResponseEntity<List<RoomDTO>> getAvailableRooms(@RequestParam(required
+    // = false) String checkinDate) {
+    // List<RoomDTO> bookingMappings;
+    // List<RoomDTO> list = new ArrayList<>();
 
-    //     if (checkinDate == null || checkinDate.isEmpty()) {
-    //         bookingMappings = roomRepository.findAllRooms();
-    //     } else {
-    //         Date date = Date.valueOf(checkinDate);
-    //         bookingMappings = roomRepository.findAllRoomsWithCheckInDate(date);
-    //     }
-    //     for (RoomDTO bookingMapping : bookingMappings) {
-    //         if (bookingMapping.getBookingMappingActive() == 1 ||
-    //                 bookingMapping.getBookingMappingActive() == 2) {
-    //             list.add(bookingMapping);
-    //         }
-    //     }
-
-    //     return ResponseEntity.ok(list);
+    // if (checkinDate == null || checkinDate.isEmpty()) {
+    // bookingMappings = roomRepository.findAllRooms();
+    // } else {
+    // Date date = Date.valueOf(checkinDate);
+    // bookingMappings = roomRepository.findAllRoomsWithCheckInDate(date);
+    // }
+    // for (RoomDTO bookingMapping : bookingMappings) {
+    // if (bookingMapping.getBookingMappingActive() == 1 ||
+    // bookingMapping.getBookingMappingActive() == 2) {
+    // list.add(bookingMapping);
+    // }
     // }
 
-
+    // return ResponseEntity.ok(list);
+    // }
 
     // @GetMapping("/editRoom")
-    // public ResponseEntity<Customer> getRoom(@RequestParam("roomId") Integer roomId) {
-    //     Customer customer = roomServiceImpl.test(roomId);
-    //     return ResponseEntity.ok(customer);
+    // public ResponseEntity<Customer> getRoom(@RequestParam("roomId") Integer
+    // roomId) {
+    // Customer customer = roomServiceImpl.test(roomId);
+    // return ResponseEntity.ok(customer);
     // }
     @GetMapping("/editRoom")
     public ResponseEntity<Booking> getRoom(@RequestParam("bookingMappingId") Integer bookingMappingId) {
-        Booking booking =  bookingMappingRepository.getReferenceById(bookingMappingId).getBookingID();
+        Booking booking = bookingMappingRepository.getReferenceById(bookingMappingId).getBookingID();
         return ResponseEntity.ok(booking);
     }
 
     @GetMapping("/findInvoiceId")
     public ResponseEntity<RoomInvoiceDTO> getInvoiceId(@RequestParam("bookingMappingId") Integer bookingMappingId) {
-        RoomInvoiceDTO roomInvoiceDTO =  roomRepository.findInvoiceIdByBookingMappingId(bookingMappingId);
+        RoomInvoiceDTO roomInvoiceDTO = roomRepository.findInvoiceIdByBookingMappingId(bookingMappingId);
         return ResponseEntity.ok(roomInvoiceDTO);
     }
+
     @GetMapping("/filterRoom")
     public String getRoomFromFilter(@RequestParam("statusFilter") String statusFilter,
             @RequestParam(required = false) Integer selectedRoomTypeId, Model model) {
@@ -235,9 +233,10 @@ public class RoomController {
     // }
 
     // @GetMapping("/editRoom2")
-    // public ResponseEntity<Room> getRoom2(@RequestParam("roomId") Integer roomId) {
-    //     Room room = roomServiceImpl.testR(roomId);
-    //     return ResponseEntity.ok(room);
+    // public ResponseEntity<Room> getRoom2(@RequestParam("roomId") Integer roomId)
+    // {
+    // Room room = roomServiceImpl.testR(roomId);
+    // return ResponseEntity.ok(room);
     // }
     @GetMapping("/editRoom2")
     public ResponseEntity<Room> getRoom2(@RequestParam("roomId") Integer roomId) {
@@ -260,14 +259,15 @@ public class RoomController {
     }
 
     // @PostMapping("/updateRoomCleaning")
-    // public ResponseEntity<Optional<Room>> updateCleaning(@RequestBody String roomData) {
-    //     Room room = convertJsonToRoom(roomData);
-        
-    //     // roomService.updateRoomCleaningByRoomId(room.getId(), room.getCleaning());
-    //     // Room room1 = roomServiceImpl.testR(room.getId());
-    //     Optional<Room> room1 = roomRepository.findById(room.getId());
-    //     room1.get().setCleaning(room.getCleaning());
-    //     return ResponseEntity.ok(room1);
+    // public ResponseEntity<Optional<Room>> updateCleaning(@RequestBody String
+    // roomData) {
+    // Room room = convertJsonToRoom(roomData);
+
+    // // roomService.updateRoomCleaningByRoomId(room.getId(), room.getCleaning());
+    // // Room room1 = roomServiceImpl.testR(room.getId());
+    // Optional<Room> room1 = roomRepository.findById(room.getId());
+    // room1.get().setCleaning(room.getCleaning());
+    // return ResponseEntity.ok(room1);
     // }
 
     @PutMapping("/updateRoomCleaning/{roomId}")
@@ -302,9 +302,9 @@ public class RoomController {
         }
     }
 
-
     @GetMapping("/updateBookingMapping")
-    public ResponseEntity<BookingMapping> updateBookingMappingActive(@RequestParam("bookingMappingId") Integer bookingMappingId) {
+    public ResponseEntity<BookingMapping> updateBookingMappingActive(
+            @RequestParam("bookingMappingId") Integer bookingMappingId) {
         roomService.updateBookingMappingActive(bookingMappingId);
         BookingMapping bookingMapping = roomServiceImpl.testBookingMapping(bookingMappingId);
         return ResponseEntity.ok(bookingMapping);
@@ -318,7 +318,6 @@ public class RoomController {
         if (serviceTypeId == 0) {
             services = seService.getAllServiceDetail();
         }
-
 
         return ResponseEntity.ok(services);
     }
@@ -338,7 +337,6 @@ public class RoomController {
         List<ServiceDetailDTO> services = seService.getAllServiceDetail();
         return ResponseEntity.ok(services);
     }
-
 
     @PostMapping("/api/availableRooms")
     @ResponseBody
@@ -366,46 +364,48 @@ public class RoomController {
             throw new RuntimeException("Invalid date format. Please use yyyy-MM-dd");
         }
     }
-    
 
     // @PostMapping("/addInvoiceLine")
     // @ResponseBody
-    // public ResponseEntity<String> addInvoiceLines(@RequestBody String selectedInvoiceLine1JSON) {
-    //     try {
-    //         List<InvoiceLineDTO> selectedInvoiceLines = convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
-    //         for (InvoiceLineDTO invoiceLine : selectedInvoiceLines) {
-    //             Service service = serviceRepository.findById(invoiceLine.getSeID()).orElse(null);
-    //             Invoice invoice = invoiceRepository.findById(invoiceLine.getInvoiceID()).orElse(null);
-    //             if (service != null && invoice != null) {
-    //                 InvoiceLine invoiceLine2 = new InvoiceLine();
-    //                 invoiceLine2.setInvoiceTotalAmount(invoiceLine.getInvoiceTotalAmount());
-    //                 invoiceLine2.setService(service);
-    //                 invoiceLine2.setQuantity(invoiceLine.getQuantity());
-    //                 invoiceLine2.setInvoice(invoice);
+    // public ResponseEntity<String> addInvoiceLines(@RequestBody String
+    // selectedInvoiceLine1JSON) {
+    // try {
+    // List<InvoiceLineDTO> selectedInvoiceLines =
+    // convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
+    // for (InvoiceLineDTO invoiceLine : selectedInvoiceLines) {
+    // Service service =
+    // serviceRepository.findById(invoiceLine.getSeID()).orElse(null);
+    // Invoice invoice =
+    // invoiceRepository.findById(invoiceLine.getInvoiceID()).orElse(null);
+    // if (service != null && invoice != null) {
+    // InvoiceLine invoiceLine2 = new InvoiceLine();
+    // invoiceLine2.setInvoiceTotalAmount(invoiceLine.getInvoiceTotalAmount());
+    // invoiceLine2.setService(service);
+    // invoiceLine2.setQuantity(invoiceLine.getQuantity());
+    // invoiceLine2.setInvoice(invoice);
 
-    //                 invoiceLineRepository.save(invoiceLine2);
-    //             }
-    //         }
-    //         return ResponseEntity.ok("Saved successfully");
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-    //                 .body("Error saving invoice lines: " + e.getMessage());
-    //     }
+    // invoiceLineRepository.save(invoiceLine2);
+    // }
+    // }
+    // return ResponseEntity.ok("Saved successfully");
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    // .body("Error saving invoice lines: " + e.getMessage());
+    // }
     // }
 
-
-
     // private List<InvoiceLineDTO> convertJsonToInvoiceLineList(String json) {
-    //     ObjectMapper objectMapper = new ObjectMapper();
-    //     List<InvoiceLineDTO> invoiceLines = new ArrayList<>();
-    //     try {
-    //         InvoiceLineDTO[] invoiceLineArray = objectMapper.readValue(json, InvoiceLineDTO[].class);
-    //         invoiceLines = Arrays.asList(invoiceLineArray);
-    //     } catch (JsonProcessingException e) {
-    //         e.printStackTrace();
-    //     }
-    //     return invoiceLines;
+    // ObjectMapper objectMapper = new ObjectMapper();
+    // List<InvoiceLineDTO> invoiceLines = new ArrayList<>();
+    // try {
+    // InvoiceLineDTO[] invoiceLineArray = objectMapper.readValue(json,
+    // InvoiceLineDTO[].class);
+    // invoiceLines = Arrays.asList(invoiceLineArray);
+    // } catch (JsonProcessingException e) {
+    // e.printStackTrace();
+    // }
+    // return invoiceLines;
     // }
     // =======================================================
     // @PostMapping("/addInvoiceLine")
@@ -519,15 +519,14 @@ public class RoomController {
     }
 
     private Room convertJsonToRoom(String json) {
-    ObjectMapper objectMapper = new ObjectMapper();
-    Room room = null;
-    try {
-        room = objectMapper.readValue(json, Room.class);
-    } catch (Exception e) {
-        e.printStackTrace();
+        ObjectMapper objectMapper = new ObjectMapper();
+        Room room = null;
+        try {
+            room = objectMapper.readValue(json, Room.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return room;
     }
-    return room;
-}
-
 
 }

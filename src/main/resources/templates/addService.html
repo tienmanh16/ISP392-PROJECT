@@ -52,7 +52,7 @@
                     <div class="form-group">
                         <label for="serviceType">Service Type:</label>
                         <select class="form-control" id="serviceType" th:field="*{serviceType.SeTypeID}">
-                            <option th:each="serviceType : ${serviceTypes}" th:value="${serviceType.SeTypeID}"
+                            <option th:each="serviceType : ${serviceTypes}" th:if="${serviceType.serviceTypeActive != 0}" th:value="${serviceType.SeTypeID}"
                                 th:text="${serviceType.SeTypeName}">Service Type</option>
                         </select>
                     </div>
@@ -71,7 +71,7 @@
         <div class="container"></div>
         <script>
             const serviceNameText = document.querySelector('.serviceNameText');
-            const SeName = document.getElementById('SeName');
+            const seName = document.getElementById('SeName');
 
             function checkSeName() {
                 const seNamePattern = /^[\p{L}\p{N} ]+$/u;
@@ -91,7 +91,7 @@
                 $.ajax({
                     url: '/admin/service_check-serviceName',
                     type: 'GET',
-                    data: { SeName: SeName.value },
+                    data: { seName: seName.value },
                     async: false,
                     success: function (response) {
                         if (response) {
@@ -110,6 +110,8 @@
 
                 return isDuplicate;
             }
+
+            
 
             function checkFormSubmission() {
                 return checkSeName() && !checkDuplicateSeName();

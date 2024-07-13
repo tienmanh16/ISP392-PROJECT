@@ -183,11 +183,11 @@ public class ServiceController {
         }
     }
 
-    // @GetMapping("/service_check-serviceName")
-    // public ResponseEntity<Boolean> checkRoomNumExists(@RequestParam String seName) {
-    //     boolean exists = seService.existsByServiceName(seName);
-    //     return ResponseEntity.ok(exists);
-    // }
+    @GetMapping("/service_check-serviceName")
+    public ResponseEntity<Boolean> checkRoomNumExists(@RequestParam("seName") String seName) {
+        boolean exists = serviceRepository.existsBySeName(seName);
+        return ResponseEntity.ok(exists);
+    }
 
     @GetMapping("/listServices/{id}/update")
     public String editService(@PathVariable("id") int id, Model model) {

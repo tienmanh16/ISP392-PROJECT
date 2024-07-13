@@ -28,13 +28,13 @@ public class Service {
     @Id
     @Column(name="SeID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int SeID;
+    private int seID;
     
     @Column(name="SeName")
-    private String SeName;
+    private String seName;
 
     @Column(name="SePrice")
-    private double SePrice;
+    private double sePrice;
 
     @Column(name = "ServiceActive", nullable = false)
     private int serviceActive;
