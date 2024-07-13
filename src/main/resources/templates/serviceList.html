@@ -166,7 +166,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="service : ${services}">
+                                <tr th:each="service : ${services}" th:if="${service.serviceType.serviceTypeActive != 0}">
                                     <td scope="row" th:text="${service.SeID}"></td>
                                     <td th:text="${service.SeName}"></td>
                                     <td th:text="${service.ServiceType.SeTypeName}"></td>
@@ -208,14 +208,14 @@
                 margin: 0 5px;
                 padding: 10px 20px;
                 border: none;
-                background-color: #007bff;
+                background-color: #05073e;
                 color: white;
                 cursor: pointer;
                 border-radius: 4px;
             }
 
             .pagination button:hover {
-                background-color: #0056b3;
+                background-color: #05073e;
             }
 
             #page-info {

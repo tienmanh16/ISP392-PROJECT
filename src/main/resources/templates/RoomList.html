@@ -176,7 +176,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="room : ${rooms}">
+                                    <tr th:each="room : ${rooms}" th:if="${room.roomType.roomTypeActive != 0}">
                                         <td th:text="${room.id}"></td>
                                         <td th:text="${room.roomNum}"></td>
                                         <td th:text="${room.RoomType.name}"></td>
