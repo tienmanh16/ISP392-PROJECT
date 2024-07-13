@@ -82,10 +82,12 @@ public class RoomItemController {
     }
 
     @GetMapping("/roomitems_check-name")
-    public ResponseEntity<Boolean> checkEmailExists(@RequestParam String ItemName) {
-        boolean exists = roomItemService.existsByItemName(ItemName);
+    public ResponseEntity<Boolean> checkItemNameExists(@RequestParam String ItemName) {
+        String formattedItemName = ItemName.trim().toLowerCase().replaceAll("\\s+", "");
+        boolean exists = roomItemService.existsByItemName(formattedItemName);
         return ResponseEntity.ok(exists);
     }
+
 
     @GetMapping("/inactiveRoomItems/{itemId}")
     public ResponseEntity<?> toggleStatus(@PathVariable("itemId") int itemId,

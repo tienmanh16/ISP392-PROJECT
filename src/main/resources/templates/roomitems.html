@@ -217,20 +217,17 @@
   <div class="modal js-modal">
     <div class="windowroomitem js-modal-window">
       <div class="title">ADD ROOM ITEMS</div>
-      <form th:action="@{/admin/addroomitem}" th:object="${addRoomItem}" method="post"
-        onsubmit="return checkFormSubmissionSync(event)">
+      <form th:action="@{/admin/addroomitem}" th:object="${addRoomItem}" method="post" onsubmit="return checkFormSubmissionSync(event)">
 
-        <div class="main-customer"
-          style="position: relative; display: flex; flex-direction: column; align-items: center;">
+        <div class="main-customer" style="position: relative; display: flex; flex-direction: column; align-items: center;">
           <h3 style="margin-bottom: 10px; color: #0077cc;">Room Item Information</h3>
           <div style="display: flex; align-items: center;">
             <span class="material-icons" style="vertical-align: middle;">other_houses</span>
-            <input type="text" th:field="*{ItemName}" name="ItemName" id="ItemName" placeholder="Enter room item..."
-              required style="vertical-align: middle; width: 400px; margin-left: 10px;">
+            <input type="text" th:field="*{itemName}" name="ItemName" id="ItemName" placeholder="Enter room item..." required style="vertical-align: middle; width: 400px; margin-left: 10px;">
             <input type="text" style="display: none;" th:field="*{itemsActive}">
           </div>
           <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); text-align: center;">
-            <span class="itemNameText" style="font-size: 13px;"></span>
+            <span class="itemNameText" style="font-size: 13px; color: red;"></span> <!-- Thêm màu cho thông báo lỗi -->
           </div>
         </div>
         <br>
@@ -243,6 +240,7 @@
       </form>
     </div>
   </div>
+
 
   <!-- ==================================Filter Serch=========================== -->
   <script>
@@ -348,28 +346,29 @@
     const itemNameText = document.querySelector('.itemNameText');
 
     function checkItemName() {
-      return new Promise((resolve, reject) => {
-        const itemNameTextPattern = /^[\p{L}\p{N} ]+$/u;
-        const itemName = document.getElementById('ItemName').value;
-        if (itemName.match(itemNameTextPattern)) {
-          itemNameText.innerHTML = '';
-          resolve(true);
-        } else {
-          itemNameText.innerHTML = 'Item Name must not contain special characters.';
-          resolve(false);
-        }
-      });
+      const itemNamePattern = /^[A-Za-z0-9]+$/;
+      const itemName = document.getElementById('ItemName').value.trim();
+
+      if (itemName.match(itemNamePattern)) {
+        itemNameText.innerHTML = '';
+        return true;
+      } else {
+        itemNameText.innerHTML = 'Item Name must not contain special characters or spaces.';
+        return false;
+      }
     }
 
-    function checkDuplicateItemName() {
+    async function checkDuplicateItemName() {
       return new Promise((resolve, reject) => {
+        const itemName = document.getElementById('ItemName').value.trim().toLowerCase().replace(/\s+/g, '');
+
         $.ajax({
           url: '/admin/roomitems_check-name',
           type: 'GET',
-          data: { ItemName: document.getElementById('ItemName').value },
+          data: { ItemName: itemName },
           async: true,
           success: function (response) {
-            if (response && response != null) {
+            if (response) {
               itemNameText.innerHTML = 'Item Name already exists.';
               resolve(false);
             } else {
@@ -378,7 +377,7 @@
             }
           },
           error: function () {
-            itemNameText.innerHTML = 'Error checking email.';
+            itemNameText.innerHTML = 'Error checking item name.';
             resolve(false);
           }
         });
@@ -397,14 +396,17 @@
 
     async function checkFormSubmissionSync(event) {
       event.preventDefault();
-      const isFormValid = await checkFormSubmission();
-      if (isFormValid) {
+      const isNameValid = checkItemName();
+      const isDuplicateValid = await checkDuplicateItemName();
+
+      if (isNameValid && isDuplicateValid) {
         event.target.submit();
       } else {
         console.log('Form validation failed.');
       }
-      return false; // Ngăn form gửi nếu không hợp lệ
+      return false; // Prevent form submission if validation fails
     }
+
   </script>
 
   <script>

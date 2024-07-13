@@ -44,11 +44,14 @@ public class RoomItemServiceImpl implements RoomItemService {
     public List<RoomItem> findAll() {
         return roomItemRepository.findByItemsActiveTrue();
     }
-    
+
     @Override
-    public boolean existsByItemName(String ItemName) {
-    return roomItemRepository.existsByItemName(ItemName);
+    public boolean existsByItemName(String itemName) {
+        // Xử lý chuỗi để loại bỏ dấu cách và đưa về dạng lowercase
+        String formattedItemName = itemName.replaceAll("\\s+", "").toLowerCase();
+        return roomItemRepository.existsByItemName(formattedItemName);
     }
+
 
     @Override
     public boolean toggleRoomItemStatus(int itemId, boolean currentStatus) {
