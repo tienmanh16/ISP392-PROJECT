@@ -21,4 +21,8 @@ public interface ServiceTypeRepository extends JpaRepository<ServiceType, Intege
 
        @Query("Select c FROM ServiceType c WHERE c.seTypeName LIKE %?1%")
        List<ServiceType> searchServiceType(String name);
+       @Query("SELECT CASE WHEN COUNT(st) > 0 THEN TRUE ELSE FALSE END FROM ServiceType st WHERE LOWER(REPLACE(st.seTypeName, ' ', '')) = LOWER(:seTypeName)")
+       boolean existsBySeTypeName(@Param("seTypeName") String seTypeName);
+
+
 }

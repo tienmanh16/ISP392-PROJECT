@@ -20,4 +20,5 @@ public interface RoomTypeService {
     void updateRoomTypeActiveStatus(int id, int status);
     List<RoomType> searchRoomType(String name);
     List<String> rateUseRoomTypeByMonth(int month, int year);
+    boolean existsByRoomTypeName(String name);
 }

@@ -216,9 +216,11 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
       List<Object[]> findAvailableRooms(@Param("checkinDate") Date checkinDate,
                   @Param("checkoutDate") Date checkoutDate);
 
-      boolean existsByRoomNum(String roomNum);
+    @Query("SELECT CASE WHEN COUNT(r) > 0 THEN TRUE ELSE FALSE END FROM Room r WHERE LOWER(REPLACE(r.roomNum, ' ', '')) = LOWER(:roomNum)")
+    boolean existsByRoomNum(@Param("roomNum") String roomNum);
 
-      @Query("Select c FROM Room c WHERE c.roomNum LIKE %?1%")
+
+    @Query("Select c FROM Room c WHERE c.roomNum LIKE %?1%")
       List<Room> searchRoom(String name);
 
 }

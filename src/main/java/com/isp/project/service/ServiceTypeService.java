@@ -14,6 +14,7 @@ public interface ServiceTypeService {
     List<ServiceType> findAllActive();
     List<ServiceType> findAllInactive();
     void updateServiceTypeActiveStatus(int id, int status);
+    boolean existsBySeTypeName(String seTypeName);
 
 
 } 

@@ -35,7 +35,7 @@
 					enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
 					<div class="form-group">
 						<label>Service Type Name</label>
-						<input type="text" th:field="*{SeTypeName}"
+						<input type="text" th:field="*{seTypeName}"
 							class="form-control" name="SeTypeName" placeholder="Enter service name" id="SeTypeName"
 							value="" required>
 						<span class="serviceTypeNameText"></span>
@@ -52,6 +52,7 @@
 	<script>
 		const serviceTypeNameText = document.querySelector('.serviceTypeNameText');
 		const errorMessage = document.getElementById('errorMessage');
+		const serviceTypeName = document.getElementById('SeTypeName');
 
 		function checkServiceTypeName() {
 			const serviceTypeNamePattern = /^[\p{L}\p{N} ]+$/u;
@@ -65,9 +66,34 @@
 				return false;
 			}
 		}
+		function checkDuplicateServiceTypeName() {
+			let isDuplicate = false;
+
+			$.ajax({
+				url: '/admin/serviceType_check-serviceTypeName',
+				type: 'GET',
+				data: { seTypeName: serviceTypeName.value.trim().replace(/\s+/g, '').toLowerCase() },
+				async: false,
+				success: function (response) {
+					if (response) {
+						errorMessage.innerText = 'Service Type Name already exists.';
+						errorMessage.style.display = 'block';
+						isDuplicate = true;
+					} else {
+						errorMessage.style.display = 'none';
+						isDuplicate = false;
+					}
+				},
+				error: function () {
+					isDuplicate = true;
+				}
+			});
+
+			return isDuplicate;
+		}
 
 		function checkFormSubmission() {
-			return checkServiceTypeName();
+			return checkServiceTypeName() && !checkDuplicateServiceTypeName();
 		}
 	</script>
 

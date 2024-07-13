@@ -61,9 +61,18 @@ public class RoomController2 {
 
     @GetMapping("/room_check-roomNum")
     public ResponseEntity<Boolean> checkRoomNumExists(@RequestParam String roomNum) {
-        boolean exists = roomService.existsByRoomNum(roomNum);
+        String trimmedRoomNum = roomNum.replaceAll("\\s+", "").toLowerCase();
+        boolean exists = roomService.existsByRoomNum(trimmedRoomNum);
         return ResponseEntity.ok(exists);
     }
+
+    @GetMapping("/roomType_check-roomTypeName")
+    public ResponseEntity<Boolean> checkRoomTypeNameExists(@RequestParam String name) {
+        String trimmedName = name.replaceAll("\\s+", "").toLowerCase();
+        boolean exists = roomTypeService.existsByRoomTypeName(trimmedName);
+        return ResponseEntity.ok(exists);
+    }
+
 
     @GetMapping("/listRooms/{id}/update")
     public String editRoom(@PathVariable("id") int id, Model model) {

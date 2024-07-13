@@ -54,4 +54,8 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Integer> {
         List<RoomType> searchRoomType(String name);
 
        //List<RoomType> findAll(Sort sort);
+
+       @Query("SELECT CASE WHEN COUNT(rt) > 0 THEN TRUE ELSE FALSE END FROM RoomType rt WHERE LOWER(REPLACE(rt.name, ' ', '')) = LOWER(:name)")
+       boolean existsByRoomTypeName(@Param("name") String name);
+
 }

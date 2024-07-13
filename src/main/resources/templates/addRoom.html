@@ -93,7 +93,7 @@
                 $.ajax({
                     url: '/admin/room_check-roomNum',
                     type: 'GET',
-                    data: { roomNum: roomNum.value },
+                    data: { roomNum: roomNum.value.trim().replace(/\s+/g, '').toLowerCase() },
                     async: false,
                     success: function (response) {
                         if (response) {

@@ -159,8 +159,10 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public boolean existsByRoomNum(String roomNum) {
-        return roomRepository.existsByRoomNum(roomNum);
+        String trimmedRoomNum = roomNum.replaceAll("\\s+", "").toLowerCase();
+        return roomRepository.existsByRoomNum(trimmedRoomNum);
     }
+
 
     @Override
     public List<Room> searchRoom(String name) {

@@ -72,6 +72,23 @@ public class ServiceController {
         }
     }
 
+    @GetMapping("/serviceType_check-serviceTypeName")
+    public ResponseEntity<Boolean> checkServiceTypeNameExists(@RequestParam String seTypeName) {
+        String trimmedSeTypeName = seTypeName.replaceAll("\\s+", "").toLowerCase();
+        boolean exists = serviceTypeService.existsBySeTypeName(trimmedSeTypeName);
+        return ResponseEntity.ok(exists);
+    }
+
+
+    @GetMapping("/service_check-serviceName")
+    public ResponseEntity<Boolean> checkServiceNameExists(@RequestParam String seName) {
+        String trimmedSeName = seName.replaceAll("\\s+", "").toLowerCase();
+        boolean exists = seService.existsBySeName(trimmedSeName);
+        return ResponseEntity.ok(exists);
+    }
+
+
+
     @GetMapping("/listSe/editservice/{SeTypeID}")
     public String update(@PathVariable("SeTypeID") Integer id, Model model) {
         model.addAttribute("serviceType", serviceTypeService.findByID(id));
@@ -181,12 +198,6 @@ public class ServiceController {
         } else {
             return "redirect:/admin/add-service";
         }
-    }
-
-    @GetMapping("/service_check-serviceName")
-    public ResponseEntity<Boolean> checkRoomNumExists(@RequestParam("seName") String seName) {
-        boolean exists = serviceRepository.existsBySeName(seName);
-        return ResponseEntity.ok(exists);
     }
 
     @GetMapping("/listServices/{id}/update")

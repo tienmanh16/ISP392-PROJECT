@@ -173,4 +173,11 @@ public class RoomTypeServiceImpl implements RoomTypeService {
         return result;
     }
 
+    @Override
+    public boolean existsByRoomTypeName(String name) {
+        String trimmedName = name.replaceAll("\\s+", "").toLowerCase();
+        return roomTypeRepository.existsByRoomTypeName(trimmedName);
+    }
+
+
 }

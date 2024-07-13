@@ -28,7 +28,8 @@ public interface SeService {
     void updateServiceActiveStatus(int id, int status);
 
     //void updateServiceStatusByServiceId(Integer serviceId);
-    //boolean existsByServiceName(String seName);
+
     List<Service> searchService(String name);
+    boolean existsBySeName(String seName);
 
 }

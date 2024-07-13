@@ -85,4 +85,12 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
     public List<ServiceType> searchServiceType(String name) {
        return this.serviceTypeRepository.searchServiceType(name);
     }
+
+    @Override
+    public boolean existsBySeTypeName(String seTypeName) {
+        String trimmedSeTypeName = seTypeName.replaceAll("\\s+", "").toLowerCase();
+        return serviceTypeRepository.existsBySeTypeName(trimmedSeTypeName);
+    }
+
+
 }

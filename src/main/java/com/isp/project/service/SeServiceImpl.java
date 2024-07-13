@@ -88,7 +88,13 @@ public class SeServiceImpl implements SeService{
     public List<com.isp.project.model.Service> searchService(String name) {
         return this.serviceRepository.searchService(name);
     }
+    @Override
+    public boolean existsBySeName(String seName) {
+        String trimmedSeName = seName.replaceAll("\\s+", "").toLowerCase();
+        return serviceRepository.existsBySeName(trimmedSeName);
+    }
 
-    
-    
+
+
+
 }

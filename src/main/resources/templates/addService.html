@@ -44,7 +44,7 @@
 
 
                     <div class="form-group">
-                        <label>Service Name</label> <input type="text" th:field="*{SeName}" class="form-control"
+                        <label>Service Name</label> <input type="text" th:field="*{seName}" class="form-control"
                             name="SeName" placeholder="Enter service name" id="SeName" value="" required>
                         <span class="serviceNameText"></span>
                         <div id="errorMessage" class="alert alert-danger" style="display: none;" role="alert"></div>
@@ -57,7 +57,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Price</label> <input type="number" th:field="*{SePrice}" class="form-control"
+                        <label>Price</label> <input type="number" th:field="*{sePrice}" class="form-control"
                             name="SePrice" placeholder="Enter price" id="SePrice" value="" required>
                         <span class="priceText"></span>
                     </div>
@@ -72,10 +72,11 @@
         <script>
             const serviceNameText = document.querySelector('.serviceNameText');
             const seName = document.getElementById('SeName');
+            const errorMessage = document.getElementById('errorMessage');
 
             function checkSeName() {
                 const seNamePattern = /^[\p{L}\p{N} ]+$/u;
-                const SeName = document.getElementById('SeName').value;
+                const seName = document.getElementById('SeName').value;
                 if (seName.match(seNamePattern)) {
                     serviceNameText.innerHTML = '';
                     return true;
@@ -91,7 +92,7 @@
                 $.ajax({
                     url: '/admin/service_check-serviceName',
                     type: 'GET',
-                    data: { seName: seName.value },
+                    data: { seName: seName.value.trim().replace(/\s+/g, '').toLowerCase() },
                     async: false,
                     success: function (response) {
                         if (response) {
@@ -110,8 +111,6 @@
 
                 return isDuplicate;
             }
-
-            
 
             function checkFormSubmission() {
                 return checkSeName() && !checkDuplicateSeName();

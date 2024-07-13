@@ -70,6 +70,8 @@
         const roomTypeNameText = document.querySelector('.roomTypeNameText');
         const pricePerHourText = document.querySelector('.pricePerHourText');
         const pricePerDayText = document.querySelector('.pricePerDayText');
+        const roomTypeName = document.getElementById('name');
+        const errorMessage = document.getElementById('errorMessage');
 
         function checkRoomTypeName() {
             const roomTypeNamePattern = /^[\p{L}\p{N} ]+$/u;
@@ -82,9 +84,34 @@
                 return false;
             }
         }
+        function checkDuplicateRoomTypeName() {
+            let isDuplicate = false;
+
+            $.ajax({
+                url: '/admin/roomType_check-roomTypeName',
+                type: 'GET',
+                data: { name: roomTypeName.value.trim().replace(/\s+/g, '').toLowerCase() },
+                async: false,
+                success: function (response) {
+                    if (response) {
+                        errorMessage.innerText = 'Room Type Name already exists.';
+                        errorMessage.style.display = 'block';
+                        isDuplicate = true;
+                    } else {
+                        errorMessage.style.display = 'none';
+                        isDuplicate = false;
+                    }
+                },
+                error: function () {
+                    isDuplicate = true;
+                }
+            });
+
+            return isDuplicate;
+        }
 
         function checkFormSubmission() {
-            return checkRoomTypeName();
+            return checkRoomTypeName() && !checkDuplicateRoomTypeName();
         }
 
         document.getElementById("priceDay").addEventListener("input", function () {
