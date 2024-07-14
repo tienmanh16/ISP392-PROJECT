@@ -90,7 +90,7 @@
 			color: #333;
 			margin-left: 0px;
 			cursor: pointer;
-			width: 50px; height: 30px;
+			width: 20px; height: 30px;
 		}
 
 		.sort-button:hover {
@@ -151,15 +151,37 @@
 											<select class="table-filter" onchange="filter_rows()">
 												<option value="all">All</option>
 											</select>
-											<button class="sort-button" id="sort-price-hour-asc">Asc</button>
-											<button class="sort-button" id="sort-price-hour-desc">Desc</button>
+											<!-- Nút sắp xếp theo giá theo giờ tăng dần -->
+											<button class="sort-button" id="sort-price-hour-asc">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+													<path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
+												</svg>
+											</button>
+
+											<!-- Nút sắp xếp theo giá theo giờ giảm dần -->
+											<button class="sort-button" id="sort-price-hour-desc">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+													<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+												</svg>
+											</button>
 										</th>
 										<th col-index="5">Per Day
 											<select class="table-filter" onchange="filter_rows()">
 												<option value="all">All</option>
 											</select>
-											<button class="sort-button" id="sort-price-day-asc">Asc</button>
-											<button class="sort-button" id="sort-price-day-desc">Desc</button>
+											<!-- Nút sắp xếp theo giá theo ngày tăng dần -->
+											<button class="sort-button" id="sort-price-day-asc">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+													<path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/>
+												</svg>
+											</button>
+
+											<!-- Nút sắp xếp theo giá theo ngày giảm dần -->
+											<button class="sort-button" id="sort-price-day-desc">
+												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+													<path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1"/>
+												</svg>
+											</button>
 										</th>
 										<th col-index="6">Update</th>
 										<th>Status</th>
