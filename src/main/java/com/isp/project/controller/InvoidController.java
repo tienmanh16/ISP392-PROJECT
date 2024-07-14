@@ -133,7 +133,7 @@ public class InvoidController {
     }
 
     @GetMapping("/invoicePayment/{invoiceID}")
-    public String invoice1(Model model, @PathVariable("invoiceID") int invoiceID) {
+    public String invoicePayment(Model model, @PathVariable("invoiceID") int invoiceID) {
         Invoice invoice = invoiceRepository.findById(invoiceID).get();
         double totalSePrice = 0.0;
         double totalAmountRoom = 0.0;
@@ -177,7 +177,7 @@ public class InvoidController {
         return "invoice1";
     }
     @GetMapping("/invoiceDetail/{invoiceID}")
-    public String invoicePayment(Model model, @PathVariable("invoiceID") int invoiceID) {
+    public String invoiceDetail(Model model, @PathVariable("invoiceID") int invoiceID) {
         Invoice invoice = invoiceRepository.findById(invoiceID).get();
         double totalSePrice = 0.0;
         double totalAmountRoom = 0.0;
