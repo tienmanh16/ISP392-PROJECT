@@ -34,10 +34,10 @@
             <div th:if="${user1.role == 'ROLE_ADMIN'}">
                 <div th:replace="~{fragments/header_admin :: header}"></div>
             </div>
-        
+
             <div th:if="${user1.role == 'ROLE_RECEPTIONIST'}">
-              <div th:replace="~{fragments/header_recep :: header}"></div>
-          </div>
+                <div th:replace="~{fragments/header_recep :: header}"></div>
+            </div>
         </header>
         <!-- cars-section-fourteen -->
         <section class="cars-section-fourteen layout-radius">
@@ -369,7 +369,7 @@
 
         let currentRoomId; // Biến toàn cục để lưu roomId
 
-        function openModal(roomId, bookingMappingId, bookingMappingActive, invoiceId) {
+        function openModal(roomId, bookingMappingId, bookingMappingActive) {
             // Hiển thị modal
             modal.classList.add('open');
 
@@ -377,38 +377,40 @@
             currentRoomId = roomId;
             console.log("customer:", bookingMappingId);
 
+            if (bookingMappingActive === 1) {
+                const statusPhong = document.getElementById('statusPhong');
+                if (statusPhong) statusPhong.value = "Booked Room";
+
+                const txblTenKH = document.getElementById('txblTenKH');
+                const txblNgayDen = document.getElementById('txblNgayDen');
+                const txblSoNgay = document.getElementById('txblSoNgay');
+                const txblSoNguoi = document.getElementById('txblSoNguoi');
+                if (txblTenKH) txblTenKH.textContent = "Chưa nhận phòng";
+                if (txblNgayDen) txblNgayDen.textContent = "Chưa nhận phòng";
+                if (txblSoNgay) txblSoNgay.textContent = "Chưa nhận phòng";
+                if (txblSoNguoi) txblSoNguoi.textContent = "Chưa nhận phòng";
+
+                const btnThanhToan = document.getElementById('btnThanhToan');
+                const btnThemDV = document.getElementById('btnThemDV');
+                if (btnThanhToan) btnThanhToan.style.display = 'none';
+                if (btnThemDV) btnThemDV.style.display = 'none';
+            } else {
+                const statusPhong = document.getElementById('statusPhong');
+                if (statusPhong) statusPhong.value = "Rented Room";
+
+                const btnThanhToan = document.getElementById('btnThanhToan');
+                const btnThemDV = document.getElementById('btnThemDV');
+                if (btnThanhToan) btnThanhToan.style.display = 'inline-block';
+                if (btnThemDV) btnThemDV.style.display = 'inline-block';
+            }
+
+
             // Gửi request đến controller để lấy thông tin phòng
             fetch(`/receptionist/editRoom?bookingMappingId=${bookingMappingId}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log("customer:", data);
 
-                    // Cập nhật thông tin phòng vào modal
-                    // Ví dụ:
-                    // document.getElementById('txblTenKH').textContent = data.customerName;
-                    // document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
-                    // document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
-                    // document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
-                    // document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
-                    // console.log(document.getElementById('invoiceId').textContent);
-                    //document.getElementById('idPhong').textContent = data.roomNumber;
-                    // Cập nhật các thông tin khác tương tự
-
-                    // if (document.getElementById('statusPhong').value === "Empty Room") {
-                    //     document.getElementById('txblTenKH').textContent = "";
-                    //     document.getElementById('txblNgayDen').textContent = "Chưa có";
-                    //     document.getElementById('txblSoNgay').textContent = "Chưa có";
-                    //     document.getElementById('txblSoNguoi').textContent = "0 người";
-                    //     document.getElementById('invoiceId').textContent = "Chưa có";
-                    //     document.getElementById('bookingMappingId').textContent = "Chưa có";
-                    // } else {
-                    //     document.getElementById('txblTenKH').textContent = data.customerName;
-                    //     document.getElementById('txblNgayDen').textContent = data.booking[0].bookingMapping[0].checkInDate;
-                    //     document.getElementById('txblSoNgay').textContent = data.booking[0].bookingMapping[0].checkOutDate;
-                    //     document.getElementById('txblSoNguoi').textContent = data.booking[0].customerQuantity;
-                    //     document.getElementById('invoiceId').textContent = data.booking[0].invoice[0].invoiceID;
-                    //     document.getElementById('bookingMappingId').textContent = data.booking[0].bookingMapping[0].bookingMappingID;
-                    // }
                     document.getElementById('txblTenKH').textContent = data.invoice[0].customerName;
                     // console.log("customer:",data.bookingID.customerID.customerName);
                     document.getElementById('txblNgayDen').textContent = data.bookingMapping[0].checkInDate;
@@ -445,143 +447,13 @@
                         document.getElementById('statusPhong').value = "Rented Room";
                     }
 
-                    // ====================================================================================================================================================================================
-                    // Kiểm tra trạng thái phòng
-                    // if (data.booking[0].bookingMapping[0].bookingMappingActive == 1) {
-                    if (bookingMappingActive == 1) {
-                        // Thêm sự kiện click cho nút "Nhận phòng"
-                        //btnNhanPhong.style.display = 'inline-block';
-                        btnThanhToan.style.display = 'none';
-                        btnThemDV.style.display = 'none';
-
-
-                        //Hiển thị các nút
-                        //btnNhanPhong.style.display = 'inline-block';
-                        btnThanhToan.style.display = 'none';
-                        btnThemDV.style.display = 'none';
-                    } else {
-                        // Ẩn các nút
-                        //btnNhanPhong.style.display = 'none';
-                        btnThanhToan.style.display = 'inline-block';
-                        btnThemDV.style.display = 'inline-block';
-                    }
-                    // } else {
-                    //     // Ẩn các nút
-                    //     btnNhanPhong.style.display = 'none';
-                    //     btnThanhToan.style.display = 'none';
-                    //     btnThemDV.style.display = 'none';
-                    // }
-
-
-                    var invoiceLineData;
-                    // Lấy tham chiếu đến nút "Lưu"
-                    var saveButton = document.getElementById('btnLuu');
-                    saveButton.addEventListener('click', () => {
-                        const tbodyElement = document.getElementById('lvSuDungDV');
-                        invoiceLineData = [];
-
-                        for (let i = 0; i < tbodyElement.rows.length; i++) {
-                            const row = tbodyElement.rows[i];
-                            const quantity = row.cells[1].textContent;
-                            const amount = row.cells[2].textContent;
-                            const seId = row.cells[3].textContent;
-                            const invoiceId = document.getElementById('invoiceId').textContent;
-
-                            invoiceLineData.push({
-                                InvoiceTotalAmount: amount,
-                                SeID: seId,
-                                Quantity: quantity,
-                                InvoiceID: invoiceId
-                            });
-                        }
-
-                        console.log("invoiceLineData", JSON.stringify(invoiceLineData)); // Thêm log để kiểm tra dữ liệu
-
-
-                        // Gọi hàm sendSelectedServices() để gửi dữ liệu đến controller
-                        sendSelectedServices();
-                        updateRoomCleaning();
-                    }
-                    );
-
-                    function sendSelectedServices() {
-                        fetch('/receptionist/addInvoiceLine', {
-                            method: 'POST', // Ensure method is POST
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(invoiceLineData)
-                        })
-                            .then(response => {
-                                if (response.ok) {
-                                    console.log("Invoice lines saved successfully");
-                                    window.location.href = `/receptionist/room`;
-                                    // Redirect or handle success as needed
-                                } else {
-                                    console.error('Failed to save selected services');
-                                }
-                            })
-                            .catch(error => console.error('Error:', error));
-                    }
-
-                    function updateRoomCleaning() {
-                        // Lấy trạng thái dọn dẹp được chọn từ dropdown
-                        const cleaningStatus = document.querySelector('#cleaningRoom').value;
-
-                        // Sử dụng biến toàn cục currentRoomId
-                        const roomId = currentRoomId;
-
-                        // Chuẩn bị dữ liệu để gửi lên server
-                        const roomData = {
-                            id: roomId,
-                            cleaning: cleaningStatus
-                        };
-                        console.log("RoomData:", JSON.stringify(roomData));
-
-                        // Gửi dữ liệu lên server bằng AJAX
-                        fetch(`/receptionist/updateRoomCleaning/${roomId}`, {
-                            method: 'PUT',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(roomData)
-                        })
-                            .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Network response was not ok');
-                                }
-                                return response.text();
-                            })
-                            .then(data => {
-                                console.log('Cập nhật trạng thái dọn dẹp phòng thành công:', data);
-                            })
-                            .catch(error => {
-                                console.error('Lỗi khi cập nhật trạng thái dọn dẹp phòng:', error);
-                            });
-                    }
-
-
-                    //========================= Update danh sách dich vu đã chọn =====================================
-                    // function updateSelectedInvoiceLinesInput() {
-                    //     const selectedInvoiceLines = invoiceLineData;
-                    //     console.log('selectedInvoiceLines', selectedInvoiceLines);
-                    //     const selectedInvoiceLinesInput = document.getElementById('selected-invoiceLines-input');
-                    //     if (!selectedInvoiceLinesInput) {
-                    //         console.error('selected-rooms-input element not found');
-                    //         return;
-                    //     }
-                    //     selectedInvoiceLinesInput.value = JSON.stringify(selectedInvoiceLines);
-                    // }
-
-
-
                 })
                 .catch(error => {
                     console.log("customer:", data);
                     console.error('Lỗi khi lấy thông tin khách hàng:', error);
 
                 }
-                );
+            );
 
             fetch(`/receptionist/editRoom2?roomId=${roomId}`)
                 .then(response => response.json())
@@ -595,7 +467,95 @@
                 .catch(error => {
                     console.error('Lỗi khi lấy thông tin phòng:', error);
                 }
-                );
+            );
+
+
+            var invoiceLineData;
+            // Lấy tham chiếu đến nút "Lưu"
+            const saveButton = document.getElementById('btnLuu');
+            saveButton.addEventListener('click', () => {
+                const tbodyElement = document.getElementById('lvSuDungDV');
+                invoiceLineData = [];
+
+                for (let i = 0; i < tbodyElement.rows.length; i++) {
+                    const row = tbodyElement.rows[i];
+                    const quantity = row.cells[1].textContent;
+                    const amount = row.cells[2].textContent;
+                    const seId = row.cells[3].textContent;
+                    const invoiceId = document.getElementById('invoiceId').textContent;
+
+                    invoiceLineData.push({
+                        InvoiceTotalAmount: amount,
+                        SeID: seId,
+                        Quantity: quantity,
+                        InvoiceID: invoiceId
+                    });
+                }
+
+                console.log("invoiceLineData", JSON.stringify(invoiceLineData)); // Thêm log để kiểm tra dữ liệu
+
+
+                // Gọi hàm sendSelectedServices() để gửi dữ liệu đến controller
+                sendSelectedServices();
+                updateRoomCleaning();
+            }
+            );
+
+            function sendSelectedServices() {
+                fetch('/receptionist/addInvoiceLine', {
+                    method: 'POST', // Ensure method is POST
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(invoiceLineData)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("Invoice lines saved successfully");
+                            window.location.href = `/receptionist/room`;
+                            // Redirect or handle success as needed
+                        } else {
+                            console.error('Failed to save selected services');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+
+            function updateRoomCleaning() {
+                // Lấy trạng thái dọn dẹp được chọn từ dropdown
+                const cleaningStatus = document.querySelector('#cleaningRoom').value;
+
+                // Sử dụng biến toàn cục currentRoomId
+                const roomId = currentRoomId;
+
+                // Chuẩn bị dữ liệu để gửi lên server
+                const roomData = {
+                    id: roomId,
+                    cleaning: cleaningStatus
+                };
+                console.log("RoomData:", JSON.stringify(roomData));
+
+                // Gửi dữ liệu lên server bằng AJAX
+                fetch(`/receptionist/updateRoomCleaning/${roomId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(roomData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        console.log('Cập nhật trạng thái dọn dẹp phòng thành công:', data);
+                    })
+                    .catch(error => {
+                        console.error('Lỗi khi cập nhật trạng thái dọn dẹp phòng:', error);
+                    });
+            }
 
 
 
@@ -973,7 +933,7 @@
 
                 // Add event listener for quantity input change
                 const qtyInput = newRow.querySelector('input.quantity-input');
-                qtyInput.addEventListener('change', function() {
+                qtyInput.addEventListener('change', function () {
                     const priceCell = newRow.querySelector('.servicePrice');
                     let qty = parseInt(qtyInput.value);
                     if (qty < 1) {
@@ -1142,12 +1102,12 @@
             const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
             const day = String(vietnamTime.getDate()).padStart(2, '0');
             const today = `${year}-${month}-${day}`;
-    
+
             // Thiết lập giá trị mặc định và giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
             const checkinDateInput = document.getElementById("checkin-date");
             checkinDateInput.value = today;
             checkinDateInput.setAttribute("min", today);
-    
+
             checkinDateInput.addEventListener("change", function () {
                 // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
                 const checkoutDateInput = document.getElementById("checkout-date");
@@ -1221,7 +1181,7 @@
                             roomDiv.innerHTML = `
                             <div class="inner-box ${roomClass}">
                                 <div class="content-box">
-                                    <h5 class="title">${room.roomNum} <span class="material-icons" style = "margin-left: 90px; font-size: 27px;">cleaning_services</span> <span style = "margin-left: 5px; font-size: 17px;">${room.cleaning}</span></h5>
+                                    <h5 class="title">${room.roomNum} <span class="material-icons" style = "margin-left: 80px; font-size: 27px;">cleaning_services</span> <span style = "margin-left: 5px; font-size: 17px;">${room.cleaning}</span></h5>
                                     <ul class="rating">
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
@@ -1236,7 +1196,7 @@
                                         <h10 id="typeNameRoom">${room.roomTypeName}</h10>                               
                                     </p>
                                     <div>
-                                        <button class="btn js-buy-ticket" onclick="openModal(${room.id}, ${room.bookingMappingId}, ${room.bookingMappingActive}, ${room.invoiceId})">
+                                        <button class="btn js-buy-ticket" onclick="openModal(${room.id}, ${room.bookingMappingId}, ${room.bookingMappingActive})">
                                             Sửa Thông Tin
                                         </button>
                                     </div>
