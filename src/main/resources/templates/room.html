@@ -923,29 +923,70 @@
                 }
             }
 
+            // if (existingRow) {
+            //     // Nếu dịch vụ đã tồn tại, cập nhật số lượng và thành tiền
+            //     const qtyCell = existingRow.querySelector('td:nth-child(2)');
+            //     const priceCell = existingRow.querySelector('td:nth-child(3)');
+            //     let qty = parseInt(qtyCell.textContent);
+            //     qty++;
+            //     qtyCell.textContent = qty.toString();
+            //     priceCell.textContent = (qty * servicePrice).toFixed(2);
+            // } else {
+            //     // Nếu dịch vụ chưa tồn tại, thêm hàng mới vào bảng "Dịch vụ đã chọn"
+            //     const newRow = document.createElement('tr');
+            //     newRow.innerHTML = `
+            // <td class="serviceName">${serviceName}</td>
+            // <td>1</td>
+            // <td class="servicePrice">${servicePrice.toFixed(2)}</td>
+            // <td><a href="javascript:void(0)" class="wait-link-1">
+            //     <span class="material-icons" style="color: red;">cancel</span>
+            // </a></td>
+            // <td class="serviceId" style="display:none;">${serviceId}</td>
+            // `;
+            //     document.getElementById('lvDichVuDaChon').appendChild(newRow);
+            //     console.log("row", newRow)
+            // }
+
             if (existingRow) {
                 // Nếu dịch vụ đã tồn tại, cập nhật số lượng và thành tiền
-                const qtyCell = existingRow.querySelector('td:nth-child(2)');
-                const priceCell = existingRow.querySelector('td:nth-child(3)');
-                let qty = parseInt(qtyCell.textContent);
+                const qtyInput = existingRow.querySelector('input.quantity-input');
+                const priceCell = existingRow.querySelector('.servicePrice');
+                let qty = parseInt(qtyInput.value);
                 qty++;
-                qtyCell.textContent = qty.toString();
+                qtyInput.value = qty.toString();
                 priceCell.textContent = (qty * servicePrice).toFixed(2);
             } else {
                 // Nếu dịch vụ chưa tồn tại, thêm hàng mới vào bảng "Dịch vụ đã chọn"
                 const newRow = document.createElement('tr');
                 newRow.innerHTML = `
-            <td class="serviceName">${serviceName}</td>
-            <td>1</td>
-            <td class="servicePrice">${servicePrice.toFixed(2)}</td>
-            <td><a href="javascript:void(0)" class="wait-link-1">
-                <span class="material-icons" style="color: red;">cancel</span>
-            </a></td>
-            <td class="serviceId" style="display:none;">${serviceId}</td>
-            `;
+                    <td class="serviceName">${serviceName}</td>
+                    <td class="servicePriceQuantity">
+                        <input type="number" class="quantity-input" value="1" min="1" style="width: 50px;">
+                    </td>
+                    <td class="servicePrice">${servicePrice.toFixed(2)}</td>
+                    <td><a href="javascript:void(0)" class="wait-link-1">
+                        <span class="material-icons" style="color: red;">cancel</span>
+                    </a></td>
+                    <td class="serviceId" style="display:none;">${serviceId}</td>
+                `;
                 document.getElementById('lvDichVuDaChon').appendChild(newRow);
-                console.log("row", newRow)
+
+                // Add event listener for quantity input change
+                const qtyInput = newRow.querySelector('input.quantity-input');
+                qtyInput.addEventListener('change', function() {
+                    const priceCell = newRow.querySelector('.servicePrice');
+                    let qty = parseInt(qtyInput.value);
+                    if (qty < 1) {
+                        qty = 1;
+                        qtyInput.value = qty;
+                    }
+                    priceCell.textContent = (qty * servicePrice).toFixed(2);
+                });
+
+                console.log("row", newRow);
             }
+
+
         }
 
 
@@ -979,7 +1020,7 @@
             for (var i = 0; i < rows.length; i++) {
                 var cells = rows[i].getElementsByTagName('td');
                 var serviceName = cells[0].textContent;
-                var quantity = cells[1].textContent;
+                var quantity = cells[1].querySelector('input.quantity-input').value;
                 var price = cells[2].textContent;
                 var serviceId = cells[4].textContent;
                 selectedServices.push({
@@ -1071,7 +1112,7 @@
     </script>
 
 
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function () {
             // Lấy ngày hiện tại theo múi giờ Việt Nam
             const now = new Date();
@@ -1085,6 +1126,28 @@
             const checkinDateInput = document.getElementById("checkin-date");
             checkinDateInput.setAttribute("min", today);
 
+            checkinDateInput.addEventListener("change", function () {
+                // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
+                const checkoutDateInput = document.getElementById("checkout-date");
+                checkoutDateInput.setAttribute("min", checkinDateInput.value);
+            });
+        });
+    </script> -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Lấy ngày hiện tại theo múi giờ Việt Nam
+            const now = new Date();
+            const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+            const year = vietnamTime.getFullYear();
+            const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+            const day = String(vietnamTime.getDate()).padStart(2, '0');
+            const today = `${year}-${month}-${day}`;
+    
+            // Thiết lập giá trị mặc định và giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
+            const checkinDateInput = document.getElementById("checkin-date");
+            checkinDateInput.value = today;
+            checkinDateInput.setAttribute("min", today);
+    
             checkinDateInput.addEventListener("change", function () {
                 // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
                 const checkoutDateInput = document.getElementById("checkout-date");
