@@ -139,8 +139,8 @@ public Booking getMethodName() {
     // }
 
      @GetMapping("/tien")
-    public List<RoomDTO> revenueBooking() {
-        return roomRepository.findAllRooms();
+    public Booking revenueBooking() {
+        return bookingMappingRepository.getReferenceById(19).getBookingID();
     }
 
 
