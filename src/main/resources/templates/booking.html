@@ -453,25 +453,32 @@
   <!-- =======================check-checkInDate-CheckOutDate============================================================== -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Lấy ngày hiện tại theo múi giờ Việt Nam
-      const now = new Date();
-      const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
-      const year = vietnamTime.getFullYear();
-      const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
-      const day = String(vietnamTime.getDate()).padStart(2, '0');
-      const today = `${year}-${month}-${day}`;
+        // Lấy ngày hiện tại theo múi giờ Việt Nam
+        const now = new Date();
+        const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+        const year = vietnamTime.getFullYear();
+        const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+        const day = String(vietnamTime.getDate()).padStart(2, '0');
+        const today = `${year}-${month}-${day}`;
 
-      // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
-      const checkinDateInput = document.getElementById("checkin-date");
-      checkinDateInput.setAttribute("min", today);
+        // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
+        const checkinDateInput = document.getElementById("checkin-date");
+        checkinDateInput.setAttribute("min", today);
 
-      checkinDateInput.addEventListener("change", function () {
-        // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
-        const checkoutDateInput = document.getElementById("checkout-date");
-        checkoutDateInput.setAttribute("min", checkinDateInput.value);
-      });
+        checkinDateInput.addEventListener("change", function () {
+            // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date cộng thêm 1 ngày
+            const checkoutDateInput = document.getElementById("checkout-date");
+            const checkinDate = new Date(checkinDateInput.value);
+
+            // Thêm 1 ngày vào check-in date
+            checkinDate.setDate(checkinDate.getDate() + 1);
+
+            // Định dạng lại ngày tháng để phù hợp với giá trị min của checkout-date
+            const minCheckoutDate = checkinDate.toISOString().split("T")[0];
+            checkoutDateInput.setAttribute("min", minCheckoutDate);
+        });
     });
-  </script>
+</script>
 
   <!-- ====================================check-validation========================================================== -->
   <script>
