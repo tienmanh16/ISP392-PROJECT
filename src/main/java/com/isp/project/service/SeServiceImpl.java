@@ -89,6 +89,11 @@ public class SeServiceImpl implements SeService{
         return this.serviceRepository.searchService(name);
     }
 
+    // @Override
+    // public boolean existsByServiceName(String seName) {
+    //     return serviceRepository.existsBySeName(seName);
+    // }
+
     
     
 }
