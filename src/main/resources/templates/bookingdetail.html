@@ -82,7 +82,12 @@
         <div>
           <button class="btn js-buy-ticket">+ Room</button>
         </div>
-
+<!-- // ============================= Phần ông kễnh Huy VN check-in all các phòng ================================  -->
+        <div>
+          <a href="javascript:void(0);" 
+                  th:onclick="'confirmCheckInAll(' + ${bookdetail.bookingID} + ');'" class="btn btn-success"
+                  style="width: 100px; height: 40px;">Check-In All</a>
+        </div>
         <table class="table">
           <thead class="thead-dark">
             <tr>
@@ -500,6 +505,35 @@
         });
     }
   </script>
+
+<!-- // ============================= Phần ông kễnh Huy VN check-in all các phòng ================================  -->
+
+  <script>
+    function confirmCheckInAll(bookingID) {
+      if (confirm('Are you sure you want to Check-in all?')) {
+        inactiveRoomAll(bookingID);
+      }
+    }
+
+    function inactiveRoomAll(bookingID) {
+      fetch(`/receptionist/checkInAll/${bookingID}`, {
+        method: 'GET'
+      })
+        .then(response => response.text().then(text => ({ status: response.status, text })))
+        .then(({ status, text }) => {
+          alert(text);
+          if (status === 200) { // HTTP OK status
+            location.reload(); // Reload the page to reflect the change
+          } else {
+            throw new Error(text); // If the message is not expected, throw an error
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert("An error occurred: " + error.message);
+        });
+    }
+    </script>
   <!-- ================== Bắt Click thêm phòng đã chọn-END =================================================================== -->
   <script th:src="@{/js/jquery.min.js}"></script>
   <script th:src="@{/js/popper.js}"></script>

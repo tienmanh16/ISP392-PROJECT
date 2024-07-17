@@ -312,9 +312,28 @@ public class BookingController {
             newInvoice.setBookingMapping(bookingMapping);
             invoiceRepository.save(newInvoice);
 
-            bookingMapping.setBookingMappingActive(2);
+            bookingMapping.setBookingMappingActive(2);  
             bookingMappingRepository.save(bookingMapping);
             return ResponseEntity.ok("Check-In successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
+        }
+
+    }
+
+    @GetMapping("/checkInAll/{bookingID}")
+    public ResponseEntity<String> getMethodNameHuyTest(@PathVariable("bookingID") int bookingID) {
+
+        try {
+            List<BookingMapping> bookingMappingList = bookingRepository.getReferenceById(bookingID).getBookingMapping();
+
+            for (BookingMapping bookingMapping : bookingMappingList) {
+                bookingMapping.setBookingMappingActive(2);
+                bookingMappingRepository.save(bookingMapping);
+            }
+
+
+            return ResponseEntity.ok("Check-In All successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to inactive room");
         }
