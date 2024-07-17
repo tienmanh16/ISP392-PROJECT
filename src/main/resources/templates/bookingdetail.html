@@ -83,7 +83,8 @@
           <button class="btn js-buy-ticket">+ Room</button>
         </div>
 
-        <table class="table">
+        <table class="table" style="min-width: 1600px !important; width: 100%; -webkit-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29); -moz-box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29); box-shadow: 0px 5px 12px -12px rgba(0, 0, 0, 0.29); margin-left: -100px;">
+          <!-- Table content -->
           <thead class="thead-dark">
             <tr>
               <th>Booking ID</th>
@@ -104,7 +105,7 @@
               <td th:text="${bookdetail.customerID.customerName}"></td>
               <td th:text="${mapping.checkInDate}"></td>
               <td th:text="${mapping.checkOutDate}"></td>
-              <td th:text="${#dates.format(bookdetail.bookingDate, 'dd-MM-yyyy')}"></td>
+              <td th:text="${#dates.format(bookdetail.bookingDate, 'yyyy-MM-dd')}"></td>
               <td th:text="${bookdetail.customerQuantity}"></td>
               <td th:text="${mapping.roomID.roomNum}"></td>
 
@@ -223,25 +224,32 @@
   <!-- =======================check-checkInDate-CheckOutDate==============================================================  -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
-      // Lấy ngày hiện tại theo múi giờ Việt Nam
-      const now = new Date();
-      const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
-      const year = vietnamTime.getFullYear();
-      const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
-      const day = String(vietnamTime.getDate()).padStart(2, '0');
-      const today = `${year}-${month}-${day}`;
+        // Lấy ngày hiện tại theo múi giờ Việt Nam
+        const now = new Date();
+        const vietnamTime = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" }));
+        const year = vietnamTime.getFullYear();
+        const month = String(vietnamTime.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+        const day = String(vietnamTime.getDate()).padStart(2, '0');
+        const today = `${year}-${month}-${day}`;
 
-      // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
-      const checkinDateInput = document.getElementById("checkin-date");
-      checkinDateInput.setAttribute("min", today);
+        // Thiết lập giá trị nhỏ nhất cho trường checkin date là ngày hiện tại
+        const checkinDateInput = document.getElementById("checkin-date");
+        checkinDateInput.setAttribute("min", today);
 
-      checkinDateInput.addEventListener("change", function () {
-        // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date
-        const checkoutDateInput = document.getElementById("checkout-date");
-        checkoutDateInput.setAttribute("min", checkinDateInput.value);
-      });
+        checkinDateInput.addEventListener("change", function () {
+            // Thiết lập giá trị nhỏ nhất cho trường checkout date là giá trị của checkin date cộng thêm 1 ngày
+            const checkoutDateInput = document.getElementById("checkout-date");
+            const checkinDate = new Date(checkinDateInput.value);
+
+            // Thêm 1 ngày vào check-in date
+            checkinDate.setDate(checkinDate.getDate() + 1);
+
+            // Định dạng lại ngày tháng để phù hợp với giá trị min của checkout-date
+            const minCheckoutDate = checkinDate.toISOString().split("T")[0];
+            checkoutDateInput.setAttribute("min", minCheckoutDate);
+        });
     });
-  </script>
+</script>
 
   <script>
     function confirmDelete(bookingID, roomID) {
