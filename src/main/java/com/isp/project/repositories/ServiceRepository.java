@@ -56,8 +56,9 @@ public interface ServiceRepository extends JpaRepository<Service, Integer> {
        + "WHERE s.seName LIKE %:seName% and s.serviceActive = 1")
     List<ServiceDetailDTO> findAllServiceDetailBySeName(@Param("seName") String seName);
 
-    @Query("Select c FROM Service c WHERE c.seName LIKE %?1%")
+    @Query("SELECT c FROM Service c WHERE LOWER(REPLACE(c.seName, ' ', '')) LIKE LOWER(CONCAT('%', REPLACE(?1, ' ', ''), '%'))")
     List<Service> searchService(String name);
+
 
     @Query("SELECT CASE WHEN COUNT(s) > 0 THEN TRUE ELSE FALSE END FROM Service s WHERE LOWER(REPLACE(s.seName, ' ', '')) = LOWER(:seName)")
     boolean existsBySeName(@Param("seName") String seName);

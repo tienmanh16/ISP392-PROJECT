@@ -133,9 +133,6 @@ public class RoomController2 {
         if (name != null) {
             listRoomType = this.roomTypeService.searchRoomType(name);
         }
-//        else if (sortDirection != null) {
-//            listRoomType = roomTypeService.getAllSortedByPrice(sortDirection);
-//        }
         else {
             listRoomType = this.roomTypeService.getAll();
         }
