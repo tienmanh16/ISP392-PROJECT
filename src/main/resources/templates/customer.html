@@ -376,10 +376,10 @@
 
     function checkCustomerIdentificationIDText() {
       return new Promise((resolve, reject) => {
-        const customerIdentificationIDPattern = /^\d+$/;
+        const customerIdentificationIDPattern = /^[0-9]{9,12}$/;
         const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
 
-        if (customerIdentificationID.match(customerIdentificationIDPattern) && Number(customerIdentificationID) > 0) {
+        if (customerIdentificationID.match(customerIdentificationIDPattern)) {
           customerIdentificationIDText.innerHTML = '';
           resolve(true);
         } else {
@@ -391,13 +391,13 @@
 
     function checkPhoneNumber() {
       return new Promise((resolve, reject) => {
-        const customerPhonePattern = /^[0-9]+$/;
+        const customerPhonePattern = /^0\d{9}$/;
         const customerPhone = document.getElementById('customerPhone').value.trim();
-        if (customerPhone.match(customerPhonePattern) && BigInt(customerPhone) > 0n) {
+        if (customerPhone.match(customerPhonePattern)) {
           customerPhoneText.innerHTML = '';
           resolve(true);
         } else {
-          customerPhoneText.innerHTML = 'Customer phone must be a positive number.';
+          customerPhoneText.innerHTML = 'Customer phone must be a positive number and start with 0.';
           resolve(false);
         }
       });
@@ -405,7 +405,7 @@
 
     function checkCustomerAddress() {
       return new Promise((resolve, reject) => {
-        const customerAddressPattern = /^[\p{L}\p{N} ]+$/u;
+        const customerAddressPattern = /^[\p{L}\p{N}, ]+$/u;
         const customerAddress = document.getElementById('customerAddress').value;
         if (customerAddress.match(customerAddressPattern)) {
           customerAddressText.innerHTML = '';

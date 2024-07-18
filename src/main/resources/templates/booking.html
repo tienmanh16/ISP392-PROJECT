@@ -480,7 +480,7 @@
 
     function checkCustomerIdentificationIDText() {
       return new Promise((resolve, reject) => {
-        const customerIdentificationIDPattern = /^\d+$/;
+        const customerIdentificationIDPattern = /^[0-9]{9,12}$/;
         const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
 
         if (customerIdentificationID.match(customerIdentificationIDPattern) ) {
@@ -495,7 +495,7 @@
 
     function checkPhoneNumber() {
   return new Promise((resolve, reject) => {
-    const customerPhonePattern = /^[0-9]+$/;
+    const customerPhonePattern = /^0\d{9}$/;
     const customerPhone = document.getElementById('customerPhone').value.trim();
   
     if (customerPhone.match(customerPhonePattern) && BigInt(customerPhone) > 0n) {

@@ -13,7 +13,7 @@ import com.isp.project.model.Room;
 @Repository
 public interface BookingMappingRepository extends JpaRepository<BookingMapping, Integer> {
 
-    @Query("SELECT bm FROM BookingMapping bm join bm.bookingID b WHERE MONTH(bm.checkInDate) = :month AND YEAR(bm.checkInDate) = :year and b.isCancelled = 0")
+    @Query("SELECT bm FROM BookingMapping bm join bm.bookingID b WHERE MONTH(bm.checkInDate) = :month AND YEAR(bm.checkInDate) = :year and bm.bookingMappingActive = 0")
     List<BookingMapping> revenueBooking(@Param("month") int month, @Param("year") int year);
 
      List<BookingMapping> findByCheckInDateLessThanEqual(Date checkInDate);

@@ -16,8 +16,13 @@
 			margin-top: 20px;
 			margin-bottom: 20px;
 		}
-		.passText, .emailText,.fullNameText, .dobText, .addressText {
-            color: red; 
+        .passText,
+        .emailText,
+        .salaryText,
+        .dobText,
+        .fullNameText,
+        .addressText,.idText,.phoneText {
+            color: red;
         }
 
 		.custom-button {
@@ -47,82 +52,80 @@
 						<input type="text" th:field="*{id}" class="form-control" name="id" placeholder="Enter id"
 							id="id" readonly>
 					</div>
-					<div class="form-group">
-						<label>Full Name</label>
-						<input type="text" th:field="*{fullName}" class="form-control" name="name"
-							placeholder="Enter name" id="fullName" required>
-						<span class="fullNameText"></span>
-					</div>
-					<div class="form-group">
-						<label>Dob</label>
-						<input type="date" th:field="*{dob}" class="form-control" name="dob" id="dob" required>
-						<span class="dobText" ></span>
-					</div>
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" th:field="*{fullName}" class="form-control" placeholder="Enter name"
+                            id="fullName" required>
+                        <span class="fullNameText"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Dob</label>
+                        <input type="date" th:field="*{dob}" class="form-control" placeholder="Enter dob" name="dob"
+                            id="dob" required>
+                        <span class="dobText"></span>
 
-					<div class="form-group">
+                    </div>
+
+                    <div class="form-group">
                         <label>Role</label>
-                        <select th:field="*{role}" class="form-control"  name="role" id="role" required>
+                        <select th:field="*{role}" class="form-control" required>
                             <option value="">Select Role</option>
                             <option value="ROLE_ADMIN">Admin</option>
                             <option value="ROLE_RECEPTIONIST">Receptionist</option>
                         </select>
                     </div>
-					<div class="form-group">
-						<label>Gender</label>
-						<div class="radio">
-							<label class="checkbox-inline">
-								<input type="radio" th:field="*{gender}" value="1">Male
-							</label>
-							<label class="checkbox-inline">
-								<input type="radio" th:field="*{gender}" value="0">Female
-							</label>
-						</div>
-					</div>
-					<div class="form-group">
-						<label>Address</label>
-						<input type="text" th:field="*{address}" class="form-control" name="address"
-							placeholder="Enter address" id="address" required>
-						<span class="addressText"></span>
-					</div>
 
-					<div class="form-group">
-						<label>CCCD</label>
-						<input type="text" th:field="*{idenId}" class="form-control" name="idenId"
-							placeholder="Enter CCCD" id="idenId" required>
-					</div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <div class="radio">
+                            <label class="checkbox-inline">
+                                <input type="radio" th:field="*{gender}" value="1">Male
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" th:field="*{gender}" value="0">Female
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" th:field="*{address}" class="form-control" placeholder="Enter address"
+                            id="address">
+                        <span class="addressText"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>CCCD</label>
+                        <input type="text" th:field="*{idenId}" id="idenId" class="form-control" placeholder="Enter CCCD" required>
+                        <span class="idText"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" th:field="*{phone}" class="form-control" id="phone" placeholder="Enter phone" required>
+                        <span class="phoneText"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="emailBox">Email</label>
+                        <input type="email" th:field="*{email}" class="form-control" placeholder="Enter email" required>
+                        <span class="emailText"></span>
+                        <div id="errorMessage" class="alert alert-danger" style="display: none;" role="alert"></div>
+                    </div>
+                    <div class="form-group">
+                        <label>User Name</label>
+                        <input type="text" th:field="*{username}" class="form-control" placeholder="Enter username"
+                            required>
+                        <div id="errorMessageUser" class="alert alert-danger" style="display: none;" role="alert"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="passBox">Password</label>
+                        <input type="password" th:field="*{password}" class="form-control" placeholder="Enter password"
+                            required>
+                        <span class="passText"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Salary</label>
+                        <input type="number" th:field="*{salary}" class="form-control" placeholder="Enter salary">
+                        <span class="salaryText"></span>
+                    </div>
 
-					<div class="form-group">
-						<label>Phone</label>
-						<input type="tel" th:field="*{phone}" class="form-control" name="phone"
-							placeholder="Enter phone" id="phone" required>
-					</div>
-					<div class="form-group">
-						<label class="emailBox">Email</label>
-						<input type="email" th:field="*{email}" class="form-control" name="email"
-							placeholder="Enter email" id="email" required>
-						<span class="emailText"></span>
-					</div>
-
-					<div class="form-group">
-						<label>User Name</label>
-						<input type="text" th:field="*{username}" class="form-control" name="username"
-							placeholder="Enter username" id="username" required>
-						<div id="errorMessageUser" class="alert alert-danger" style="display: none;" role="alert"></div>
-					</div>
-
-					<div class="form-group">
-						<label>Password</label>
-						<input type="password" th:field="*{password}" class="form-control" name="password"
-							placeholder="Enter password" id="password" required>
-							<span class="passText"></span>
-
-					</div>
-					<div class="form-group">
-						<label>Salary</label>
-						<input type="number" th:field="*{salary}" class="form-control" name="salary"
-							placeholder="Enter salary" id="salary">
-							<span class="salaryText"></span>
-					</div>
 
 					<button type="submit" class="btn custom-button">Save</button>
 					<a class="btn custom-button" href="/admin/employee_list">Display List Employee</a>
@@ -130,7 +133,7 @@
 			</div>
 		</div>
 	</div>
-	<script>
+    <script>
         // Lấy ngày hiện tại và định dạng thành yyyy-mm-dd
         var currentDate = new Date(); // Lấy ngày hiện tại
         var yyyy = currentDate.getFullYear();
@@ -176,14 +179,29 @@
         const emailError = document.getElementById('emailError');
         const errorMessage = document.getElementById('errorMessage');
         const errorMessageUser = document.getElementById('errorMessageUser');
-
+        const idenId = document.getElementById('idenId');
+        const idText = document.querySelector('.idText');
+        const phone = document.getElementById('phone');
+        const phoneText = document.querySelector('.phoneText');
 
         password.addEventListener('input', checkPassword);
         email.addEventListener('input', checkEmail);
         fullName.addEventListener('input', checkName);
         address.addEventListener('input', checkAddress);
+        idenId.addEventListener('input', checkIdenId);
+        phone.addEventListener('input', checkPhone);
 
-
+        function checkPhone() {
+        const phonePattern = /^0\d{9}$/;
+        const phone = document.getElementById('phone').value;
+        if (phone.match(phonePattern)) {
+            phoneText.innerHTML = '';
+            return true;
+        } else {
+            phoneText.innerHTML = 'Phone number must be 10 digits and start with 0.';
+            return false;
+        }
+    }
 
         function checkName() {
             const namePattern = /^[\p{L} ]+$/u;
@@ -198,7 +216,7 @@
         }
 
         function checkAddress() {
-            const namePattern = /^[\p{L}\p{N} ]+$/u;
+            const namePattern = /^[\p{L}\p{N}, ]+$/u;
 
             if (address.value.match(namePattern)) {
                 addressText.innerHTML = '';
@@ -222,7 +240,7 @@
         }
 
         function checkFormSubmission() {
-            return checkEmail() && checkPassword() && checkName() && checkAddress();
+            return checkEmail() && checkPassword() && checkName() && checkPhone() && checkAddress() && checkIdenId();
         }
 
         function checkEmail() {
@@ -235,6 +253,21 @@
                 return false;
             }
         }
+
+        
+
+        function checkIdenId() {
+            const idenIdPattern = /^[0-9]{9,12}$/;
+
+            if (idenId.value.match(idenIdPattern)) {
+                idText.innerHTML = '';
+                return true;
+            } else {
+                idText.innerHTML = 'Identification ID must be a positive number between 9 and 12 digits long.';
+                return false;
+            }
+        }
+
 
         document.getElementById("salary").addEventListener("input", function () {
             var input = this.value;

@@ -50,8 +50,8 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Integer> {
        @Query("UPDATE RoomType r SET r.roomTypeActive = :status WHERE r.id = :id")
        void updateRoomTypeActiveStatus(@Param("id") int id, @Param("status") int status);
 
-       @Query("Select c FROM RoomType c WHERE c.name LIKE %?1%")
-        List<RoomType> searchRoomType(String name);
+       @Query("SELECT c FROM RoomType c WHERE LOWER(REPLACE(c.name, ' ', '')) LIKE LOWER(CONCAT('%', REPLACE(?1, ' ', ''), '%'))")
+       List<RoomType> searchRoomType(String name);
 
        //List<RoomType> findAll(Sort sort);
 

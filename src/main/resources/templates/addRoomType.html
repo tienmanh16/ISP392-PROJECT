@@ -73,6 +73,9 @@
         const roomTypeName = document.getElementById('name');
         const errorMessage = document.getElementById('errorMessage');
 
+
+        roomTypeName.addEventListener('input', checkRoomTypeName);
+        
         function checkRoomTypeName() {
             const roomTypeNamePattern = /^[\p{L}\p{N} ]+$/u;
             const roomTypeName = document.getElementById('name').value;

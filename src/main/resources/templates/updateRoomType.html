@@ -73,6 +73,8 @@
         const pricePerHourText = document.querySelector('.pricePerHourText');
         const pricePerDayText = document.querySelector('.pricePerDayText');
 
+        roomTypeName.addEventListener('input', checkRoomTypeName);
+        
         function checkRoomTypeName() {
             const roomTypeNamePattern = /^[\p{L}\p{N} ]+$/u;
             const roomTypeName = document.getElementById('name').value;

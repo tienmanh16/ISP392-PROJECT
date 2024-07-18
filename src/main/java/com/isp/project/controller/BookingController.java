@@ -325,6 +325,8 @@ public class BookingController {
     public ResponseEntity<String> getMethodNameHuyTest(@PathVariable("bookingID") int bookingID) {
 
         try {
+            
+            Booking booking = bookingRepository.findByBookingID(bookingID);
             List<BookingMapping> bookingMappingList = bookingRepository.getReferenceById(bookingID).getBookingMapping();
 
             for (BookingMapping bookingMapping : bookingMappingList) {
@@ -333,7 +335,17 @@ public class BookingController {
                 }
                 bookingMapping.setBookingMappingActive(2);
                 bookingMappingRepository.save(bookingMapping);
+                Invoice newInvoice = new Invoice();
+                newInvoice.setBooking(booking);
+                newInvoice.setCustomerName(booking.getCustomerID().getCustomerName());
+                newInvoice.setTotalAmount(bookingMapping.getBookingTotalAmount());
+                newInvoice.setInvoiceDate(bookingMapping.getCheckInDate());
+                newInvoice.setBookingMapping(bookingMapping);
+                invoiceRepository.save(newInvoice);
+    
             }
+            booking.setIsCancelled(0);
+            bookingRepository.save(booking); // 0:renting , 1: booked
 
 
             return ResponseEntity.ok("Check-In All successfully");

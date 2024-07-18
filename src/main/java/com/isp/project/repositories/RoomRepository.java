@@ -220,7 +220,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     boolean existsByRoomNum(@Param("roomNum") String roomNum);
 
 
-    @Query("Select c FROM Room c WHERE c.roomNum LIKE %?1%")
-      List<Room> searchRoom(String name);
+    @Query("SELECT c FROM Room c WHERE REPLACE(c.roomNum, ' ', '') LIKE CONCAT('%', REPLACE(?1, ' ', ''), '%')")
+    List<Room> searchRoom(String roomNum);
 
 }

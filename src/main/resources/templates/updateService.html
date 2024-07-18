@@ -77,22 +77,65 @@
 <div class="container"></div>
 <script>
     const serviceNameText = document.querySelector('.serviceNameText');
+    const seName = document.getElementById('SeName');
+    const errorMessage = document.getElementById('errorMessage');
+    const priceText = document.querySelector('.priceText');
 
-    function checkServiceName() {
-        const serviceNamePattern = /^[\p{L}\p{N} ]+$/u;
+    SeName.addEventListener('input', checkSeName);
+    function checkSeName() {
+        const seNamePattern =/^[\p{L} ]+$/u; 
         const seName = document.getElementById('SeName').value;
-        if (seName.match(serviceNamePattern)) {
+        if (seName.match(seNamePattern)) {
             serviceNameText.innerHTML = '';
             return true;
         } else {
-            serviceNameText.innerHTML = 'Service name must not contain special characters.';
+            serviceNameText.innerHTML = 'Service name must not contain special characters and number.';
             return false;
         }
     }
 
-    function checkFormSubmission() {
-        return checkServiceName();
+    function checkDuplicateSeName() {
+        let isDuplicate = false;
+
+        $.ajax({
+            url: '/admin/service_check-serviceName',
+            type: 'GET',
+            data: { seName: seName.value.trim().replace(/\s+/g, '').toLowerCase() },
+            async: false,
+            success: function (response) {
+                if (response) {
+                    errorMessage.innerText = 'Service name already exists.';
+                    errorMessage.style.display = 'block';
+                    isDuplicate = true;
+                } else {
+                    errorMessage.style.display = 'none';
+                    isDuplicate = false;
+                }
+            },
+            error: function () {
+                isDuplicate = true;
+            }
+        });
+
+        return isDuplicate;
     }
+
+    
+
+    function checkFormSubmission() {
+        return checkSeName() && !checkDuplicateSeName();
+    }
+
+    document.getElementById("SePrice").addEventListener("input", function () {
+    var input = this.value;
+    if (input<=0) {
+        priceText.innerHTML = 'Price Service must be a positive number'; // Hiển thị thông báo lỗi
+        this.value="";
+    } else {
+        priceText.innerHTML= ""; // Xóa thông báo lỗi nếu không có lỗi
+    }
+});
+
 </script>
 </body>
 </html>

@@ -16,7 +16,7 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
-        .passText, .emailText,.fullNameText, .dobText, .addressText {
+        .passText, .emailText,.fullNameText, .dobText, .idenIdText, .addressText, .phoneText, .usernameText {
             color: red;
         }
 
@@ -70,7 +70,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="form-group">
+<div class="form-group">
                     <label>Address</label>
                     <input type="text" th:field="*{address}" class="form-control" name="address"
                            placeholder="Enter address" id="address" required>
@@ -80,14 +80,16 @@
 
                 <div class="form-group">
                     <label>CCCD</label>
-                    <input type="text" th:field="*{idenId}" class="form-control" name="idenId"
+                    <input type="number" th:field="*{idenId}" class="form-control" name="idenId"
                            placeholder="Enter CCCD" id="idenId" required>
+                    <span class="idenIdText"></span>
                 </div>
 
                 <div class="form-group">
                     <label>Phone</label>
                     <input type="tel" th:field="*{phone}" class="form-control" name="phone"
                            placeholder="Enter phone" id="phone" required>
+                    <span class="phoneText"></span>
                 </div>
                 <div class="form-group">
                     <label class="emailBox">Email</label>
@@ -100,6 +102,7 @@
                     <label>User Name</label>
                     <input type="text" th:field="*{username}" class="form-control" name="username"
                            placeholder="Enter username" id="username" required>
+                    <span class="usernameText"></span>
                     <div id="errorMessageUser" class="alert alert-danger" style="display: none;" role="alert"></div>
                 </div>
 
@@ -126,8 +129,7 @@
 
     // Đặt thuộc tính max của input date là ngày hiện tại
     document.getElementById("dob").setAttribute("max", maxDate);
-
-    // Validate ngày sinh
+// Validate ngày sinh
     document.getElementById("dob").addEventListener("change", function () {
         var input = this.value; // Lấy ngày được chọn từ trường nhập ngày sinh
         var inputDate = new Date(input);
@@ -137,7 +139,7 @@
             dobText.innerHTML = 'Dob can not be in the future.';
             this.value = ""; // Xóa giá trị ngày được chọn từ trường nhập ngày sinh
         } else {
-            dobText.innerHTML = '';// Xóa thông báo lỗi nếu không có lỗi
+            dobText.innerHTML = ''; // Xóa thông báo lỗi nếu không có lỗi
         }
     });
 
@@ -147,43 +149,57 @@
     const fullNameText = document.querySelector('.fullNameText');
     const addressText = document.querySelector('.addressText');
     const password = document.getElementById('password');
+    const fullName = document.getElementById('name');
+    const dob = document.getElementById('dob');
+    const address = document.getElementById('address');
+    const iden = document.getElementById('idenId');
+    const phone = document.getElementById('phone');
     const passText = document.querySelector('.passText');
     const emailText = document.querySelector('.emailText');
     const dobText = document.querySelector('.dobText');
+    const idenIdText = document.querySelector('.idenIdText');
+    const phoneText = document.querySelector('.phoneText');
+    const usernameText = document.querySelector('.usernameText');
     const emailError = document.getElementById('emailError');
     const errorAddressMessage = document.getElementById('errorAddressMessage');
 
 
+
+    fullName.addEventListener('input', checkFullName);
+    dob.addEventListener('input', checkDob);
+    address.addEventListener('input', checkAddress);
+    iden.addEventListener('input', checkIdenId);
+    phone.addEventListener('input', checkPhone);
     password.addEventListener('input', checkPassword);
     email.addEventListener('input', checkEmail);
+    username.addEventListener('input', checkUsername);
 
     function checkFullName() {
-        const fullNamePattern = /^[\p{L}\p{N} ]+$/u;
+        const fullNamePattern = /^[\p{L} ]+$/u;
         const fullName = document.getElementById('name').value;
         if (fullName.match(fullNamePattern)) {
             fullNameText.innerHTML = '';
             return true;
         } else {
-            fullNameText.innerHTML = 'Name must not contain special characters.';
+            fullNameText.innerHTML = 'Name must not contain special characters and numbers.';
             return false;
         }
     }
 
     function checkAddress() {
-        const AddressPattern = /^[\p{L}\p{N} ]+$/u;
+        const AddressPattern = /^[\p{L}\p{N}, ]+$/u;
         const Address = document.getElementById('address').value;
         if (Address.match(AddressPattern)) {
             addressText.innerHTML = '';
             return true;
         } else {
-            addressText.innerHTML = 'Address must not contain special characters.';
+            addressText.innerHTML = 'Address must not contain special characters other than commas.';
             return false;
         }
     }
 
-
     function checkPassword() {
-        const passPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+const passPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
         if (password.value.match(passPattern)) {
             passText.innerHTML = '';
             return true;
@@ -193,10 +209,66 @@
         }
     }
 
-    function checkFormSubmission() {
-        return  checkPassword() && checkEmail() && checkFullName() && checkAddress();
+    function checkDob() {
+        var dob = document.getElementById('dob').value;
+        var dobDate = new Date(dob);
+        var currentDate = new Date();
+        var age = currentDate.getFullYear() - dobDate.getFullYear();
+        var monthDiff = currentDate.getMonth() - dobDate.getMonth();
+        var dayDiff = currentDate.getDate() - dobDate.getDate();
+
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            age--;
+        }
+
+        if (age < 18) {
+            dobText.innerHTML = 'Employee must be at least 18 years old.';
+            return false;
+        } else {
+            dobText.innerHTML = '';
+            return true;
+        }
     }
 
+    function checkIdenId() {
+        const idenIdPattern = /^[0-9]{9,12}$/;
+        const idenId = document.getElementById('idenId').value;
+        if (idenId.match(idenIdPattern)) {
+            idenIdText.innerHTML = '';
+            return true;
+        } else {
+            idenIdText.innerHTML = 'CCCD must be a number with 9 to 12 digits and no special characters.';
+            return false;
+        }
+    }
+
+    function checkPhone() {
+        const phonePattern = /^0\d{9}$/;
+        const phone = document.getElementById('phone').value;
+        if (phone.match(phonePattern)) {
+            phoneText.innerHTML = '';
+            return true;
+        } else {
+            phoneText.innerHTML = 'Phone number must be 10 digits and start with 0.';
+            return false;
+        }
+    }
+
+    function checkUsername() {
+        const usernamePattern = /^[a-zA-Z0-9]{6,}$/;
+        const username = document.getElementById('username').value;
+        if (username.match(usernamePattern)) {
+            usernameText.innerHTML = '';
+            return true;
+        } else {
+            usernameText.innerHTML = 'Username must be at least 6 characters long and contain only letters and numbers.';
+            return false;
+        }
+    }
+
+    function checkFormSubmission() {
+        return checkPassword() && checkEmail() && checkFullName() && checkAddress() && checkDob() && checkIdenId() && checkPhone() && checkUsername();
+    }
 
     function checkEmail() {
         const emailPattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
