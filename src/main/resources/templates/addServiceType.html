@@ -53,6 +53,7 @@
 		const serviceTypeNameText = document.querySelector('.serviceTypeNameText');
 		const errorMessage = document.getElementById('errorMessage');
 		const serviceTypeName = document.getElementById('SeTypeName');
+		serviceTypeName.addEventListener('input', checkServiceTypeName);
 
 		function checkServiceTypeName() {
 			const serviceTypeNamePattern = /^[\p{L}\p{N} ]+$/u;

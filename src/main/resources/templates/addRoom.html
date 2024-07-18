@@ -74,6 +74,7 @@
         <script>
             const roomNumText = document.querySelector('.roomNumText');
             const roomNum = document.getElementById('roomNum');
+            roomNum.addEventListener('input', checkRoomNum);
 
             function checkRoomNum() {
                 const roomNumPattern = /^[\p{L}\p{N} ]+$/u;
