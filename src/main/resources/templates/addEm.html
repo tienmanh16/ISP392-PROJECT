@@ -21,7 +21,7 @@
         .salaryText,
         .dobText,
         .fullNameText,
-        .addressText {
+        .addressText,.idText {
             color: red;
         }
 
@@ -88,7 +88,7 @@
                     <div class="form-group">
                         <label>CCCD</label>
                         <input type="text" th:field="*{idenId}" id="idenId" class="form-control" placeholder="Enter CCCD" required>
-                        <span class="idtext"></span>
+                        <span class="idText"></span>
                     </div>
                     <div class="form-group">
                         <label>Phone</label>
@@ -263,7 +263,7 @@
         function checkIdenId() {
             const idenIdPattern = /^[0-9]{9,12}$/;
 
-            if (idenId.value.match(idenIdPattern) && Number(customerIdentificationID) > 0) {
+            if (idenId.value.match(idenIdPattern)) {
                 idText.innerHTML = '';
                 return true;
             } else {

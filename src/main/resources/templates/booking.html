@@ -483,7 +483,7 @@
         const customerIdentificationIDPattern = /^\d+$/;
         const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
 
-        if (customerIdentificationID.match(customerIdentificationIDPattern) && Number(customerIdentificationID) > 0) {
+        if (customerIdentificationID.match(customerIdentificationIDPattern) ) {
           customerIdentificationIDText.innerHTML = '';
           resolve(true);
         } else {
