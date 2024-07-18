@@ -328,6 +328,9 @@ public class BookingController {
             List<BookingMapping> bookingMappingList = bookingRepository.getReferenceById(bookingID).getBookingMapping();
 
             for (BookingMapping bookingMapping : bookingMappingList) {
+                if(bookingMapping.getBookingMappingActive() ==0){
+                    continue;
+                }
                 bookingMapping.setBookingMappingActive(2);
                 bookingMappingRepository.save(bookingMapping);
             }
