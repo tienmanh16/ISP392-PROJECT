@@ -516,19 +516,19 @@
   });
 }
 
-    function checkCustomerAddress() {
-      return new Promise((resolve, reject) => {
-        const customerAddressPattern = /^[\p{L}\p{N} ]+$/u;
-        const customerAddress = document.getElementById('customerAddress').value;
-        if (customerAddress.match(customerAddressPattern)) {
-          customerAddressText.innerHTML = '';
-          resolve(true);
-        } else {
-          customerAddressText.innerHTML = ' Not contain special characters.';
-          resolve(false);
-        }
-      });
+function checkCustomerAddress() {
+  return new Promise((resolve, reject) => {
+    const customerAddressPattern = /^[\p{L}\p{N}, ]+$/u; 
+    const customerAddress = document.getElementById('customerAddress').value;
+    if (customerAddress.match(customerAddressPattern)) {
+      customerAddressText.innerHTML = '';
+      resolve(true);
+    } else {
+      customerAddressText.innerHTML = ' Not contain special characters.';
+      resolve(false);
     }
+  });
+}
 
     function checkDuplicateEmail() {
       return new Promise((resolve, reject) => {

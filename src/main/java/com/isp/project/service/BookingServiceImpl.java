@@ -16,7 +16,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<Booking> getAllBookingNew() {
-        return bookingRepository.findAll();
+        return bookingRepository.findAllOrderBybookingIDDesc();
     }
 
     @Override

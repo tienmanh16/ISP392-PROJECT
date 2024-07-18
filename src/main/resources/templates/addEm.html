@@ -87,7 +87,8 @@
                     </div>
                     <div class="form-group">
                         <label>CCCD</label>
-                        <input type="text" th:field="*{idenId}" class="form-control" placeholder="Enter CCCD" required>
+                        <input type="text" th:field="*{idenId}" id="idenId" class="form-control" placeholder="Enter CCCD" required>
+                        <span class="idtext"></span>
                     </div>
                     <div class="form-group">
                         <label>Phone</label>
@@ -171,12 +172,14 @@
         const emailError = document.getElementById('emailError');
         const errorMessage = document.getElementById('errorMessage');
         const errorMessageUser = document.getElementById('errorMessageUser');
-
+        const idenId = document.getElementById('idenId');
+        const idText = document.querySelector('.idText');
 
         password.addEventListener('input', checkPassword);
         email.addEventListener('input', checkEmail);
         fullName.addEventListener('input', checkName);
         address.addEventListener('input', checkAddress);
+        idenId.addEventListener('input', checkIdenId);
 
 
 
@@ -193,7 +196,7 @@
         }
 
         function checkAddress() {
-            const namePattern = /^[\p{L}\p{N} ]+$/u;
+            const namePattern = /^[\p{L}\p{N}, ]+$/u;
 
             if (address.value.match(namePattern)) {
                 addressText.innerHTML = '';
@@ -217,7 +220,7 @@
         }
 
         function checkFormSubmission() {
-            return checkEmail() && checkPassword() && !checkDuplicateEmail() && !checkDuplicateUsername() && checkName() && checkAddress();
+            return checkEmail() && checkPassword() && !checkDuplicateEmail() && !checkDuplicateUsername() && checkName() && checkAddress() && checkIdenId();
         }
 
         function checkEmail() {
@@ -255,6 +258,18 @@
             });
 
             return isDuplicate;
+        }
+
+        function checkIdenId() {
+            const idenIdPattern = /^[0-9]{9,12}$/;
+
+            if (idenId.value.match(idenIdPattern) && Number(customerIdentificationID) > 0) {
+                idText.innerHTML = '';
+                return true;
+            } else {
+                idText.innerHTML = 'Identification ID must be a positive number between 9 and 12 digits long.';
+                return false;
+            }
         }
 
         function checkDuplicateUsername() {

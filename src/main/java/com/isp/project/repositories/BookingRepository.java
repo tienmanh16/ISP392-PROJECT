@@ -26,6 +26,9 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query("SELECT b FROM Booking b WHERE b.bookingID = :bookingID")
     Booking findByBookingID(@Param("bookingID") int bookingID);
 
+    @Query("SELECT b FROM Booking b ORDER BY b.bookingID DESC")
+    List<Booking> findAllOrderBybookingIDDesc();
+
     // ====================================Delete
     // Booking=======================================
     @Modifying
