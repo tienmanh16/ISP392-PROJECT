@@ -223,6 +223,16 @@
 			const id = button.getAttribute('data-id');
 			const isContacted = button.getAttribute('data-active') === 'true';
 
+			// Kiểm tra nếu đã ở trạng thái "Contacted"
+			if (isContacted) {
+				return;
+			}
+			const confirmed = window.confirm("Are you sure you made contact?");
+
+			if (!confirmed) {
+				return;
+			}
+
 			$.ajax({
 				url: '/receptionist/contact_status/' + id,
 				type: 'POST',
@@ -234,6 +244,11 @@
 					button.classList.toggle('btn-danger', isContacted);
 					// Update data attribute in the button
 					button.setAttribute('data-active', !isContacted);
+
+					// Vô hiệu hóa nút sau khi chuyển sang trạng thái "Contacted"
+					if (!isContacted) {
+						button.disabled = true;
+					}
 				},
 				error: function (xhr, status, error) {
 					console.error("Failed to toggle status: " + error);
