@@ -287,7 +287,7 @@
                 required>
               <div
                 style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
-                <span class="customerIdentificationIDText" style="font-size: 13px; word-wrap: break-word;"></span>
+                <span class="customerIdentificationIDText" style="font-size: 8px; word-wrap: break-word;"></span>
               </div>
             </div>
 
@@ -297,7 +297,7 @@
                 name="customerPhone" id="customerPhone" placeholder="Enter phone number..." required>
               <div
                 style="position: absolute; bottom: -25px; left: 22%; transform: translateX(-10%); text-align: center;">
-                <span class="customerPhoneText" style="font-size: 13px; word-wrap: break-word;"></span>
+                <span class="customerPhoneText" style="font-size:8px; word-wrap: break-word;"></span>
               </div>
             </div>
 
@@ -487,7 +487,7 @@
           customerIdentificationIDText.innerHTML = '';
           resolve(true);
         } else {
-          customerIdentificationIDText.innerHTML = 'Must be a positive number.';
+          customerIdentificationIDText.innerHTML = 'Must be a positive number between 9 and 12 digits';
           resolve(false);
         }
       });
@@ -510,7 +510,7 @@
         resolve(false);
       }
     } else {
-      customerPhoneText.innerHTML = 'Must be a positive number.';
+      customerPhoneText.innerHTML = 'Must be a positive number,10 digits and start with 0';
       resolve(false);
     }
   });

@@ -85,38 +85,33 @@
         }
 
         function checkCustomerIdentificationIDText() {
-            return new Promise((resolve, reject) => {
-                const customerIdentificationIDPattern = /^\d+$/;
-                const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
+      return new Promise((resolve, reject) => {
+        const customerIdentificationIDPattern = /^[0-9]{9,12}$/;
+        const customerIdentificationID = document.getElementById('customerIdentificationID').value.trim();
 
-                if (customerIdentificationID.match(customerIdentificationIDPattern) && Number(customerIdentificationID) > 0) {
-                    customerIdentificationIDText.innerHTML = '';
-                    resolve(true);
-                } else {
-                    customerIdentificationIDText.innerHTML = 'Customer Identification ID must be a positive number.';
-                    resolve(false);
-                }
-            });
+        if (customerIdentificationID.match(customerIdentificationIDPattern)) {
+          customerIdentificationIDText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerIdentificationIDText.innerHTML = 'Must be a positive number between 9 and 12 digits';
+          resolve(false);
         }
+      });
+    }
 
-        function checkPhoneNumber() {
-            return new Promise((resolve, reject) => {
-                const customerPhonePattern = /^[0-9]+$/;
-                const forbiddenCharsPattern = /[@!?#$%^*():;"',+=/\\|]/;
-                const customerPhone = document.getElementById('customerPhone').value.trim();
-
-                if (forbiddenCharsPattern.test(customerPhone)) {
-                    customerPhoneText.innerHTML = 'Customer phone must not contain special characters such as @!?#$%^*():;"\',+=/\\|.';
-                    resolve(false);
-                } else if (customerPhonePattern.test(customerPhone) && BigInt(customerPhone) > 0n) {
-                    customerPhoneText.innerHTML = '';
-                    resolve(true);
-                } else {
-                    customerPhoneText.innerHTML = 'Customer phone must be a positive number.';
-                    resolve(false);
-                }
-            });
+    function checkPhoneNumber() {
+      return new Promise((resolve, reject) => {
+        const customerPhonePattern = /^0\d{9}$/;
+        const customerPhone = document.getElementById('customerPhone').value.trim();
+        if (customerPhone.match(customerPhonePattern)) {
+          customerPhoneText.innerHTML = '';
+          resolve(true);
+        } else {
+          customerPhoneText.innerHTML = 'Customer phone must be a positive number and start with 0.';
+          resolve(false);
         }
+      });
+    }
 
         function checkCustomerAddress() {
             return new Promise((resolve, reject) => {

@@ -330,7 +330,7 @@ public class BookingController {
             List<BookingMapping> bookingMappingList = bookingRepository.getReferenceById(bookingID).getBookingMapping();
 
             for (BookingMapping bookingMapping : bookingMappingList) {
-                if(bookingMapping.getBookingMappingActive() ==0){
+                if(bookingMapping.getBookingMappingActive() ==0 || bookingMapping.getBookingMappingActive() ==2){
                     continue;
                 }
                 bookingMapping.setBookingMappingActive(2);
