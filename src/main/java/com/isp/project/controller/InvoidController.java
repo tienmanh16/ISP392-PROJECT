@@ -166,14 +166,14 @@ public class InvoidController {
               invoiceRepository.save(invoiceUpdate);
           }
   
-         // send mail
-         // String email =
-         // invoiceRepository.getReferenceById(invoiceID).getBooking().getCustomerID().getCustomerEmail();
-         // try {
-         // emailService.sendEmailCheckOut(email, invoiceID);
-         // } catch (MessagingException e) {
-         // // Handle the exception, e.g., log it or take appropriate action
-         // }
+    
+         String email =
+         invoiceRepository.getReferenceById(invoiceID).getBooking().getCustomerID().getCustomerEmail();
+         try {
+         emailService.sendEmailCheckOut(email, invoiceID);
+         } catch (MessagingException e) {
+         // Handle the exception, e.g., log it or take appropriate action
+         }
         return "invoice1";
     }
     @GetMapping("/invoiceDetail/{invoiceID}")

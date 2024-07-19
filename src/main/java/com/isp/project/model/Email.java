@@ -135,20 +135,21 @@ public class Email {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
         // Lấy thông tin booking và tính toán
-        Booking booking = invoiceService.getInfoInvoice(invoiceID);
+        Invoice invoice = invoiceRepository.findById(invoiceID).get();
         double totalSePrice = 0.0;
         double totalAmountRoom = 0.0;
         List<Service> serviceList = invoiceServiceImpl.listService(invoiceID);
         List<InvoiceLine> invoiceLineList = invoiceServiceImpl.listInvoiceLine(invoiceID);
-
         for (InvoiceLine invoiceLine : invoiceLineList) {
+
             totalSePrice += invoiceLine.getInvoiceTotalAmount();
+
         }
 
-        for (BookingMapping ls : booking.getBookingMapping()) {
-            totalAmountRoom += ls.getBookingTotalAmount();
-        }
+        totalAmountRoom = invoice.getBookingMapping().getBookingTotalAmount();
 
+        String roomName = invoiceRepository.getReferenceById(invoiceID).getBookingMapping().getRoomID().getRoomNum();
+        BookingMapping bookingMapping = invoice.getBookingMapping();
         // double totalInvoice = totalAmountRoom + totalSePrice;
 
         // // Cập nhật tổng số tiền hóa đơn
@@ -165,17 +166,20 @@ public class Email {
 
         // Sử dụng TemplateEngine để tạo nội dung email
         Context context = new Context();
-        context.setVariable("booking", booking);
+        context.setVariable("invoiceID", invoiceID);
         context.setVariable("totalAmountRoom", totalAmountRoom);
         context.setVariable("listService", serviceList);
         context.setVariable("totalSePrice", totalSePrice);
         context.setVariable("invoiceLineList", invoiceLineList);
+        context.setVariable("roomName", roomName);
+        context.setVariable("invoice", invoice);
+        context.setVariable("bookingMapping", bookingMapping);
 
-        String htmlMsg = templateEngine.process("invoice1", context);
+
+        String htmlMsg = templateEngine.process("sendMailPayment", context);
         helper.setText(htmlMsg, true);
 
         // Gửi email
         mailSender.send(message);
     }
-
 }
