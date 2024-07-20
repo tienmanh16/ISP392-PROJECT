@@ -47,11 +47,10 @@ public class ContactController {
 
     }
     @GetMapping("/receptionist/listInfo")
-    public String listGuestInfo(Model model, @RequestParam(name ="pageNo", defaultValue = "1") Integer pageNo , Principal p) {
-        Page<GuestInformation> guestInformations = this.guestInformationService.pageInvoice(pageNo);
+    public String listGuestInfo(Model model, Principal p) {
+        List<GuestInformation> guestInformations = this.guestInformationService.getAll();
         model.addAttribute("listInfo", guestInformations);
-        model.addAttribute("totalPage", guestInformations.getTotalPages());
-        model.addAttribute("currentPage", pageNo);
+        
         if (p != null) {
             String email = p.getName();
             Employee user = employeeService.findByEmail(email);
