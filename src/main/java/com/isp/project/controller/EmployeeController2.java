@@ -66,6 +66,31 @@ public class EmployeeController2 {
         return "redirect:/receptionist/profileEm";
     }
 
+    @GetMapping("/employee_edit_email/{id}")
+    public String editEmail(Model model, @PathVariable("id") int id) {
+        Employee employee = employeeService.findById(id);
+        if (employee != null) {
+            model.addAttribute("employee", employee);
+            return "editEmEmailbyRecep";
+        } else {
+            return "redirect:/receptionist/profileEm";
+        }
+    }
+
+    @PostMapping("/employee_edit_email")
+    public String updateEmail(Model model, @Valid @ModelAttribute("employee") Employee employee, @RequestParam("password") String password, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "editEmEmailbyRecep";
+        }
+        Employee existingEmployee = employeeService.findById(employee.getId());
+        if (existingEmployee != null) {
+            existingEmployee.setEmail(employee.getEmail());
+            existingEmployee.setPassword(employee.getPassword());
+            employeeService.saveUser(existingEmployee);
+        }
+        return "redirect:/logout";
+    }
+
 
 
 }
