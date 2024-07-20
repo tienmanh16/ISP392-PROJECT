@@ -229,9 +229,9 @@
                         <table border="1">
                             <thead>
                                 <tr>
-                                    <th>Dịch vụ</th>
-                                    <th>SL</th>
-                                    <th>Thành tiền</th>
+                                    <th>Service</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
                                     <th style="display: none;"></th>
                                 </tr>
                             </thead>
@@ -245,14 +245,14 @@
                         </table>
 
                     </div>
-                    <button class="button green-button js-themDV" id="btnThemDV">Thêm dịch vụ</button>
+                    <button class="button green-button js-themDV" id="btnThemDV">Add Service</button>
                 </div>
                 <div class="righttt">
                     <div class="list view">
-                        <p>Cập nhật tình trạng phòng</p>
+                        <p>Update Status Room</p>
                         <input type="text" name="t1" id="statusPhong" value="" readonly>
                         <br>
-                        <p>Cập nhật tình trạng dọn dẹp</p>
+                        <p>Update Cleaning Status Room</p>
                         <select id="cleaningRoom">
                             <option>Cleaned</option>
                             <option>Not Clean</option>
@@ -261,22 +261,22 @@
                 </div>
             </div>
             <div class="footer">
-                <button class="button green-button" id="btnThanhToan">Thanh toán</button>
+                <button class="button green-button" id="btnThanhToan">Pay Room</button>
                 <!-- <button class="button green-button" id="btnNhanPhong">Nhận phòng</button> -->
-                <button class="button green-button" id="btnLuu">Lưu</button>
-                <button class="button gray-button js-modal-close" id="btnThoat">Thoát</button>
+                <button class="button green-button" id="btnLuu">Save</button>
+                <button class="button gray-button js-modal-close" id="btnThoat">Exit</button>
             </div>
         </div>
     </div>
 
     <div class="modal js-modal-2">
         <div class="window js-modal-window-2">
-            <div class="title">Thêm Dịch Vụ</div>
+            <div class="title">Add Service</div>
             <div class="main main--service">
                 <div class="leftttDV">
-                    <p>Danh sách dịch vụ</p>
+                    <p>List Services</p>
                     <select id="cbTimKiemLoaiDV" class="combobox" onchange="sendServiceTypeId(this.value)">
-                        <option value="0">Tất cả dịch vụ</option>
+                        <option value="0">All Services</option>
                         <option th:each="serviceType : ${serviceTypes}" th:text="${serviceType.SeTypeName}"
                             th:value="${serviceType.SeTypeID}">
                         </option>
@@ -293,10 +293,10 @@
                         <table border="1">
                             <thead>
                                 <tr>
-                                    <th>Loại DV</th>
-                                    <th>Dịch Vụ</th>
-                                    <th>Giá</th>
-                                    <th>Thêm</th>
+                                    <th>Service Type</th>
+                                    <th>Service</th>
+                                    <th>Price</th>
+                                    <th>Add</th>
                                 </tr>
                             </thead>
                             <!-- <tbody id="lvDanhSachDV">
@@ -322,16 +322,16 @@
                     </div>
                 </div>
                 <div class="rightttDV">
-                    <p>Dịch vụ đã chọn</p>
+                    <p>Selected Services</p>
                     <div class="list-view-DVDaChon">
 
                         <table border="1">
                             <thead>
                                 <tr>
-                                    <th>Dịch Vụ</th>
-                                    <th>Số Lượng</th>
-                                    <th>Thành Tiền</th>
-                                    <th>Xóa</th>
+                                    <th>Service</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Delete</th>
                                 </tr>
                             </thead>
                             <tbody id="lvDichVuDaChon">
@@ -350,8 +350,8 @@
                 </div>
             </div>
             <div class="footer">
-                <button class="button green-button" id="btnLuuDV">Lưu</button>
-                <button class="button gray-button js-modal-close-2" id="btnThoat">Thoát</button>
+                <button class="button green-button" id="btnLuuDV">Save</button>
+                <button class="button gray-button js-modal-close-2" id="btnThoat">Exit</button>
             </div>
 
             <!-- == -->
@@ -417,10 +417,10 @@
                 const txblNgayDen = document.getElementById('txblNgayDen');
                 const txblSoNgay = document.getElementById('txblSoNgay');
                 const txblSoNguoi = document.getElementById('txblSoNguoi');
-                if (txblTenKH) txblTenKH.textContent = "Chưa nhận phòng";
-                if (txblNgayDen) txblNgayDen.textContent = "Chưa nhận phòng";
-                if (txblSoNgay) txblSoNgay.textContent = "Chưa nhận phòng";
-                if (txblSoNguoi) txblSoNguoi.textContent = "Chưa nhận phòng";
+                if (txblTenKH) txblTenKH.textContent = "Not Check-in";
+                if (txblNgayDen) txblNgayDen.textContent = "Not Check-in";
+                if (txblSoNgay) txblSoNgay.textContent = "Not Check-in";
+                if (txblSoNguoi) txblSoNguoi.textContent = "Not Check-in";
 
                 const btnThanhToan = document.getElementById('btnThanhToan');
                 const btnThemDV = document.getElementById('btnThemDV');
@@ -471,10 +471,10 @@
 
                     if (bookingMappingActive == 1) {
                         document.getElementById('statusPhong').value = "Booked Room";
-                        document.getElementById('txblTenKH').textContent = "Chưa nhận phòng";
-                        document.getElementById('txblNgayDen').textContent = "Chưa nhận phòng";
-                        document.getElementById('txblSoNgay').textContent = "Chưa nhận phòng";
-                        document.getElementById('txblSoNguoi').textContent = "Chưa nhận phòng";
+                        document.getElementById('txblTenKH').textContent = "Not Check-in";
+                        document.getElementById('txblNgayDen').textContent = "Not Check-in";
+                        document.getElementById('txblSoNgay').textContent = "Not Check-in";
+                        document.getElementById('txblSoNguoi').textContent = "Not Check-in";
                     } else {
                         document.getElementById('statusPhong').value = "Rented Room";
                     }
@@ -1229,7 +1229,7 @@
                                     </p>
                                     <div>
                                         <button class="btn js-buy-ticket" onclick="openModal(${room.id}, ${room.bookingMappingId}, ${room.bookingMappingActive})">
-                                            Sửa Thông Tin
+                                            Edit Information
                                         </button>
                                     </div>
                                 </div>

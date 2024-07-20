@@ -19,6 +19,7 @@ public interface EmployeeService {
     Employee findById(int id);
 
     void deleteById(Integer id);
+    List<Employee> findByRole(String role);    
 
     List<Employee> findAll();
 

@@ -214,4 +214,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     // Return the new lock status
     return newLockStatus;
     }
+
+    @Override
+    public List<Employee> findByRole(String role) {
+        return employeeRepository.findByRole(role);
+    }
 }

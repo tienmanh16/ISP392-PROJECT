@@ -44,7 +44,7 @@ public class EmployeeController {
 
     @GetMapping("/employee_list")
     public String listEmployee(Model model, Principal p) {
-        List<Employee> emList = employeeService.findAll();
+        List<Employee> emList = employeeService.findByRole("ROLE_RECEPTIONIST");
         if (p != null) {
             String email = p.getName();
             Employee user = employeeService.findByEmail(email);

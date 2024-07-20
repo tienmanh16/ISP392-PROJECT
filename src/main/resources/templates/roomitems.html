@@ -159,7 +159,7 @@
       const itemId = button.getAttribute('data-id');
       const isActive = button.getAttribute('data-active') === 'true';
 
-      const confirmation = confirm(`Are you sure you want to ${isActive ? 'deactivate' : 'activate'} this account?`);
+      const confirmation = confirm(`Are you sure you want to ${isActive ? 'deactivate' : 'activate'} this item?`);
       if (!confirmation) {
         return;
       }
@@ -178,7 +178,7 @@
           button.setAttribute('data-active', newActiveState);
         },
         error: function (error) {
-          alert(`Failed to ${isActive ? 'deactivate' : 'activate'} the account. Please try again.`);
+          alert(`Failed to ${isActive ? 'deactivate' : 'activate'} the item. Please try again.`);
         }
       });
     }

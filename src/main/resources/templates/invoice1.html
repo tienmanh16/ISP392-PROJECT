@@ -244,7 +244,7 @@
             </section>
 
             <section class="store-user mt-5">
-                <div class="col-10">
+                <div class="col-12">
                     <div class="row bb pb-3">
                         <div class="col-7">
                             <h2 th:text="${invoice.customerName}"></h2>
@@ -281,23 +281,14 @@
                     <tbody>
                         <tr th:each="invoiceLineList : ${invoiceLineList}">
                             <td th:text="${invoiceLineList.service.seName}"></td>
-                            <td th:text="${invoiceLineList.service.sePrice}">$</td>
-                            <td th:text="${invoiceLineList.quantity}">
-
-
-                            </td>
-                            <td th:text="${invoiceLineList.InvoiceTotalAmount}">
-                                
-                            </td>
-
-
-
-
+                            <td th:text="${invoiceLineList.service.sePrice} + ' $'"></td>
+                            <td th:text="${invoiceLineList.quantity}"></td>
+                            <td th:text="${invoiceLineList.InvoiceTotalAmount} + ' $'"></td>
                         </tr>
                     </tbody>
                 </table>
             </section>
-
+            
             <section class="balance-info">
                 <div class="row">
                     <div class="col-8">
@@ -309,22 +300,20 @@
                         <table class="table border-0 table-hover">
                             <tr>
                                 <td>Service:</td>
-                                <td th:text="${totalSePrice}">$</td>
+                                <td th:text="${totalSePrice} + ' $'"></td>
                             </tr>
                             <tr>
                                 <td>Room:</td>
-                                <td th:text="${totalAmountRoom}">$</td>
+                                <td th:text="${totalAmountRoom} + ' $'"></td>
                             </tr>
-
                             <tfoot>
                                 <tr>
                                     <td>Total:</td>
-                                    <td th:text="${totalAmountRoom} + ${totalSePrice}">$
-                                    </td>
+                                    <td th:text="${totalAmountRoom + totalSePrice} + ' $'"></td>
                                 </tr>
                             </tfoot>
                         </table>
-
+            
                         <!-- Signature -->
                         <div class="col-12">
                             <!-- <img src="signature.png" class="img-fluid" alt="">
@@ -333,6 +322,7 @@
                     </div>
                 </div>
             </section>
+            
 
             <!-- Cart BG -->
             <img src="cart.jpg" class="img-fluid cart-bg" alt="">
@@ -342,28 +332,7 @@
                 <!-- <p class="m-0 text-center">
                     View This Invoice Online At - <a href="#!"> invoice/saburbd.com/#868 </a>
                 </p> -->
-                <div class="social pt-3">
-                    <span class="pr-2">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>0123456789</span>
-                    </span>
-                    <span class="pr-2">
-                        <i class="fas fa-envelope"></i>
-                        <span>me@saburali.com</span>
-                    </span>
-                    <span class="pr-2">
-                        <i class="fab fa-facebook-f"></i>
-                        <span>/sabur.7264</span>
-                    </span>
-                    <span class="pr-2">
-                        <i class="fab fa-youtube"></i>
-                        <span>/abdussabur</span>
-                    </span>
-                    <span class="pr-2">
-                        <i class="fab fa-github"></i>
-                        <span>/example</span>
-                    </span>
-                </div>
+                
             </footer>
         </div>
     </div>
