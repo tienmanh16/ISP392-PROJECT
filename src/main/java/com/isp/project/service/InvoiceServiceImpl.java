@@ -68,7 +68,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public List<Invoice> getAllInvoice() {
-        return this.invoiceRepository.findAll();
+        return this.invoiceRepository.findAllOrderInvoiceIDDesc();
     }
 
     @Override

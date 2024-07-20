@@ -121,12 +121,6 @@ public class RoomController2 {
     }
 
 
-
-    @GetMapping("/managerbooking")
-    public String ManagerBooking() {
-        return "ManagerBooking";
-    }
-
     @GetMapping("/listRoomType")
     public String RoomCategory(Model model, @Param("name") String name, @Param("sortDirection") String sortDirection) {
         List<RoomType> listRoomType;

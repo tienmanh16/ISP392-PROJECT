@@ -81,7 +81,7 @@
 <body>
   <div class="boxcar-wrapper">
     <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-      <div th:replace="~{fragments/header_recep :: header}"></div>
+      <div th:replace="~{fragments/header_admin :: header}"></div>
   </header>
 
     <!-- thêm class layout-radius để fix header  -->
@@ -257,7 +257,7 @@
   <div class="modal js-modal">
     <div class="window js-modal-window">
       <div class="title">BOOKING</div>
-      <form th:action="@{/receptionist/saveBooking}" th:object="${bookingInfo}" method="post"
+      <form th:action="@{/admin/saveBooking}" th:object="${bookingInfo}" method="post"
         onsubmit="return checkFormSubmissionSync(event)">
         <input type="hidden" id="selected-rooms-input" th:field="*{selectedRoomsJson}">
         <div class="main">
@@ -527,7 +527,7 @@ function checkCustomerAddress() {
     function checkDuplicateEmail() {
       return new Promise((resolve, reject) => {
         $.ajax({
-          url: '/receptionist/customer_check-email',
+          url: '/admin/customer_check-email',
           type: 'GET',
           data: { customerEmail: document.getElementById('customerEmail').value },
           async: true,
@@ -641,7 +641,7 @@ function checkCustomerAddress() {
       const checkoutDate = document.getElementById('checkout-date').value;
 
       if (checkinDate && checkoutDate) {
-        fetch('/receptionist/api/availableRooms', {
+        fetch('/admin/api/availableRooms', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -814,7 +814,7 @@ function checkCustomerAddress() {
     }
 
     function deleteBooking(id) {
-      fetch(`/receptionist/delete/${id}`, {
+      fetch(`/admin/delete/${id}`, {
         method: "POST",
       })
         .then((response) => {

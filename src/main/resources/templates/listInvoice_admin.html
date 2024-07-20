@@ -34,7 +34,7 @@
 <body>
 	<div class="boxcar-wrapper">
 		<header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-			<div th:replace="~{fragments/header_recep :: header}"></div>
+			<div th:replace="~{fragments/header_admin :: header}"></div>
 		</header>
 	  
 
@@ -88,7 +88,7 @@
 										<td th:text="${list.TotalAmount}"></td>
 
 
-										<td><a th:href="@{/receptionist/invoiceDetail/{invoiceID}(invoiceID=${list.InvoiceID})}"
+										<td><a th:href="@{/admin/invoiceDetail/{invoiceID}(invoiceID=${list.InvoiceID})}"
 												class="ti-menu"></a></td>
 
 									</tr>

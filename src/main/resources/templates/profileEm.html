@@ -62,13 +62,7 @@
 <body>
 <div class="boxcar-wrapper">
     <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-        <div th:if="${user1.role == 'ROLE_ADMIN'}">
-            <div th:replace="~{fragments/header_admin :: header}"></div>
-        </div>
-    
-        <div th:if="${user1.role == 'ROLE_RECEPTIONIST'}">
-          <div th:replace="~{fragments/header_recep :: header}"></div>
-      </div>
+        <div th:replace="~{fragments/header_recep :: header}"></div>
     </header>
 
     <section class="ftco-section layout-radius">

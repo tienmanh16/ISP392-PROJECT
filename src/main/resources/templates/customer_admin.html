@@ -77,7 +77,7 @@
 <body>
   <div class="boxcar-wrapper">
     <header class="boxcar-header header-style-v1 style-two inner-header cus-style-1">
-      <div th:replace="~{fragments/header_recep :: header}"></div>
+      <div th:replace="~{fragments/header_admin :: header}"></div>
   </header>
 
     <!-- thêm class layout-radius để fix header  -->
@@ -178,7 +178,7 @@
   <div class="modal js-modal">
     <div class="windowcustomer js-modal-window">
       <div class="title">ADD CUSTOMER</div>
-      <form th:action="@{/receptionist/addcustomer}" th:object="${addCustomer}" method="post"
+      <form th:action="@{/admin/addcustomer}" th:object="${addCustomer}" method="post"
         onsubmit="return checkFormSubmissionSync(event)">
         <!-- Các trường input của form -->
         <div class="maincustomer">
@@ -413,7 +413,7 @@
     function checkDuplicateEmail() {
       return new Promise((resolve, reject) => {
         $.ajax({
-          url: '/receptionist/customer_check-email',
+          url: '/admin/customer_check-email',
           type: 'GET',
           data: { customerEmail: document.getElementById('customerEmail').value },
           async: true,

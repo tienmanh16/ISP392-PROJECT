@@ -11,10 +11,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
+import com.isp.project.model.Booking;
 import com.isp.project.model.Invoice;
 
 @Service
 public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
+
+    @Query("SELECT b FROM Invoice b ORDER BY b.InvoiceID DESC")
+    List<Invoice> findAllOrderInvoiceIDDesc();
+
+
     @Query("Select c FROM Invoice c WHERE c.CustomerName LIKE %?1%")
     Page<Invoice> searchInvoice(String key, Pageable pageable);
 

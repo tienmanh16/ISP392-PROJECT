@@ -33,8 +33,8 @@ import com.isp.project.service.InvoiceServiceImpl;
 import jakarta.mail.MessagingException;
 
 @Controller
-@RequestMapping("/receptionist")
-public class InvoidController {
+@RequestMapping("/admin")
+public class InvoiceAdminController {
 
     @Autowired
     private InvoiceService invoiceService;
@@ -82,7 +82,7 @@ public class InvoidController {
             }
         }
 
-        return "listInvoice.html";
+        return "listInvoice_admin";
     }
 
     @GetMapping("/printInvoice/{invoiceID}")
@@ -129,7 +129,7 @@ public class InvoidController {
             }
         }
 
-        return "redirect:/receptionist/listinvoice";
+        return "redirect:/admin/listinvoice";
     }
 
     @GetMapping("/invoicePayment/{invoiceID}")
@@ -174,7 +174,7 @@ public class InvoidController {
          } catch (MessagingException e) {
          // Handle the exception, e.g., log it or take appropriate action
          }
-        return "invoice1";
+        return "invoice1_admin";
     }
     @GetMapping("/invoiceDetail/{invoiceID}")
     public String invoiceDetail(Model model, @PathVariable("invoiceID") int invoiceID) {
@@ -203,7 +203,7 @@ public class InvoidController {
         model.addAttribute("bookingMapping", bookingMapping);
 
        
-        return "invoice1";
+        return "invoice1_admin";
     }
 
 }
