@@ -131,14 +131,14 @@
                                     <th col-index="2">FullName</th>
                                     <th col-index="3">Gender</th>
                                     <th col-index="4">Dob</th>
-                                    <th col-index="5">Role</th>
-                                    <th col-index="6">Address</th>
-                                    <th col-index="7">Phone</th>
-                                    <th col-index="8">CCCD</th>
-                                    <th col-index="9">Email</th>
-                                    <th col-index="10">Salary</th>
-                                    <th col-index="11">UserName</th>
-                                    <th col-index="12">Status
+                                    <!-- <th col-index="5">Role</th> -->
+                                    <th col-index="5">Address</th>
+                                    <th col-index="6">Phone</th>
+                                    <th col-index="7">CCCD</th>
+                                    <th col-index="8">Email</th>
+                                    <th col-index="9">Salary</th>
+                                    <th col-index="10">UserName</th>
+                                    <th col-index="11">Status
 
                                     </th>
 
@@ -155,7 +155,7 @@
                                     <td th:text="${list.fullName}"></td>
                                     <td th:text="${list.gender == 1 ? 'Male' : 'Female'}"></td>
                                     <td th:text="${#dates.format(list.dob,'dd/MM/yyyy')}"></td>
-                                    <td th:text="${list.role}"></td>
+                                    <!-- <td th:text="${list.role}"></td> -->
                                     <td th:text="${list.address}"></td>
                                     <td th:text="${list.phone}"></td>
                                     <td th:text="${list.idenId}"></td>
@@ -276,28 +276,24 @@
 
     // Sorting function
     function sortTable(columnIndex, order) {
-        const rowsArray = Array.from(rows);
-        rowsArray.sort((a, b) => {
-            const cellA = a.querySelector(`td:nth-child(${columnIndex})`).innerText;
-            const cellB = b.querySelector(`td:nth-child(${columnIndex})`).innerText;
-            const valueA = parseFloat(cellA.replace(/[^0-9.-]+/g, ""));
-            const valueB = parseFloat(cellB.replace(/[^0-9.-]+/g, ""));
-            return order === 'asc' ? valueA - valueB : valueB - valueA;
-        });
+    const rowsArray = Array.from(document.querySelectorAll("#emp-table tbody tr"));
+    rowsArray.sort((a, b) => {
+        const cellA = a.querySelector(`td:nth-child(${columnIndex})`).innerText;
+        const cellB = b.querySelector(`td:nth-child(${columnIndex})`).innerText;
+        const valueA = parseFloat(cellA.replace(/[^0-9.-]+/g, ""));
+        const valueB = parseFloat(cellB.replace(/[^0-9.-]+/g, ""));
+        return order === 'asc' ? valueA - valueB : valueB - valueA;
+    });
 
-        rowsArray.forEach((row, index) => {
-            tbody.appendChild(row); // Reorder the rows in the table
-            row.style.display = index < rowsPerPage ? '' : 'none';
-        });
+    const tbody = document.querySelector("#emp-table tbody");
+    tbody.innerHTML = ""; // Clear the current rows
+    rowsArray.forEach(row => tbody.appendChild(row)); // Re-add the sorted rows
+}
 
-        filteredRows = rowsArray;
-        currentPage = 1; // Reset to the first page after sorting
-        displayRows();
-    }
 
     // Event listeners for sorting
-    document.getElementById('sort-salary-asc').addEventListener('click', () => sortTable(10, 'asc'));
-    document.getElementById('sort-salary-desc').addEventListener('click', () => sortTable(10, 'desc'));
+    document.getElementById('sort-salary-asc').addEventListener('click', () => sortTable(9, 'asc'));
+    document.getElementById('sort-salary-desc').addEventListener('click', () => sortTable(9, 'desc'));
    
 </script>
 

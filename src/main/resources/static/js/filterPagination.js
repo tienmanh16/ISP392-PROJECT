@@ -130,11 +130,11 @@ document.getElementById('sort-desc-price-day').addEventListener('click', () => {
 
 // Add event listeners for sorting buttons
 document.getElementById('sort-salary-asc').addEventListener('click', () => {
-    sortTableByColumn(10, true); // Assuming priceDay is the 5th column (index 5)
+    sortTableByColumn(9, true); // Assuming priceDay is the 5th column (index 5)
 });
 
 document.getElementById('sort-salary-desc').addEventListener('click', () => {
-    sortTableByColumn(10, false); // Assuming priceDay is the 5th column (index 5)
+    sortTableByColumn(9, false); // Assuming priceDay is the 5th column (index 5)
 });
 // Initial display
 getUniqueValuesFromColumn();
