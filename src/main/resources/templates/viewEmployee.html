@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Employee List</title>
+    <title>List Receptionists</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -77,7 +77,7 @@
             <div class="row">
                 <div class="row justify-content-center">
                     <div class="col-md-6 text-center mb-5">
-                        <h2 class="heading-section">Employee List</h2>
+                        <h2 class="heading-section">List Receptionists</h2>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                         <option value="0" selected>Select</option>
                         <option value="2">Name</option>
                         <option value="3">Gender</option>
-                        <option value="5">Role</option>
+                        <!-- <option value="5">Role</option> -->
 
                     </select>
                 </form>
@@ -190,11 +190,11 @@
 
                     </div>
                 </div>
-                <div class="pagination">
+                <!-- <div class="pagination">
                     <button id="prev-page" onclick="prevPage()">Previous</button>
                     <span id="page-info"></span>
                     <button id="next-page" onclick="nextPage()">Next</button>
-                </div>
+                </div> -->
         </section>
     </div>
     <div th:replace="~{fragments/footer :: footer}"></div>
@@ -202,7 +202,7 @@
     <!-- thư viện để add header và footer  -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-    <style>
+    <!-- <style>
         .pagination {
             display: flex;
             justify-content: center;
@@ -269,7 +269,7 @@
 
         // Initial display
         displayRows();
-    </script>
+    </script> -->
 
 <script>
     // [EXISTING PAGINATION CODE OMITTED FOR BREVITY]

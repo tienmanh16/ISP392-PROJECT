@@ -69,7 +69,7 @@
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <h2 class="mb-4">Employee Profile</h2>
+                    <h2 class="mb-4">My Profile</h2>
                     <table class="table table-bordered">
                         <tr>
                             <th>ID</th>
@@ -107,10 +107,10 @@
                             <th>Email</th>
                             <td th:text="${employee.email}"></td>
                         </tr>
-                        <tr>
+                        <!-- <tr>
                             <th>Salary</th>
                             <td th:text="${employee.salary}"></td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <th>Username</th>
                             <td th:text="${employee.username}"></td>
@@ -121,6 +121,8 @@
                         </tr>
                     </table>
                     <a th:href="@{/admin/employee_list}" class="view-button">View Employee List</a>
+                    <a th:href="@{'/admin/employee_editPro/'+${employee.id}}" class="view-button">Edit My Information</a>
+                    <a th:href="@{'/admin/employee_edit_email/'+${employee.id}}" class="view-button">Edit My Email & Password</a>
                     <a th:href="@{/admin/home}" class="view-button">Return to Homepage</a>
                 </div>
             </div>

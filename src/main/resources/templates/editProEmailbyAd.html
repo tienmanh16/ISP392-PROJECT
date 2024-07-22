@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <title>Edit My Email & Password</title>
+    <style>
+        /* Căn giữa container */
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .passText, .emailText {
+            color: red;
+        }
+
+        .custom-button {
+            background-color: #05073e;
+            color: #fff;
+        }
+
+        .custom-button:hover {
+            background-color: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="row"
+         style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; margin: 0 auto; padding: 20px;">
+
+        <div class="col-sm-12">
+
+            <h2 class="myclass">Edit My Email & Password</h2>
+            <form th:action="@{/admin/employee_edit_email}" th:object="${employee}" method="post"
+                  onsubmit="return checkFormSubmission()" enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label>Employee ID</label>
+                    <input type="text" th:field="*{id}" class="form-control" name="id" placeholder="Enter id"
+                           id="id" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label class="emailBox">Email</label>
+                    <input type="email" th:field="*{email}" class="form-control" name="email"
+                           placeholder="Enter email" id="email" required>
+                    <span class="emailText"></span>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" th:field="*{password}" class="form-control" name="password"
+                           placeholder="Enter password" id="password" required>
+                    <span class="passText"></span>
+
+                </div>
+                <input type="hidden" id="changed" name="changed" value="false">
+                <button type="submit" class="btn custom-button">Save</button>
+                <a class="btn custom-button" href="/admin/viewProfile">Do Not Save</a>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    const form = document.querySelector('form');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const passText = document.querySelector('.passText');
+    const emailText = document.querySelector('.emailText');
+    const changed = document.getElementById('changed');
+
+    // Store original values
+    const originalEmail = email.value;
+    const originalPassword = password.value;
+
+    password.addEventListener('input', checkPassword);
+    email.addEventListener('input', checkEmail);
+
+    function checkPassword() {
+        const passPattern = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
+        if (password.value.match(passPattern)) {
+            passText.innerHTML = '';
+            return true;
+        } else {
+            passText.innerHTML = 'Your password must be at least 6 characters as well as contain at least one uppercase, one lowercase, and one number.';
+            return false;
+        }
+    }
+
+    function checkEmail() {
+        const emailPattern = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/;
+        if (email.value.match(emailPattern)) {
+            emailText.innerHTML = '';
+            return true;
+        } else {
+            emailText.innerHTML = 'Must be a valid email address.';
+            return false;
+        }
+    }
+
+    function checkFormSubmission() {
+        const emailChanged = email.value !== originalEmail;
+        const passwordChanged = password.value !== originalPassword;
+        if (emailChanged || passwordChanged) {
+            changed.value = 'true';
+        }
+        return checkPassword() && checkEmail();
+    }
+</script>
+</body>
+
+</html>
