@@ -1,6 +1,5 @@
 package com.isp.project.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -31,35 +30,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee authenticateUser(String username, String password) {
-        Employee user = employeeRepository.findByUsername(username);
-        if (username == null || username.trim().isEmpty()) {
-            return null;
-        }
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        } else {
-            return null;
-        }
-    }
-
-    @Override
     public Employee findByEmail(String email) {
         return employeeRepository.findByEmail(email);
     }
 
     @Override
     public Object changePassword(int id, UserResetPasswordDto dto) {
-        // Kiểm tra xem người dùng có tồn tại không
         Employee user = findById(id);
         if (user == null) {
-            return null; // Người dùng không tồn tại
+            return null;
         } else {
             String password = passwordEncoder.encode(dto.getNewPassword());
             user.setPassword(password);
             employeeRepository.save(user);
         }
-
         return user;
     }
 
@@ -82,50 +66,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.findByRole("ROLE_RECEPTIONIST");
     }
 
-    // @Override
-    // public List<Employee> findActiveEmployees() {
-    // return employeeRepository.findByIsActiveTrue();
-    // }
-
     @Override
-   public List<Employee> findActiveEmployees() {
-    // Fetch all inactive employees from the repository
-    List<Employee> raw_list = employeeRepository.findByIsActiveTrue();
-    
-    // Create a new list to hold employees with the role 'Receptionist'
-    List<Employee> receptionistList = new ArrayList<>();
-
-    // Iterate through the raw list and add employees with the role 'Receptionist' to the receptionistList
-    for (Employee emp : raw_list) {
-        if (emp.getRole().equalsIgnoreCase("role_Receptionist")) {
-            receptionistList.add(emp);
-        }
+    public List<Employee> findActiveReceptionists() {
+        return employeeRepository.findActiveReceptionists();
     }
-    
-    // Return the list of receptionists
-    return receptionistList;
-}
 
-    // @Override
-    // public List<Employee> findInActiveEmployees() {
-    // return employeeRepository.findByIsActiveFalse();
-    // }
     @Override
-    public List<Employee> findInActiveEmployees() {
-            List<Employee> raw_list = employeeRepository.findByIsActiveFalse();
-    
-            // Create a new list to hold employees with the role 'Receptionist'
-            List<Employee> receptionistList = new ArrayList<>();
-        
-            // Iterate through the raw list and add employees with the role 'Receptionist' to the receptionistList
-            for (Employee emp : raw_list) {
-                if (emp.getRole().equalsIgnoreCase("role_Receptionist")) {
-                    receptionistList.add(emp);
-                }
-            }
-            
-            // Return the list of receptionists
-            return receptionistList;
+    public List<Employee> findInActiveReceptionists() {
+        return employeeRepository.findInActiveReceptionists();
     }
 
     @Override
@@ -229,27 +177,27 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public boolean toggleEmployeeLock(int employeeId, boolean currentLock) {
-         Employee employee = employeeRepository.findById(employeeId);
-    if (employee == null) {
-        throw new IllegalArgumentException("Employee not found with ID: " + employeeId);
-    }
+        Employee employee = employeeRepository.findById(employeeId);
+        if (employee == null) {
+            throw new IllegalArgumentException("Employee not found with ID: " + employeeId);
+        }
 
-    // Update the lock status
-    boolean newLockStatus = !currentLock;
-    employee.setAccountNonLocked(newLockStatus);
+        // Update the lock status
+        boolean newLockStatus = !currentLock;
+        employee.setAccountNonLocked(newLockStatus);
 
-    // Set lockTime to null if the account is unlocked
-    if (newLockStatus) {
-        employee.setLockTime(null);
-        employee.setFailedAttempt(0);
-    } else {
-        employee.setLockTime(new Date());
-    }
+        // Set lockTime to null if the account is unlocked
+        if (newLockStatus) {
+            employee.setLockTime(null);
+            employee.setFailedAttempt(0);
+        } else {
+            employee.setLockTime(new Date());
+        }
 
-    employeeRepository.save(employee);
+        employeeRepository.save(employee);
 
-    // Return the new lock status
-    return newLockStatus;
+        // Return the new lock status
+        return newLockStatus;
     }
 
     @Override

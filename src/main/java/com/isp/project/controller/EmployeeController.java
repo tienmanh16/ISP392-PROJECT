@@ -43,17 +43,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee_list")
-    public String listEmployee(Model model, Principal p) {
+    public String listEmployee(Model model) {
         List<Employee> emList = employeeService.findByRole("ROLE_RECEPTIONIST");
-        if (p != null) {
-            String email = p.getName();
-            Employee user = employeeService.findByEmail(email);
-            if (user != null) {
-                model.addAttribute("user1", user);
-            } else {
-            }
-        }
-
         model.addAttribute("emList", emList);
         return "viewEmployee";
     }
@@ -66,10 +57,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee_add")
-    public String save(Model model, @Valid @ModelAttribute("employee") Employee employee, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "addEm";
-        }
+    public String save(Model model, @Valid @ModelAttribute("employee") Employee employee) {
         employee.setRole("ROLE_RECEPTIONIST");
         employee.setIsActive(true);
         employeeService.saveUser(employee);
@@ -88,11 +76,7 @@ public class EmployeeController {
     }
 
     @PostMapping("/employee_edit")
-    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee, @RequestParam("password") String password, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "editEm";
-        }
-
+    public String update(Model model, @Valid @ModelAttribute("employee") Employee employee) {
         Employee existingEmployee = employeeService.findById(employee.getId());
         if (existingEmployee != null) {
             existingEmployee.setPassword(employee.getPassword());
@@ -106,7 +90,6 @@ public class EmployeeController {
             existingEmployee.setPhone(employee.getPhone());
             existingEmployee.setDob(employee.getDob());
             existingEmployee.setSalary(employee.getSalary());
-
             employeeService.saveUser(existingEmployee);
         }
         return "redirect:/admin/employee_list";
@@ -142,9 +125,6 @@ public class EmployeeController {
             
             existingEmployee.setPhone(employee.getPhone());
             existingEmployee.setDob(employee.getDob());
-            // Không cập nhật lại salary và role
-            // existingEmployee.setSalary(employee.getSalary());
-            // existingEmployee.setRole(employee.getRole());
             employeeService.saveUser(existingEmployee);
         }
         return "redirect:/admin/viewProfile";
@@ -173,16 +153,6 @@ public class EmployeeController {
             employeeService.saveUser(existingEmployee);
         }
         return "redirect:/logout";
-    }
-
-    @GetMapping("/employee_delete/{id}")
-    public String delete(@PathVariable("id") int id) {
-        Employee employee = employeeService.findById(id);
-        if (employee != null) {
-            employee.setIsActive(false);
-            employeeService.save(employee);
-        }
-        return "redirect:/admin/employee_list";
     }
 
     @PostMapping("/employee_toggleStatus/{employeeId}")
@@ -218,30 +188,14 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee_search_active")
-    public String sortEmployeesBySalary(@RequestParam("status") String status, Model model, Principal p) {
+    public String sortEmployeesBySalary(@RequestParam(value = "status", required = false, defaultValue = "all") String status, Model model) {
         List<Employee> emList;
-        if (null == status) {
-            emList = employeeService.findAll();
-        } else {
-            emList = switch (status) {
-                case "all" ->
-                    employeeService.findAll();
-                case "active" ->
-                    employeeService.findActiveEmployees();
-                case "inactive" ->
-                    employeeService.findInActiveEmployees();
-                default ->
-                    employeeService.findAll();
-            };
-        }
-        if (p != null) {
-            String email = p.getName();
-            Employee user = employeeService.findByEmail(email);
-            if (user != null) {
-                model.addAttribute("user1", user);
-            } else {
-            }
-        }
+        emList = switch (status) {
+            case "active" -> employeeService.findActiveReceptionists();
+            case "inactive" -> employeeService.findInActiveReceptionists();
+            default -> employeeService.findAll();
+        };
+       
         model.addAttribute("emList", emList);
         model.addAttribute("status", status);
         return "viewEmployee";

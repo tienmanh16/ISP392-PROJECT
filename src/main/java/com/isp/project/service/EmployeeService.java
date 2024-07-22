@@ -12,8 +12,6 @@ public interface EmployeeService {
     
     Employee findByUserName(String username);
 
-    Employee authenticateUser(String username, String password);
- 
     Object changePassword(int id, UserResetPasswordDto dto);
 
     Employee findById(int id);
@@ -23,8 +21,9 @@ public interface EmployeeService {
 
     List<Employee> findAll();
 
-    List<Employee> findActiveEmployees();
-    List<Employee> findInActiveEmployees();
+    List<Employee> findInActiveReceptionists();
+    List<Employee> findActiveReceptionists(); 
+
     Employee save(Employee entity);
     
     boolean existsByEmail(String email);
