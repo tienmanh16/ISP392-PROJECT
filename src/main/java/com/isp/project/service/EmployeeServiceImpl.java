@@ -1,5 +1,6 @@
 package com.isp.project.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -78,17 +79,53 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<Employee> findAll() {
-        return employeeRepository.findAll();
+        return employeeRepository.findByRole("ROLE_RECEPTIONIST");
     }
+
+    // @Override
+    // public List<Employee> findActiveEmployees() {
+    // return employeeRepository.findByIsActiveTrue();
+    // }
 
     @Override
-    public List<Employee> findActiveEmployees() {
-    return employeeRepository.findByIsActiveTrue();
-    }
+   public List<Employee> findActiveEmployees() {
+    // Fetch all inactive employees from the repository
+    List<Employee> raw_list = employeeRepository.findByIsActiveTrue();
+    
+    // Create a new list to hold employees with the role 'Receptionist'
+    List<Employee> receptionistList = new ArrayList<>();
 
+    // Iterate through the raw list and add employees with the role 'Receptionist' to the receptionistList
+    for (Employee emp : raw_list) {
+        if (emp.getRole().equalsIgnoreCase("role_Receptionist")) {
+            receptionistList.add(emp);
+        }
+    }
+    
+    // Return the list of receptionists
+    return receptionistList;
+}
+
+    // @Override
+    // public List<Employee> findInActiveEmployees() {
+    // return employeeRepository.findByIsActiveFalse();
+    // }
     @Override
     public List<Employee> findInActiveEmployees() {
-    return employeeRepository.findByIsActiveFalse();
+            List<Employee> raw_list = employeeRepository.findByIsActiveFalse();
+    
+            // Create a new list to hold employees with the role 'Receptionist'
+            List<Employee> receptionistList = new ArrayList<>();
+        
+            // Iterate through the raw list and add employees with the role 'Receptionist' to the receptionistList
+            for (Employee emp : raw_list) {
+                if (emp.getRole().equalsIgnoreCase("role_Receptionist")) {
+                    receptionistList.add(emp);
+                }
+            }
+            
+            // Return the list of receptionists
+            return receptionistList;
     }
 
     @Override
