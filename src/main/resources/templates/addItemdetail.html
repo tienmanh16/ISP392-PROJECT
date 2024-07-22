@@ -33,7 +33,7 @@
         <div class="row" style="border: 1px darkgrey solid; border-radius: 10px; width: 50%; padding: 20px;">
             <div class="col-sm-12">
                 <h2>Add Item Detail</h2>
-                <div th:if="${duplicate != null}" class="alert alert-danger" role="alert">
+                <div th:if="${duplicate != null}" class="alert alert-success" role="alert">
                     <span th:text="${duplicate}"></span>
                 </div>
                 <form th:action="@{/admin/itemdetail_add}" th:object="${itemdetail}" method="post" enctype="multipart/form-data" onsubmit="return checkFormSubmission()">
