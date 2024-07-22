@@ -75,7 +75,7 @@
             <div class="row">
                 <div class="row justify-content-center">
                     <div class="col-md-6 text-center mb-5">
-                        <h2 class="heading-section">List Receptionists</h2>
+                        <h2 class="heading-section">Employee List</h2>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,6 @@
                         <option value="0" selected>Select</option>
                         <option value="2">Name</option>
                         <option value="3">Gender</option>
-                        <!-- <option value="5">Role</option> -->
 
                     </select>
                 </form>
@@ -125,21 +124,21 @@
                         <table class="table table-striped" id="emp-table">
                             <thead>
                                 <tr>
-                                    <th col-index="1">ID</th>
-                                    <th col-index="2">FullName</th>
-                                    <th col-index="3">Gender</th>
-                                    <th col-index="4">Dob</th>
-                                    <th col-index="5">Address</th>
-                                    <th col-index="6">Phone</th>
-                                    <th col-index="7">CCCD</th>
-                                    <th col-index="8">Email</th>
-                                    <th col-index="9">Salary</th>
-                                    <th col-index="10">UserName</th>
-                                    <th col-index="11">Status</th>
+                                    <th>ID</th>
+                                    <th>FullName</th>
+                                    <th>Gender</th>
+                                    <th>Dob</th>
+                                    <th>Role</th>
+                                    <th>Address</th>
+                                    <th>Phone</th>
+                                    <th>CCCD</th>
+                                    <th>Email</th>
+                                    <th>Salary</th>
+                                    <th>UserName</th>
+                                    <th>Status</th>
                                     <th>Fail Attempt</th>
                                     <th>Lock Time</th>
                                     <th>Lock Account</th>
-
                                     <th>Edit</th>
                                 </tr>
                             </thead>
@@ -149,6 +148,7 @@
                                     <td th:text="${list.fullName}"></td>
                                     <td th:text="${list.gender == 1 ? 'Male' : 'Female'}"></td>
                                     <td th:text="${#dates.format(list.dob,'dd/MM/yyyy')}"></td>
+                                    <td th:text="${list.role}"></td>
                                     <td th:text="${list.address}"></td>
                                     <td th:text="${list.phone}"></td>
                                     <td th:text="${list.idenId}"></td>
@@ -189,33 +189,26 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        const rowsPerPage = 3;
-        let currentPage = 1;
-        const table = document.getElementById('emp-table');
-        const tbody1 = table.getElementsByTagName('tbody')[0];
-        const rows = tbody1.getElementsByTagName('tr');
-        let filteredRows = Array.from(rows);
+        function sortTableBySalary(order) {
+            const tbody = document.getElementById('body');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
 
-        function sortTable(columnIndex, order) {
-            const rowsArray = Array.from(document.querySelectorAll("#emp-table tbody tr"));
-            rowsArray.sort((a, b) => {
-                const cellA = a.querySelector(`td:nth-child(${columnIndex})`).innerText;
-                const cellB = b.querySelector(`td:nth-child(${columnIndex})`).innerText;
-                const valueA = parseFloat(cellA.replace(/[^0-9.-]+/g, ""));
-                const valueB = parseFloat(cellB.replace(/[^0-9.-]+/g, ""));
-                return order === 'asc' ? valueA - valueB : valueB - valueA;
+            rows.sort((rowA, rowB) => {
+                const salaryA = parseFloat(rowA.querySelector('td:nth-child(10)').innerText);
+                const salaryB = parseFloat(rowB.querySelector('td:nth-child(10)').innerText);
+
+                if (order === 'asc') {
+                    return salaryA - salaryB;
+                } else {
+                    return salaryB - salaryA;
+                }
             });
 
-            const tbody = document.querySelector("#emp-table tbody");
-            tbody.innerHTML = ""; // Clear the current rows
-            rowsArray.forEach(row => tbody.appendChild(row)); // Re-add the sorted rows
+            rows.forEach(row => tbody.appendChild(row)); // Reorder the rows in the table
         }
-        document.getElementById('sort-salary-asc').addEventListener('click', () => sortTable(9, 'asc'));
-        document.getElementById('sort-salary-desc').addEventListener('click', () => sortTable(9, 'desc'));
 
-    </script>
-
-    <script>
+        document.getElementById('sort-salary-asc').addEventListener('click', () => sortTableBySalary('asc'));
+        document.getElementById('sort-salary-desc').addEventListener('click', () => sortTableBySalary('desc'));
 
         function toggleStatus(button) {
             const employeeId = button.getAttribute('data-id');
