@@ -52,12 +52,12 @@
     </style>
 </head>
 <body>
-    <div id="company-info">
+    <!-- <div id="company-info">
         <p>Công ty ABC</p>
         <p>Địa chỉ: 123 Đường ABC, Quận XYZ, Thành phố HCM</p>
         <p>Điện thoại: (123) 456-7890</p>
             <p> Email: info@abc.com</p>
-    </div>
+    </div> -->
     <!-- <div id="BTC-info">
         <p>Mẫu số B02-DN</p>
         <p>Ban hành theo QD số 15/2020/QD-BTC </p>
@@ -83,24 +83,22 @@
                         <span th:text="${register.employeeID.fullName}"></span>
                     </span>
                 </td>
-                <td th:text="${invoice.totalAmount}"></td>
+                <td th:text="${invoice.totalAmount} + ' $'"></td>
             </tr>
 
             <tr>
                 <td colspan="3" class="text-right"><strong>Total:</strong></td>
-                <td th:text="${totalAmount}"></td>
+                <td th:text="${totalAmount} + ' $'"></td>
                 
             </tr>
         </tbody>
     </table>
     <div id="footer">
         <div id="prepared-by">
-            <p>Người lập biểu</p>
-            <p>(Nguyễn Văn A)</p>
+            <p>Report preparer</p>
         </div>
         <div id="accountant">
-            <p>Kế toán</p>
-            <p>(Trần Thị B)</p>
+            <p>Accountant</p>
         </div>
     </div>
 </body>

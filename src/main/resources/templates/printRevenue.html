@@ -53,10 +53,7 @@
 </head>
 <body>
     <div id="company-info">
-        <p>Công ty ABC</p>
-        <p>Địa chỉ: 123 Đường ABC, Quận XYZ, Thành phố HCM</p>
-        <p>Điện thoại: (123) 456-7890</p>
-            <p> Email: info@abc.com</p>
+        
     </div>
     <!-- <div id="BTC-info">
         <p>Mẫu số B02-DN</p>
@@ -83,7 +80,7 @@
                         <span th:text="${register.employeeID.fullName}"></span>
                     </span>
                 </td>
-                <td th:text="${invoice.totalAmount}"></td>
+                <td th:text="${invoice.totalAmount} + ' $'"></td>
             </tr>
 
             <tr>
@@ -93,16 +90,15 @@
 
 
                 
-                <td th:text="'Total: ' + ${totalAmount}"></td>
+                <td th:text="'Total: ' + ${totalAmount} + ' $'"></td>
                 
             </tr>
         </tbody>
     </table>
     <div id="footer">
         <div id="prepared-by">
-            <p>Người lập biểu</p>
-        
-            <p>Kế toán</p>
+            <p>Report Preparer</p>
+<p>Accountant</p>
         </div>
     </div>
 </body>

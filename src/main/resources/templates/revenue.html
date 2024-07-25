@@ -95,15 +95,13 @@
                                         <span th:text="${register.employeeID.fullName}"></span>
                                     </span>
                                 </td>
-                                <td th:text="${invoice.totalAmount}"></td>
+                                <td th:text="${invoice.totalAmount} + ' $'"></td>
                             </tr>
 
                             <tr>
                                 <td colspan="3" class="text-right"><strong>Total:</strong></td>
-                                <td th:text="${totalAmount}"></td>
-                            </tr>
-
-						    
+                                <td th:text="${totalAmount} + ' $'"></td>
+                            </tr>						    
 						  </tbody>
 						</table>
 					</div>
