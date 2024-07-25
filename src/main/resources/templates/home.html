@@ -40,6 +40,54 @@
         </section>
         <!-- BANNER SECTION END -->
 
+        <section class="cars-section-ten v8 pt-0">
+            <div class="large-container">
+                <div class="right-box">
+                    <div class="boxcar-title wow fadeInUp">
+                        <h2>Room Types</h2>
+                    </div>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
+                            aria-labelledby="nav-home-tab">
+                            <div class="row car-slider-three wow fadeInUp" data-wow-delay="200ms" data-preview="4">
+                                <!-- car-block-ten -->
+                                <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12"
+                                    th:each="roomType : ${roomTypes}">
+                                    <div class="inner-box">
+                                        <div class="image-box">
+                                            <div class="slider-thumb">
+                                                <div class="image"><a href="#"><img th:src="@{${roomType.image1}}"
+                                                            alt=""></a></div>
+                                                <div class="image"><a href="#"><img th:src="@{${roomType.image2}}"
+                                                            alt=""></a></div>
+                                            </div>
+                                            <span>Room Image</span>
+                                        </div>
+                                        <div class="content-box">
+                                            <h6 class="title" th:text="${roomType.roomTypeName}"><a href="#"></a></h6>
+                                            <ul>
+                                                <li>Beautiful</li>
+                                                <li>Luxurious</li>
+                                                <li>Aristocratic</li>
+                                            </ul>
+                                            <!-- <div class="btn-box">
+                                                <a href="detail" class="details">View Details
+                                                </a>
+                                            </div> -->
+                                            <div class="btn-box">
+                                                <a th:href="@{/detail(roomTypeId=${roomType.roomTypeId})}"
+                                                    class="details">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Facilities section -->
         <section class="blog-section">
             <div class="boxcar-container">
@@ -62,7 +110,7 @@
                                     <li>Bar</li>
                                     <li>April 20, 2023</li>
                                 </ul>
-                                <h6 class="title"><a href="blog-single.html" title="">This Long-Awaited Technology May
+                                <h6 class="title"><a href="#" title="">This Long-Awaited Technology May
                                         Finally Change the World</a>
                                 </h6>
                             </div>
@@ -72,7 +120,8 @@
                     <div class="blog-block col-lg-4 col-md-6 col-sm-12">
                         <div class="inner-box wow fadeInUp" data-wow-delay="100ms">
                             <div class="image-box">
-                                <figure class="image"><a href="#"><img src="https://i.pinimg.com/736x/be/ed/91/beed914160317c6213e12f9586c42dd4.jpg"
+                                <figure class="image"><a href="#"><img
+                                            src="https://i.pinimg.com/736x/be/ed/91/beed914160317c6213e12f9586c42dd4.jpg"
                                             alt="" style="width: 350px; height: 200px;"></a>
                                 </figure>
                             </div>
@@ -81,7 +130,7 @@
                                     <li>Swimming Pool</li>
                                     <li>April 20, 2023</li>
                                 </ul>
-                                <h6 class="title"><a href="blog-single.html" title="">This Long-Awaited Technology May
+                                <h6 class="title"><a href="#" title="">This Long-Awaited Technology May
                                         Finally Change the World</a>
                                 </h6>
                             </div>
@@ -101,7 +150,7 @@
                                     <li>Gym</li>
                                     <li>April 20, 2023</li>
                                 </ul>
-                                <h6 class="title"><a href="blog-single.html" title="">This Long-Awaited Technology May
+                                <h6 class="title"><a href="#" title="">This Long-Awaited Technology May
                                         Finally Change the World</a>
                                 </h6>
                             </div>
@@ -112,101 +161,7 @@
         </section>
 
         <!-- cars-section-ten -->
-        <section class="cars-section-ten v8 pt-0">
-            <div class="large-container">
-                <div class="right-box">
-                    <div class="boxcar-title wow fadeInUp">
-                        <h2>Room Types</h2>
-                        <a href="#" class="btn-title">View details
-                        </a>
-                    </div>
-                    <div class="tab-content" id="nav-tabContent">
-                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                            <div class="row car-slider-three wow fadeInUp" data-wow-delay="200ms" data-preview="4">
-                                <!-- car-block-ten -->
-                                <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12" th:each="roomType : ${roomTypes}">
-                                    <div class="inner-box">
-                                        <div class="image-box">
-                                            <div class="slider-thumb">
-                                                <div class="image"><a href="#"><img th:src="@{${roomType.image1}}" alt=""></a></div>
-                                                <div class="image"><a href="#"><img th:src="@{${roomType.image2}}" alt=""></a></div>
-                                            </div>
-                                            <span>Room Image</span>
-                                        </div>
-                                        <div class="content-box">
-                                            <h6 class="title" th:text="${roomType.roomTypeName}"><a href="#"></a></h6>
-                                            <ul>
-                                                <li>Beautiful</li>
-                                                <li>Luxurious</li>
-                                                <li>Aristocratic</li>
-                                            </ul>
-                                            <!-- <div class="btn-box">
-                                                <a href="detail" class="details">View Details
-                                                </a>
-                                            </div> -->
-                                            <div class="btn-box">
-                                                <a th:href="@{/detail(roomTypeId=${roomType.roomTypeId})}" class="details">View Details</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- car-block-ten -->
-                                <!-- <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12">
-                                    <div class="inner-box">
-                                        <div class="image-box">
-                                            <div class="slider-thumb">
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-5.jpg" alt=""></a></div>
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-2.jpg" alt=""></a></div>
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-7.jpg" alt=""></a></div>
-                                            </div>
-                                            <span>Low Mileage</span>
-                                    </div>
-                                    <div class="content-box">
-                                            <h6 class="title"><a href="#">Mercedes-Benz, C Class</a></h6>
-                                            <ul>
-                                                <li>26,786 kms</li>
-                                                <li>Petrol</li>
-                                                <li>Automatic</li>
-                                            </ul>
-                                            <div class="btn-box">
-                                                <small>$399</small>
-                                                <a href="#" class="details">View Details
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div> -->
-                                <!-- car-block-ten -->
-                                <!-- <div class="box-car car-block-ten col-lg-3 col-md-6 col-sm-12">
-                                    <div class="inner-box">
-                                        <div class="image-box">
-                                            <div class="slider-thumb">
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-2.jpg" alt=""></a></div>
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-5.jpg" alt=""></a></div>
-                                                <div class="image"><a href="#"><img src="images/resource/shop3-7.jpg" alt=""></a></div>
-                                            </div>
-                                        </div>
-                                        <div class="content-box">
-                                            <h6 class="title"><a href="#">Mercedes-Benz, C Class</a></h6>
-                                            <ul>
-                                                <li>26,786 kms</li>
-                                                <li>Petrol</li>
-                                                <li>Automatic</li>
-                                            </ul>
-                                            <div class="btn-box">
-                                                <small>$399</small>
-                                                <a href="#" class="details">View Details
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-        </section>
+
         <!-- End shop section ten -->
 
         <!-- replace footer here -->
