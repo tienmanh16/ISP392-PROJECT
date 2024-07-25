@@ -64,6 +64,7 @@ import jakarta.validation.Valid;
 // @RequestMapping("api/room")
 
 public class RoomController {
+
     @Autowired
     private RoomServiceImpl roomServiceImpl;
 
@@ -108,22 +109,17 @@ public class RoomController {
     // @GetMapping("/room")
     // public String listRoom(Model model) {
     // // Page<RoomDetailDTO> list = this.roomService.getAll(pageNo);
-
     // // model.addAttribute("totalPage", list.getTotalPages());
     // // model.addAttribute("currentPage", pageNo);
     // List<BookingMapping> list_All = roomService.getAllRoom();
-
     // List<BookingMapping> list = new ArrayList<>();
-
     // LocalDate currentDate = LocalDate.now();
-
     // for (BookingMapping bookingMapping : list_All) {
     // if (bookingMapping.getBookingMappingActive() == 1 ||
     // bookingMapping.getBookingMappingActive() == 2) {
     // list.add(bookingMapping);
     // }
     // }
-
     // model.addAttribute("roomTypes",
     // roomTypeServiceImpl.getAllRoomTypesWithDetails());
     // model.addAttribute("rooms", list);
@@ -133,14 +129,12 @@ public class RoomController {
     // model.addAttribute("serviceTypes", seService.getAllServiceTypes());
     // return "room";
     // }
-
     // @GetMapping("/roomtest")
     // @ResponseBody
     // public ResponseEntity<List<RoomDTO>> getAvailableRooms(@RequestParam(required
     // = false) String checkinDate) {
     // List<RoomDTO> bookingMappings;
     // List<RoomDTO> list = new ArrayList<>();
-
     // if (checkinDate == null || checkinDate.isEmpty()) {
     // bookingMappings = roomRepository.findAllRooms();
     // } else {
@@ -153,10 +147,8 @@ public class RoomController {
     // list.add(bookingMapping);
     // }
     // }
-
     // return ResponseEntity.ok(list);
     // }
-
     // @GetMapping("/editRoom")
     // public ResponseEntity<Customer> getRoom(@RequestParam("roomId") Integer
     // roomId) {
@@ -216,14 +208,11 @@ public class RoomController {
     // Integer roomId) {
     // Customer customer = roomServiceImpl.test(roomId);
     // Room room = roomServiceImpl.testR(roomId);
-
     // Map<Object, Object> response = new HashMap<>();
     // response.put("customer", customer);
     // response.put("room", room);
-
     // return ResponseEntity.ok(response);
     // }
-
     // @GetMapping("/editRoom")
     // public ResponseEntity<RoomCustomerDTO> getRoom(@RequestParam("roomId")
     // Integer roomId) {
@@ -231,7 +220,6 @@ public class RoomController {
     // roomServiceImpl.getAllRoomCusWithDetailsByRoomId(roomId);
     // return ResponseEntity.ok(roomCustomerDTO);
     // }
-
     // @GetMapping("/editRoom2")
     // public ResponseEntity<Room> getRoom2(@RequestParam("roomId") Integer roomId)
     // {
@@ -262,14 +250,12 @@ public class RoomController {
     // public ResponseEntity<Optional<Room>> updateCleaning(@RequestBody String
     // roomData) {
     // Room room = convertJsonToRoom(roomData);
-
     // // roomService.updateRoomCleaningByRoomId(room.getId(), room.getCleaning());
     // // Room room1 = roomServiceImpl.testR(room.getId());
     // Optional<Room> room1 = roomRepository.findById(room.getId());
     // room1.get().setCleaning(room.getCleaning());
     // return ResponseEntity.ok(room1);
     // }
-
     @PutMapping("/updateRoomCleaning/{roomId}")
     @ResponseBody
     public ResponseEntity<String> updateRoomCleaning(
@@ -383,7 +369,6 @@ public class RoomController {
     // invoiceLine2.setService(service);
     // invoiceLine2.setQuantity(invoiceLine.getQuantity());
     // invoiceLine2.setInvoice(invoice);
-
     // invoiceLineRepository.save(invoiceLine2);
     // }
     // }
@@ -394,7 +379,6 @@ public class RoomController {
     // .body("Error saving invoice lines: " + e.getMessage());
     // }
     // }
-
     // private List<InvoiceLineDTO> convertJsonToInvoiceLineList(String json) {
     // ObjectMapper objectMapper = new ObjectMapper();
     // List<InvoiceLineDTO> invoiceLines = new ArrayList<>();
@@ -413,7 +397,6 @@ public class RoomController {
     // selectedInvoiceLine1JSON) {
     // List<Map<String, Object>> selectedInvoiceLines =
     // convertJsonToList(selectedInvoiceLine1JSON);
-
     // for (Map<String, Object> lineData : selectedInvoiceLines) {
     // Double invoiceTotalAmount = (Double) lineData.get("InvoiceTotalAmount");
     // Integer seId = (Integer) lineData.get("seId");
@@ -423,15 +406,12 @@ public class RoomController {
     // Integer invoiceId = (Integer) lineData.get("invoiceId");
     // Optional<Invoice> newInvoice_raw = invoiceRepository.findById(invoiceId);
     // Invoice newInvoice = newInvoice_raw.get();
-
     // InvoiceLine newInvoiceLine = new InvoiceLine(invoiceTotalAmount, newService,
     // quantity, newInvoice);
     // invoiceLineRepository.save(newInvoiceLine);
-
     // }
     // return ResponseEntity.ok("Saved successfully");
     // }
-
     // List<InvoiceLine> selectedInvoiceLines =
     // convertJsonToInvoiceLineList(selectedInvoiceLine1JSON);
     // for (InvoiceLine invoiceLine : selectedInvoiceLines) {
@@ -439,7 +419,6 @@ public class RoomController {
     // serviceRepository.findById(invoiceLine.getService().getSeID()).orElse(null);
     // Invoice invoice =
     // invoiceRepository.findById(invoiceLine.getInvoice().getInvoiceID()).orElse(null);
-
     @PostMapping("/addInvoiceLine")
     @ResponseBody
     public ResponseEntity<String> addInvoiceLines(@RequestBody String invoiceLineData) {
@@ -462,34 +441,36 @@ public class RoomController {
                     Invoice newInvoice = newInvoiceOptional.get();
 
                     List<InvoiceLine> invoiceLines = invoiceRepository.findById(invoiceId).get().getInvoiceLine();
-                    boolean serviceFound = false;
-                    for (InvoiceLine invoiceLine1 : invoiceLines) {
-                        if (invoiceLine1.getService().getSeID() == seId) {
-                            invoiceLine1.setQuantity(invoiceLine1.getQuantity() + quantity);
-                            invoiceLine1.setInvoiceTotalAmount(invoiceLine1.getInvoiceTotalAmount() + invoiceTotalAmount);
-                            invoiceLineRepository.save(invoiceLine1);
-                            serviceFound = true;
-                            break;
+                    if (invoiceLines != null) {
+                        boolean serviceFound = false;
+                        for (InvoiceLine invoiceLine1 : invoiceLines) {
+                            if (invoiceLine1.getService().getSeID() == seId) {
+                                invoiceLine1.setQuantity(invoiceLine1.getQuantity() + quantity);
+                                invoiceLine1.setInvoiceTotalAmount(invoiceLine1.getInvoiceTotalAmount() + invoiceTotalAmount);
+                                invoiceLineRepository.save(invoiceLine1);
+                                serviceFound = true;
+                                break;
+                            }
                         }
-                    }
-                    // Create and save the InvoiceLine
-                    // InvoiceLine invoiceLine = new InvoiceLine();
-                    // invoiceLine.setInvoiceTotalAmount(invoiceTotalAmount);
-                    // invoiceLine.setService(newService);
-                    // invoiceLine.setQuantity(quantity);
-                    // invoiceLine.setInvoice(newInvoice);
 
-                    // invoiceLineRepository.save(invoiceLine);
-                    if (!serviceFound) {
+                        if (!serviceFound) {
+                            InvoiceLine invoiceLine = new InvoiceLine();
+                            invoiceLine.setInvoiceTotalAmount(invoiceTotalAmount);
+                            invoiceLine.setService(newService);
+                            invoiceLine.setQuantity(quantity);
+                            invoiceLine.setInvoice(newInvoice);
+
+                            invoiceLineRepository.save(invoiceLine);
+                        }
+                    } else {
                         InvoiceLine invoiceLine = new InvoiceLine();
                         invoiceLine.setInvoiceTotalAmount(invoiceTotalAmount);
                         invoiceLine.setService(newService);
                         invoiceLine.setQuantity(quantity);
                         invoiceLine.setInvoice(newInvoice);
-                    
+
                         invoiceLineRepository.save(invoiceLine);
                     }
-                    //invoiceLineRepository.save(invoiceLine);
                 } else {
                     // Handle case where service or invoice is not found
                     System.out.println("Service or Invoice not found for IDs: " + seId + ", " + invoiceId);
