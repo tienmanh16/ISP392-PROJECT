@@ -169,6 +169,7 @@ public class BookingAdminController {
         Booking booking = new Booking();
         booking.setCustomerID(customer);
         Date bookingDate = new Date(System.currentTimeMillis());
+        // booking.setBookingDate(bookingInfo.getCheckinDate());
         booking.setBookingDate(bookingDate);
         booking.setCustomerQuantity(bookingInfo.getCustomerQuantity());
         booking.setIsCancelled(1);
