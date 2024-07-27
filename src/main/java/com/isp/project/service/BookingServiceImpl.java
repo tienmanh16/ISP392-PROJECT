@@ -45,8 +45,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Booking> getCustomerForDate(int month, int year) {
-        return this.bookingRepository.getCustomerForDate(month, year);
+    public int getCustomerForDate(int month, int year) {
+        int totalBooking = 0;
+        List<Booking> ls = this.bookingRepository.getCustomerForDate(month, year);
+        for (Booking booking : ls) {
+            totalBooking += booking.getCustomerQuantity();
+        }
+        return totalBooking;
     }
 
     @Override

@@ -78,7 +78,8 @@ public class ReportController {
         model.addAttribute("selectedMonth", month);
         model.addAttribute("selectedYear", year);
 
-        int totalCustomer = this.bookingService.getCustomerForDate(month, year).size();
+        int totalCustomer = this.bookingService.getCustomerForDate(month, year);
+        
         model.addAttribute("totalCustomer", totalCustomer);
 
         Map<String, Double> percentByMonth = new HashMap<>();

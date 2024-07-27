@@ -51,7 +51,7 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     @Query("DELETE FROM BookingMapping bm WHERE bm.bookingID = :booking AND bm.roomID = :room")
     void deleteByRoomAndBooking(@Param("booking") Booking booking, @Param("room") Room room);
 
-    @Query("SELECT i FROM Booking i RIGHT JOIN i.customerID b WHERE MONTH(i.bookingDate) = :month AND YEAR(i.bookingDate) = :year")
+    @Query("SELECT i FROM Booking i WHERE MONTH(i.bookingDate) = :month AND YEAR(i.bookingDate) = :year")
     List<Booking> getCustomerForDate(@Param("month") int month, @Param("year") int year);
 
 

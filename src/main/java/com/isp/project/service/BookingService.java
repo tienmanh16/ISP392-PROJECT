@@ -12,7 +12,7 @@ public interface BookingService {
 
     List<Booking> getAllBookingByName(String customerName);
 
-    List<Booking> getCustomerForDate(int month, int year);
+    int getCustomerForDate(int month, int year);
 
     Booking getBookingByBookingID(int bookingID);
 
